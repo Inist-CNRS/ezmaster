@@ -1,0 +1,17 @@
+ezmaster:
+  image: inistcnrs/ezmaster:latest
+  links:
+    - ezmaster_db:mongodb
+  volumes:
+    - ./data:/app/data
+    - ./config.local.js:/app/config.local.js
+  environment:
+    http_proxy:  ${http_proxy}
+    https_proxy: ${https_proxy}
+    NODE_ENV: ${NODE_ENV}
+  ports:
+    - 3000:3000
+
+ezmaster_db:
+  image: mongo:3.0.7
+  command: --smallfiles

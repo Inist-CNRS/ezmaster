@@ -1,0 +1,12 @@
+{   
+  "ignore": [
+    "data/*",
+    "README.md",
+    "*.yml",
+    "nodemon.json",
+    "package.json",
+    "Dockerfile",
+    "views/assets",
+    "views/libs"
+  ]
+}

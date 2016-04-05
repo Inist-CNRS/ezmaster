@@ -1,0 +1,51 @@
+{
+  "name": "ezmaster",
+  "version": "1.0.4",
+  "description": "a castor app boilerplate. Replace ezmaster by your name...",
+  "main": "index.js",
+  "bin": {
+    "ezmaster": "./ezmaster"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "./ezmaster"
+  },
+  "keywords": [],
+  "contributors": [
+    {
+      "name": "Stéphane Gully",
+      "url": "https://github.com/kerphi"
+    },
+    {
+      "name": "Nicolas Thouvenin",
+      "url": "https://github.com/touv"
+    }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.0.0",
+    "babel-loader": "^6.0.0",
+    "babel-plugin-transform-runtime": "^6.0.0",
+    "babel-preset-es2015": "^6.0.0",
+    "babel-preset-stage-2": "^6.0.0",
+    "castor-core": "^3.9.1",
+    "castor-load": "^4.4.3",
+    "castor-load-csv": "^2.1.2",
+    "debug": "^2.2.0",
+    "jquery": "^2.2.1",
+    "mongodb-querystring": "^1.0.2",
+	"vue": "^1.0.18",
+    "vue-html-loader": "^1.2.0",
+    "vue-loader": "^8.2.1",
+    "vue-resource": "^0.7.0",
+    "vue-style-loader": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^2.3.0",
+    "istanbul": "^0.4.2",
+    "jshint": "^2.9.1",
+    "mocha": "^2.4.5",
+    "nodemon": "^1.9.1"
+  }
+}
