@@ -7,8 +7,8 @@ Administration of docker applications.
 Without docker:
 
 ```shell
-git clone https://github.com/Inist-CNRS/castor-boilerplate.git
-cd castor-boilerplate
+git clone https://github.com/Inist-CNRS/ezmaster.git
+cd ezmaster
 npm install
 npm start
 ```
@@ -17,8 +17,8 @@ Then navigate to [http://127.0.0.1:3000](http://127.0.0.1:3000)
 
 ### With docker:
 ```shell
-git clone https://github.com/Inist-CNRS/castor-boilerplate.git
-cd castor-boilerplate
+git clone https://github.com/Inist-CNRS/ezmaster.git
+cd ezmaster
 docker-compose up
 ```
 
@@ -27,10 +27,10 @@ It will download and run the [inistcnrs/castor-boilerplate](https://hub.docker.c
 ## Install and run for developements
 
 ### With npm:
-To start castor-boilerplate from a local git clone, you can follow these steps (needs nodejs and mongodb installed localy):
+To start ezmaster from a local git clone, you can follow these steps (needs nodejs and mongodb installed localy):
 ```shell
-git clone https://github.com/Inist-CNRS/castor-boilerplate.git
-cd castor-boilerplate
+git clone https://github.com/Inist-CNRS/ezmaster.git
+cd ezmaster
 npm install
 npm run debug
 # the app is listening at http://127.0.0.1:3000/
@@ -38,10 +38,10 @@ npm run debug
 ```
 
 ### With docker:
-The same but with docker (advantage: do not need to have mongodb and nodejs isntalled localy):
+The same but with docker (advantage: do not need to have mongodb and nodejs installed localy):
 ```shell
-git clone https://github.com/Inist-CNRS/castor-boilerplate.git
-cd castor-boilerplate
+git clone https://github.com/Inist-CNRS/ezmaster.git
+cd ezmaster
 npm install
 npm run debug-docker
 # or just: docker-compose -f docker-compose.dev.yml up
@@ -51,8 +51,8 @@ npm run debug-docker
 
 or without npm/node
 ```shell
-git clone https://github.com/Inist-CNRS/castor-boilerplate.git
-cd castor-boilerplate
+git clone https://github.com/Inist-CNRS/ezmaster.git
+cd ezmaster
 make install
 make run
 # the app is listening at http://127.0.0.1:3000/
