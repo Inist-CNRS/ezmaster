@@ -9,10 +9,11 @@ var mongoHostPort = process.env.MONGODB_PORT ?
 module.exports = {
   connectionURI: 'mongodb://' + mongoHostPort + '/ezmaster',
   collectionName: 'data',
-  browserifyModules : [ 'jquery', 'mongodb-querystring' ],
+  browserifyModules : [ 'jquery', 'mongodb-querystring', 'dockerode', 'tcp-port-used'],
   rootURL : '/',
   routes: [
-    'fake-route.js'
+    'fake-route.js',
+    'route.js'
   ],
   heartbeats: [
     {
@@ -29,6 +30,7 @@ module.exports = {
       script: 'fake-loader.js',
       pattern: '**/*.csv'
     }
-  ]
+  ],
+  filters: ['jbj-parse']
 };
 module.exports.package = require('./package.json');

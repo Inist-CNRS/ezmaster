@@ -1,10 +1,165 @@
 /* global $, document, JSONEditor, nColumns, view */
-(function() {
-  'use strict';
+(function() { 'use strict';
+
   var $ = require('jquery');
+  var Docker = require('dockerode');
+
+  var docker = new Docker({ socketPath: '/var/run/docker.sock' });
+
+	var ezmaster  = {
+	    modules : {}
+	};
+
+	ezmaster.modules.actions = (function() {
+
+	  return {
+      start : function(id) {
+        $.ajax({
+         url: '/start',
+         data: {
+            info: 'Container start',
+            containerId : id
+         },
+         dataType: 'jsonp',
+         type: 'POST'
+        });
+
+        /*
+        *
+        To execute according to the status in .json
+        *
+        */      
+        $('#status').css('background-color','#4CAF50');
+
+        /*
+        * NEED TO MODIFY THE PORT
+        */
+        var replace = '<a class="publicLink" href="http://127.0.0.1:3001">' +
+                      '<img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
+        $('.publicLink').replaceWith(replace);
+      },
+
+      stop : function(id) {
+        $.ajax({
+          url : '/stop',
+          data: {
+            info : 'Container stop',
+            containerId : id
+          },
+          dataType: 'jsonp',
+          type: 'POST'
+        });
+        
+        /*
+        *
+        To execute according to the status in .json
+        *
+        */      
+        $('#status').css('background-color','#f44336');
+
+        var replace = '<a class="publicLink" href="#"><img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
+        $('.publicLink').replaceWith(replace);
+      },
+
+      showDeleteModal : function() {
+        $('#modal-delete-instance').fadeToggle(500);
+      },
+
+      closeDeleteModal : function() {
+        $('#modal-delete-instance').fadeToggle(250);
+      },
+
+      delete : function(id) {
+        $.ajax({
+          url : '/delete',
+          data: {
+            /*info : 'Container deleted',
+            containerId : id*/
+          },
+          dataType: 'jsonp',
+          type: 'POST'
+        });
+      },
+
+      // id recovered with line (ul on template.html) id (container id) 
+      init : function () {
+        $('.start').click(function() {
+        	 ezmaster.modules.actions.start($(this).parent().attr('id'));
+        });
+
+        $('.stop').click(function() {
+        	 ezmaster.modules.actions.stop($(this).parent().attr('id'));
+        });
+
+        $('.delete').click(ezmaster.modules.actions.showDeleteModal);
+        $('.close_modal_delete_instance').click(ezmaster.modules.actions.closeDeleteModal);
+        $('#delete_instance').click(function() {
+        	 ezmaster.modules.actions.delete($(this).parent().attr('id'));
+        });
+      }
+	  }
+	}) ();
+
+	ezmaster.modules.addInstance = (function() {
+		return {
+			showModal : function() {
+				$('#modalForm').fadeToggle(500);
+			},
+
+			closeModal : function() {
+				$('#modalForm').fadeToggle(250);
+			},
+
+			save : function(title, technicalName, app) {
+				if(title == '' || technicalName == '') {
+					window.alert('Please fill all fields');
+				}
+				else {
+          var now = new Date();
+          var day = now.getDate();
+          var month = now.getMonth() + 1;
+          var year = now.getFullYear();
+
+          if(day < 10) {
+            day = '0' + day;
+          }
+
+          if(month < 10) {
+            month = '0' + month;
+          } 
+
+          var creationDate = year + '/' + month + '/' + day;
+
+          $.ajax({
+            url : '/addInstance',
+            data: {
+              info : 'Add instance',
+              instanceTitle : title,
+              instanceTechnicalName : technicalName,
+              instanceCreationDate : creationDate,
+              instanceImage : app
+            },
+            dataType: 'jsonp',
+            type: 'POST'
+          });
+					ezmaster.modules.addInstance.closeModal();
+				}
+			},
+
+			init : function() {
+				$('#add-instance').click(ezmaster.modules.addInstance.showModal);
+				$('#close_modal').click(ezmaster.modules.addInstance.closeModal);
+				// $('#save').click(ezmaster.modules.addInstance.save);
+        $('#save').click(function() {
+          ezmaster.modules.addInstance.save($('#inputTitle').val(), $('#inputTechnicalName').val(), $('#app').val());
+        }); 
+      }
+		}
+	}) ();
 
   $(document).ready(function() {
-    console.log('I am ready');
+    ezmaster.modules.actions.init();
+    ezmaster.modules.addInstance.init();
   });
 
 }());
