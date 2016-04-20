@@ -12,7 +12,6 @@ module.exports = {
   browserifyModules : [ 'jquery', 'mongodb-querystring', 'dockerode', 'tcp-port-used'],
   rootURL : '/',
   routes: [
-    'fake-route.js',
     'route.js'
   ],
   heartbeats: [
