@@ -8,7 +8,6 @@ var path = require('path')
 var bodyParser = require('body-parser');
 var Docker = require('dockerode');
 var docker = new Docker({ socketPath: '/var/run/docker.sock' });
-var tcpPortUsed = require('tcp-port-used');
 
 const util = require('util');
 
@@ -98,6 +97,7 @@ module.exports = function(router, core) {
   });*/
 
   router.route('/addInstance').post(function(req, res, next) {
+    console.info(path.join(__dirname, '../instances/inistcnrs-ezvis/')+':/root');
     docker.run('inistcnrs/ezvis', [], process.stdout, {
       'HostConfig': {
         'Links': ['mongo_db:mongo'],
@@ -109,8 +109,11 @@ module.exports = function(router, core) {
             }
           ]
         },
-        'Binds': ['/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/:/root']
-                //, '/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/data.json:/root/data.json']
+        'Binds': [path.join(__dirname, '../instances/inistcnrs-ezvis/')+':/root']
+                //['/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/:/root']
+                //, '/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/data.json:/root/data.json']*/
+        /*'Binds':  ['/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/data:/root/data',
+                , '/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/data.json:/root/data.json']*/
       },
       "Config": {
         "ExposedPorts": {
@@ -118,7 +121,8 @@ module.exports = function(router, core) {
         },
         'Volumes': {
           '/root': {},
-          // '/root/data.json' : {} //
+          /*'/root/data': {},
+          '/root/data.json' : {}*/
         },
       },
       "NetworkSettings": {
@@ -133,7 +137,8 @@ module.exports = function(router, core) {
       }
     },
     function(err, data, container) {
-      if(err) console.info(err);
+      if(err) throw err;
+      res.status(200).end();
     });
   });
 

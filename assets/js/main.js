@@ -124,14 +124,12 @@
               instanceImage : app
             },
             dataType: 'jsonp',*/
-            type: 'POST'
+            type: 'POST',
+            success : function() {
+              location.reload();
+            }
           });
-					/*ezmaster.modules.addInstance.closeModal();
-          var refresh = function () {
-            location.reload();
-          }
-          window.setInterval(refresh, 100);
-				}*/
+					/*ezmaster.modules.addInstance.closeModal();*/
 			},
 
 			init : function() {
