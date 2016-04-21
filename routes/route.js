@@ -49,7 +49,7 @@ module.exports = function(router, core) {
     });
   });
 
-  router.route('/start').post(bodyParser(), function(req, res, next) {
+  router.route('/-/start').post(bodyParser(), function(req, res, next) {
     var container = docker.getContainer(req.body.containerId);
     container.start(function(err, data, container) {
       if(err)
@@ -62,7 +62,7 @@ module.exports = function(router, core) {
     });*/
   });
 
-  router.route('/stop').post(bodyParser(), function(req, res, next) {
+  router.route('/-/stop').post(bodyParser(), function(req, res, next) {
     var container = docker.getContainer(req.body.containerId);
     container.stop(function(err, data, container) {
       if(err)
@@ -75,7 +75,7 @@ module.exports = function(router, core) {
     });
   });
 
-  router.route('/delete').post(bodyParser(), function(req, res, next) {
+  router.route('/-/delete').post(bodyParser(), function(req, res, next) {
     var container = docker.getContainer(req.body.containerId);
     container.stop(function(err, data, container) {
       if(err)
@@ -96,8 +96,7 @@ module.exports = function(router, core) {
     });
   });*/
 
-  router.route('/addInstance').post(function(req, res, next) {
-    console.info(path.join(__dirname, '../instances/inistcnrs-ezvis/')+':/root');
+  router.route('/-/addInstance').post(function(req, res, next) {
     docker.run('inistcnrs/ezvis', [], process.stdout, {
       'HostConfig': {
         'Links': ['mongo_db:mongo'],
@@ -137,9 +136,13 @@ module.exports = function(router, core) {
       }
     },
     function(err, data, container) {
-      if(err) throw err;
-      res.status(200).end();
+      if(err) {
+        console.info(err);
+        throw err;
+      }
     });
+    console.info('test callback');
+    res.status(200).end();
   });
 
 }

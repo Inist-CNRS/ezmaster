@@ -15,7 +15,7 @@
 	  return {
       start : function(id) {
         $.ajax({
-         url: '/start',
+         url: '/-/start',
          data: {
             info: 'Container start',
             containerId : id
@@ -41,7 +41,7 @@
 
       stop : function(id) {
         $.ajax({
-          url : '/stop',
+          url : '/-/stop',
           data: {
             info : 'Container stop',
             containerId : id
@@ -71,7 +71,7 @@
 
       delete : function(id) {
         $.ajax({
-          url : '/delete',
+          url : '/-/delete',
           data: {
             /*info : 'Container deleted',
             containerId : id*/
@@ -116,7 +116,7 @@
 				}
 				else {*/
           $.ajax({
-            url : '/addInstance',
+            url : '/-/addInstance',
             /*data: {
               info : 'Add instance',
               instanceTitle : title,
@@ -125,7 +125,7 @@
             },
             dataType: 'jsonp',*/
             type: 'POST',
-            success : function() {
+            success : function(code_html, statut) {
               location.reload();
             }
           });
