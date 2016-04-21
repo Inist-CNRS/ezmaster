@@ -52,8 +52,10 @@ module.exports = function(router, core) {
   router.route('/-/start').post(bodyParser(), function(req, res, next) {
     var container = docker.getContainer(req.body.containerId);
     container.start(function(err, data, container) {
-      if(err)
+      if(err) {
         console.info(err);
+        throw (err);
+      }
     });
     // send status in web client
     /*container.inspect(function(err, data) {
@@ -65,12 +67,17 @@ module.exports = function(router, core) {
   router.route('/-/stop').post(bodyParser(), function(req, res, next) {
     var container = docker.getContainer(req.body.containerId);
     container.stop(function(err, data, container) {
-      if(err)
+      if(err) {
         console.info(err);
+        throw (err);
+      }
     });
     // send status in web client
     container.inspect(function(err, data) {
-      if(err) console.info(err);
+      if(err) { 
+        console.info(err);
+        throw (err);
+      }
       console.info(data)
     });
   });
@@ -78,12 +85,16 @@ module.exports = function(router, core) {
   router.route('/-/delete').post(bodyParser(), function(req, res, next) {
     var container = docker.getContainer(req.body.containerId);
     container.stop(function(err, data, container) {
-      if(err)
+      if(err) {
         console.info(err);
+        throw (err);
+      }
     });
     container.remove(function(err, data, container) {
-      if(err)
+      if(err) {
         console.info(err);
+        throw (err);
+      }
     });
   });
 
@@ -108,20 +119,16 @@ module.exports = function(router, core) {
             }
           ]
         },
-        'Binds': [path.join(__dirname, '../instances/inistcnrs-ezvis/')+':/root']
-                //['/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/:/root']
-                //, '/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/data.json:/root/data.json']*/
-        /*'Binds':  ['/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/data:/root/data',
-                , '/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/data.json:/root/data.json']*/
+        'Binds':  [path.join(__dirname, '../instances/inistcnrs-ezvis/data')+':/root/data'
+                , path.join(__dirname, '../instances/inistcnrs-ezvis/config/data.json')+':/root/data.json']
       },
       "Config": {
         "ExposedPorts": {
           "3000/tcp": {}
         },
         'Volumes': {
-          '/root': {},
-          /*'/root/data': {},
-          '/root/data.json' : {}*/
+          '/root/data': {},
+          '/root/data.json' : {}
         },
       },
       "NetworkSettings": {
@@ -140,6 +147,14 @@ module.exports = function(router, core) {
         console.info(err);
         throw err;
       }
+      /*var lastContainer = docker.getContainer(container);
+      console.info('rename');
+      lastContainer.rename('inistcnrs-ezvis', function(err, data) {
+        if(err) {
+          console.info(err);
+          throw err;
+        }
+      });*/
     });
     console.info('test callback');
     res.status(200).end();

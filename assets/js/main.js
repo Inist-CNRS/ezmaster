@@ -125,7 +125,7 @@
             },
             dataType: 'jsonp',*/
             type: 'POST',
-            success : function(code_html, statut) {
+            success : function() {
               location.reload();
             }
           });
