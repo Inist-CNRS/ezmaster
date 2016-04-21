@@ -102,57 +102,45 @@
 
 	ezmaster.modules.addInstance = (function() {
 		return {
-			showModal : function() {
+			/*showModal : function() {
 				$('#modalForm').fadeToggle(500);
 			},
 
 			closeModal : function() {
 				$('#modalForm').fadeToggle(250);
-			},
+			},*/
 
-			save : function(title, technicalName, app) {
-				if(title == '' || technicalName == '') {
+			save : function() {
+				/*if(title == '' || technicalName == '') {
 					window.alert('Please fill all fields');
 				}
-				else {
-          var now = new Date();
-          var day = now.getDate();
-          var month = now.getMonth() + 1;
-          var year = now.getFullYear();
-
-          if(day < 10) {
-            day = '0' + day;
-          }
-
-          if(month < 10) {
-            month = '0' + month;
-          } 
-
-          var creationDate = year + '/' + month + '/' + day;
-
+				else {*/
           $.ajax({
             url : '/addInstance',
-            data: {
+            /*data: {
               info : 'Add instance',
               instanceTitle : title,
               instanceTechnicalName : technicalName,
-              instanceCreationDate : creationDate,
               instanceImage : app
             },
-            dataType: 'jsonp',
+            dataType: 'jsonp',*/
             type: 'POST'
           });
-					ezmaster.modules.addInstance.closeModal();
-				}
+					/*ezmaster.modules.addInstance.closeModal();
+          var refresh = function () {
+            location.reload();
+          }
+          window.setInterval(refresh, 100);
+				}*/
 			},
 
 			init : function() {
-				$('#add-instance').click(ezmaster.modules.addInstance.showModal);
-				$('#close_modal').click(ezmaster.modules.addInstance.closeModal);
-				// $('#save').click(ezmaster.modules.addInstance.save);
-        $('#save').click(function() {
+				$('#add_instance').click(ezmaster.modules.addInstance.save);
+				/*$('#close_modal').click(ezmaster.modules.addInstance.closeModal);
+				$('#save').click(ezmaster.modules.addInstance.save);
+        $('#save').click(function() { 
           ezmaster.modules.addInstance.save($('#inputTitle').val(), $('#inputTechnicalName').val(), $('#app').val());
-        }); 
+        });*/
       }
 		}
 	}) ();

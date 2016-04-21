@@ -69,4 +69,8 @@ module.exports = {
 }
 ```
 
+## Adding a default instance
+
+You can add a default instance with the button 'Add an instance'
+
 

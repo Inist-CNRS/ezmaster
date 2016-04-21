@@ -37,7 +37,13 @@ module.exports = function(router, core) {
 
   router.route('/').get(function(req, res, next) {
     docker.listContainers({all : true}, function (err, containers) {
-      console.info(containers);
+       /*containers.forEach(function (containerInfo) {
+        var container = docker.getContainer(containerInfo.Id);
+        container.inspect(function(err, data) {
+          if(err) console.info(err);
+          console.info(data)
+        });
+      });*/
       res.render("template.html", {
         containers : containers.filter(function(elements) { return elements.Names[0] != '/mongo_db' })
       });
@@ -50,6 +56,11 @@ module.exports = function(router, core) {
       if(err)
         console.info(err);
     });
+    // send status in web client
+    /*container.inspect(function(err, data) {
+      if(err) console.info(err);
+      console.info(data)
+    });*/
   });
 
   router.route('/stop').post(bodyParser(), function(req, res, next) {
@@ -57,6 +68,11 @@ module.exports = function(router, core) {
     container.stop(function(err, data, container) {
       if(err)
         console.info(err);
+    });
+    // send status in web client
+    container.inspect(function(err, data) {
+      if(err) console.info(err);
+      console.info(data)
     });
   });
 
@@ -80,5 +96,45 @@ module.exports = function(router, core) {
       });
     });
   });*/
+
+  router.route('/addInstance').post(function(req, res, next) {
+    docker.run('inistcnrs/ezvis', [], process.stdout, {
+      'HostConfig': {
+        'Links': ['mongo_db:mongo'],
+        "PortBindings": {
+          "3000/tcp": [
+            {
+              "HostIp": "",
+              "HostPort": "3001"
+            }
+          ]
+        },
+        'Binds': ['/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/:/root']
+                //, '/home/ADS.INTRA.INIST.FR/lamblin/Documents/ezmaster/instances/inistcnrs-ezvis/data.json:/root/data.json']
+      },
+      "Config": {
+        "ExposedPorts": {
+          "3000/tcp": {}
+        },
+        'Volumes': {
+          '/root': {},
+          // '/root/data.json' : {} //
+        },
+      },
+      "NetworkSettings": {
+        "Ports": {
+          "3000/tcp": [
+            {
+              "HostIp": "0.0.0.0",
+              "HostPort": "3001"
+            }
+          ]
+        }
+      }
+    },
+    function(err, data, container) {
+      if(err) console.info(err);
+    });
+  });
 
 }
