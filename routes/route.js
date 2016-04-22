@@ -36,12 +36,7 @@ module.exports = function(router, core) {
   });*/
 
   router.route('/').get(function (req, res, next) {
-    var instancesArray = [];
-    fs.readdir(path.join(__dirname, '../instances/'), function (err, files) {
-      files.forEach(function (element) {
-        instancesArray.push(element);
-      });
-    });
+    var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
     docker.listContainers({all : true}, function (err, containers) {
        /*containers.forEach(function (containerInfo) {
         var container = docker.getContainer(containerInfo.Id);
@@ -51,17 +46,11 @@ module.exports = function(router, core) {
         });
       });*/
       res.render("template.html", {
-        containers : containers.filter(function (elements) { 
-          console.info(elements);
-          var array = [];
-          for(var i = 0; i < elements.size; i++) {
-          // elements.forEach(function (element) {
-            if(instancesArray.contains('/' + elements[i].Names[0])) {
-              array.push(element[i].Names[0]);
-            }
+        containers : containers.filter(function (elements) {
+          var element = elements.Names[0].split('/');
+          if(instancesArray.indexOf(element[1]) == 0) {
+            return element[1];
           }
-          console.info(array);
-          return array;
         })
       });
     });
