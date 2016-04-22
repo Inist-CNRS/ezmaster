@@ -21,7 +21,12 @@
             containerId : id
          },
          dataType: 'jsonp',
-         type: 'POST'
+         type: 'POST',
+         success : function(port) {
+          var replace = '<a target="ezmaster" class="publicLink" href="http://127.0.0.1:' + port + ' ">' +
+                        '<img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
+          $('.publicLink').replaceWith(replace);
+         }
         });
 
         /*
@@ -34,7 +39,7 @@
         /*
         * NEED TO MODIFY THE PORT
         */
-        var replace = '<a class="publicLink" href="http://127.0.0.1:3001">' +
+        var replace = '<a target="ezmaster" class="publicLink" href="http://127.0.0.1:3001">' +
                       '<img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
         $('.publicLink').replaceWith(replace);
       },

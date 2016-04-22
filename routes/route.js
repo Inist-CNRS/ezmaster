@@ -38,26 +38,27 @@ module.exports = function(router, core) {
   router.route('/').get(function (req, res, next) {
     var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
     docker.listContainers({all : true}, function (err, containers) {
-       /*containers.forEach(function (containerInfo) {
-        var container = docker.getContainer(containerInfo.Id);
-        container.inspect(function(err, data) {
-          if(err) console.info(err);
-          console.info(data)
-        });
-      });*/
       res.render("template.html", {
         containers : containers.filter(function (elements) {
           var element = elements.Names[0].split('/');
-          console.info(elements);
           if(instancesArray.indexOf(element[1]) == 0) {
             var d = new Date(elements.Created * 1000);
-            
-            docker.getImage(elements.ImageID, function() {
 
+            console.info('DEBUG 1');
+            var img = docker.getImage(elements.Image);
+            img.inspect(function (err, data) {
+              if(err) {
+                console.info(err);
+                throw err;
+              }
+              console.info('DEBUG 2');
+              elements.Image = data.RepoTags[0];
             });
 
+            console.info('DEBUG 3');
             elements.Names[0] = element[1];
             elements.Created = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
+            
             return element[1];
           }
         })
@@ -67,35 +68,50 @@ module.exports = function(router, core) {
 
   router.route('/-/start').post(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.body.containerId);
-    container.start(function (err, data, container) {
+
+    container.inspect(function (err, data) {
       if(err) {
         console.info(err);
-        throw (err);
+        throw err;
+      }
+      
+      console.info('test start = ' + data.State.Running)
+      if(data.State.Running == false) {
+        container.start(function (err, datas, container) {
+          console.info('start');
+          if(err) {
+            console.info(err);
+            throw (err);
+          }
+          // send port in web client
+          console.info(data.HostConfig.PortBindings.HostPort);
+        });
       }
     });
     // send status in web client
-    /*container.inspect(function(err, data) {
-      if(err) console.info(err);
-      console.info(data)
-    });*/
   });
 
   router.route('/-/stop').post(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.body.containerId);
-    container.stop(function (err, data, container) {
+
+    container.inspect(function (err, data) {
       if(err) {
         console.info(err);
-        throw (err);
+        throw err;
+      }
+
+      console.info('test stop = ' + data.State.Running)
+      if(data.State.Running == true) {
+        container.stop(function (err, data, container) {
+          console.info('stop');
+          if(err) {
+            console.info(err);
+            throw (err);
+          }
+        });
       }
     });
     // send status in web client
-    /*container.inspect(function(err, data) {
-      if(err) { 
-        console.info(err);
-        throw (err);
-      }
-      console.info(data)
-    });*/
   });
 
   router.route('/-/delete').post(bodyParser(), function (req, res, next) {
