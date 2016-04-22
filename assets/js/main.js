@@ -118,10 +118,7 @@
           $.ajax({
             url : '/-/addInstance',
             /*data: {
-              info : 'Add instance',
               instanceTitle : title,
-              instanceTechnicalName : technicalName,
-              instanceImage : app
             },
             dataType: 'jsonp',*/
             type: 'POST',

@@ -50,6 +50,8 @@ module.exports = function(router, core) {
           var element = elements.Names[0].split('/');
           if(instancesArray.indexOf(element[1]) == 0) {
             elements.Names[0] = element[1];
+            var d = new Date(elements.Created);
+            elements.Created = d.getFullYear() + '/' + d.getMonth()+1 + '/' + d.getDay();
             return element[1];
           }
         })
@@ -132,6 +134,7 @@ module.exports = function(router, core) {
           console.info(err);
           throw err;
         }
+        res.send(200);
       });
     });
   });
