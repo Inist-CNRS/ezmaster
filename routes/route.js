@@ -10,6 +10,7 @@ var Docker = require('dockerode');
 var docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
 const util = require('util');
+const fs = require('fs');
 
 module.exports = function(router, core) {
 
@@ -34,7 +35,13 @@ module.exports = function(router, core) {
     }).catch(next);
   });*/
 
-  router.route('/').get(function(req, res, next) {
+  router.route('/').get(function (req, res, next) {
+    var instancesArray = [];
+    fs.readdir(path.join(__dirname, '../instances/'), function (err, files) {
+      files.forEach(function (element) {
+        instancesArray.push(element);
+      });
+    });
     docker.listContainers({all : true}, function (err, containers) {
        /*containers.forEach(function (containerInfo) {
         var container = docker.getContainer(containerInfo.Id);
@@ -44,14 +51,25 @@ module.exports = function(router, core) {
         });
       });*/
       res.render("template.html", {
-        containers : containers.filter(function(elements) { return elements.Names[0] != '/mongo_db' })
+        containers : containers.filter(function (elements) { 
+          console.info(elements);
+          var array = [];
+          for(var i = 0; i < elements.size; i++) {
+          // elements.forEach(function (element) {
+            if(instancesArray.contains('/' + elements[i].Names[0])) {
+              array.push(element[i].Names[0]);
+            }
+          }
+          console.info(array);
+          return array;
+        })
       });
     });
   });
 
-  router.route('/-/start').post(bodyParser(), function(req, res, next) {
+  router.route('/-/start').post(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.body.containerId);
-    container.start(function(err, data, container) {
+    container.start(function (err, data, container) {
       if(err) {
         console.info(err);
         throw (err);
@@ -64,33 +82,33 @@ module.exports = function(router, core) {
     });*/
   });
 
-  router.route('/-/stop').post(bodyParser(), function(req, res, next) {
+  router.route('/-/stop').post(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.body.containerId);
-    container.stop(function(err, data, container) {
+    container.stop(function (err, data, container) {
       if(err) {
         console.info(err);
         throw (err);
       }
     });
     // send status in web client
-    container.inspect(function(err, data) {
+    /*container.inspect(function(err, data) {
       if(err) { 
         console.info(err);
         throw (err);
       }
       console.info(data)
-    });
+    });*/
   });
 
-  router.route('/-/delete').post(bodyParser(), function(req, res, next) {
+  router.route('/-/delete').post(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.body.containerId);
-    container.stop(function(err, data, container) {
+    container.stop(function (err, data, container) {
       if(err) {
         console.info(err);
         throw (err);
       }
     });
-    container.remove(function(err, data, container) {
+    container.remove(function (err, data, container) {
       if(err) {
         console.info(err);
         throw (err);
@@ -98,66 +116,34 @@ module.exports = function(router, core) {
     });
   });
 
-  /*router.route('/addInstance').post(bodyParser(), function(req, res, next) {
-    docker.createContainer({Image: req.body.instanceImage, name: req.body.instanceTechnicalName}, function (err, container) {
-      container.start(function (err, data) {
-        if(err)
-          console.log(err);
-      });
-    });
-  });*/
-
-  router.route('/-/addInstance').post(function(req, res, next) {
-    docker.run('inistcnrs/ezvis', [], process.stdout, {
-      'HostConfig': {
+  router.route('/-/addInstance').post(function (req, res, next) {
+    docker.createContainer({Image: 'inistcnrs/ezvis', name: 'inistcnrs-ezvis',
+     'HostConfig': {
         'Links': ['mongo_db:mongo'],
-        "PortBindings": {
-          "3000/tcp": [
+        'PortBindings': {
+          '3000/tcp': [
             {
-              "HostIp": "",
-              "HostPort": "3001"
+              'HostIp': '',
+              'HostPort': '3001'
             }
           ]
         },
         'Binds':  [path.join(__dirname, '../instances/inistcnrs-ezvis/data')+':/root/data'
                 , path.join(__dirname, '../instances/inistcnrs-ezvis/config/data.json')+':/root/data.json']
       },
-      "Config": {
-        "ExposedPorts": {
-          "3000/tcp": {}
-        },
-        'Volumes': {
-          '/root/data': {},
-          '/root/data.json' : {}
-        },
-      },
-      "NetworkSettings": {
-        "Ports": {
-          "3000/tcp": [
-            {
-              "HostIp": "0.0.0.0",
-              "HostPort": "3001"
-            }
-          ]
-        }
+      'Volumes': {
+        '/root/data': {},
+        '/root/data.json' : {}
       }
     },
-    function(err, data, container) {
-      if(err) {
-        console.info(err);
-        throw err;
-      }
-      /*var lastContainer = docker.getContainer(container);
-      console.info('rename');
-      lastContainer.rename('inistcnrs-ezvis', function(err, data) {
+    function (err, container) {
+      container.start(function (err, data) {
         if(err) {
           console.info(err);
           throw err;
         }
-      });*/
+      });
     });
-    console.info('test callback');
-    res.status(200).end();
   });
 
 }
