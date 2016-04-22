@@ -57,7 +57,14 @@ module.exports = function(router, core) {
 
             console.info('DEBUG 3');
             elements.Names[0] = element[1];
-            elements.Created = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
+
+            var month = (d.getMonth()+1);
+            if((d.getMonth()+1) < 10) { month = '0' + (d.getMonth()+1); }
+
+            var day = d.getDate();
+            if(d.getDate() < 10) { day = '0' + d.getDate(); }
+
+            elements.Created = d.getFullYear() + '/' + month + '/' + day;
             
             return element[1];
           }
@@ -74,7 +81,7 @@ module.exports = function(router, core) {
         console.info(err);
         throw err;
       }
-      
+
       console.info('test start = ' + data.State.Running)
       if(data.State.Running == false) {
         container.start(function (err, datas, container) {
