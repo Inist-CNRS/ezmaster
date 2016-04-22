@@ -49,6 +49,7 @@ module.exports = function(router, core) {
         containers : containers.filter(function (elements) {
           var element = elements.Names[0].split('/');
           if(instancesArray.indexOf(element[1]) == 0) {
+            elements.Names[0] = element[1];
             return element[1];
           }
         })
