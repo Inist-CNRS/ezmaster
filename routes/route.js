@@ -48,10 +48,16 @@ module.exports = function(router, core) {
       res.render("template.html", {
         containers : containers.filter(function (elements) {
           var element = elements.Names[0].split('/');
+          console.info(elements);
           if(instancesArray.indexOf(element[1]) == 0) {
+            var d = new Date(elements.Created * 1000);
+            
+            docker.getImage(elements.ImageID, function() {
+
+            });
+
             elements.Names[0] = element[1];
-            var d = new Date(elements.Created);
-            elements.Created = d.getFullYear() + '/' + d.getMonth()+1 + '/' + d.getDay();
+            elements.Created = d.getFullYear() + '/' + (d.getMonth()+1) + '/' + d.getDate();
             return element[1];
           }
         })
