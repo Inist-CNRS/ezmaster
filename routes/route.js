@@ -46,6 +46,7 @@ module.exports = function(router, core) {
 
             console.info('DEBUG 1');
             var img = docker.getImage(elements.Image);
+
             img.inspect(function (err, data) {
               if(err) {
                 console.info(err);
@@ -58,13 +59,16 @@ module.exports = function(router, core) {
             console.info('DEBUG 3');
             elements.Names[0] = element[1];
 
-            var month = (d.getMonth()+1);
+            var month = (d.getMonth()+1)
+            , day = d.getDate()
+            , hours = d.getHours()
+            , minutes = d.getMinutes();
+
             if((d.getMonth()+1) < 10) { month = '0' + (d.getMonth()+1); }
-
-            var day = d.getDate();
             if(d.getDate() < 10) { day = '0' + d.getDate(); }
-
-            elements.Created = d.getFullYear() + '/' + month + '/' + day;
+            if(d.getHours() < 10) { hours = '0' + d.getHours(); }
+            if(d.getMinutes() < 10) { minutes = '0' + d.getMinutes(); }
+            elements.Created = d.getFullYear() + '/' + month + '/' + day + ' : ' + hours + 'H' + minutes;
             
             return element[1];
           }
