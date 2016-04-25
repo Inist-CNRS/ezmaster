@@ -3,14 +3,12 @@
 var path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('castor:route:' + basename)
-  ;
+  , bodyParser = require('body-parser')
+  , Docker = require('dockerode')
+  , docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
-var bodyParser = require('body-parser');
-var Docker = require('dockerode');
-var docker = new Docker({ socketPath: '/var/run/docker.sock' });
-
-const util = require('util');
-const fs = require('fs');
+const util = require('util')
+  , fs = require('fs');
 
 module.exports = function(router, core) {
 
@@ -38,42 +36,47 @@ module.exports = function(router, core) {
   router.route('/').get(function (req, res, next) {
     var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
     docker.listContainers({all : true}, function (err, containers) {
-      res.render("template.html", {
-        containers : containers.filter(function (elements) {
-          var element = elements.Names[0].split('/');
-          if(instancesArray.indexOf(element[1]) == 0) {
-            var d = new Date(elements.Created * 1000);
+      
+      const array = [];
 
-            console.info('DEBUG 1');
-            var img = docker.getImage(elements.Image);
+      (function check() {
+        const elements = containers.pop();
+        if (!elements) {
+          return res.render("template.html", { 
+            containers : array
+          });
+        }
 
-            img.inspect(function (err, data) {
-              if(err) {
-                console.info(err);
-                throw err;
-              }
-              console.info('DEBUG 2');
-              elements.Image = data.RepoTags[0];
-            });
+        var splittedName = elements.Names[0].split('/');
 
-            console.info('DEBUG 3');
-            elements.Names[0] = element[1];
+        if (instancesArray.indexOf(splittedName[1]) === -1) { return check(); }
 
-            var month = (d.getMonth()+1)
-            , day = d.getDate()
-            , hours = d.getHours()
-            , minutes = d.getMinutes();
+        var date = new Date(elements.Created * 1000)
+          , img = docker.getImage(elements.Image)
+          , month = (date.getMonth()+1)
+          , day = date.getDate()
+          , hours = date.getHours()
+          , minutes = date.getMinutes();
 
-            if((d.getMonth()+1) < 10) { month = '0' + (d.getMonth()+1); }
-            if(d.getDate() < 10) { day = '0' + d.getDate(); }
-            if(d.getHours() < 10) { hours = '0' + d.getHours(); }
-            if(d.getMinutes() < 10) { minutes = '0' + d.getMinutes(); }
-            elements.Created = d.getFullYear() + '/' + month + '/' + day + ' : ' + hours + 'H' + minutes;
-            
-            return element[1];
+        img.inspect(function (err, data) {
+          if (err) {
+            console.info(err);
+            throw err;
           }
-        })
-      });
+
+          elements.Image = data.RepoTags[0];
+          elements.Names[0] = splittedName[1];
+
+          if ((date.getMonth()+1) < 10) { month = '0' + (date.getMonth()+1); }
+          if (date.getDate() < 10) { day = '0' + date.getDate(); }
+          if (date.getHours() < 10) { hours = '0' + date.getHours(); }
+          if (date.getMinutes() < 10) { minutes = '0' + date.getMinutes(); }
+          elements.Created = date.getFullYear() + '/' + month + '/' + day + ' : ' + hours + 'H' + minutes;
+
+          array.push(elements);
+          check();
+        });
+      })();
     });
   });
 
