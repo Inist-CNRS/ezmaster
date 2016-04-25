@@ -37,13 +37,15 @@ module.exports = function(router, core) {
     var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
     docker.listContainers({all : true}, function (err, containers) {
       
-      const array = [];
+      const containersArray = [];
+      const titleArray = [];
 
       (function check() {
         const elements = containers.pop();
         if (!elements) {
           return res.render("template.html", { 
-            containers : array
+            containers : containersArray,
+            titles : titleArray
           });
         }
 
@@ -56,7 +58,8 @@ module.exports = function(router, core) {
           , month = (date.getMonth()+1)
           , day = date.getDate()
           , hours = date.getHours()
-          , minutes = date.getMinutes();
+          , minutes = date.getMinutes()
+          , jsonData = require(path.join(__dirname, '../instances', splittedName[1], '/config/data.json'));
 
         img.inspect(function (err, data) {
           if (err) {
@@ -73,7 +76,8 @@ module.exports = function(router, core) {
           if (date.getMinutes() < 10) { minutes = '0' + date.getMinutes(); }
           elements.Created = date.getFullYear() + '/' + month + '/' + day + ' : ' + hours + 'H' + minutes;
 
-          array.push(elements);
+          containersArray.push(elements);
+          titleArray.push(jsonData.title);
           check();
         });
       })();

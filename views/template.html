@@ -16,8 +16,9 @@
       </thead>
       <tbody>
         {% for item in containers %}
+        {% for title in titles %}
           <tr>
-            <td> ... </td>
+            <td>{{ title }} </td>
             <td>{{ item.Names[0] }}</td>
             <td>{{ item.Created }}</td>
             <td>{{ item.Image }}</td>
@@ -32,6 +33,7 @@
               </ul>
             </td>
           </tr>
+        {% endfor %}
         {% endfor %}
       </tbody>
     </table>
