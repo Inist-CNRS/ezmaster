@@ -1,7 +1,7 @@
 {
   "name": "ezmaster",
   "version": "1.0.4",
-  "description": "a castor app boilerplate. Replace ezmaster by your name...",
+  "description": "Administration of docker applications without any IT skills",
   "main": "index.js",
   "bin": {
     "ezmaster": "./ezmaster"
@@ -19,6 +19,10 @@
     {
       "name": "Nicolas Thouvenin",
       "url": "https://github.com/touv"
+    },
+    {
+      "name": "Nicolas Lamblin",
+      "url": "https://github.com/nlamblin"
     }
   ],
   "license": "MIT",
