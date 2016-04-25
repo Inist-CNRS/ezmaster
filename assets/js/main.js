@@ -18,19 +18,14 @@
          },
          dataType: 'jsonp',
          type: 'POST',
-         success : function(port) {
+         success : function (port) {
           var replace = '<a target="ezmaster" class="publicLink" href="http://127.0.0.1:' + port + ' ">' +
                         '<img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
           $('.publicLink').replaceWith(replace);
          }
         });
 
-        /*
-        *
-        To execute according to the status in .json
-        *
-        */      
-        $('#status').css('background-color','#4CAF50');
+        $('#status').css('background-color', '#4CAF50');
 
         /*
         * NEED TO MODIFY THE PORT
@@ -40,7 +35,7 @@
         $('.publicLink').replaceWith(replace);
       },
 
-      stop : function(id) {
+      stop : function (id) {
         $.ajax({
           url : '/-/stop',
           data: {
@@ -50,13 +45,8 @@
           dataType: 'jsonp',
           type: 'POST'
         });
-        
-        /*
-        *
-        To execute according to the status in .json
-        *
-        */      
-        $('#status').css('background-color','#f44336');
+
+        $('#status').css('background-color', '#F44336');
 
         var replace = '<a class="publicLink" href="#"><img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
         $('.publicLink').replaceWith(replace);
@@ -70,7 +60,7 @@
         $('#modal-delete-instance').fadeToggle(250);
       },
 
-      delete : function(id) {
+      delete : function (id) {
         $.ajax({
           url : '/-/delete',
           data: {

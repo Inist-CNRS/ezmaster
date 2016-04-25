@@ -36,16 +36,16 @@ module.exports = function(router, core) {
   router.route('/').get(function (req, res, next) {
     var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
     docker.listContainers({all : true}, function (err, containers) {
-      
-      const containersArray = [];
-      const titleArray = [];
+
+      var container = {}
+        , arrayObject = [];
 
       (function check() {
         const elements = containers.pop();
+        
         if (!elements) {
           return res.render("template.html", { 
-            containers : containersArray,
-            titles : titleArray
+            containers : arrayObject
           });
         }
 
@@ -67,6 +67,11 @@ module.exports = function(router, core) {
             throw err;
           }
 
+          container['title'] = jsonData.title;
+
+          if (elements.State == 'running') { container['status'] = 'status_running'; }
+          else if (elements.State == 'exited') { container['status'] = 'status_exited'; }
+
           elements.Image = data.RepoTags[0];
           elements.Names[0] = splittedName[1];
 
@@ -76,8 +81,10 @@ module.exports = function(router, core) {
           if (date.getMinutes() < 10) { minutes = '0' + date.getMinutes(); }
           elements.Created = date.getFullYear() + '/' + month + '/' + day + ' : ' + hours + 'H' + minutes;
 
-          containersArray.push(elements);
-          titleArray.push(jsonData.title);
+          container['description'] = elements;
+
+          arrayObject.push(container);
+
           check();
         });
       })();
@@ -85,43 +92,41 @@ module.exports = function(router, core) {
   });
 
   router.route('/-/start').post(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.body.containerId);
+    var c = docker.getContainer(req.body.containerId);
 
-    container.inspect(function (err, data) {
+    c.inspect(function (err, data) {
       if(err) {
         console.info(err);
         throw err;
       }
 
-      console.info('test start = ' + data.State.Running)
+      console.info(data);
+
       if(data.State.Running == false) {
-        container.start(function (err, datas, container) {
-          console.info('start');
+        c.start(function (err, datas, container) {
           if(err) {
             console.info(err);
             throw (err);
           }
           // send port in web client
-          console.info(data.HostConfig.PortBindings.HostPort);
+          // res.send(200)
+          // console.info(data.HostConfig.PortBindings.HostPort);
         });
       }
     });
-    // send status in web client
   });
 
   router.route('/-/stop').post(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.body.containerId);
+    var c = docker.getContainer(req.body.containerId);
 
-    container.inspect(function (err, data) {
+    c.inspect(function (err, data) {
       if(err) {
         console.info(err);
         throw err;
       }
 
-      console.info('test stop = ' + data.State.Running)
       if(data.State.Running == true) {
-        container.stop(function (err, data, container) {
-          console.info('stop');
+        c.stop(function (err, data, container) {
           if(err) {
             console.info(err);
             throw (err);
@@ -129,18 +134,17 @@ module.exports = function(router, core) {
         });
       }
     });
-    // send status in web client
   });
 
   router.route('/-/delete').post(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.body.containerId);
-    container.stop(function (err, data, container) {
+    var c = docker.getContainer(req.body.containerId);
+    c.stop(function (err, data, container) {
       if(err) {
         console.info(err);
         throw (err);
       }
     });
-    container.remove(function (err, data, container) {
+    c.remove(function (err, data, container) {
       if(err) {
         console.info(err);
         throw (err);

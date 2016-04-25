@@ -16,24 +16,22 @@
       </thead>
       <tbody>
         {% for item in containers %}
-        {% for title in titles %}
           <tr>
-            <td>{{ title }} </td>
-            <td>{{ item.Names[0] }}</td>
-            <td>{{ item.Created }}</td>
-            <td>{{ item.Image }}</td>
-            <td><div id="status"></div></td>
+            <td>{{ item.title }} </td>
+            <td>{{ item.description.Names[0] }}</td>
+            <td>{{ item.description.Created }}</td>
+            <td>{{ item.description.Image }}</td>
+            <td><div id='status' class='{{ item.status }}'></div></td>
             <td>
-              <ul class="bread" id="{{ item.Id }}" style="margin-bottom:0px">
+              <ul class="bread" id="{{ item.description.Id }}" style="margin-bottom:0px">
                 <li class="start" title="Start the instance"><img src="/assets/img/play.png" alt="Start"></li>
                 <li class="stop" title="Stop the instance"><img src="/assets/img/stop.png" alt="Stop"></li>
                 <li class="delete" title="Delete the instance"><img src="/assets/img/delete.png" alt="Delete"></li>
-                <li class="openPublicLink" title="Open the public link"><a target="ezmaster" class="publicLink" href='http://127.0.0.1:{{ item.Ports[0].PublicPort }}'><img src="/assets/img/publicLink.png" alt="Open the public link"></a></li>
-                <!-- <li class="openPrivateLink last-li" title="Open the private link"><img src="/assets/img/privateLink.png" alt="Open the private link"></li>-->
+                <li class="openPublicLink" title="Open the public link"><a target="ezmaster" class="publicLink" href='http://127.0.0.1:{{ item.description.Ports[0].PublicPort }}'><img src="/assets/img/publicLink.png" alt="Open the public link"></a></li>
+                <li class="openPrivateLink last-li" title="Open the private link"><!--<img src="/assets/img/privateLink.png" alt="Open the private link">--></li>
               </ul>
             </td>
           </tr>
-        {% endfor %}
         {% endfor %}
       </tbody>
     </table>
