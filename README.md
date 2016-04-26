@@ -1,6 +1,6 @@
 # ezmaster
 
-Administration of docker applications.
+Administration of docker applications without any IT skills.
 
 ## Install and run
 
