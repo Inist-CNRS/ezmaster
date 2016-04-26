@@ -11,21 +11,16 @@
 	  return {
       start : function(id) {
         $.ajax({
-         url: '/-/start',
-         data: {
+          url: '/-/start',
+            data: {
             info: 'Container start',
             containerId : id
-         },
-         dataType: 'jsonp',
-         type: 'POST',
-         success : function (port) {
-            console.log(port);
-            $('.publicLink').replaceWith('<a target="ezmaster" class="publicLink" href="http://127.0.0.1:3001">' +
-                                          '<img src="/assets/img/publicLink.png" alt="Open the public link"></a>');
+          },
+          type: 'POST',
+          success : function () {
+            location.reload();
           }
         });
-
-        $('#status').css('background-color', '#4CAF50');
       },
 
       stop : function (id) {
@@ -35,12 +30,11 @@
             info : 'Container stop',
             containerId : id
           },
-          dataType: 'jsonp',
-          type: 'POST'
+          type: 'POST',
+          success : function () { 
+            location.reload();
+          }
         });
-
-        $('#status').css('background-color', '#F44336');
-        $('.publicLink').replaceWith('<a class="publicLink" href=""><img src="/assets/img/publicLink.png" alt="Open the public link"></a>');
       },
 
       showDeleteModal : function() {
@@ -58,7 +52,6 @@
             info : 'Container deleted',
             containerId : id
           },
-          dataType: 'jsonp',
           type: 'POST'
         });
 
@@ -103,8 +96,7 @@
             url : '/-/addInstance',
             /*data: {
               instanceTitle : title,
-            },
-            dataType: 'jsonp',*/
+            },*/
             type: 'POST',
             success : function() {
               location.reload();

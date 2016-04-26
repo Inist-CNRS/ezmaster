@@ -55,8 +55,7 @@ module.exports = function(router, core) {
         if (instancesArray.indexOf(splittedName[1]) === -1) { return check(); }
           
           var img = docker.getImage(elements.Image)
-          , jsonData = require(path.join(__dirname, '../instances', splittedName[1], '/config/data.json'))
-          , date = moment.unix(elements.Created).format("YYYY/MM/DD HH:MM");
+          , jsonData = require(path.join(__dirname, '../instances', splittedName[1], '/config/data.json'));
 
         img.inspect(function (err, data) {
           if (err) {
@@ -64,15 +63,22 @@ module.exports = function(router, core) {
             throw err;
           }
 
-          container['title'] = jsonData.title;
-
-          if (elements.State == 'running') { container['status'] = 'status_running'; }
-          else if (elements.State == 'exited') { container['status'] = 'status_exited'; }
+          if (elements.State == 'running') { 
+            container['status'] = 'status_running'; 
+            container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
+            container['target'] = 'ezmaster';
+          }
+          else if (elements.State == 'exited') { 
+            container['status'] = 'status_exited';
+            container['address'] = '';
+            container['target'] = '';
+          }
 
           elements.Image = data.RepoTags[0];
           elements.Names[0] = splittedName[1];
-          elements.Created = date;
-
+          elements.Created = moment.unix(elements.Created).format("YYYY/MM/DD HH:MM");
+                
+          container['title'] = jsonData.title;
           container['description'] = elements;
 
           arrayObject.push(container);
@@ -98,7 +104,7 @@ module.exports = function(router, core) {
             console.info(err);
             throw (err);
           }
-          res.send(data.HostConfig.PortBindings['3000/tcp'][0].HostPort);
+          res.send(200);
         });
       }
     });
@@ -119,6 +125,7 @@ module.exports = function(router, core) {
             console.info(err);
             throw (err);
           }
+          res.send(200);
         });
       }
     });
