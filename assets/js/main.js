@@ -19,20 +19,13 @@
          dataType: 'jsonp',
          type: 'POST',
          success : function (port) {
-          var replace = '<a target="ezmaster" class="publicLink" href="http://127.0.0.1:' + port + ' ">' +
-                        '<img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
-          $('.publicLink').replaceWith(replace);
-         }
+            console.log(port);
+            $('.publicLink').replaceWith('<a target="ezmaster" class="publicLink" href="http://127.0.0.1:3001">' +
+                                          '<img src="/assets/img/publicLink.png" alt="Open the public link"></a>');
+          }
         });
 
         $('#status').css('background-color', '#4CAF50');
-
-        /*
-        * NEED TO MODIFY THE PORT
-        */
-        var replace = '<a target="ezmaster" class="publicLink" href="http://127.0.0.1:3001">' +
-                      '<img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
-        $('.publicLink').replaceWith(replace);
       },
 
       stop : function (id) {
@@ -47,9 +40,7 @@
         });
 
         $('#status').css('background-color', '#F44336');
-
-        var replace = '<a class="publicLink" href="#"><img src="/assets/img/publicLink.png" alt="Open the public link"></a>';
-        $('.publicLink').replaceWith(replace);
+        $('.publicLink').replaceWith('<a class="publicLink" href=""><img src="/assets/img/publicLink.png" alt="Open the public link"></a>');
       },
 
       showDeleteModal : function() {
@@ -64,12 +55,14 @@
         $.ajax({
           url : '/-/delete',
           data: {
-            /*info : 'Container deleted',
-            containerId : id*/
+            info : 'Container deleted',
+            containerId : id
           },
           dataType: 'jsonp',
           type: 'POST'
         });
+
+        ezmaster.modules.actions.closeDeleteModal();
       },
 
       // id recovered with line (ul on template.html) id (container id) 
@@ -82,11 +75,11 @@
         	 ezmaster.modules.actions.stop($(this).parent().attr('id'));
         });
 
-        $('.delete').click(ezmaster.modules.actions.showDeleteModal);
+        /*$('.delete').click(ezmaster.modules.actions.showDeleteModal);
         $('.close_modal_delete_instance').click(ezmaster.modules.actions.closeDeleteModal);
         $('#delete_instance').click(function() {
         	 ezmaster.modules.actions.delete($(this).parent().attr('id'));
-        });
+        });*/
       }
 	  }
 	}) ();

@@ -4,6 +4,7 @@ var path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('castor:route:' + basename)
   , bodyParser = require('body-parser')
+  , moment = require('moment')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
@@ -52,14 +53,10 @@ module.exports = function(router, core) {
         var splittedName = elements.Names[0].split('/');
 
         if (instancesArray.indexOf(splittedName[1]) === -1) { return check(); }
-
-        var date = new Date(elements.Created * 1000)
-          , img = docker.getImage(elements.Image)
-          , month = (date.getMonth()+1)
-          , day = date.getDate()
-          , hours = date.getHours()
-          , minutes = date.getMinutes()
-          , jsonData = require(path.join(__dirname, '../instances', splittedName[1], '/config/data.json'));
+          
+          var img = docker.getImage(elements.Image)
+          , jsonData = require(path.join(__dirname, '../instances', splittedName[1], '/config/data.json'))
+          , date = moment.unix(elements.Created).format("YYYY/MM/DD HH:MM");
 
         img.inspect(function (err, data) {
           if (err) {
@@ -74,12 +71,7 @@ module.exports = function(router, core) {
 
           elements.Image = data.RepoTags[0];
           elements.Names[0] = splittedName[1];
-
-          if ((date.getMonth()+1) < 10) { month = '0' + (date.getMonth()+1); }
-          if (date.getDate() < 10) { day = '0' + date.getDate(); }
-          if (date.getHours() < 10) { hours = '0' + date.getHours(); }
-          if (date.getMinutes() < 10) { minutes = '0' + date.getMinutes(); }
-          elements.Created = date.getFullYear() + '/' + month + '/' + day + ' : ' + hours + 'H' + minutes;
+          elements.Created = date;
 
           container['description'] = elements;
 
@@ -100,17 +92,13 @@ module.exports = function(router, core) {
         throw err;
       }
 
-      console.info(data);
-
       if(data.State.Running == false) {
         c.start(function (err, datas, container) {
           if(err) {
             console.info(err);
             throw (err);
           }
-          // send port in web client
-          // res.send(200)
-          // console.info(data.HostConfig.PortBindings.HostPort);
+          res.send(data.HostConfig.PortBindings['3000/tcp'][0].HostPort);
         });
       }
     });
@@ -126,7 +114,7 @@ module.exports = function(router, core) {
       }
 
       if(data.State.Running == true) {
-        c.stop(function (err, data, container) {
+        c.stop(function (err, datas, container) {
           if(err) {
             console.info(err);
             throw (err);
@@ -138,17 +126,28 @@ module.exports = function(router, core) {
 
   router.route('/-/delete').post(bodyParser(), function (req, res, next) {
     var c = docker.getContainer(req.body.containerId);
-    c.stop(function (err, data, container) {
+    console.info(c);
+
+    c.inspect(function (err, data) {
       if(err) {
         console.info(err);
-        throw (err);
+        throw err;
       }
-    });
-    c.remove(function (err, data, container) {
-      if(err) {
-        console.info(err);
-        throw (err);
+
+      if(data.State.Running == true) {
+        c.stop(function (err, datas, container) {
+          if(err) {
+            console.info(err);
+            throw (err);
+          }
+        });
       }
+      c.remove(function (err, datas, container) {
+        if(err) {
+          console.info(err);
+          throw (err);
+        }
+      });
     });
   });
 
