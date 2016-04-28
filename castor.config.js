@@ -9,7 +9,7 @@ var mongoHostPort = process.env.MONGODB_PORT ?
 module.exports = {
   connectionURI: 'mongodb://' + mongoHostPort + '/ezmaster',
   collectionName: 'data',
-  browserifyModules : [ 'jquery', 'mongodb-querystring', 'dockerode', 'tcp-port-used'],
+  browserifyModules : [ 'jquery', 'mongodb-querystring', 'dockerode'],
   rootURL : '/',
   routes: [
     'route.js'

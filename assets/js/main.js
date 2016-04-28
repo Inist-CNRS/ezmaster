@@ -13,7 +13,6 @@
         $.ajax({
           url: '/-/start',
             data: {
-            info: 'Container start',
             containerId : id
           },
           type: 'POST',
@@ -27,7 +26,6 @@
         $.ajax({
           url : '/-/stop',
           data: {
-            info : 'Container stop',
             containerId : id
           },
           type: 'POST',
@@ -37,7 +35,7 @@
         });
       },
 
-      showDeleteModal : function() {
+      /*showDeleteModal : function() {
         $('#modal-delete-instance').fadeToggle(500);
       },
 
@@ -49,16 +47,14 @@
         $.ajax({
           url : '/-/delete',
           data: {
-            info : 'Container deleted',
             containerId : id
           },
           type: 'POST'
         });
 
         ezmaster.modules.actions.closeDeleteModal();
-      },
-
-      // id recovered with line (ul on template.html) id (container id) 
+      },*/
+ 
       init : function () {
         $('.start').click(function() {
         	 ezmaster.modules.actions.start($(this).parent().attr('id'));
@@ -94,9 +90,6 @@
 				else {*/
           $.ajax({
             url : '/-/addInstance',
-            /*data: {
-              instanceTitle : title,
-            },*/
             type: 'POST',
             success : function() {
               location.reload();
