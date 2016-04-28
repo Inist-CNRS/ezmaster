@@ -1,10 +1,7 @@
 /* global $, document, JSONEditor, nColumns, view */
 (function() { 'use strict';
 
-  var $ = require('jquery')
-    , Docker = require('dockerode')
-    , docker = new Docker({ socketPath: '/var/run/docker.sock' })
-    , ezmaster  = { modules : {} };
+  var ezmaster  = { modules : {} };
 
 	ezmaster.modules.actions = (function() {
 

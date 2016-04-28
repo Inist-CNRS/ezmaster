@@ -9,26 +9,10 @@ var mongoHostPort = process.env.MONGODB_PORT ?
 module.exports = {
   connectionURI: 'mongodb://' + mongoHostPort + '/ezmaster',
   collectionName: 'data',
-  browserifyModules : [ 'jquery', 'mongodb-querystring', 'dockerode'],
+  browserifyModules : ['vue', 'vue-resource'],
   rootURL : '/',
   routes: [
     'route.js'
-  ],
-  heartbeats: [
-    {
-      beat : 30,
-      require: 'fake-heartbeat.js'
-    }
-  ],
-  loaders: [
-    {
-      pattern : '**/*.csv',
-      require : 'castor-load-csv'
-    },
-    {
-      script: 'fake-loader.js',
-      pattern: '**/*.csv'
-    }
   ],
   filters: ['jbj-parse']
 };
