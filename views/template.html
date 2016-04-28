@@ -26,7 +26,7 @@
               <ul class="bread" id="{{ item.description.Id }}" style="margin-bottom:0px">
                 <li class="start" title="Start the instance"><img src="/assets/img/play.png" alt="Start"></li>
                 <li class="stop" title="Stop the instance"><img src="/assets/img/stop.png" alt="Stop"></li>
-                <!-- <li class="delete" title="Delete the instance"><img src="/assets/img/delete.png" alt="Delete"></li>-->
+                <li class="delete" title="Delete the instance"><img src="/assets/img/delete.png" alt="Delete"></li>
                 <li class="openPublicLink" title="Open the public link"><a target="{{ item.target }}" class="publicLink" href='{{ item.address }}'><img src="/assets/img/publicLink.png" alt="Open the public link"></a></li>
                 <li class="openPrivateLink last-li" title="Open the private link"><!--<img src="/assets/img/privateLink.png" alt="Open the private link">--></li>
               </ul>
@@ -43,7 +43,7 @@
             <button type="button" class="close close_modal_delete_instance" data-dismiss="alert">×</button>
             <h4>Delete an instance</h4><br />
 
-            <p>Are you sure to delete this instance ?</p><br /><br />
+            <p class="deleteConfirmationMessage"></p><br /><br />
             <button type="button" class="btn btn-default close_modal_delete_instance" data-dismiss="modal">Cancel</button>
             <button type="button" id='delete_instance' class="btn btn-default">Delete</button>
           </div>

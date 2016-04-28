@@ -5,11 +5,10 @@ var path = require('path')
   , debug = require('debug')('castor:route:' + basename)
   , bodyParser = require('body-parser')
   , moment = require('moment')
+  , util = require('util')
+  , fs = require('fs')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock' });
-
-const util = require('util')
-  , fs = require('fs');
 
 module.exports = function (router, core) {
 
@@ -66,7 +65,7 @@ module.exports = function (router, core) {
             }
           });
         }
-      })();
+      }) ();
     });
   });
 
@@ -102,19 +101,41 @@ module.exports = function (router, core) {
     });
   });
 
-  router.route('/-/delete').post(bodyParser(), function (req, res, next) {
+  router.route('/-/deleteConfirmation').post(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.body.containerId);
 
     container.inspect(function (err, data) {
       if (err) { throw err; }
       else {
-        if (data.State.Running == true) {
-          container.stop(function (err, datas, container) {
-            if (err) { throw (err); }
-          });
-        }
-        container.remove(function (err, datas, container) {
+        var splittedName = data.Name.split('/')
+          , configDatas = require(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'))
+          , title = configDatas.title;
+
+        res.send(title);
+      }
+    });
+  });
+
+  router.route('/-/delete').post(bodyParser(), function (req, res, next) {
+    var container = docker.getContainer(req.body.containerId);
+
+    container.inspect(function (err, data) {
+      if (err) { throw err; }
+      else if (data.State.Running == true) {
+        container.stop(function (err, datas, cont) {
           if (err) { throw (err); }
+          else {
+            container.remove(function (err, datas, cont) {
+              if (err) { throw (err); }
+              else { res.send(200) }
+            });
+          }
+        });
+      }
+      else if (data.State.Running == false) {
+        container.remove(function (err, datas, cont) {
+          if (err) { throw (err); }
+          else { res.send(200) }
         });
       }
     });

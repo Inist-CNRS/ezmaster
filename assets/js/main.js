@@ -35,8 +35,19 @@
         });
       },
 
-      /*showDeleteModal : function() {
-        $('#modal-delete-instance').fadeToggle(500);
+      showDeleteModal : function(id) {
+        $.ajax({
+          url : '/-/deleteConfirmation',
+          type : 'POST',
+          data : {
+            containerId : id
+          },
+          success : function (title) {
+            $('.deleteConfirmationMessage').text("Are you sure to delete the instance called '" + title + "'");
+            $('#modal-delete-instance').fadeToggle(500);
+          }
+        });
+        // $('#modal-delete-instance').fadeToggle(500);
       },
 
       closeDeleteModal : function() {
@@ -49,11 +60,14 @@
           data: {
             containerId : id
           },
-          type: 'POST'
+          type: 'POST',
+          success : function () {
+            location.reload();
+          }
         });
 
         ezmaster.modules.actions.closeDeleteModal();
-      },*/
+      },
  
       init : function () {
         $('.start').click(function() {
@@ -64,11 +78,13 @@
         	 ezmaster.modules.actions.stop($(this).parent().attr('id'));
         });
 
-        /*$('.delete').click(ezmaster.modules.actions.showDeleteModal);
+        $('.delete').click(function() {
+          ezmaster.modules.actions.showDeleteModal($(this).parent().attr('id'));
+        });
         $('.close_modal_delete_instance').click(ezmaster.modules.actions.closeDeleteModal);
         $('#delete_instance').click(function() {
-        	 ezmaster.modules.actions.delete($(this).parent().attr('id'));
-        });*/
+        	 ezmaster.modules.actions.delete($('.delete').parent().attr('id'));
+        });
       }
 	  }
 	}) ();
