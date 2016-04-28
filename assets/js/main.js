@@ -42,12 +42,12 @@
           data : {
             containerId : id
           },
-          success : function (title) {
-            $('.deleteConfirmationMessage').text("Are you sure to delete the instance called '" + title + "'");
+          success : function (result) {
+            $('.deleteConfirmationMessage').text("Are you sure to delete the instance called '" + result['title'] + "' ?");
+            $('.deleteSizeFolder').text("You will remove " + result['size'] + " of datas.");
             $('#modal-delete-instance').fadeToggle(500);
           }
         });
-        // $('#modal-delete-instance').fadeToggle(500);
       },
 
       closeDeleteModal : function() {
@@ -65,8 +65,6 @@
             location.reload();
           }
         });
-
-        ezmaster.modules.actions.closeDeleteModal();
       },
  
       init : function () {

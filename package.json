@@ -38,6 +38,8 @@
     "castor-load-csv": "^2.1.2",
     "debug": "^2.2.0",
     "dockerode": "^2.2.10",
+    "filesize": "^3.3.0",
+    "get-folder-size": "^1.0.0",
     "jbj-parse": "^1.0.0",
     "jquery": "^2.2.1",
     "moment": "^2.13.0",

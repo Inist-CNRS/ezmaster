@@ -7,6 +7,8 @@ var path = require('path')
   , moment = require('moment')
   , util = require('util')
   , fs = require('fs')
+  , getSize = require('get-folder-size')
+  , filesize = require('filesize')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock' });
 
@@ -108,10 +110,18 @@ module.exports = function (router, core) {
       if (err) { throw err; }
       else {
         var splittedName = data.Name.split('/')
+          , directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
           , configDatas = require(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'))
-          , title = configDatas.title;
+          , result = {};
 
-        res.send(title);
+        getSize(directoryDatas, function (err, size) {
+          if (err) { throw err; }
+          else {
+            result['title'] = configDatas.title
+            result['size'] = filesize(size);
+            res.send(result);
+          }
+        });
       }
     });
   });
