@@ -10,7 +10,9 @@ var path = require('path')
   , getSize = require('get-folder-size')
   , filesize = require('filesize')
   , Docker = require('dockerode')
-  , docker = new Docker({ socketPath: '/var/run/docker.sock' });
+  , docker = new Docker({ socketPath: '/var/run/docker.sock'});//, timeout:1E7});
+
+const spawn = require('child_process').spawn;
 
 module.exports = function (router, core) {
 
@@ -56,7 +58,7 @@ module.exports = function (router, core) {
 
               elements.Image = data.RepoTags[0];
               elements.Names[0] = splittedName[1];
-              elements.Created = moment.unix(elements.Created).format("YYYY/MM/DD HH:MM");
+              elements.Created = moment.unix(elements.Created).format("YYYY/MM/DD");
                     
               container['title'] = jsonData.title;
               container['description'] = elements;
@@ -145,37 +147,49 @@ module.exports = function (router, core) {
       else if (data.State.Running == false) {
         container.remove(function (err, datas, cont) {
           if (err) { throw (err); }
-          else { res.send(200) }
+          else { res.send(200); }
         });
       }
     });
   });
 
   router.route('/-/addInstance').post(function (req, res, next) {
-    docker.createContainer({Image: 'inistcnrs/ezvis', name: 'inistcnrs-ezvis',
-     'HostConfig': {
-        'Links': ['mongo_db:mongo'],
-        'PortBindings': {
-          '3000/tcp': [
-            {
-              'HostIp': '',
-              'HostPort': '3001'
-            }
-          ]
+    docker.pull('inistcnrs/ezvis:latest', function (err, stream) {
+      if(err) { throw err; }
+
+      docker.modem.followProgress(stream, onFinished);
+
+      function onFinished(err, output) {
+        if(err) { throw err; }
+
+        docker.createContainer({Image: 'inistcnrs/ezvis:latest', name: 'inistcnrs-ezvis',
+         'HostConfig': {
+            'Links': ['mongo_db:mongo'],
+            'PortBindings': {
+              '3000/tcp': [
+                {
+                  'HostIp': '',
+                  'HostPort': '3001'
+                }
+              ]
+            },
+            'Binds':  [path.join(__dirname, '../instances/inistcnrs-ezvis/data')+':/root/data',
+                      path.join(__dirname, '../instances/inistcnrs-ezvis/config/data.json')+':/root/data.json']
+          },
+          'Volumes': {
+            '/root/data': {},
+            '/root/data.json' : {}
+          }
         },
-        'Binds':  [path.join(__dirname, '../instances/inistcnrs-ezvis/data')+':/root/data'
-                , path.join(__dirname, '../instances/inistcnrs-ezvis/config/data.json')+':/root/data.json']
-      },
-      'Volumes': {
-        '/root/data': {},
-        '/root/data.json' : {}
+        function (err, container) {
+          if(err) { throw err; }
+
+          container.start(function (err, data) {
+            if (err) { throw err; }
+            res.send(200); 
+          });
+        });
       }
-    },
-    function (err, container) {
-      container.start(function (err, data) {
-        if (err) { throw err; }
-        else { res.send(200); }
-      });
     });
   });
 
