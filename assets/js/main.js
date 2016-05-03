@@ -8,11 +8,12 @@
     return {
       start : function(id) {
         $.ajax({
-          url: '/-/start',
-            data: {
-            containerId : id
+          url: '/-/v1/instances/'+id,
+          data: {
+            containerId : id,
+            action : 'start'
           },
-          type: 'POST',
+          type: 'PUT',
           success : function () {
             location.reload();
           }
@@ -21,11 +22,12 @@
 
       stop : function (id) {
         $.ajax({
-          url : '/-/stop',
+          url: '/-/v1/instances/'+id,
           data: {
-            containerId : id
+            containerId : id,
+            action : 'stop'
           },
-          type: 'POST',
+          type: 'PUT',
           success : function () { 
             location.reload();
           }
@@ -34,11 +36,11 @@
 
       showDeleteModal : function(id) {
         $.ajax({
-          url : '/-/deleteConfirmation',
-          type : 'POST',
+          url : '/-/v1/instances/'+id,
           data : {
             containerId : id
           },
+          type : 'GET',
           success : function (result) {
             $('.deleteConfirmationMessage').text("Are you sure to delete the instance called '" + result['title'] + "' ?");
             $('.deleteSizeFolder').text("You will remove " + result['size'] + " of datas.");
@@ -53,11 +55,11 @@
 
       delete : function (id) {
         $.ajax({
-          url : '/-/delete',
+          url : '/-/v1/instances/'+id,
           data: {
             containerId : id
           },
-          type: 'POST',
+          type : 'DELETE',
           success : function () {
             location.reload();
           }
@@ -100,7 +102,7 @@
         }
         else {*/
           $.ajax({
-            url : '/-/addInstance',
+            url : '/-/v1/instances/',
             type: 'POST',
             success : function() {
               location.reload();

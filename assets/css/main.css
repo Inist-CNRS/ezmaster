@@ -407,15 +407,12 @@ img.github {
 .bread {
     list-style: none;
     padding-left: 0px;
+    margin-right: -100px;
 }
 
 .bread > li {
     display: inline-block;
     margin-right: 20px;
-}
-
-li.last-li {
-    margin-right: -110px;
 }
 
 .active {

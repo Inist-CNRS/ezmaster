@@ -73,40 +73,28 @@ module.exports = function (router, core) {
     });
   });
 
-  router.route('/-/start').post(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.body.containerId);
+  router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
+    var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if (err) { throw err; }
-      else {
-        if(data.State.Running == false) {
-          container.start(function (err, datas, container) {
-            if (err) { throw (err); }
-            else { res.send(200); }
-          });
-        }
+      if(err) { throw err; }
+      else if(req.body.action == 'start' && data.State.Running == false) {
+        container.start(function (err, datas, container) {
+          if (err) { throw (err); }
+          else { res.send(200); }
+        });
       }
+      else if(req.body.action == 'stop' && data.State.Running == true) {
+        container.stop(function (err, datas, container) {
+          if (err) { throw (err); }
+          else { res.send(200); }
+        });
+      };
     });
   });
 
-  router.route('/-/stop').post(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.body.containerId);
-
-    container.inspect(function (err, data) {
-      if (err) { throw err; }
-      else {
-        if(data.State.Running == true) {
-          container.stop(function (err, datas, container) {
-            if (err) { throw (err); }
-            else { res.send(200); }
-          });
-        }
-      }
-    });
-  });
-
-  router.route('/-/deleteConfirmation').post(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.body.containerId);
+  router.route('/-/v1/instances/:containerId').get(function (req, res, next) {
+    var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
       if (err) { throw err; }
@@ -128,8 +116,8 @@ module.exports = function (router, core) {
     });
   });
 
-  router.route('/-/delete').post(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.body.containerId);
+  router.route('/-/v1/instances/:containerId').delete(function (req, res, next) {
+    var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
       if (err) { throw err; }
@@ -153,7 +141,7 @@ module.exports = function (router, core) {
     });
   });
 
-  router.route('/-/addInstance').post(function (req, res, next) {
+  router.route('/-/v1/instances').post(function (req, res, next) {
     docker.pull('inistcnrs/ezvis:latest', function (err, stream) {
       if(err) { throw err; }
 
