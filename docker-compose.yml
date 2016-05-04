@@ -1,17 +1,35 @@
-ezmaster:
-  image: inistcnrs/ezmaster:latest
-  links:
-    - ezmaster_db:mongodb
-  volumes:
-    - ./data:/app/data
-    - ./config.local.js:/app/config.local.js
-  environment:
-    http_proxy:  ${http_proxy}
-    https_proxy: ${https_proxy}
-    NODE_ENV: ${NODE_ENV}
-  ports:
-    - 3000:3000
+# ezmaster docker-compose dedicated to production 
+version: '2'
 
-ezmaster_db:
-  image: mongo:3.0.7
-  command: --smallfiles
+services:
+
+  # this is the nodejs application in charge of the web server
+  # displaying the IHM and providing REST routes
+  ezmaster:
+    container_name: ezmaster
+    image: inistcnrs/ezmaster:latest # todo fix the tag when possible
+    links:
+      - ezmaster_db
+    volumes:
+      - ./data:/app/data
+      - ./config.local.js:/app/config.local.js
+    environment:
+      http_proxy:  ${http_proxy}
+      https_proxy: ${https_proxy}
+      NODE_ENV: "production"
+      MONGODB_URI: "ezmaster_db:27017"
+    ports:
+      - 3000:3000
+    depends_on:
+      - ezmaster_db
+    # restart this cointainer if it crashes because:
+    # - it needs time for mongodb initialize the first time, so a retry is necessary
+    # - usually a nodejs application need forever, pm2 or equivalent 
+    restart: always
+
+  # mongodb used by ezmaster to store parameters, metadata etc...
+  # about ezmaster apps and instances
+  ezmaster_db:
+    container_name: ezmaster_db
+    image: mongo:3.0.7
+    command: --smallfiles
