@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - 4.3.1
+services:
+  - mongodb
+script:
+  - npm test
+cache:
+  directories:
+    - node_modules
