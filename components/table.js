@@ -16,9 +16,8 @@ module.exports = new Vue({
   		this.$http.put('/-/v1/instances/'+event.path[2].id, data).then(function (result) {
         $('#exited').hide();
         $('#running').show();
-  		}, function (e) {
-        console.log(e);
-      });
+        // location.reload();
+  		}, function (e) { console.log(e);});
   	},
 
     stopInstance : function (event) {
@@ -28,7 +27,8 @@ module.exports = new Vue({
       this.$http.put('/-/v1/instances/'+event.path[2].id, data).then(function (result) {
         $('#running').hide();
         $('#exited').show();
-      });
+        // location.reload();
+      }, function (e) { console.log(e); });
     },
 
     confirmationDelete : function (event) {
@@ -36,7 +36,7 @@ module.exports = new Vue({
         this.titleToDelete = result.data.title;
         this.sizeToDelete = result.data.size;
         $('#modal-delete-instance').show();
-      });
+      }, function (e) { console.log(e); });
     },
 
     cancelDelete : function (event) {
@@ -45,8 +45,9 @@ module.exports = new Vue({
 
     deleteInstance : function (event) {
       this.$http.delete('/-/v1/instances/'+event.path[5].id).then(function (result) {
-        $('#modal-delete-instance').hide();
-      });
+        // $('#modal-delete-instance').hide();
+        location.reload();
+      }, function (e) { console.log(e); });
     }
   },
 	data : {

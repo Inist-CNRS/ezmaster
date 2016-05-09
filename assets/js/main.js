@@ -32,7 +32,7 @@
             location.reload();
           }
         });
-      },*/
+      },
 
       /*showDeleteModal : function (id) {
         $.ajax({

@@ -10,7 +10,7 @@ var path = require('path')
   , getSize = require('get-folder-size')
   , filesize = require('filesize')
   , Docker = require('dockerode')
-  , docker = new Docker({ socketPath: '/var/run/docker.sock'});//, timeout:1E7});
+  , docker = new Docker({ socketPath: '/var/run/docker.sock'});
 
 const spawn = require('child_process').spawn;
 
@@ -84,9 +84,7 @@ module.exports = function (router, core) {
 
         const elements = containers.pop();
         
-        if (!elements) {
-          return res.send(arrayObject);
-        }
+        if (!elements) { return res.send(arrayObject); }
 
         var splittedName = elements.Names[0].split('/');
 
