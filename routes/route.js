@@ -20,6 +20,60 @@ module.exports = function (router, core) {
     , mongodb = core.connect();
 
   router.route('/').get(function (req, res, next) {
+    // var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
+    // docker.listContainers({all : true}, function (err, containers) {
+
+    //   var container = {}
+    //     , arrayObject = [];
+
+    //   (function check() {
+    //     const elements = containers.pop();
+        
+    //     if (!elements) {
+          return res.render("template.html"/*, { 
+            containers : arrayObject
+          }*/);
+      //   }
+
+      //   var splittedName = elements.Names[0].split('/');
+
+      //   if (instancesArray.indexOf(splittedName[1]) === -1) { return check(); }
+      //   else { 
+      //     var img = docker.getImage(elements.Image)
+      //     , jsonData = require(path.join(__dirname, '../manifests/', splittedName[1] + '.json'));
+
+      //     img.inspect(function (err, data) {
+      //       if (err) { throw err; }
+      //       else {
+      //         if (elements.State === 'running') { 
+      //           container['status'] = true;
+      //           container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
+      //           container['target'] = 'ezmaster';
+      //         }
+      //         else if (elements.State === 'exited') {
+      //           container['status'] = false;
+      //           container['address'] = '';
+      //           container['target'] = '';
+      //         }
+
+      //         elements.Image = data.RepoTags[0];
+      //         elements.Names[0] = splittedName[1];
+      //         elements.Created = moment.unix(elements.Created).format("YYYY/MM/DD");
+                    
+      //         container['title'] = jsonData.title;
+      //         container['description'] = elements;
+
+      //         arrayObject.push(container);
+
+      //         check();
+      //       }
+      //     });
+      //   }
+      // }) ();
+    // });
+  });
+
+  router.route('/-/v1/instances').get(function (req, res, next) {
     var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
     docker.listContainers({all : true}, function (err, containers) {
 
@@ -27,12 +81,11 @@ module.exports = function (router, core) {
         , arrayObject = [];
 
       (function check() {
+
         const elements = containers.pop();
         
         if (!elements) {
-          return res.render("template.html", { 
-            containers : arrayObject
-          });
+          return res.send(arrayObject);
         }
 
         var splittedName = elements.Names[0].split('/');
@@ -46,12 +99,12 @@ module.exports = function (router, core) {
             if (err) { throw err; }
             else {
               if (elements.State === 'running') { 
-                container['status'] = 'status_running'; 
+                container['status'] = true;
                 container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
                 container['target'] = 'ezmaster';
               }
-              else if (elements.State === 'exited') { 
-                container['status'] = 'status_exited';
+              else if (elements.State === 'exited') {
+                container['status'] = false;
                 container['address'] = '';
                 container['target'] = '';
               }
@@ -93,7 +146,7 @@ module.exports = function (router, core) {
     });
   });
 
-  router.route('/-/v1/instances/:containerId').get(function (req, res, next) {
+  router.route('/-/v1/instances/confirmationDelete/:containerId').get(function (req, res, next) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {

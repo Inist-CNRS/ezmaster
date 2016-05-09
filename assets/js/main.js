@@ -6,7 +6,7 @@
   ezmaster.modules.actions = (function() {
 
     return {
-      start : function(id) {
+      /*start : function(id) {
         $.ajax({
           url: '/-/v1/instances/'+id,
           data: {
@@ -32,9 +32,9 @@
             location.reload();
           }
         });
-      },
+      },*/
 
-      showDeleteModal : function(id) {
+      /*showDeleteModal : function (id) {
         $.ajax({
           url : '/-/v1/instances/'+id,
           data : {
@@ -47,13 +47,13 @@
             $('#modal-delete-instance').fadeToggle(500);
           }
         });
-      },
+      },*/
 
-      closeDeleteModal : function() {
+      /*closeDeleteModal : function () {
         $('#modal-delete-instance').fadeToggle(250);
-      },
+      },*/
 
-      delete : function (id) {
+      /*delete : function (id) {
         $.ajax({
           url : '/-/v1/instances/'+id,
           data: {
@@ -64,24 +64,24 @@
             location.reload();
           }
         });
-      },
+      },*/
  
       init : function () {
-        $('.start').click(function() {
+        /*$('.start').click(function() {
           ezmaster.modules.actions.start($(this).parent().attr('id'));
         });
 
         $('.stop').click(function() {
           ezmaster.modules.actions.stop($(this).parent().attr('id'));
-        });
+        });*/
 
-        $('.delete').click(function() {
+        /*$('.delete').click(function() {
           ezmaster.modules.actions.showDeleteModal($(this).parent().attr('id'));
-        });
-        $('.close_modal_delete_instance').click(ezmaster.modules.actions.closeDeleteModal);
-        $('#delete_instance').click(function() {
+        });*/
+        //$('.close_modal_delete_instance').click(ezmaster.modules.actions.closeDeleteModal);
+        /*$('#delete_instance').click(function() {
           ezmaster.modules.actions.delete($('.delete').parent().attr('id'));
-        });
+        });*/
       }
     }
   }) ();
@@ -96,11 +96,11 @@
         $('#modalForm').fadeToggle(250);
       },*/
 
-      save : function() {
+      /*save : function() {
         /*if(title == '' || technicalName == '') {
           window.alert('Please fill all fields');
         }
-        else {*/
+        else {
           $.ajax({
             url : '/-/v1/instances/',
             type: 'POST',
@@ -109,16 +109,15 @@
             }
           });
           /*ezmaster.modules.addInstance.closeModal();*/
-      },
 
       init : function() {
-        $('#add_instance').click(ezmaster.modules.addInstance.save);
+        // $('#add_instance').click(ezmaster.modules.addInstance.save);
         /*$('#close_modal').click(ezmaster.modules.addInstance.closeModal);
         $('#save').click(ezmaster.modules.addInstance.save);
         $('#save').click(function() { 
           ezmaster.modules.addInstance.save($('#inputTitle').val(), $('#inputTechnicalName').val(), $('#app').val());
-        });*/
-      }
+        });
+      */}
     }
   }) ();
 
@@ -128,3 +127,10 @@
   });
 
 }());
+
+var Vue = require('vue');
+Vue.config.delimiters = ['[[', ']]'];
+Vue.use(require('vue-resource'));
+// require('components/actions');
+require('components/addInstance');
+require('components/table');
