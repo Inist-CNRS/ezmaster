@@ -13,26 +13,22 @@ module.exports = new Vue({
   		var data = { 
         action : 'start'
   		}
-  		this.$http.put('/-/v1/instances/'+event.path[2].id, data).then(function (result) {
-        $('#exited').hide();
-        $('#running').show();
-        // location.reload();
-  		}, function (e) { console.log(e);});
+  		this.$http.put('/-/v1/instances/'+event.path[3].id, data).then(function (result) {
+        location.reload();
+      }, function (e) { console.log(e);});
   	},
 
     stopInstance : function (event) {
       var data = {
         action : 'stop'
       }
-      this.$http.put('/-/v1/instances/'+event.path[2].id, data).then(function (result) {
-        $('#running').hide();
-        $('#exited').show();
-        // location.reload();
+      this.$http.put('/-/v1/instances/'+event.path[3].id, data).then(function (result) {
+        location.reload();
       }, function (e) { console.log(e); });
     },
 
     confirmationDelete : function (event) {
-      this.$http.get('/-/v1/instances/confirmationDelete/'+event.path[2].id).then(function (result) {
+      this.$http.get('/-/v1/instances/confirmationDelete/'+event.path[3].id).then(function (result) {
         this.titleToDelete = result.data.title;
         this.sizeToDelete = result.data.size;
         $('#modal-delete-instance').show();
@@ -44,7 +40,7 @@ module.exports = new Vue({
     },
 
     deleteInstance : function (event) {
-      this.$http.delete('/-/v1/instances/'+event.path[5].id).then(function (result) {
+      this.$http.delete('/-/v1/instances/'+event.path[6].id).then(function (result) {
         // $('#modal-delete-instance').hide();
         location.reload();
       }, function (e) { console.log(e); });

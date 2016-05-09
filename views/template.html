@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <h1 class="h1-center">Instances</h3>
+    <h2 class="h2-center">Instances</h2>
 
-    <table id="instances-table" class="table table-striped table-hover">
+    <table id="instances-table" class="table table-striped">
       <thead>
         <tr>
           <th>Title</th>
@@ -22,41 +22,46 @@
             <td>[[ item.description.Created ]]</td>
             <td>[[ item.description.Image ]]</td>
             <td>
+              <span v-if="[[ item.status ]] == 'true'">Sarted <img src='/assets/img/check.png' alt='Instance working'></span>
+              <span v-else>Stopped <img src='/assets/img/close.png' alt="Instance doesn't work"></span>
+            </td>
+            <td class="actions" id="[[ item.description.Id ]]">
               <template v-if="[[ item.status ]] == 'true'">
-                <span id="running">Running <img src='/assets/img/check.png' alt='Instance working'></span>
-                <span id="exited" style="display:none">Stopping <img src='/assets/img/close.png' alt="Instance doesn't work"></span>
+                <ul class="bread" style="margin-bottom:0px">
+                  <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
+                  <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
+                  <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
+                  <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.address ]]'>Open</a></li>
+                </ul>
               </template>
               <template v-else>
-                <span id="running" style="display:none">Running <img src='/assets/img/check.png' alt='Instance working'></span>
-                <span id="exited">Stopping <img src='/assets/img/close.png' alt="Instance doesn't work"></span>
+                <ul class="bread" style="margin-bottom:0px">
+                  <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
+                  <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
+                  <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
+                  <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Open</button></li>
+                </ul>
               </template>
-            </td>
-            <td>
-              <ul class="bread" id="[[ item.description.Id ]]" style="margin-bottom:0px">
-                <li class="start" title="Start the instance" v-on:click="startInstance"><img src="/assets/img/play.png" alt="Start"></li>
-                <li class="stop" title="Stop the instance" v-on:click="stopInstance"><img src="/assets/img/stop.png" alt="Stop"></li>
-                <li class="delete" title="Delete the instance" v-on:click="confirmationDelete"><img src="/assets/img/delete.png" alt="Delete"></li>
-                <li class="openPublicLink" title="Open the public link"><a target="[[ item.target ]]" class="publicLink" href='[[ item.address ]]'><img src="/assets/img/publicLink.png" alt="Open the public link"></a></li>
-                <li class="openPrivateLink" title="Open the private link"><!--<img src="/assets/img/privateLink.png" alt="Open the private link">--></li>
 
-                <div class="modal" id="modal-delete-instance">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="alert alert-dismissible alert-warning">
-                        <h4>Delete an instance</h4><br />
-
+              <div class="modal" id="modal-delete-instance">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="panel panel-warning">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Delete an instance</h3>
+                      </div>
+                      <div class="panel-body">
                         <p>
-                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called [[ titleToDelete ]].</span><br /><br />
-                          <span class="deleteSizeFolder">You will remove [[ sizeToDelete ]] of datas.</span>
-                        </p><br /><br />
-                        <button type="button" class="btn btn-default close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</button>
-                        <button style='float:right' type="button" id='delete_instance' class="btn btn-default" v-on:click="deleteInstance">Delete</button>
+                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ item.description.Names[0] ]]</span> ?</span><br /><br />
+                          <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
+                        </p><br />
+                        <a class="btn btn-raised btn-info close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' id='delete_instance' class="btn btn-danger" v-on:click="deleteInstance">Delete</a>
                       </div>
                     </div>
                   </div>
                 </div>
-
-              </ul>
+              </div>
             </td>
           </tr>
         </template>

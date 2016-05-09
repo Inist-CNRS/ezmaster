@@ -196,7 +196,7 @@ module.exports = function (router, core) {
     docker.pull('inistcnrs/ezvis:latest', function (err, stream) {
       if(err) { throw err; }
 
-      docker.modem.followProgress(stream, onFinished);
+      docker.modem.followProgress(stream, onFinished, onProgress);
 
       function onFinished(err, output) {
         if(err) { throw err; }
@@ -228,6 +228,10 @@ module.exports = function (router, core) {
             res.send(200); 
           });
         });
+      }
+
+      function onProgress(event) {
+        console.info(event);
       }
     });
   });
