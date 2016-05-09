@@ -1,19 +1,30 @@
-ezmaster:
-  image: node:4.4.0
-  links:
-    - ezmaster_db:mongodb
-  volumes:
-    - .:/app
-  environment:
-    http_proxy:  ${http_proxy}
-    https_proxy: ${https_proxy}
-    NODE_ENV: "development"
-    DEBUG: "castor*,console*"
-  working_dir: /app
-  ports:
-    - 3000:3000
-  command: ./ezmaster
+# ezmaster docker-compose dedicated for development
+# same as docker-compose.debug.yml but using nodemon
+version: '2'
 
-ezmaster_db:
-  image: mongo:3.0.7
-  command: --smallfiles
+services:
+
+  ezmaster:
+    container_name: ezmaster
+    image: node:4.4.0
+    links:
+      - ezmaster_db
+    volumes:
+      - .:/app
+    environment:
+      http_proxy:  ${http_proxy}
+      https_proxy: ${https_proxy}
+      NODE_ENV: "development"
+      DEBUG: "castor*,console*"
+      MONGODB_URI: "ezmaster_db:27017"
+    working_dir: /app
+    ports:
+      - 3000:3000
+    depends_on:
+      - ezmaster_db
+    command: ./ezmaster
+
+  ezmaster_db:
+    container_name: ezmaster_db
+    image: mongo:3.0.7
+    command: --smallfiles

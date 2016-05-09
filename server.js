@@ -1,6 +1,7 @@
 /*jshint node:true, laxcomma:true*/
 /*eslint global-require:"warn"*/
 'use strict';
+var ccore = require('castor-core');
 
 module.exports = function(config, start) {
   config.set('theme', __dirname);
@@ -8,5 +9,5 @@ module.exports = function(config, start) {
 };
 
 if (!module.parent) {
-  require('castor-core')(module.exports);
+  ccore(module.exports);
 }

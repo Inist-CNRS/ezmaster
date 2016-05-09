@@ -1,12 +1,10 @@
 /* global describe, it */
 'use strict';
-var assert = require('chai').assert,
-  func = require('../helpers/fake-helper.js')
-;
+var assert = require('chai').assert;
 describe('the ezmaster application', function () {
 
   it('should be able to run a fake test', function() {
-    assert.equal(func('Yo'), 'Yo!');
+    assert.equal('Yo!', 'Yo!');
   });
 
 });
