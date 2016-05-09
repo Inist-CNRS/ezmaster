@@ -16,32 +16,54 @@
       </thead>
       <tbody>
         <template v-for="item in containers">
-          <tr>
+          <tr v-if="[[ item.status ]] == 'true'" class="success" id="[[ item.description.Id ]]">
             <td>[[ item.title ]]</td>
             <td>[[ item.description.Names[0] ]]</td>
             <td>[[ item.description.Created ]]</td>
             <td>[[ item.description.Image ]]</td>
-            <td>
-              <span v-if="[[ item.status ]] == 'true'">Sarted <img src='/assets/img/check.png' alt='Instance working'></span>
-              <span v-else>Stopped <img src='/assets/img/close.png' alt="Instance doesn't work"></span>
+            <td> <span>Started <img src='/assets/img/check.png' alt='Instance working'></span> </td>
+            <td class="actions">
+              <ul class="bread" style="margin-bottom:0px">
+                <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
+                <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
+                <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
+                <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.address ]]'>Open</a></li>
+              </ul>
+
+              <div class="modal" id="modal-delete-instance">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="panel panel-warning">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Delete an instance</h3>
+                      </div>
+                      <div class="panel-body">
+                        <p>
+                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ item.description.Names[0] ]]</span> ?</span><br /><br />
+                          <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
+                        </p><br />
+                        <a class="btn btn-raised btn-info close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' id='delete_instance' class="btn btn-danger" v-on:click="deleteInstance">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </td>
-            <td class="actions" id="[[ item.description.Id ]]">
-              <template v-if="[[ item.status ]] == 'true'">
-                <ul class="bread" style="margin-bottom:0px">
-                  <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
-                  <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
-                  <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
-                  <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.address ]]'>Open</a></li>
-                </ul>
-              </template>
-              <template v-else>
-                <ul class="bread" style="margin-bottom:0px">
-                  <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
-                  <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
-                  <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
-                  <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Open</button></li>
-                </ul>
-              </template>
+          </tr>
+          <tr v-else class="danger" id="[[ item.description.Id ]]">
+            <td>[[ item.title ]]</td>
+            <td>[[ item.description.Names[0] ]]</td>
+            <td>[[ item.description.Created ]]</td>
+            <td>[[ item.description.Image ]]</td>
+            <td><span v-else>Stopped <img src='/assets/img/close.png' alt="Instance doesn't work"></span></td>
+            <td class="actions">
+              <ul class="bread" style="margin-bottom:0px">
+                <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
+                <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
+                <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
+                <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Open</button></li>
+              </ul>
 
               <div class="modal" id="modal-delete-instance">
                 <div class="modal-dialog">
@@ -68,7 +90,7 @@
       </tbody>
     </table>
 
-    <a href="javascript:void(0)" id="add_instance" class="btn btn-raised btn-primary" v-on:click="addInstance">Add an instance</a>
+    <button id="add_instance" class="btn btn-raised btn-primary" v-on:click="addInstance">Add an instance</button>
 
     <div class="modal" id="modalForm">
       <div class="modal-dialog">
