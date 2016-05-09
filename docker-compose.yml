@@ -11,8 +11,7 @@ services:
     links:
       - ezmaster_db
     volumes:
-      - ./data:/app/data
-      - ./config.local.js:/app/config.local.js
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       http_proxy:  ${http_proxy}
       https_proxy: ${https_proxy}
