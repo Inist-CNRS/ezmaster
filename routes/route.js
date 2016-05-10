@@ -144,7 +144,7 @@ module.exports = function (router, core) {
     });
   });
 
-  router.route('/-/v1/instances/confirmationDelete/:containerId').get(function (req, res, next) {
+  router.route('/-/v1/instances/:containerId').get(function (req, res, next) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {

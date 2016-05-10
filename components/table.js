@@ -28,7 +28,7 @@ module.exports = new Vue({
     },
 
     confirmationDelete : function (event) {
-      this.$http.get('/-/v1/instances/confirmationDelete/'+event.path[4].id).then(function (result) {
+      this.$http.get('/-/v1/instances/'+event.path[4].id).then(function (result) {
         this.titleToDelete = result.data.title;
         this.sizeToDelete = result.data.size;
         $('#modal-delete-instance').show();
