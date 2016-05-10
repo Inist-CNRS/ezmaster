@@ -20,57 +20,7 @@ module.exports = function (router, core) {
     , mongodb = core.connect();
 
   router.route('/').get(function (req, res, next) {
-    // var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
-    // docker.listContainers({all : true}, function (err, containers) {
-
-    //   var container = {}
-    //     , arrayObject = [];
-
-    //   (function check() {
-    //     const elements = containers.pop();
-        
-    //     if (!elements) {
-          return res.render("template.html"/*, { 
-            containers : arrayObject
-          }*/);
-      //   }
-
-      //   var splittedName = elements.Names[0].split('/');
-
-      //   if (instancesArray.indexOf(splittedName[1]) === -1) { return check(); }
-      //   else { 
-      //     var img = docker.getImage(elements.Image)
-      //     , jsonData = require(path.join(__dirname, '../manifests/', splittedName[1] + '.json'));
-
-      //     img.inspect(function (err, data) {
-      //       if (err) { throw err; }
-      //       else {
-      //         if (elements.State === 'running') { 
-      //           container['status'] = true;
-      //           container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
-      //           container['target'] = 'ezmaster';
-      //         }
-      //         else if (elements.State === 'exited') {
-      //           container['status'] = false;
-      //           container['address'] = '';
-      //           container['target'] = '';
-      //         }
-
-      //         elements.Image = data.RepoTags[0];
-      //         elements.Names[0] = splittedName[1];
-      //         elements.Created = moment.unix(elements.Created).format("YYYY/MM/DD");
-                    
-      //         container['title'] = jsonData.title;
-      //         container['description'] = elements;
-
-      //         arrayObject.push(container);
-
-      //         check();
-      //       }
-      //     });
-      //   }
-      // }) ();
-    // });
+      return res.render("template.html");
   });
 
   router.route('/-/v1/instances').get(function (req, res, next) {
@@ -203,7 +153,7 @@ module.exports = function (router, core) {
 
         docker.createContainer({Image: 'inistcnrs/ezvis:latest', name: 'inistcnrs-ezvis',
          'HostConfig': {
-            'Links': ['mongo_db:mongo'],
+            'Links': ['ezmaster_db:mongo'],
             'PortBindings': {
               '3000/tcp': [
                 {
