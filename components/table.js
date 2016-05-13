@@ -1,30 +1,31 @@
+/* global Vue, $, location */
 'use strict';
 
 module.exports = new Vue({
-	el: '#instances-table',
-	ready : function () {
-		var self = this;
-		self.$http.get('/-/v1/instances').then(function (result) {
-			self.$set("containers", result.data);
-		}, console.error);
-	},
+  el: '#instances-table',
+  ready : function () {
+    var self = this;
+    self.$http.get('/-/v1/instances').then(function (result) {
+      self.$set('containers', result.data);
+    }, console.error);
+  },
   methods: {
-  	startInstance : function (event) {
-  		var data = { 
+    startInstance : function (event) {
+      var data = {
         action : 'start'
-  		}
-  		this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
+      };
+      this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         location.reload();
-      }, function (e) { console.log(e);});
-  	},
+      }, console.error);
+    },
 
     stopInstance : function (event) {
       var data = {
         action : 'stop'
-      }
+      };
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         location.reload();
-      }, function (e) { console.log(e); });
+      }, console.error);
     },
 
     confirmationDelete : function (event) {
@@ -32,7 +33,7 @@ module.exports = new Vue({
         this.titleToDelete = result.data.title;
         this.sizeToDelete = result.data.size;
         $('#modal-delete-instance').show();
-      }, function (e) { console.log(e); });
+      }, console.error);
     },
 
     cancelDelete : function (event) {
@@ -43,12 +44,12 @@ module.exports = new Vue({
       this.$http.delete('/-/v1/instances/'+event.path[7].id).then(function (result) {
         // $('#modal-delete-instance').hide();
         location.reload();
-      }, function (e) { console.log(e); });
+      }, console.error);
     }
   },
-	data : {
-		sizeToDelete : "",
-    titleToDelete : "",
-		containers : []
-	}
-})
+  data : {
+    sizeToDelete : '',
+    titleToDelete : '',
+    containers : []
+  }
+});
