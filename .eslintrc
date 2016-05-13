@@ -8,7 +8,7 @@
     "linebreak-style": [2, "unix"],
     "semi": [2, "always" ],
     "comma-style": [2, "first", { "exceptions": {"ArrayExpression": true, "ObjectExpression": true } }],
-    "no-console": [2, {"allow": ["error"]}],
+    "no-console": [2, {"allow": ["error", "info"]}],
     "no-trailing-spaces": 2,
     "no-whitespace-before-property": 2,
     "no-nested-ternary": 2,
