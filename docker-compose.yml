@@ -11,12 +11,14 @@ services:
     links:
       - ezmaster_db
     volumes:
+      - .:/app
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       http_proxy:  ${http_proxy}
       https_proxy: ${https_proxy}
       NODE_ENV: "production"
       MONGODB_URI: "ezmaster_db:27017"
+      EZMASTER_PATH: ${PWD}
     ports:
       - 3000:3000
     depends_on:
