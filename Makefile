@@ -53,7 +53,7 @@ coverage: ## run istanbul to have how much % of the ezmaster code is covered by 
 
 #lint": "jshint --exclude-path node_modes */**/*.js",
 lint: ## to check the coding rules
-	@./node_modules/.bin/eslint *.js heartbeats/ helpers/ loaders/ test/ views/assets/
+	@./node_modules/.bin/eslint *.js components/ heartbeats/ helpers/ loaders/ routes/ test/ views/assets/
 
 clean: ## remove node_modules and temp files
 	@rm -Rf ./node_modules/ ./npm-debug.log
