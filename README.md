@@ -19,7 +19,7 @@ Then navigate to [http://127.0.0.1:3000](http://127.0.0.1:3000)
 ## Install and run for developements
 
 ### Without without npm/node
-To start ezmaster from a local git clone, you can follow these steps (needs nodejs and mongodb installed localy):
+To start ezmaster from a local git clone, you can follow these steps (needs nodejs and mongodb called ezmaster_db installed localy):
 
 ```shell
 git clone https://github.com/Inist-CNRS/ezmaster.git

@@ -6,7 +6,7 @@ module.exports = new Vue({
   	addInstance : function (event) {
   		this.$http.post('/-/v1/instances').then(function (result) {
   			location.reload();
-  		}, function (e) { console.log(e) });
+  		}, console.error );
   	}
   }
 })

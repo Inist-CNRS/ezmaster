@@ -10,9 +10,8 @@ var path = require('path')
   , getSize = require('get-folder-size')
   , filesize = require('filesize')
   , Docker = require('dockerode')
-  , docker = new Docker({ socketPath: '/var/run/docker.sock'});
-
-const spawn = require('child_process').spawn;
+  , docker = new Docker({ socketPath: '/var/run/docker.sock'})
+  , exec = require('child_process').exec;
 
 module.exports = function (router, core) {
 
@@ -78,17 +77,17 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if(err) { throw err; }
-      else if(req.body.action == 'start' && data.State.Running == false) {
+      if (err) { throw err; }
+      else if (req.body.action == 'start' && data.State.Running == false) {
         container.start(function (err, datas, container) {
           if (err) { throw (err); }
           else { res.send(200); }
         });
       }
-      else if(req.body.action == 'stop' && data.State.Running == true) {
+      else if (req.body.action == 'stop' && data.State.Running == true) {
         container.stop(function (err, datas, container) {
           if (err) { throw (err); }
-          else { res.send(200); }
+          else { res.send(200); console.info('STOP') }
         });
       };
     });
@@ -150,34 +149,14 @@ module.exports = function (router, core) {
 
       function onFinished(err, output) {
         if(err) { throw err; }
+        else {
+          var cmd = 'docker run -d -p 3001:3000 -e http_proxy -e https_proxy --net=ezmaster_default --link ezmaster_db:ezvis_db -v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis/config/data.json:/root/data.json -v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis/data/:/root/data/ --name inistcnrs-ezvis inistcnrs/ezvis:latest';
 
-        docker.createContainer({Image: 'inistcnrs/ezvis:latest', name: 'inistcnrs-ezvis',
-         'HostConfig': {
-            'Links': ['ezmaster_db:mongo'],
-            'PortBindings': {
-              '3000/tcp': [
-                {
-                  'HostIp': '',
-                  'HostPort': '3001'
-                }
-              ]
-            },
-            'Binds':  [path.join(__dirname, '../instances/inistcnrs-ezvis/data')+':/root/data',
-                      path.join(__dirname, '../instances/inistcnrs-ezvis/config/data.json')+':/root/data.json']
-          },
-          'Volumes': {
-            '/root/data': {},
-            '/root/data.json' : {}
-          }
-        },
-        function (err, container) {
-          if(err) { throw err; }
-
-          container.start(function (err, data) {
-            if (err) { throw err; }
-            res.send(200); 
+          var child = exec(cmd, function (err, stdout, stderr) {
+            if(err) { throw err; }
+            else { res.send(200); }
           });
-        });
+        }
       }
 
       function onProgress(event) {

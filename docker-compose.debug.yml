@@ -6,11 +6,17 @@ services:
 
   ezmaster:
     container_name: ezmaster
-    image: inistcnrs/ezmaster:latest
+    # image: node:4.4.0
+    build: 
+      context: .
+      args: 
+        - http_proxy
+        - https_proxy
     links:
       - ezmaster_db
     volumes:
       - .:/app
+      - ./instances:/app/instances
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       http_proxy:  ${http_proxy}
@@ -18,6 +24,7 @@ services:
       NODE_ENV: "development"
       DEBUG: "castor*,console*"
       MONGODB_URI: "ezmaster_db:27017"
+      EZMASTER_PATH: ${PWD}
     working_dir: /app
     ports:
       - 3000:3000
@@ -29,3 +36,4 @@ services:
     container_name: ezmaster_db
     image: mongo:3.0.7
     command: --smallfiles
+
