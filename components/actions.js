@@ -1,28 +1,27 @@
+/* global Vue, $ */
 'use strict';
 
 module.exports = new Vue({
   el: '.bread',
   data : {
-    sizeToDelete : "",
-    titleToDelete : ""
+    sizeToDelete : '',
+    titleToDelete : ''
   },
   methods: {
-  	startInstance : function (event) {
-  		var data = { 
+    startInstance : function (event) {
+      var data = {
         action : 'start'
-  		}
-  		this.$http.put('/-/v1/instances/'+event.path[2].id, data).then(function (result) {
+      };
+      this.$http.put('/-/v1/instances/'+event.path[2].id, data).then(function (result) {
         $('#exited').hide();
         $('#running').show();
-  		}, function (e) {
-        console.log(e);
-      });
-  	},
+      }, console.error);
+    },
 
     stopInstance : function (event) {
       var data = {
         action : 'stop'
-      }
+      };
       this.$http.put('/-/v1/instances/'+event.path[2].id, data).then(function (result) {
         $('#running').hide();
         $('#exited').show();
@@ -47,4 +46,4 @@ module.exports = new Vue({
       });
     }
   }
-})
+});
