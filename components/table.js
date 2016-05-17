@@ -56,14 +56,17 @@ module.exports = new Vue({
     displayConfig : function (event) {
       this.$http.get('/-/v1/instances/'+event.path[4].id+'/config').then(function (result) {
         $('#modal-update-config').show();
-        editor = new JSONEditor(document.getElementById("jsoneditor"));
+        var opts = {
+          modes: ['text', 'tree']
+        }
+        editor = new JSONEditor(document.getElementById("jsoneditor"), opts);
         editor.set(result.data);
       });
     },
 
     updateConfig : function (event) {
       var newConfig = editor.get();
-      console.log(event);
+
       var data = {
         action : 'updateConfig'
         , newConfig : newConfig

@@ -43,7 +43,9 @@
                           <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ item.description.Names[0] ]]</span> ?</span><br /><br />
                           <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
                         </p><br />
-                        <a class="btn btn-raised btn-info close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
+                      </div>
+                      <div class="panel-footer">
+                        <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
                         <a style='float:right' id='delete_instance' class="btn btn-danger" v-on:click="deleteInstance">Delete</a>
                       </div>
                     </div>
@@ -58,17 +60,11 @@
                         <h3 class="panel-title">Update instance configuration</h3>
                       </div>
                       <div class="panel-body">
-                        <form class='form-horizontal'>
-                          <div class="form-group">
-                            <div class="col-md-16">
-                              <div id="jsoneditor"></div>
-                            </div>
-                          </div>
-                            <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
-                            <a class="btn btn-raised" v-on:click='changeMode'>Change </a>
-                            <a style='float:right' id='delete_instance' class="btn btn-info" v-on:click="updateConfig">Update</a>
-                          <form>
-                        </form>
+                        <div id="jsoneditor"></div>
+                      </div>
+                      <div class="panel-footer">
+                        <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' id='delete_instance' class="btn btn-info" v-on:click="updateConfig">Update</a>
                       </div>
                     </div>
                   </div>
@@ -102,7 +98,9 @@
                           <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ item.description.Names[0] ]]</span> ?</span><br /><br />
                           <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
                         </p><br />
-                        <a class="btn btn-raised btn-info close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
+                      </div>
+                      <div class="panel-footer">
+                        <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
                         <a style='float:right' id='delete_instance' class="btn btn-danger" v-on:click="deleteInstance">Delete</a>
                       </div>
                     </div>

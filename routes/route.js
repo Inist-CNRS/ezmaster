@@ -96,13 +96,13 @@ module.exports = function (router, core) {
       else if (req.body.action == 'updateConfig') {
         var splittedName = data.Name.split('/');
 
-        jsonfile.writeFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), req.body.newConfig, "UTF-8", function (err) {
+        jsonfile.writeFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), req.body.newConfig, function (err) {
           if (err) { throw err; }
           else {
             var newTitle = {
               "title" : req.body.newTitle
             }
-            jsonfile.writeFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), newTitle, "UTF-8", function (err) {
+            jsonfile.writeFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), newTitle, function (err) {
               if (err) { throw err; }
               else { 
                 container.restart(function (err) {
@@ -128,7 +128,9 @@ module.exports = function (router, core) {
           , directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
           , result = {};
 
-        jsonfile.readFile(__dirname, '../instances/', splittedName[1], '/config/data.json', function (err, obj) {
+        console.info("SPLITTED NAME : " + splittedName[1]);
+        var file = 
+        jsonfile.readFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), function (err, obj) {
           getSize(directoryDatas, function (err, size) {
             if (err) { throw err; }
             else {
