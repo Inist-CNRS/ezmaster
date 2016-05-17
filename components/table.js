@@ -65,6 +65,7 @@ module.exports = new Vue({
     },
 
     updateConfig : function (event) {
+      console.log(event);
       var newConfig = editor.get();
 
       var data = {
@@ -72,7 +73,7 @@ module.exports = new Vue({
         , newConfig : newConfig
         , newTitle : newConfig.title
       };
-      this.$http.put('/-/v1/instances/'+event.path[8].id, data).then(function (result) {
+      this.$http.put('/-/v1/instances/'+event.path[7].id, data).then(function (result) {
         location.reload();
       });
     }
