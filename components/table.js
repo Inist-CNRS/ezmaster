@@ -1,6 +1,9 @@
 /* global Vue, $, location */
 'use strict';
 
+var editor = null
+  , file = null;
+
 module.exports = new Vue({
   el: '#instances-table',
   ready : function () {
@@ -29,7 +32,7 @@ module.exports = new Vue({
     },
 
     confirmationDelete : function (event) {
-      this.$http.get('/-/v1/instances/'+event.path[4].id).then(function (result) {
+      this.$http.get('/-/v1/instances/'+event.path[4].id+'/info').then(function (result) {
         this.titleToDelete = result.data.title;
         this.sizeToDelete = result.data.size;
         $('#modal-delete-instance').show();
@@ -42,9 +45,33 @@ module.exports = new Vue({
 
     deleteInstance : function (event) {
       this.$http.delete('/-/v1/instances/'+event.path[7].id).then(function (result) {
-        // $('#modal-delete-instance').hide();
         location.reload();
       }, console.error);
+    },
+
+    cancelConfig : function (event) {
+      location.reload();
+    },
+
+    displayConfig : function (event) {
+      this.$http.get('/-/v1/instances/'+event.path[4].id+'/config').then(function (result) {
+        $('#modal-update-config').show();
+        editor = new JSONEditor(document.getElementById("jsoneditor"));
+        editor.set(result.data);
+      });
+    },
+
+    updateConfig : function (event) {
+      var newConfig = editor.get();
+      console.log(event);
+      var data = {
+        action : 'updateConfig'
+        , newConfig : newConfig
+        , newTitle : newConfig.title
+      };
+      this.$http.put('/-/v1/instances/'+event.path[8].id, data).then(function (result) {
+        location.reload();
+      });
     }
   },
   data : {

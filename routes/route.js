@@ -13,7 +13,8 @@ var path = require('path')
   , filesize = require('filesize')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
-  , exec = require('child_process').exec;
+  , exec = require('child_process').exec
+  , jsonfile = require('jsonfile');
 
 module.exports = function (router, core) {
 
@@ -38,33 +39,37 @@ module.exports = function (router, core) {
 
         if (instancesArray.indexOf(splittedName[1]) === -1) { return check(); }
 
-        var img = docker.getImage(elements.Image)
-        , jsonData = require(path.join(__dirname, '../manifests/', splittedName[1] + '.json'));
+        var img = docker.getImage(elements.Image);
 
-        img.inspect(function (err, data) {
-          if (err) { throw err; }
+        jsonfile.readFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err, obj) {
+          if (err) throw err;
           else {
-            if (elements.State === 'running') {
-              container['status'] = true;
-              container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
-              container['target'] = 'ezmaster';
+            img.inspect(function (err, data) {
+            if (err) { throw err; }
+            else {
+              if (elements.State === 'running') {
+                container['status'] = true;
+                container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
+                container['target'] = 'ezmaster';
+              }
+              else if (elements.State === 'exited') {
+                container['status'] = false;
+                container['address'] = '';
+                container['target'] = '';
+              }
+
+              elements.Image = data.RepoTags[0];
+              elements.Names[0] = splittedName[1];
+              elements.Created = moment.unix(elements.Created).format('YYYY/MM/DD');
+
+              container['title'] = obj.title;
+              container['description'] = elements;
+
+              arrayObject.push(container);
+
+              check();
             }
-            else if (elements.State === 'exited') {
-              container['status'] = false;
-              container['address'] = '';
-              container['target'] = '';
-            }
-
-            elements.Image = data.RepoTags[0];
-            elements.Names[0] = splittedName[1];
-            elements.Created = moment.unix(elements.Created).format('YYYY/MM/DD');
-
-            container['title'] = jsonData.title;
-            container['description'] = elements;
-
-            arrayObject.push(container);
-
-            check();
+          });
           }
         });
       })();
@@ -88,31 +93,66 @@ module.exports = function (router, core) {
           else { res.send(200); }
         });
       }
+      else if (req.body.action == 'updateConfig') {
+        var splittedName = data.Name.split('/');
+
+        jsonfile.writeFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), req.body.newConfig, "UTF-8", function (err) {
+          if (err) { throw err; }
+          else {
+            var newTitle = {
+              "title" : req.body.newTitle
+            }
+            jsonfile.writeFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), newTitle, "UTF-8", function (err) {
+              if (err) { throw err; }
+              else { 
+                container.restart(function (err) {
+                  res.send(200); 
+                });
+              }
+            });
+          }
+        });
+      }
     });
   });
 
-  router.route('/-/v1/instances/:containerId').get(function (req, res, next) {
+  router.route('/-/v1/instances/:containerId/info').get(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
       if (err) { throw err; }
       else {
+        var splittedName = data.Name.split('/');
+
         var splittedName = data.Name.split('/')
           , directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
-          , configDatas = require(
-              path.join(__dirname, '../instances/', splittedName[1], '/config/data.json')
-            )
           , result = {};
 
-        getSize(directoryDatas, function (err, size) {
-          if (err) { throw err; }
-          else {
-            result['title'] = configDatas.title;
-            result['size'] = filesize(size);
-            res.send(result);
-          }
+        jsonfile.readFile(__dirname, '../instances/', splittedName[1], '/config/data.json', function (err, obj) {
+          getSize(directoryDatas, function (err, size) {
+            if (err) { throw err; }
+            else {
+              result['title'] = obj.title;
+              result['size'] = filesize(size);
+              res.send(result);
+            }
+          });
         });
       }
+    });
+  });
+
+  router.route('/-/v1/instances/:containerId/config').get(bodyParser(), function (req, res, next) {
+    var container = docker.getContainer(req.params.containerId);
+
+    container.inspect(function (err, data) {
+      if (err) { throw err; }
+
+      var splittedName = data.Name.split('/');
+
+      jsonfile.readFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), function (err, obj) {
+        res.send(obj);
+      });
     });
   });
 

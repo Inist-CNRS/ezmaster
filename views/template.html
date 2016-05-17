@@ -27,6 +27,7 @@
                 <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
                 <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
                 <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
+                <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
                 <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.address ]]'>Open</a></li>
               </ul>
 
@@ -44,6 +45,30 @@
                         </p><br />
                         <a class="btn btn-raised btn-info close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
                         <a style='float:right' id='delete_instance' class="btn btn-danger" v-on:click="deleteInstance">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal" id="modal-update-config">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="panel panel-info">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Update instance configuration</h3>
+                      </div>
+                      <div class="panel-body">
+                        <form class='form-horizontal'>
+                          <div class="form-group">
+                            <div class="col-md-16">
+                              <div id="jsoneditor"></div>
+                            </div>
+                          </div>
+                            <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
+                            <a class="btn btn-raised" v-on:click='changeMode'>Change </a>
+                            <a style='float:right' id='delete_instance' class="btn btn-info" v-on:click="updateConfig">Update</a>
+                          <form>
+                        </form>
                       </div>
                     </div>
                   </div>
