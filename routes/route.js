@@ -105,9 +105,12 @@ module.exports = function (router, core) {
             jsonfile.writeFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), newTitle, function (err) {
               if (err) { throw err; }
               else { 
-                container.restart(function (err) {
-                  res.send(200); 
-                });
+                if(data.State.Running == true) {
+                  container.restart(function (err) {
+                    res.send(200); 
+                  });
+                }
+                else { res.send(200); }
               }
             });
           }
