@@ -98,20 +98,13 @@ module.exports = function (router, core) {
         jsonfile.writeFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), req.body.newConfig, function (err) {
           if (err) { return next (err); }
 
-          var newTitle = {
-            "title" : req.body.newTitle
+          if (data.State.Running == true) {
+            container.restart(function (err) {
+              if (err) { return next (err); }
+              res.send(200); 
+            });
           }
-          jsonfile.writeFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), newTitle, function (err) {
-            if (err) { return next (err); }
-
-            if (data.State.Running == true) {
-              container.restart(function (err) {
-                if (err) { return next (err); }
-                res.send(200); 
-              });
-            }
-            else { res.send(200); }
-          });
+          else { res.send(200); }
         });
       }
     });
