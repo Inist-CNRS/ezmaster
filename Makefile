@@ -31,7 +31,6 @@ docker-run-dev: ## run ezmaster in dev mode with dockerized nodejs/nodemon and m
 
 docker-run-prod: ## run ezmaster in production mode with the full dockerized image (see docker-build)
 	@## because docker-compose.yml needs a config.local.js
-	@test -f ./config.local.js || cp -f ./config.sample.js ./config.local.js
 	@NODE_ENV=production docker-compose -f ./docker-compose.yml up -d --force-recreate
 
 docker-stop-prod: ## stop ezmaster production daemon

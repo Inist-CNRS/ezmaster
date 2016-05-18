@@ -1,8 +1,7 @@
 /* global Vue, $, location */
 'use strict';
 
-var editor = null
-  , file = null;
+var editor = null;
 
 module.exports = new Vue({
   el: '#instances-table',
@@ -65,7 +64,6 @@ module.exports = new Vue({
     },
 
     updateConfig : function (event) {
-      console.log(event);
       var newConfig = editor.get();
 
       var data = {

@@ -42,35 +42,33 @@ module.exports = function (router, core) {
         var img = docker.getImage(elements.Image);
 
         jsonfile.readFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err, obj) {
-          if (err) throw err;
-          else {
-            img.inspect(function (err, data) {
-            if (err) { throw err; }
-            else {
-              if (elements.State === 'running') {
-                container['status'] = true;
-                container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
-                container['target'] = 'ezmaster';
-              }
-              else if (elements.State === 'exited') {
-                container['status'] = false;
-                container['address'] = '';
-                container['target'] = '';
-              }
+          if (err) { return next (err); }
 
-              elements.Image = data.RepoTags[0];
-              elements.Names[0] = splittedName[1];
-              elements.Created = moment.unix(elements.Created).format('YYYY/MM/DD');
+          img.inspect(function (err, data) {
+            if (err) { return next (err); }
 
-              container['title'] = obj.title;
-              container['description'] = elements;
-
-              arrayObject.push(container);
-
-              check();
+            if (elements.State === 'running') {
+              container['status'] = true;
+              container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
+              container['target'] = 'ezmaster';
             }
+            else if (elements.State === 'exited') {
+              container['status'] = false;
+              container['address'] = '';
+              container['target'] = '';
+            }
+
+            elements.Image = data.RepoTags[0];
+            elements.Names[0] = splittedName[1];
+            elements.Created = moment.unix(elements.Created).format('YYYY/MM/DD');
+
+            container['title'] = obj.title;
+            container['description'] = elements;
+
+            arrayObject.push(container);
+
+            check();
           });
-          }
         });
       })();
     });
@@ -80,40 +78,40 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if (err) { throw err; }
-      else if (req.body.action == 'start' && data.State.Running == false) {
+      if (err) { return next (err); }
+      
+      if (req.body.action == 'start' && data.State.Running == false) {
         container.start(function (err, datas, container) {
-          if (err) { throw (err); }
-          else { res.send(200); }
+          if (err) { return next (err); }
+          res.send(200);
         });
       }
       else if (req.body.action == 'stop' && data.State.Running == true) {
         container.stop(function (err, datas, container) {
-          if (err) { throw (err); }
-          else { res.send(200); }
+          if (err) { return next (err); }
+          res.send(200);
         });
       }
       else if (req.body.action == 'updateConfig') {
         var splittedName = data.Name.split('/');
 
         jsonfile.writeFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), req.body.newConfig, function (err) {
-          if (err) { throw err; }
-          else {
-            var newTitle = {
-              "title" : req.body.newTitle
-            }
-            jsonfile.writeFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), newTitle, function (err) {
-              if (err) { throw err; }
-              else { 
-                if(data.State.Running == true) {
-                  container.restart(function (err) {
-                    res.send(200); 
-                  });
-                }
-                else { res.send(200); }
-              }
-            });
+          if (err) { return next (err); }
+
+          var newTitle = {
+            "title" : req.body.newTitle
           }
+          jsonfile.writeFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), newTitle, function (err) {
+            if (err) { return next (err); }
+
+            if (data.State.Running == true) {
+              container.restart(function (err) {
+                if (err) { return next (err); }
+                res.send(200); 
+              });
+            }
+            else { res.send(200); }
+          });
         });
       }
     });
@@ -123,27 +121,24 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if (err) { throw err; }
-      else {
-        var splittedName = data.Name.split('/');
+      if (err) { return next (err); }
 
-        var splittedName = data.Name.split('/')
-          , directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
-          , result = {};
+      var splittedName = data.Name.split('/');
 
-        console.info("SPLITTED NAME : " + splittedName[1]);
-        var file = 
-        jsonfile.readFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), function (err, obj) {
-          getSize(directoryDatas, function (err, size) {
-            if (err) { throw err; }
-            else {
-              result['title'] = obj.title;
-              result['size'] = filesize(size);
-              res.send(result);
-            }
-          });
+      var splittedName = data.Name.split('/')
+        , directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
+        , result = {};
+
+      jsonfile.readFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), function (err, obj) {
+        if (err) { return next (err); }
+        getSize(directoryDatas, function (err, size) {
+          if (err) { return next (err); }
+
+          result['title'] = obj.title;
+          result['size'] = filesize(size);
+          res.send(result);
         });
-      }
+      });
     });
   });
 
@@ -151,7 +146,7 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if (err) { throw err; }
+      if (err) { return next (err); }
 
       var splittedName = data.Name.split('/');
 
@@ -165,22 +160,22 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if (err) { throw err; }
-      else if (data.State.Running == true) {
+      if (err) { return next (err); }
+
+      if (data.State.Running == true) {
         container.stop(function (err, datas, cont) {
-          if (err) { throw (err); }
-          else {
-            container.remove(function (err, datas, cont) {
-              if (err) { throw (err); }
-              else { res.send(200); }
-            });
-          }
+          if (err) { return next (err); }
+
+          container.remove(function (err, datas, cont) {
+            if (err) { return next (err); }
+            res.send(200);
+          });
         });
       }
       else if (data.State.Running == false) {
         container.remove(function (err, datas, cont) {
-          if (err) { throw (err); }
-          else { res.send(200); }
+          if (err) { return next (err); }
+          res.send(200);
         });
       }
     });
@@ -188,25 +183,24 @@ module.exports = function (router, core) {
 
   router.route('/-/v1/instances').post(function (req, res, next) {
     docker.pull('inistcnrs/ezvis:latest', function (err, stream) {
-      if (err) { throw err; }
+      if (err) { return next (err); }
 
       docker.modem.followProgress(stream, onFinished, onProgress);
 
       function onFinished(err, output) {
-        if (err) { throw err; }
-        else {
-          var cmd = 'docker run -d -p 3001:3000 -e http_proxy -e https_proxy '+
-            '--net=ezmaster_default --link ezmaster_db:ezvis_db '+
-            '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis/config/data.json:'+
-              '/root/data.json '+
-            '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis/data/:/root/data/ '+
-            '--name inistcnrs-ezvis inistcnrs/ezvis:latest';
+        if (err) { return next (err); }
 
-          exec(cmd, function (err, stdout, stderr) {
-            if (err) { throw err; }
-            else { res.send(200); }
-          });
-        }
+        var cmd = 'docker run -d -p 3001:3000 -e http_proxy -e https_proxy '+
+          '--net=ezmaster_default --link ezmaster_db:ezvis_db '+
+          '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis/config/data.json:'+
+            '/root/data.json '+
+          '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis/data/:/root/data/ '+
+          '--name inistcnrs-ezvis inistcnrs/ezvis:latest';
+
+        exec(cmd, function (err, stdout, stderr) {
+          if (err) { return next (err); }
+          res.send(200);
+        });
       }
 
       function onProgress(event) {
