@@ -16,7 +16,6 @@ services:
       - ezmaster_db
     volumes:
       - .:/app
-      # - ./instances:/app/instances
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       http_proxy:  ${http_proxy}

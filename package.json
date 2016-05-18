@@ -35,6 +35,7 @@
     "get-folder-size": "^1.0.0",
     "jbj-parse": "^1.0.0",
     "jsonfile": "^2.3.1",
+    "mkdirp": "^0.5.1",
     "moment": "^2.13.0",
     "mongodb-querystring": "^1.0.2",
     "tcp-port-used": "^0.1.2",
