@@ -1,7 +1,9 @@
 /* global Vue, $, location */
 'use strict';
 
-var editor = null;
+var editor = null
+  , idToDelete = null
+  , idToConfig = null;
 
 module.exports = new Vue({
   el: '#instances-table',
@@ -31,8 +33,9 @@ module.exports = new Vue({
     },
 
     confirmationDelete : function (event) {
+      idToDelete = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id+'/info').then(function (result) {
-        this.titleToDelete = result.data.title;
+        this.technicalNameToDelete = result.data.technicalName;
         this.sizeToDelete = result.data.size;
         $('#modal-delete-instance').show();
       }, console.error);
@@ -43,7 +46,7 @@ module.exports = new Vue({
     },
 
     deleteInstance : function (event) {
-      this.$http.delete('/-/v1/instances/'+event.path[7].id).then(function (result) {
+      this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
         location.reload();
       }, console.error);
     },
@@ -53,6 +56,7 @@ module.exports = new Vue({
     },
 
     displayConfig : function (event) {
+      idToConfig = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id+'/config').then(function (result) {
         $('#modal-update-config').show();
         var opts = {
@@ -71,14 +75,14 @@ module.exports = new Vue({
         , newConfig : newConfig
         , newTitle : newConfig.title
       };
-      this.$http.put('/-/v1/instances/'+event.path[7].id, data).then(function (result) {
+      this.$http.put('/-/v1/instances/'+idToConfig, data).then(function (result) {
         location.reload();
       });
     }
   },
   data : {
     sizeToDelete : '',
-    titleToDelete : '',
+    technicalNameToDelete : '',
     containers : []
   }
 });

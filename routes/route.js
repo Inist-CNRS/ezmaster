@@ -15,7 +15,9 @@ var path = require('path')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
   , exec = require('child_process').exec
   , jsonfile = require('jsonfile')
-  , mkdirp = require('mkdirp');
+  , mkdirp = require('mkdirp')
+  , rimraf = require('rimraf')
+  , getPort = require('getport');
 
 module.exports = function (router, core) {
 
@@ -27,8 +29,7 @@ module.exports = function (router, core) {
     var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
     docker.listContainers({all : true}, function (err, containers) {
 
-      var arrayObject = []
-        , i = 1;
+      var arrayObject = [];
 
       (function check() {
 
@@ -70,8 +71,6 @@ module.exports = function (router, core) {
             container['description'] = elements;
 
             arrayObject.push(container);
-            console.info(i + "////////////" + util.inspect(arrayObject));
-            i++;
 
             check();
           });
@@ -122,21 +121,16 @@ module.exports = function (router, core) {
     container.inspect(function (err, data) {
       if (err) { return next (err); }
 
-      var splittedName = data.Name.split('/');
-
       var splittedName = data.Name.split('/')
         , directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
         , result = {};
 
-      jsonfile.readFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), function (err, obj) {
+      getSize(directoryDatas, function (err, size) {
         if (err) { return next (err); }
-        getSize(directoryDatas, function (err, size) {
-          if (err) { return next (err); }
 
-          result['title'] = obj.title;
-          result['size'] = filesize(size);
-          res.send(result);
-        });
+        result['technicalName'] = splittedName[1];
+        result['size'] = filesize(size);
+        res.send(result);
       });
     });
   });
@@ -168,66 +162,26 @@ module.exports = function (router, core) {
 
           container.remove(function (err, datas, cont) {
             if (err) { return next (err); }
-            res.send(200);
           });
         });
       }
       else if (data.State.Running == false) {
         container.remove(function (err, datas, cont) {
           if (err) { return next (err); }
-          res.send(200);
         });
       }
-    });
-  });
 
-  /*router.route('/-/v1/instances').post(function (req, res, next) {
-    docker.pull('inistcnrs/ezvis:latest', function (err, stream) {
-      if (err) { return next (err); }
-
-      docker.modem.followProgress(stream, onFinished, onProgress);
-
-      function onFinished(err, output) {
+      var splittedName = data.Name.split('/');
+      rimraf(path.join(__dirname, '../instances/', splittedName[1]), function (err) {
         if (err) { return next (err); }
 
-        mkdirp(path.join(__dirname, '../instances/inistcnrs-ezvis/config/'), function (err) {
+        rimraf(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err) {
           if (err) { return next (err); }
-
-          mkdirp(path.join(__dirname, '../instances/inistcnrs-ezvis/data/'), function (err) {
-            if(err) { return next (err); }
-
-            fs.appendFile(path.join(__dirname, '../instances/inistcnrs-ezvis/config/data.json'), '{}', function (err) {
-              if (err) { return next (err); }
-
-              var cmd = 'docker run -d -p 3001:3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
-              '--net=ezmaster_default --link ezmaster_db '+
-              '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis/config/data.json:'+
-                '/root/data.json '+
-              '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis/data/:/root/data/ '+
-              '--name inistcnrs-ezvis inistcnrs/ezvis:latest';
-
-              var newTitle = {
-                "title" : "Films"
-              }
-              jsonfile.writeFile(path.join(__dirname, '../manifests/inistcnrs-ezvis.json'), newTitle, function (err) {
-                if(err) { return next (err); }
-              });
-
-              exec(cmd, function (err, stdout, stderr) {
-                if (err) { return next (err); }
-                res.send(200);
-              });
-            });
-          });
-        });
-      }
-
-      function onProgress(event) {
-        console.info(event);
-      }
+          res.send(200);
+        });        
+      });
     });
-  });*/
-
+  });
 
   router.route('/-/v1/instances').post(function (req, res, next) {
     docker.pull('inistcnrs/ezvis:latest', function (err, stream) {
@@ -255,12 +209,12 @@ module.exports = function (router, core) {
                 fs.appendFile(path.join(__dirname, '../instances/inistcnrs-ezvis-1/config/data.json'), '{}', function (err) {
                   if (err) { return next (err); }
 
-                  var cmd = 'docker run -d -p 3002:3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
-                  '--net=ezmaster_default --link ezmaster_db '+
-                  '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-1/config/data.json:'+
-                    '/root/data.json '+
-                  '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-1/data/:/root/data/ '+
-                  '--name inistcnrs-ezvis-1 inistcnrs/ezvis:latest';
+                  var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
+                    '--net=ezmaster_default --link ezmaster_db '+
+                    '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-1/config/data.json:'+
+                      '/root/data.json '+
+                    '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-1/data/:/root/data/ '+
+                    '--name inistcnrs-ezvis-1 inistcnrs/ezvis:latest';
 
                   var newTitle = {
                     "title" : "Films"
@@ -279,14 +233,15 @@ module.exports = function (router, core) {
                         if(err) { return next (err); }
 
                         fs.appendFile(path.join(__dirname, '../instances/inistcnrs-ezvis-2/config/data.json'), '{}', function (err) {
-                          if (err) { return next (err); }
+                          if (err) { return next (err); } 
 
-                          var cmd = 'docker run -d -p 3003:3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
-                          '--net=ezmaster_default --link ezmaster_db '+
-                          '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-2/config/data.json:'+
-                            '/root/data.json '+
-                          '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-2/data/:/root/data/ '+
-                          '--name inistcnrs-ezvis-2 inistcnrs/ezvis:latest';
+                          if(err) return next (err);
+                          var cmd = 'docker run -d -p 3001:3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
+                            '--net=ezmaster_default --link ezmaster_db '+
+                            '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-2/config/data.json:'+
+                              '/root/data.json '+
+                            '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-2/data/:/root/data/ '+
+                            '--name inistcnrs-ezvis-2 inistcnrs/ezvis:latest';
 
                           var newTitle = {
                             "title" : "Films"

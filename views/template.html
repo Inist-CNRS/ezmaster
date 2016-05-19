@@ -17,6 +17,7 @@
       <tbody>
         <template v-for="item in containers">
           <tr v-if="[[ item.status ]] == 'true'" class="success" id="[[ item.description.Id ]]">
+          [[ item.description.Id ]]
             <td>[[ item.title ]]</td>
             <td>[[ item.description.Names[0] ]]</td>
             <td>[[ item.description.Created ]]</td>
@@ -40,13 +41,13 @@
                       </div>
                       <div class="panel-body">
                         <p>
-                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ item.description.Names[0] ]]</span> ?</span><br /><br />
+                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ technicalNameToDelete ]]</span> ?</span><br /><br />
                           <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
                         </p><br />
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
-                        <a style='float:right' id='delete_instance' class="btn btn-danger" v-on:click="deleteInstance">Delete</a>
+                        <a class="btn btn-raised btn-default" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' class="btn btn-warning" v-on:click="deleteInstance">Delete</a>
                       </div>
                     </div>
                   </div>
@@ -63,8 +64,8 @@
                         <div id="jsoneditor"></div>
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
-                        <a style='float:right' id='delete_instance' class="btn btn-info" v-on:click="updateConfig">Update</a>
+                        <a class="btn btn-raised btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' class="btn btn-info" v-on:click="updateConfig">Update</a>
                       </div>
                     </div>
                   </div>
@@ -96,13 +97,13 @@
                       </div>
                       <div class="panel-body">
                         <p>
-                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ item.description.Names[0] ]]</span> ?</span><br /><br />
+                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ technicalNameToDelete ]]</span> ?</span><br /><br />
                           <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
                         </p><br />
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
-                        <a style='float:right' id='delete_instance' class="btn btn-danger" v-on:click="deleteInstance">Delete</a>
+                        <a class="btn btn-raised btn-default" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' class="btn btn-warning" v-on:click="deleteInstance">Delete</a>
                       </div>
                     </div>
                   </div>
@@ -119,8 +120,8 @@
                         <div id="jsoneditor"></div>
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-raised btn-default close_modal_delete_instance" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
-                        <a style='float:right' id='delete_instance' class="btn btn-info" v-on:click="updateConfig">Update</a>
+                        <a class="btn btn-raised btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' class="btn btn-info" v-on:click="updateConfig">Update</a>
                       </div>
                     </div>
                   </div>
