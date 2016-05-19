@@ -52,7 +52,7 @@ module.exports = new Vue({
     },
 
     cancelConfig : function (event) {
-      location.reload();
+      $('#modal-update-config').hide();
     },
 
     displayConfig : function (event) {

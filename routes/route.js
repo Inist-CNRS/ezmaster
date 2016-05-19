@@ -17,7 +17,7 @@ var path = require('path')
   , jsonfile = require('jsonfile')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
-  , getPort = require('getport');
+  , getport = require('getport');
 
 module.exports = function (router, core) {
 
@@ -183,8 +183,13 @@ module.exports = function (router, core) {
     });
   });
 
-  router.route('/-/v1/instances').post(function (req, res, next) {
-    docker.pull('inistcnrs/ezvis:latest', function (err, stream) {
+  router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
+    var technicalName = req.body.technicalName
+      , title = req.body.title
+      , image = req.body.app;
+
+    console.info(image);
+    docker.pull(image, function (err, stream) {
       if (err) { return next (err); }
 
       docker.modem.followProgress(stream, onFinished, onProgress);
@@ -192,80 +197,35 @@ module.exports = function (router, core) {
       function onFinished(err, output) {
         if (err) { return next (err); }
 
-        docker.pull('inistcnrs/ezvis:latest', function (err, stream) {
-          if(err) { return next (err); }
+        mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), function (err) {
+          if (err) { return next (err); }
 
-          docker.modem.followProgress(stream, finished, progress);
+          mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), function (err) {
+            if(err) { return next (err); }
 
-          function finished(err, output) {
-            if (err) { return next (err); }
-
-            mkdirp(path.join(__dirname, '../instances/inistcnrs-ezvis-1/config/'), function (err) {
+            fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
               if (err) { return next (err); }
 
-              mkdirp(path.join(__dirname, '../instances/inistcnrs-ezvis-1/data/'), function (err) {
+              var cmd = 'docker run -d -p 3001:3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
+                '--net=ezmaster_default --link ezmaster_db '+
+                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
+                  '/root/data.json '+
+                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
+                '--name '+technicalName+' '+image;
+
+              var newTitle = {
+                "title" : title
+              }
+              jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newTitle, function (err) {
                 if(err) { return next (err); }
+              });
 
-                fs.appendFile(path.join(__dirname, '../instances/inistcnrs-ezvis-1/config/data.json'), '{}', function (err) {
-                  if (err) { return next (err); }
-
-                  var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
-                    '--net=ezmaster_default --link ezmaster_db '+
-                    '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-1/config/data.json:'+
-                      '/root/data.json '+
-                    '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-1/data/:/root/data/ '+
-                    '--name inistcnrs-ezvis-1 inistcnrs/ezvis:latest';
-
-                  var newTitle = {
-                    "title" : "Films"
-                  }
-                  jsonfile.writeFile(path.join(__dirname, '../manifests/inistcnrs-ezvis-1.json'), newTitle, function (err) {
-                    if(err) { return next (err); }
-                  });
-
-                  exec(cmd, function (err, stdout, stderr) {
-                    if (err) { return next (err); }
-
-                    mkdirp(path.join(__dirname, '../instances/inistcnrs-ezvis-2/config/'), function (err) {
-                      if (err) { return next (err); }
-
-                      mkdirp(path.join(__dirname, '../instances/inistcnrs-ezvis-2/data/'), function (err) {
-                        if(err) { return next (err); }
-
-                        fs.appendFile(path.join(__dirname, '../instances/inistcnrs-ezvis-2/config/data.json'), '{}', function (err) {
-                          if (err) { return next (err); } 
-
-                          if(err) return next (err);
-                          var cmd = 'docker run -d -p 3001:3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
-                            '--net=ezmaster_default --link ezmaster_db '+
-                            '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-2/config/data.json:'+
-                              '/root/data.json '+
-                            '-v '+process.env.EZMASTER_PATH+'/instances/inistcnrs-ezvis-2/data/:/root/data/ '+
-                            '--name inistcnrs-ezvis-2 inistcnrs/ezvis:latest';
-
-                          var newTitle = {
-                            "title" : "Films"
-                          }
-                          jsonfile.writeFile(path.join(__dirname, '../manifests/inistcnrs-ezvis-2.json'), newTitle, function (err) {
-                            if(err) { return next (err); }
-                          });
-
-                          exec(cmd, function (err, stout, stderr) {
-                            if (err) { return next(err); }
-                            res.send(200);
-                          });
-                        });
-                      });
-                    });
-                  });
-                });
+              exec(cmd, function (err, stdout, stderr) {
+                if (err) { return next (err); }
+                res.send(200);
               });
             });
-          }
-
-          function progress(event) {
-            console.info(event);
-          }
+          });
         });
       }
 
