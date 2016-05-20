@@ -5,7 +5,6 @@ module.exports = new Vue({
   methods : {
   	displayFormAddInstance : function (event) {
 			$('#modal-add-instance').show();
-			this.technicalName = this.project + '-' + this.study + '-' + this.project;
   	},
 
   	cancelAddInstance : function (event) {
@@ -18,6 +17,10 @@ module.exports = new Vue({
   		this.study = $("#inputStudy").val();
   		this.version = $("#inputVersion").val();
 			this.technicalName = $("#inputProject").val() + '-' + $("#inputStudy").val() + '-' + $("#inputVersion").val();
+
+			$("#save").hide();
+			$("#close_modal").hide();
+			$("#loaderAddInstance").show();
 
   		var data = {
   			'title' : this.title,

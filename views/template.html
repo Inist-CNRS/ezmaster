@@ -213,7 +213,10 @@
                   <div class="panel-footer">
                     <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
                     <button v-if='$validation1.valid' type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Save</button>
-                    <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Save</button>                  
+                    <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Save</button>
+                    <div id='imgLoader' style='text-align: center;'>
+                      <img style="display: none;" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading" />
+                    </div>                 
                   </div>    
                 </fieldset>
               </form>
