@@ -17,7 +17,9 @@ var path = require('path')
   , jsonfile = require('jsonfile')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
-  , getport = require('getport');
+  , freeport = require('freeport');
+
+jsonfile.spaces = 2;
 
 module.exports = function (router, core) {
 
@@ -206,23 +208,42 @@ module.exports = function (router, core) {
             fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
               if (err) { return next (err); }
 
-              var cmd = 'docker run -d -p 3001:3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
+              freeport(function(err, port) {
+
+              /*var verifyPort = "grep \'port\' "+path.join(__dirname, "../manifests/*.json")+" | sort | tail -1 | cut -d':' -f3 | sed -e 's/[\" ]//g'"
+                , newPort = null;
+
+              exec(verifyPort, function (err, stdout, stderr) {
+                if (err) { return next (err); }
+
+                console.info("\""+stdout+"\"");
+                console.info(JSON.stringify(stdout));
+                if(stdout == "\n") { newPort = 49152; }
+                else {
+                  newPort = stdout + 1;
+                  console.info("NEW PORT :" + newPort);
+                  newPort += ''; 
+                }*/
+
+                var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
                 '--net=ezmaster_default --link ezmaster_db '+
                 '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
                   '/root/data.json '+
                 '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
                 '--name '+technicalName+' '+image;
 
-              var newTitle = {
-                "title" : title
-              }
-              jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newTitle, function (err) {
-                if(err) { return next (err); }
-              });
+                var newTitle = {
+                  "title" : title
+                }
+                jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newTitle, function (err) {
+                  if (err) { return next (err); }
+                });
 
-              exec(cmd, function (err, stdout, stderr) {
-                if (err) { return next (err); }
-                res.send(200);
+                exec(cmd, function (err, stdout, stderr) {
+                  if (err) { return next (err); }
+                  res.send(200);
+                });
+              //});
               });
             });
           });
