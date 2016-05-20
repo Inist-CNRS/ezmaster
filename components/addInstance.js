@@ -5,7 +5,7 @@ module.exports = new Vue({
   methods : {
   	displayFormAddInstance : function (event) {
 			$('#modal-add-instance').show();
-			this.technicalName = this.project + '-' + this.version + '-' + this.study;
+			this.technicalName = this.project + '-' + this.study + '-' + this.project;
   	},
 
   	cancelAddInstance : function (event) {
@@ -13,21 +13,26 @@ module.exports = new Vue({
   	},
 
   	addInstance : function (event) {
-			this.technicalName = $("#inputPart1").val() + '-' + $("#inputPart2").val() + '-' + $("#inputPart3").val();
+  		this.title = $("#inputTitle").val();
+  		this.project = $("#inputProject").val();
+  		this.study = $("#inputStudy").val();
+  		this.version = $("#inputVersion").val();
+			this.technicalName = $("#inputProject").val() + '-' + $("#inputStudy").val() + '-' + $("#inputVersion").val();
 
   		var data = {
-  			'title' : $("#inputTitle").val(),
+  			'title' : this.title,
+  			'project' : this.project,
+  			'version' : this.version,
+  			'study': this.study,
   			'technicalName' :  this.technicalName,
   			'app' : $("#app").val()
   		}
   		this.$http.post('/-/v1/instances', data).then(function (result) {
-  			location.reload();
+  			if (result.data.status == 'noExists') { location.reload(); }
+  			else if (result.data.status == 'exists') { 
+  				$("#technicalNameExists").show();
+  			}
   		}, console.error );
-  	}
-  },
-  validator : {
-  	validation1 : {
-
   	}
   },
   data : {

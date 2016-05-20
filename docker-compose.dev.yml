@@ -19,6 +19,7 @@ services:
       NODE_ENV: "development"
       DEBUG: "castor*,console*"
       MONGODB_URI: "ezmaster_db:27017"
+      EZMASTER_PATH: ${PWD}
     working_dir: /app
     ports:
       - 3000:3000

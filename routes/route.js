@@ -17,7 +17,8 @@ var path = require('path')
   , jsonfile = require('jsonfile')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
-  , freeport = require('freeport');
+  , freeport = require('freeport')
+  , fileExists = require('file-exists');
 
 jsonfile.spaces = 2;
 
@@ -188,57 +189,71 @@ module.exports = function (router, core) {
   router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
     var technicalName = req.body.technicalName
       , title = req.body.title
-      , image = req.body.app;
+      , image = req.body.app
+      , project = req.body.project
+      , version = req.body.version
+      , study = req.body.study
+      , result = {};
 
-    console.info(image);
-    docker.pull(image, function (err, stream) {
-      if (err) { return next (err); }
+    var concat = project + '-' + study + '-' + version;
+    if(title != "" && /^[a-z0-9]+$/.test(project) && /^[a-z0-9]+$/.test(study) && /^[0-9]+$/.test(version) && technicalName == concat) {
 
-      docker.modem.followProgress(stream, onFinished, onProgress);
-
-      function onFinished(err, output) {
-        if (err) { return next (err); }
-
-        mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), function (err) {
+      if(fileExists(path.join(__dirname, '../manifests/'+technicalName+'.json')) == false) {
+        docker.pull(image, function (err, stream) {
           if (err) { return next (err); }
 
-          mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), function (err) {
-            if(err) { return next (err); }
+          docker.modem.followProgress(stream, onFinished, onProgress);
 
-            fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
+          function onFinished(err, output) {
+            if (err) { return next (err); }
+
+            mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), function (err) {
               if (err) { return next (err); }
 
-              freeport(function(err, port) {
+              mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), function (err) {
                 if(err) { return next (err); }
-                
-                var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
-                '--net=ezmaster_default --link ezmaster_db '+
-                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
-                  '/root/data.json '+
-                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
-                '--name '+technicalName+' '+image;
 
-                var newTitle = {
-                  "title" : title
-                }
-                jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newTitle, function (err) {
+                fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
                   if (err) { return next (err); }
-                });
 
-                exec(cmd, function (err, stdout, stderr) {
-                  if (err) { return next (err); }
-                  res.send(200);
+                  freeport(function(err, port) {
+                    if(err) { return next (err); }
+                    
+                    var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
+                    '--net=ezmaster_default --link ezmaster_db '+
+                    '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
+                      '/root/data.json '+
+                    '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
+                    '--name '+technicalName+' '+image;
+
+                    var newTitle = {
+                      "title" : title
+                    }
+                    jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newTitle, function (err) {
+                      if (err) { return next (err); }
+                    });
+
+                    exec(cmd, function (err, stdout, stderr) {
+                      if (err) { return next (err); }
+                      result['status'] = 'noExists';
+                      res.send(result);
+                    });
+                  });
                 });
               });
             });
-          });
+          }
+
+          function onProgress(event) {
+            console.info(event);
+          }
         });
       }
-
-      function onProgress(event) {
-        console.info(event);
+      else {
+        result['status'] = 'exists';
+        res.send(result);
       }
-    });
+    }
   });
 
 };

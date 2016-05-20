@@ -449,3 +449,7 @@ img.github {
   width: 100%;
   height: 600px;
 }
+
+.spanErrorForm {
+  color: #F44336;
+}

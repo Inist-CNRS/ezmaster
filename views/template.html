@@ -150,42 +150,44 @@
                       <label for="inputTitle" class="col-md-2 control-label">Title</label>
 
                       <div class="col-md-10">
-                        <input class="form-control" id="inputTitle" placeholder="Instance title" type="text" v-model="title" v-validate:title="{ required: true, lowercaseAndDigits : true}"/>
-                        <span class="help-block" v-if="$validation1.title.required">Choose a title please.</span>
-                        <span class="help-block" v-if="$validation1.title.lowercaseAndDigits">Only lower case letters and digits.</span>
+                        <input class="form-control" id="inputTitle" placeholder="Instance title" type="text" v-model="title" v-validate:title="{ required: true}"/>
+                        <span class="help-block spanErrorForm" v-if="$validation1.title.required">Choose a title please.</span>
                       </div>
                     </div>
-                    <br />
+
                     <div class="form-group">
-                      <label for="inputPart1" class="col-md-2 control-label">Part 1</label>
+                      <label for="inputProject" class="col-md-2 control-label">Project</label>
 
                       <div class="col-md-10">
-                        <input class="form-control" id="inputPart1" placeholder="Project" type="text" v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">
-                        <span class="help-block" v-if="$validation1.project.required">Choose a project name please.</span>
-                        <span class="help-block" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
+                        <input class="form-control" id="inputProject" placeholder="Project name" type="text" v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">
+                        <span class="help-block">Ex : projectName</span>
+                        <span class="help-block spanErrorForm" v-if="$validation1.project.required">Choose a project name please.</span>
+                        <span class="help-block spanErrorForm" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
                       </div>
                     </div>
-                    <br />
+
                     <div class="form-group">
-                      <label for="inputPart2" class="col-md-2 control-label">Part 2</label>
+                      <label for="inputStudy" class="col-md-2 control-label">Study</label>
 
                       <div class="col-md-10">
-                        <input class="form-control" id="inputPart2" placeholder="Version" type="text" v-model="version" v-validate:version="{ required: true, numeric : true }">
-                        <span class="help-block" v-if="$validation1.version.required">Choose a version please.</span>
-                        <span class="help-block" v-if="$validation1.version.numeric">Only digits.</span>
+                        <input class="form-control" id="inputStudy" placeholder="Study name" type="text" v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">
+                        <span class="help-block">Ex : studyName</span>
+                        <span class="help-block spanErrorForm" v-if="$validation1.study.required">Choose a study name please.</span>
+                        <span class="help-block spanErrorForm" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
                       </div>
                     </div>
-                    <br />
+
                     <div class="form-group">
-                      <label for="inputPart3" class="col-md-2 control-label">Part 3</label>
+                      <label for="inputVersion" class="col-md-2 control-label">Version</label>
 
                       <div class="col-md-10">
-                        <input class="form-control" id="inputPart3" placeholder="Study" type="text" v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">
-                        <span class="help-block" v-if="$validation1.study.required">Choose a study name please.</span>
-                        <span class="help-block" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
+                        <input class="form-control" id="inputVersion" placeholder="Instance version" type="text" v-model="version" v-validate:version="{ required: true, numeric : true }">
+                        <span class="help-block">Ex : 4</span>
+                        <span class="help-block spanErrorForm" v-if="$validation1.version.required">Choose a version please.</span>
+                        <span class="help-block spanErrorForm" v-if="$validation1.version.numeric">Only digits.</span>
                       </div>
                     </div>
-                    <br />
+
                     <div class="form-group">
                       <label for="app" class="col-md-2 control-label">App</label>
 
@@ -196,12 +198,14 @@
                         </select>
                       </div>
                     </div>
-                    <br />
+
                     <div class="form-group">
                       <label for="technicalName" class="col-md-3 control-label">Technical name</label>
 
                       <div class="col-md-9">
                         <input class="form-control" id="technicalName" value="[[ technicalName ]]" type="text" disabled>
+                        <span class="help-block">Ex : projectName-studyName-4</span>
+                        <span id='technicalNameExists' style="display: none" class="help-block spanErrorForm">Technical name already exists</span>
                       </div>
                     </div>
                   </div>
