@@ -209,22 +209,8 @@ module.exports = function (router, core) {
               if (err) { return next (err); }
 
               freeport(function(err, port) {
-
-              /*var verifyPort = "grep \'port\' "+path.join(__dirname, "../manifests/*.json")+" | sort | tail -1 | cut -d':' -f3 | sed -e 's/[\" ]//g'"
-                , newPort = null;
-
-              exec(verifyPort, function (err, stdout, stderr) {
-                if (err) { return next (err); }
-
-                console.info("\""+stdout+"\"");
-                console.info(JSON.stringify(stdout));
-                if(stdout == "\n") { newPort = 49152; }
-                else {
-                  newPort = stdout + 1;
-                  console.info("NEW PORT :" + newPort);
-                  newPort += ''; 
-                }*/
-
+                if(err) { return next (err); }
+                
                 var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
                 '--net=ezmaster_default --link ezmaster_db '+
                 '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
@@ -243,7 +229,6 @@ module.exports = function (router, core) {
                   if (err) { return next (err); }
                   res.send(200);
                 });
-              //});
               });
             });
           });

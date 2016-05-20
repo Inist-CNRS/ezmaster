@@ -138,71 +138,82 @@
       <div class="modal" id="modal-add-instance">
         <div class="modal-dialog">
           <div class="modal-content">
-            <form id="add-instance-form" class="form-horizontal">
-              <fieldset>
-                <div class="modal-header"> 
-                  <legend>Add an instance</legend>
-                </div>
-                <br />
-                <div class="modal-body">
-                  <div class="form-group">
-                    <label for="inputTitle" class="col-md-2 control-label">Title</label>
-
-                    <div class="col-md-10">
-                      <input class="form-control" id="inputTitle" placeholder="Instance title" type="text" required="">
-                    </div>
+            <validator name="validation1">
+              <form novalidate id="add-instance-form" class="form-horizontal">
+                <fieldset>
+                  <div class="modal-header">
+                      <legend>Add an instance</legend>
                   </div>
                   <br />
-                  <div class="form-group">
-                    <label for="inputPart1" class="col-md-2 control-label">Part 1</label>
+                  <div class="modal-body">
+                    <div class="form-group">
+                      <label for="inputTitle" class="col-md-2 control-label">Title</label>
 
-                    <div class="col-md-10">
-                      <input class="form-control" id="inputPart1" placeholder="Project" type="text" required="">
+                      <div class="col-md-10">
+                        <input class="form-control" id="inputTitle" placeholder="Instance title" type="text" v-model="title" v-validate:title="{ required: true, lowercaseAndDigits : true}"/>
+                        <span class="help-block" v-if="$validation1.title.required">Choose a title please.</span>
+                        <span class="help-block" v-if="$validation1.title.lowercaseAndDigits">Only lower case letters and digits.</span>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="inputPart1" class="col-md-2 control-label">Part 1</label>
+
+                      <div class="col-md-10">
+                        <input class="form-control" id="inputPart1" placeholder="Project" type="text" v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">
+                        <span class="help-block" v-if="$validation1.project.required">Choose a project name please.</span>
+                        <span class="help-block" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="inputPart2" class="col-md-2 control-label">Part 2</label>
+
+                      <div class="col-md-10">
+                        <input class="form-control" id="inputPart2" placeholder="Version" type="text" v-model="version" v-validate:version="{ required: true, numeric : true }">
+                        <span class="help-block" v-if="$validation1.version.required">Choose a version please.</span>
+                        <span class="help-block" v-if="$validation1.version.numeric">Only digits.</span>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="inputPart3" class="col-md-2 control-label">Part 3</label>
+
+                      <div class="col-md-10">
+                        <input class="form-control" id="inputPart3" placeholder="Study" type="text" v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">
+                        <span class="help-block" v-if="$validation1.study.required">Choose a study name please.</span>
+                        <span class="help-block" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="app" class="col-md-2 control-label">App</label>
+
+                      <div class="col-md-10">
+                        <select id="app" class="form-control">
+                          <option value='inistcnrs/ezvis:latest'>inistcnrs/ezvis:latest</option>
+                          <option value='inistcnrs/lodex:latest'>inistcnrs/lodex:latest</option>
+                        </select>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                      <label for="technicalName" class="col-md-3 control-label">Technical name</label>
+
+                      <div class="col-md-9">
+                        <input class="form-control" id="technicalName" value="[[ technicalName ]]" type="text" disabled>
+                      </div>
                     </div>
                   </div>
-                  <br />
-                  <div class="form-group">
-                    <label for="inputPart2" class="col-md-2 control-label">Part 2</label>
-
-                    <div class="col-md-10">
-                      <input class="form-control" id="inputPart2" placeholder="Version" type="text" required="">
-                    </div>
-                  </div>
-                  <br />
-                  <div class="form-group">
-                    <label for="inputPart3" class="col-md-2 control-label">Part 3</label>
-
-                    <div class="col-md-10">
-                      <input class="form-control" id="inputPart3" placeholder="Study" type="text" required="">
-                    </div>
-                  </div>
-                  <br />
-                  <div class="form-group">
-                    <label for="app" class="col-md-2 control-label">App</label>
-
-                    <div class="col-md-10">
-                      <select id="app" class="form-control">
-                        <option value='inistcnrs/ezvis:latest'>inistcnrs/ezvis:latest</option>
-                        <option value='inistcnrs/lodex:latest'>inistcnrs/lodex:latest</option>
-                      </select>
-                    </div>
-                  </div>
-                  <br />
-                  <div class="form-group">
-                    <label for="technicalName" class="col-md-3 control-label">Technical name</label>
-
-                    <div class="col-md-9">
-                      <input class="form-control" id="technicalName" value="[[ technicalName ]]" type="text" disabled="">
-                    </div>
-                  </div>
-                </div>
-                <br /><br /><br />
-                <div class="modal-footer">
-                  <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
-                  <button type="button" id='save' class="btn btn-primary" v-on:click="addInstance">Save</button>
-                </div>    
-              </fieldset>
-            </form>
+                  <br /><br />
+                  <div class="panel-footer">
+                    <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
+                    <button v-if='$validation1.valid' type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Save</button>
+                    <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Save</button>                  
+                  </div>    
+                </fieldset>
+              </form>
+            </validator>
           </div>
         </div>
       </div>

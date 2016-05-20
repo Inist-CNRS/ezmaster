@@ -5,6 +5,7 @@ module.exports = new Vue({
   methods : {
   	displayFormAddInstance : function (event) {
 			$('#modal-add-instance').show();
+			this.technicalName = this.project + '-' + this.version + '-' + this.study;
   	},
 
   	cancelAddInstance : function (event) {
@@ -24,7 +25,16 @@ module.exports = new Vue({
   		}, console.error );
   	}
   },
+  validator : {
+  	validation1 : {
+
+  	}
+  },
   data : {
-  	technicalName : '',
+  	title : '',
+  	project: '',
+  	version : '',
+  	study : '',
+  	technicalName : ''
   }
 })

@@ -9,7 +9,7 @@ var mongoHostPort = process.env.MONGODB_URI ?
 module.exports = {
   connectionURI: 'mongodb://' + mongoHostPort + '/ezmaster',
   collectionName: 'data',
-  browserifyModules : ['vue', 'vue-resource', 'components/addInstance', 'components/table'],
+  browserifyModules : ['vue', 'vue-resource', 'components/addInstance', 'components/table', 'vue-validator'],
   rootURL : '/',
   routes: [
     'route.js'
