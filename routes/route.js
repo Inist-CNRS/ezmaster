@@ -216,7 +216,7 @@ module.exports = function (router, core) {
       docker.pull(image, function (err, stream) {
         if (err) { return next (err); }
 
-        docker.modem.followProgress(stream, onFinished, onProgress);
+        docker.modem.followProgress(stream, onFinished);
 
         function onFinished(err, output) {
           if (err) { return next (err); }
@@ -249,23 +249,17 @@ module.exports = function (router, core) {
 
                   exec(cmd, function (err, stdout, stderr) {
                     if (err) { return next (err); }
-                    result['status'] = 'noExists';
-                    res.send(result);
+                    return res.status(200).send('Instance created');
                   });
                 });
               });
             });
           });
         }
-
-        function onProgress(event) {
-          console.info(event);
-        }
       });
     }
     else {
-      result['status'] = 'exists';
-      res.send(result);
+      return res.status(409).send('Technical name already exists');
     }
   });
 

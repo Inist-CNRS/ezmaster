@@ -20,7 +20,7 @@ module.exports = new Vue({
 
 			$("#save").hide();
 			$("#close_modal").hide();
-			$("#loaderAddInstance").show();
+			$("#loader").show();
 
   		var data = {
   			'title' : this.title,
@@ -31,11 +31,16 @@ module.exports = new Vue({
   			'app' : $("#app").val()
   		}
   		this.$http.post('/-/v1/instances', data).then(function (result) {
-  			if (result.data.status == 'noExists') { location.reload(); }
-  			else if (result.data.status == 'exists') { 
+  			console.log(result);
+  			if (result.status == 200) { location.reload(); }
+  		}, function (error) {
+  			if (error.status == 409) {
   				$("#technicalNameExists").show();
+					$("#loader").hide();
+					$("#save").show();
+					$("#close_modal").show();
   			}
-  		}, console.error );
+  		});
   	}
   },
   data : {

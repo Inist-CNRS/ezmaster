@@ -203,7 +203,7 @@
                       <label for="technicalName" class="col-md-3 control-label">Technical name</label>
 
                       <div class="col-md-9">
-                        <input class="form-control" id="technicalName" value="[[ technicalName ]]" type="text" disabled>
+                        <input class="form-control" id="technicalName" type="text" disabled>
                         <span class="help-block">Ex : projectName-studyName-4</span>
                         <span id='technicalNameExists' style="display: none" class="help-block spanErrorForm">Technical name already exists</span>
                       </div>
@@ -214,8 +214,9 @@
                     <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
                     <button v-if='$validation1.valid' type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Save</button>
                     <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Save</button>
-                    <div id='imgLoader' style='text-align: center;'>
-                      <img style="display: none;" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading" />
+                    <div id='loader' style='display:none; text-align: center;'>
+                      <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading" /><br />
+                      <span style="color: #009688;" id="messageLoaderAddInstance">This may take several minutes.</span>
                     </div>                 
                   </div>    
                 </fieldset>
