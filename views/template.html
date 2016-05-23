@@ -140,7 +140,7 @@
           <div class="modal-content">
             <validator name="validation1">
               <form novalidate id="add-instance-form" class="form-horizontal">
-                <fieldset>
+                <fieldset class='fieldsetScroll'>
                   <div class="modal-header">
                       <legend>Add an instance</legend>
                   </div>
@@ -151,7 +151,7 @@
 
                       <div class="col-md-10">
                         <input class="form-control" id="inputTitle" placeholder="Instance title" type="text" v-model="title" v-validate:title="{ required: true}"/>
-                        <span class="help-block spanErrorForm" v-if="$validation1.title.required">Choose a title please.</span>
+                        <span class="help-block text-danger" v-if="$validation1.title.required">Choose a title please.</span>
                       </div>
                     </div>
 
@@ -161,8 +161,8 @@
                       <div class="col-md-10">
                         <input class="form-control" id="inputProject" placeholder="Project name" type="text" v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}" value="[[ project ]]">
                         <span class="help-block">Ex : projectName</span>
-                        <span class="help-block spanErrorForm" v-if="$validation1.project.required">Choose a project name please.</span>
-                        <span class="help-block spanErrorForm" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
+                        <span class="help-block text-danger" v-if="$validation1.project.required">Choose a project name please.</span>
+                        <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
                       </div>
                     </div>
 
@@ -172,8 +172,8 @@
                       <div class="col-md-10">
                         <input class="form-control" id="inputStudy" placeholder="Study name" type="text" v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">
                         <span class="help-block">Ex : studyName</span>
-                        <span class="help-block spanErrorForm" v-if="$validation1.study.required">Choose a study name please.</span>
-                        <span class="help-block spanErrorForm" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
+                        <span class="help-block text-danger" v-if="$validation1.study.required">Choose a study name please.</span>
+                        <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
                       </div>
                     </div>
 
@@ -183,8 +183,8 @@
                       <div class="col-md-10">
                         <input class="form-control" id="inputVersion" placeholder="Instance version" type="text" v-model="version" v-validate:version="{ required: true, numeric : true }">
                         <span class="help-block">Ex : 4</span>
-                        <span class="help-block spanErrorForm" v-if="$validation1.version.required">Choose a version please.</span>
-                        <span class="help-block spanErrorForm" v-if="$validation1.version.numeric">Only digits.</span>
+                        <span class="help-block text-danger" v-if="$validation1.version.required">Choose a version please.</span>
+                        <span class="help-block text-danger" v-if="$validation1.version.numeric">Only digits.</span>
                       </div>
                     </div>
 
@@ -216,7 +216,7 @@
                     <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Save</button>
                     <div id='loader' style='display:none; text-align: center;'>
                       <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading" /><br />
-                      <span style="color: #009688;" id="messageLoaderAddInstance">This may take several minutes.</span>
+                      <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                     </div>                 
                   </div>    
                 </fieldset>
