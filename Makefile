@@ -4,17 +4,17 @@ NODE_VERSION=4.4.0
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-install: ## install depedencies thanks to a local npm install
-	@npm install
+##install: ## install depedencies thanks to a local npm install
+##	@npm install
 
-run-debug: ## run ezmaster in debug mode (with local mongo and nodejs and without docker)
-	@DEBUG=castor*,console* NODE_ENV=development ./ezmaster
+##run-debug: ## run ezmaster in debug mode (with local mongo and nodejs and without docker)
+##	@DEBUG=castor*,console* NODE_ENV=development ./ezmaster
 
-run-dev: ## run ezmaster in dev mode (with local mongo and nodejs/nodemon and without docker)
-	@DEBUG=castor*,console* NODE_ENV=development ./node_modules/.bin/nodemon ./ezmaster
+##run-dev: ## run ezmaster in dev mode (with local mongo and nodejs/nodemon and without docker)
+##	@DEBUG=castor*,console* NODE_ENV=development ./node_modules/.bin/nodemon ./ezmaster
 
-run-prod: ## run ezmaster in production mode (with local mongo and nodejs and without docker)
-	@NODE_ENV=production ./ezmaster
+##run-prod: ## run ezmaster in production mode (with local mongo and nodejs and without docker)
+##	@NODE_ENV=production ./ezmaster
 
 docker-install: ## install depedencies thanks to a dockerized npm install
 	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:${NODE_VERSION} npm install

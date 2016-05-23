@@ -12,6 +12,10 @@ var vue = new Vue({
     self.$http.get('/-/v1/instances').then(function (result) {
       self.$set('containers', result.data);
     }, console.error);
+
+    setInterval(function () {
+      refresh();
+    }, 10000);
   },
   methods: {
     startInstance : function (event) {
@@ -37,12 +41,12 @@ var vue = new Vue({
       this.$http.get('/-/v1/instances/'+event.path[4].id+'/info').then(function (result) {
         this.technicalNameToDelete = result.data.technicalName;
         this.sizeToDelete = result.data.size;
-        $('#modal-delete-instance').show();
+        document.getElementById("modal-delete-instance").style.display = "block";
       }, console.error);
     },
 
     cancelDelete : function (event) {
-      $('#modal-delete-instance').hide();
+      document.getElementById("modal-delete-instance").style.display = "none";
     },
 
     deleteInstance : function (event) {
@@ -52,13 +56,13 @@ var vue = new Vue({
     },
 
     cancelConfig : function (event) {
-      $('#modal-update-config').hide();
+      refresh();
     },
 
     displayConfig : function (event) {
       idToConfig = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id+'/config').then(function (result) {
-        $('#modal-update-config').show();
+        document.getElementById("modal-update-config").style.display = "block";
         var opts = {
           modes: ['text', 'tree']
         }

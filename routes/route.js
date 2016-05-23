@@ -18,7 +18,8 @@ var path = require('path')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , freeport = require('freeport')
-  , fileExists = require('file-exists');
+  , fileExists = require('file-exists')
+  , os = require('os');
 
 jsonfile.spaces = 2;
 
@@ -57,7 +58,8 @@ module.exports = function (router, core) {
 
             if (elements.State === 'running') {
               container['status'] = true;
-              container['address'] = 'http://127.0.0.1:' + elements.Ports[0].PublicPort;
+              // container['address'] = 'http://'+os.networkInterfaces().eth0[0].address+':'+elements.Ports[0].PublicPort;
+              container['address'] = 'http://127.0.0.1:'+elements.Ports[0].PublicPort;
               container['target'] = 'ezmaster';
             }
             else if (elements.State === 'exited') {
@@ -80,6 +82,15 @@ module.exports = function (router, core) {
         });
       })();
     });
+  });
+
+  router.route('/-/v1/instances/verif').get(bodyParser(), function (req, res, next) {
+    if(fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == false) {
+      res.status(200).send("Technical name does not exists");
+    }
+    else {
+      res.status(409).send("Technical name "+req.query.technicalName+" already exists");
+    }
   });
 
   router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
@@ -212,55 +223,50 @@ module.exports = function (router, core) {
       return res.status(400).send('The technical name is wrong');
     }
 
-    if(fileExists(path.join(__dirname, '../manifests/'+technicalName+'.json')) == false) {
-      docker.pull(image, function (err, stream) {
-        if (err) { return next (err); }
+    docker.pull(image, function (err, stream) {
+      if (err) { return res.status(400).send('Error during pull'); }
 
-        docker.modem.followProgress(stream, onFinished);
+      docker.modem.followProgress(stream, onFinished);
 
-        function onFinished(err, output) {
+      function onFinished(err, output) {
+        if (err) { return res.status(400).send('Error during pull'); }
+
+        mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), function (err) {
           if (err) { return next (err); }
 
-          mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), function (err) {
-            if (err) { return next (err); }
+          mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), function (err) {
+            if(err) { return next (err); }
 
-            mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), function (err) {
-              if(err) { return next (err); }
+            fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
+              if (err) { return next (err); }
 
-              fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
-                if (err) { return next (err); }
+              freeport(function(err, port) {
+                if(err) { return next (err); }
+                
+                var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
+                '--net=ezmaster_default --link ezmaster_db '+
+                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
+                  '/root/data.json '+
+                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
+                '--name '+technicalName+' '+image;
 
-                freeport(function(err, port) {
-                  if(err) { return next (err); }
-                  
-                  var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
-                  '--net=ezmaster_default --link ezmaster_db '+
-                  '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
-                    '/root/data.json '+
-                  '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
-                  '--name '+technicalName+' '+image;
+                var newTitle = {
+                  "title" : title
+                }
+                jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newTitle, function (err) {
+                  if (err) { return next (err); }
+                });
 
-                  var newTitle = {
-                    "title" : title
-                  }
-                  jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newTitle, function (err) {
-                    if (err) { return next (err); }
-                  });
-
-                  exec(cmd, function (err, stdout, stderr) {
-                    if (err) { return next (err); }
-                    return res.status(200).send('Instance created');
-                  });
+                exec(cmd, function (err, stdout, stderr) {
+                  if (err) { return next (err); }
+                  return res.status(200).send('Instance created');
                 });
               });
             });
           });
-        }
-      });
-    }
-    else {
-      return res.status(409).send('Technical name already exists');
-    }
+        });
+      }
+    });
   });
 
 };

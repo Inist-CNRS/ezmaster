@@ -45,7 +45,7 @@
                         </p><br />
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-raised btn-default" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
+                        <a class="btn btn-default" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
                         <a style='float:right' class="btn btn-warning" v-on:click="deleteInstance">Delete</a>
                       </div>
                     </div>
@@ -54,7 +54,7 @@
               </div>
               <div class="modal" id="modal-update-config">
                 <div class="modal-dialog">
-                  <div class="modal-content">
+                  <div class="modal-content scroll">
                      <div class="panel panel-info">
                       <div class="panel-heading">
                         <h3 class="panel-title">Update instance configuration</h3>
@@ -63,7 +63,7 @@
                         <div id="jsoneditor"></div>
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-raised btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
+                        <a class="btn btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
                         <a style='float:right' class="btn btn-info" v-on:click="updateConfig">Update</a>
                       </div>
                     </div>
@@ -101,7 +101,7 @@
                         </p><br />
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-raised btn-default" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
+                        <a class="btn btn-default" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
                         <a style='float:right' class="btn btn-warning" v-on:click="deleteInstance">Delete</a>
                       </div>
                     </div>
@@ -110,8 +110,8 @@
               </div>
               <div class="modal" id="modal-update-config">
                 <div class="modal-dialog">
-                  <div class="modal-content">
-                     <div class="panel panel-info">
+                  <div class="modal-content scroll">
+                    <div class="panel panel-info">
                       <div class="panel-heading">
                         <h3 class="panel-title">Update instance configuration</h3>
                       </div>
@@ -119,7 +119,7 @@
                         <div id="jsoneditor"></div>
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-raised btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
+                        <a class="btn btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
                         <a style='float:right' class="btn btn-info" v-on:click="updateConfig">Update</a>
                       </div>
                     </div>
@@ -140,12 +140,24 @@
           <div class="modal-content">
             <validator name="validation1">
               <form novalidate id="add-instance-form" class="form-horizontal">
-                <fieldset class='fieldsetScroll'>
+                <fieldset class='scroll'>
                   <div class="modal-header">
                       <legend>Add an instance</legend>
                   </div>
                   <br />
                   <div class="modal-body">
+                    <div class="form-group">
+                      <label for="app" class="col-md-2 control-label">App</label>
+
+                      <div class="col-md-10">
+                        <select id="app" class="form-control">
+                          <option value='inistcnrs/ezvis:latest'>inistcnrs/ezvis:latest</option>
+                          <option value='inistcnrs/lodex:latest'>inistcnrs/lodex:latest</option>
+                          <option value='inistcnrs/ezark:latest'>inistcnrs/ezark:latest</option>
+                        </select>
+                      </div>
+                    </div>
+
                     <div class="form-group">
                       <label for="inputTitle" class="col-md-2 control-label">Title</label>
 
@@ -159,8 +171,8 @@
                       <label for="inputProject" class="col-md-2 control-label">Project</label>
 
                       <div class="col-md-10">
-                        <input class="form-control" id="inputProject" placeholder="Project name" type="text" v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}" value="[[ project ]]">
-                        <span class="help-block">Ex : projectName</span>
+                        <input class="form-control" id="inputProject" placeholder="Project name" type="text" value='{{ project }}' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}" value="[[ project ]]">
+                        <span class="help-block">Ex : projectname</span>
                         <span class="help-block text-danger" v-if="$validation1.project.required">Choose a project name please.</span>
                         <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
                       </div>
@@ -170,8 +182,8 @@
                       <label for="inputStudy" class="col-md-2 control-label">Study</label>
 
                       <div class="col-md-10">
-                        <input class="form-control" id="inputStudy" placeholder="Study name" type="text" v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">
-                        <span class="help-block">Ex : studyName</span>
+                        <input class="form-control" id="inputStudy" placeholder="Study name" type="text" value='{{ study }}' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">
+                        <span class="help-block">Ex : studysame</span>
                         <span class="help-block text-danger" v-if="$validation1.study.required">Choose a study name please.</span>
                         <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
                       </div>
@@ -181,7 +193,7 @@
                       <label for="inputVersion" class="col-md-2 control-label">Version</label>
 
                       <div class="col-md-10">
-                        <input class="form-control" id="inputVersion" placeholder="Instance version" type="text" v-model="version" v-validate:version="{ required: true, numeric : true }">
+                        <input class="form-control" id="inputVersion" placeholder="Instance version" value="{{ version }}" type="text" v-model="version" v-validate:version="{ required: true, numeric : true }">
                         <span class="help-block">Ex : 4</span>
                         <span class="help-block text-danger" v-if="$validation1.version.required">Choose a version please.</span>
                         <span class="help-block text-danger" v-if="$validation1.version.numeric">Only digits.</span>
@@ -189,27 +201,15 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="app" class="col-md-2 control-label">App</label>
-
-                      <div class="col-md-10">
-                        <select id="app" class="form-control">
-                          <option value='inistcnrs/ezvis:latest'>inistcnrs/ezvis:latest</option>
-                          <option value='inistcnrs/lodex:latest'>inistcnrs/lodex:latest</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
                       <label for="technicalName" class="col-md-3 control-label">Technical name</label>
-
                       <div class="col-md-9">
-                        <input class="form-control" id="technicalName" type="text" disabled>
-                        <span class="help-block">Ex : projectName-studyName-4</span>
-                        <span id='technicalNameExists' style="display: none" class="help-block spanErrorForm">Technical name already exists</span>
+                        <input class="form-control" id="technicalName" type="text" value='{{ technicalName }}' v-model='technicalName' disabled>
+                        <span class="help-block">Ex : projectname-studyname-4</span>
+                        <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name already exists</span>
                       </div>
                     </div>
                   </div>
-                  <br /><br />
+                  <br />
                   <div class="panel-footer">
                     <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
                     <button v-if='$validation1.valid' type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Save</button>
@@ -217,7 +217,11 @@
                     <div id='loader' style='display:none; text-align: center;'>
                       <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading" /><br />
                       <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
-                    </div>                 
+                    </div>
+                    <div id='errorLoader' style='display:none; text-align: center;'>
+                      <span class="text-danger" id="errorLoaderAddInstance">An error was received, please try again.</span>
+                      <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Try again</button>
+                    </div>
                   </div>    
                 </fieldset>
               </form>

@@ -450,11 +450,7 @@ img.github {
   height: 600px;
 }
 
-.spanErrorForm {
-  color: #F44336;
-}
-
-.fieldsetScroll {
+.scroll {
   height: 600px;
-  overflow-y : scroll; 
+  overflow-y : scroll;
 }
