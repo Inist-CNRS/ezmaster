@@ -1,10 +1,11 @@
 'use strict';
 
-module.exports = new Vue({
+var vm = new Vue({
   el: '#addInstance',
   methods : {
   	displayFormAddInstance : function (event) {
 			$('#modal-add-instance').show();
+			this.project = $("#inputProject").val();
   	},
 
   	cancelAddInstance : function (event) {
@@ -16,7 +17,7 @@ module.exports = new Vue({
   		this.project = $("#inputProject").val();
   		this.study = $("#inputStudy").val();
   		this.version = $("#inputVersion").val();
-			this.technicalName = $("#inputProject").val() + '-' + $("#inputStudy").val() + '-' + $("#inputVersion").val();
+			this.technicalName = this.project + '-' + this.study + '-' + this.version;
 
 			$("#save").hide();
 			$("#close_modal").hide();
@@ -48,6 +49,9 @@ module.exports = new Vue({
   	project: '',
   	version : '',
   	study : '',
-  	technicalName : ''
+  	technicalName : '',
+    containers : []
   }
-})
+});
+
+module.exports = vm;

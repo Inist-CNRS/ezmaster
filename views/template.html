@@ -159,7 +159,7 @@
                       <label for="inputProject" class="col-md-2 control-label">Project</label>
 
                       <div class="col-md-10">
-                        <input class="form-control" id="inputProject" placeholder="Project name" type="text" v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">
+                        <input class="form-control" id="inputProject" placeholder="Project name" type="text" v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}" value="[[ project ]]">
                         <span class="help-block">Ex : projectName</span>
                         <span class="help-block spanErrorForm" v-if="$validation1.project.required">Choose a project name please.</span>
                         <span class="help-block spanErrorForm" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>

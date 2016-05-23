@@ -209,7 +209,7 @@ module.exports = function (router, core) {
       return res.status(400).send('Enter a valid instance version');
     }
     if (technicalName != concat) {
-      return res.status(400).send('technicalName is wrong');
+      return res.status(400).send('The technical name is wrong');
     }
 
     if(fileExists(path.join(__dirname, '../manifests/'+technicalName+'.json')) == false) {

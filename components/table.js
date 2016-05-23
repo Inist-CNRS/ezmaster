@@ -5,7 +5,7 @@ var editor = null
   , idToDelete = null
   , idToConfig = null;
 
-module.exports = new Vue({
+var vue = new Vue({
   el: '#instances-table',
   ready : function () {
     var self = this;
@@ -19,7 +19,7 @@ module.exports = new Vue({
         action : 'start'
       };
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        location.reload();
+        refresh();
       }, console.error);
     },
 
@@ -28,7 +28,7 @@ module.exports = new Vue({
         action : 'stop'
       };
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        location.reload();
+        refresh();
       }, console.error);
     },
 
@@ -47,7 +47,7 @@ module.exports = new Vue({
 
     deleteInstance : function (event) {
       this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
-        location.reload();
+        refresh();
       }, console.error);
     },
 
@@ -76,7 +76,7 @@ module.exports = new Vue({
         , newTitle : newConfig.title
       };
       this.$http.put('/-/v1/instances/'+idToConfig, data).then(function (result) {
-        location.reload();
+        refresh();
       });
     }
   },
@@ -86,3 +86,11 @@ module.exports = new Vue({
     containers : []
   }
 });
+
+module.exports = vue;
+
+function refresh () {
+  vue.$http.get('/-/v1/instances').then(function (result) {
+    vue.$set('containers', result.data);
+  }, console.error);
+}
