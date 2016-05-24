@@ -22,7 +22,8 @@ var vm = new Vue({
 			document.getElementById("loader").style.display = "block";
 
       if(this.longName == '') { this.longName = 'Free comment of '+this.technicalName; }
-  		var data = {
+  		
+      var data = {
   			'longName' : this.longName,
   			'project' : this.project,
   			'version' : this.version,
@@ -33,7 +34,8 @@ var vm = new Vue({
   		this.$http.post('/-/v1/instances', data).then(function (result) {
   			if (result.status == 200) { location.reload(); }
   		}, function (error) {
-        if(error.status == 400 && error.data == 'Error during pull') {
+        if(error.status == 400) {
+          this.errorPull = error.data;
           document.getElementById("loader").style.display = 'none';
           document.getElementById("errorLoader").style.display = 'block';
         }
@@ -50,7 +52,8 @@ var vm = new Vue({
   	version : '',
   	study : '',
   	technicalName : '',
-    urlPreview : ''
+    urlPreview : '',
+    errorPull : ''
   }
 });
 
@@ -92,13 +95,15 @@ function verif (tn) {
   }
   vm.$http.get('/-/v1/instances/verif', data).then(function (result) {
     if (result.status == 200) {  
-       document.getElementById("technicalNameExists").style.display = "none";
-       $("#save").prop('disabled', false);
+      document.getElementById("technicalNameExists").style.display = "none";
+      document.getElementById("save").style.display = "block";
+      document.getElementById("saveTechnicalExists").style.display = "none";
     }
   }, function (error) {
     if(error.status == 409) { 
       document.getElementById("technicalNameExists").style.display = "block";
-      $("#save").prop("disabled", true);
+      document.getElementById("save").style.display = "none";
+      document.getElementById("saveTechnicalExists").style.display = "block";
     }
   });
 }

@@ -184,7 +184,7 @@
                           <span class="help-block text-danger" v-if="$validation1.study.required">Choose a study name please.</span>
                           <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
                         </div>
-                        <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name already exists</span>
+                        <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "{{ technicalName }}" already exists</span>
                       </div>
                     </div>
 
@@ -198,14 +198,15 @@
                   
                   <div class="panel-footer">
                     <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
-                    <button v-if='$validation1.valid' type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Create</button>
+                    <button v-if="$validation1.valid" type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Create</button>
                     <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Create</button>
+                    <button type="button" style='float:right; display: none' id='saveTechnicalExists' class="btn btn-primary" disabled>Create</button>
                     <div id='loader' style='display:none; text-align: center;'>
-                      <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading" /><br />
+                      <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
                       <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                     </div>
                     <div id='errorLoader' style='display:none; text-align: center;'>
-                      <span class="text-danger" id="errorLoaderAddInstance">An error was received.</span>
+                      <span class="text-danger" id="errorLoaderAddInstance">An error was received : {{ errorPull }} .</span><br />
                       <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                     </div>
                   </div>    

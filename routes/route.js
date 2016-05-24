@@ -207,51 +207,55 @@ module.exports = function (router, core) {
     if (/^[a-z0-9]+$/.test(study) == false && study != "" && study != null) {
       return res.status(400).send('Enter a valid study name');
     }
+    if(fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == true) {
+      res.status(409).send("Technical name already exists");
+    }
+    else {
+      docker.pull(image, function (err, stream) {
+        if (err) { return res.status(400).send(err); }
 
-    docker.pull(image, function (err, stream) {
-      if (err) { return res.status(400).send('Error during pull'); }
+        docker.modem.followProgress(stream, onFinished);
 
-      docker.modem.followProgress(stream, onFinished);
+        function onFinished(err, output) {
+          if (err) { return res.status(400).send(err); }
 
-      function onFinished(err, output) {
-        if (err) { return res.status(400).send('Error during pull'); }
+          mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), function (err) {
+            if (err) { return next (err); }
 
-        mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), function (err) {
-          if (err) { return next (err); }
+            mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), function (err) {
+              if(err) { return next (err); }
 
-          mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), function (err) {
-            if(err) { return next (err); }
+              fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
+                if (err) { return next (err); }
 
-            fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
-              if (err) { return next (err); }
+                freeport(function(err, port) {
+                  if(err) { return next (err); }
+                  
+                  var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
+                  '--net=ezmaster_default --link ezmaster_db '+
+                  '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
+                    '/root/data.json '+
+                  '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
+                  '--name '+technicalName+' '+image;
 
-              freeport(function(err, port) {
-                if(err) { return next (err); }
-                
-                var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
-                '--net=ezmaster_default --link ezmaster_db '+
-                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
-                  '/root/data.json '+
-                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
-                '--name '+technicalName+' '+image;
+                  var newlongName = {
+                    "longName" : longName
+                  }
+                  jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newlongName, function (err) {
+                    if (err) { return next (err); }
+                  });
 
-                var newlongName = {
-                  "longName" : longName
-                }
-                jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newlongName, function (err) {
-                  if (err) { return next (err); }
-                });
-
-                exec(cmd, function (err, stdout, stderr) {
-                  if (err) { return next (err); }
-                  return res.status(200).send('Instance created');
+                  exec(cmd, function (err, stdout, stderr) {
+                    if (err) { return next (err); }
+                    return res.status(200).send('Instance created');
+                  });
                 });
               });
             });
           });
-        });
-      }
-    });
+        }
+      });
+    }
   });
 
 };
