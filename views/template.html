@@ -172,17 +172,17 @@
 
                       <div class="col-md-9">
                         <div class="block-input">
-                          <input class="form-control sizeInput" id="inputProject" placeholder="Project name, ..." type="text" value='{{ project }}' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">
+                          <input class="form-control sizeInput" id="inputProject" placeholder="Project name, ..." type="text" value='{{ project }}' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
                           <input class="form-control has-warning sizeInput" id="inputStudy" placeholder="Study name, ..." type="text" value='{{ study }}' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
                           <input class="form-control sizeInput" id="inputVersion" placeholder="Version" value="{{ version }}" type="number" min='0' v-model="version">
                         </div>
                         <div v-if='$validation1.project.dirty'>
-                          <span class="help-block text-danger" v-if="$validation1.project.required" >Choose a project name please.</span>
-                          <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
+                          <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
+                          <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits for the first part.</span>
                         </div>
                         <div v-if='$validation1.study.dirty'>
-                          <span class="help-block text-danger" v-if="$validation1.study.required">Choose a study name please.</span>
-                          <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
+                          <span class="help-block text-danger" v-if="$validation1.study.required">Please, fill the second part of the technical name.</span>
+                          <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
                         </div>
                         <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "{{ technicalName }}" already exists</span>
                       </div>
