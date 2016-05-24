@@ -132,7 +132,6 @@ module.exports = function (router, core) {
   router.route('/-/v1/instances/:containerId').get(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.params.containerId);
 
-    console.info(req.query);
     container.inspect(function (err, data) {
       if (err) { return next (err); }
 

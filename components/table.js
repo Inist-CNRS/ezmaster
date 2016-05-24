@@ -3,7 +3,8 @@
 
 var editor = null
   , idToDelete = null
-  , idToConfig = null;
+  , idToConfig = null
+  , heartbeats = require('heartbeats');
 
 var vue = new Vue({
   el: '#instances-table',
@@ -13,12 +14,28 @@ var vue = new Vue({
       self.$set('containers', result.data);
     }, console.error);
 
-    setInterval(function () {
+    function verifRefresh() {
       if (document.getElementById('modal-delete-instance').style.display != 'block' && 
           document.getElementById('modal-update-config').style.display != 'block') {
+        return true;
+      }
+      else { return false; }
+    }
+
+    var heart_1 = heartbeats.createHeart(1000);
+    heart_1.createEvent(1, {repeat : 30}, function(heartbeat, last){
+      if (verifRefresh()) {
         refresh();
       }
-    }, 2000);
+      if (last == true) {
+        var heart_2 = heartbeats.createHeart(60000);
+        heart_2.createEvent(1, function (heartbeat, last) {
+          if (verifRefresh()) {
+            refresh();
+          }
+        });
+      }
+    });
   },
   methods: {
     startInstance : function (event) {
@@ -106,4 +123,8 @@ function refresh () {
   vue.$http.get('/-/v1/instances').then(function (result) {
     vue.$set('containers', result.data);
   }, console.error);
+}
+
+function interval() {
+
 }
