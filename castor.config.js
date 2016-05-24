@@ -1,9 +1,9 @@
 'use strict';
 // to allow mongodb host and port injection thanks
-// to the MONGODB_URI environment parameter
+// to the EZMASTER_MONGODB_HOST_PORT environment parameter
 // (docker uses it)
-var mongoHostPort = process.env.MONGODB_URI ?
-                    process.env.MONGODB_URI :
+var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT ?
+                    process.env.EZMASTER_MONGODB_HOST_PORT :
                     'localhost:27017';
 
 module.exports = {

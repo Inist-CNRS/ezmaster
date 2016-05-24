@@ -14,8 +14,11 @@ var vue = new Vue({
     }, console.error);
 
     setInterval(function () {
-      refresh();
-    }, 10000);
+      if (document.getElementById('modal-delete-instance').style.display != 'block' && 
+          document.getElementById('modal-update-config').style.display != 'block') {
+        refresh();
+      }
+    }, 2000);
   },
   methods: {
     startInstance : function (event) {
@@ -37,16 +40,19 @@ var vue = new Vue({
     },
 
     confirmationDelete : function (event) {
+      var data = {
+        action : 'info'
+      }
       idToDelete = event.path[4].id;
-      this.$http.get('/-/v1/instances/'+event.path[4].id+'/info').then(function (result) {
+      this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         this.technicalNameToDelete = result.data.technicalName;
         this.sizeToDelete = result.data.size;
-        document.getElementById("modal-delete-instance").style.display = "block";
+        document.getElementById('modal-delete-instance').style.display = 'block';
       }, console.error);
     },
 
     cancelDelete : function (event) {
-      document.getElementById("modal-delete-instance").style.display = "none";
+      document.getElementById('modal-delete-instance').style.display = 'none';
     },
 
     deleteInstance : function (event) {
@@ -60,13 +66,16 @@ var vue = new Vue({
     },
 
     displayConfig : function (event) {
+      var data = {
+        action : 'config'
+      }
       idToConfig = event.path[4].id;
-      this.$http.get('/-/v1/instances/'+event.path[4].id+'/config').then(function (result) {
-        document.getElementById("modal-update-config").style.display = "block";
+      this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
+        document.getElementById('modal-update-config').style.display = 'block';
         var opts = {
           modes: ['text', 'tree']
         }
-        editor = new JSONEditor(document.getElementById("jsoneditor"), opts);
+        editor = new JSONEditor(document.getElementById('jsoneditor'), opts);
         editor.set(result.data);
       });
     },

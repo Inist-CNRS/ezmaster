@@ -447,10 +447,19 @@ img.github {
 
 #jsoneditor {
   width: 100%;
-  height: 600px;
+  height: 450px;
 }
 
 .scroll {
-  height: 600px;
+  max-height: 600px;
   overflow-y : scroll;
+}
+
+.sizeInput {
+  width : 32%;
+  display: inline-block;
+}
+
+.block-input {
+  display: block;
 }

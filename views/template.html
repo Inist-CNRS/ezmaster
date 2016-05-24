@@ -6,7 +6,7 @@
     <table id="instances-table" class="table table-striped">
       <thead>
         <tr>
-          <th>Title</th>
+          <th>Long Name</th>
           <th>Technical name</th>
           <th>Creation date</th>
           <th>App</th>
@@ -17,7 +17,7 @@
       <tbody>
         <template v-for="item in containers">
           <tr v-if="[[ item.status ]] == 'true'" class="success" id="[[ item.description.Id ]]">
-            <td>[[ item.title ]]</td>
+            <td>[[ item.longName ]]</td>
             <td>[[ item.description.Names[0] ]]</td>
             <td>[[ item.description.Created ]]</td>
             <td>[[ item.description.Image ]]</td>
@@ -54,7 +54,7 @@
               </div>
               <div class="modal" id="modal-update-config">
                 <div class="modal-dialog">
-                  <div class="modal-content scroll">
+                  <div class="modal-content">
                      <div class="panel panel-info">
                       <div class="panel-heading">
                         <h3 class="panel-title">Update instance configuration</h3>
@@ -73,7 +73,7 @@
             </td>
           </tr>
           <tr v-else class="danger" id="[[ item.description.Id ]]">
-            <td>[[ item.title ]]</td>
+            <td>[[ item.longName ]]</td>
             <td>[[ item.description.Names[0] ]]</td>
             <td>[[ item.description.Created ]]</td>
             <td>[[ item.description.Image ]]</td>
@@ -110,7 +110,7 @@
               </div>
               <div class="modal" id="modal-update-config">
                 <div class="modal-dialog">
-                  <div class="modal-content scroll">
+                  <div class="modal-content">
                     <div class="panel panel-info">
                       <div class="panel-heading">
                         <h3 class="panel-title">Update instance configuration</h3>
@@ -140,16 +140,16 @@
           <div class="modal-content">
             <validator name="validation1">
               <form novalidate id="add-instance-form" class="form-horizontal">
-                <fieldset class='scroll'>
+                <fieldset>
                   <div class="modal-header">
                       <legend>Add an instance</legend>
                   </div>
                   <br />
                   <div class="modal-body">
                     <div class="form-group">
-                      <label for="app" class="col-md-2 control-label">App</label>
+                      <label for="app" class="col-md-3 control-label">App</label>
 
-                      <div class="col-md-10">
+                      <div class="col-md-9">
                         <select id="app" class="form-control">
                           <option value='inistcnrs/ezvis:latest'>inistcnrs/ezvis:latest</option>
                           <option value='inistcnrs/lodex:latest'>inistcnrs/lodex:latest</option>
@@ -159,68 +159,54 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="inputTitle" class="col-md-2 control-label">Title</label>
+                      <label for="inputLongName" class="col-md-3 control-label">Long name</label>
 
-                      <div class="col-md-10">
-                        <input class="form-control" id="inputTitle" placeholder="Instance title" type="text" v-model="title" v-validate:title="{ required: true}"/>
-                        <span class="help-block text-danger" v-if="$validation1.title.required">Choose a title please.</span>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="inputProject" class="col-md-2 control-label">Project</label>
-
-                      <div class="col-md-10">
-                        <input class="form-control" id="inputProject" placeholder="Project name" type="text" value='{{ project }}' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}" value="[[ project ]]">
-                        <span class="help-block">Ex : projectname</span>
-                        <span class="help-block text-danger" v-if="$validation1.project.required">Choose a project name please.</span>
-                        <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="inputStudy" class="col-md-2 control-label">Study</label>
-
-                      <div class="col-md-10">
-                        <input class="form-control" id="inputStudy" placeholder="Study name" type="text" value='{{ study }}' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">
-                        <span class="help-block">Ex : studysame</span>
-                        <span class="help-block text-danger" v-if="$validation1.study.required">Choose a study name please.</span>
-                        <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="inputVersion" class="col-md-2 control-label">Version</label>
-
-                      <div class="col-md-10">
-                        <input class="form-control" id="inputVersion" placeholder="Instance version" value="{{ version }}" type="text" v-model="version" v-validate:version="{ required: true, numeric : true }">
-                        <span class="help-block">Ex : 4</span>
-                        <span class="help-block text-danger" v-if="$validation1.version.required">Choose a version please.</span>
-                        <span class="help-block text-danger" v-if="$validation1.version.numeric">Only digits.</span>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="technicalName" class="col-md-3 control-label">Technical name</label>
                       <div class="col-md-9">
-                        <input class="form-control" id="technicalName" type="text" value='{{ technicalName }}' v-model='technicalName' disabled>
-                        <span class="help-block">Ex : projectname-studyname-4</span>
+                        <input class="form-control" id="inputLongName" placeholder="Ex: free comment, title, note, ..." type="text" v-model="longName">
+                        <span class="help-block">Default value : "Free comment of <i>technical name</i>."</span>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label class="col-md-3 control-label">Technical name</label>
+
+                      <div class="col-md-9">
+                        <div class="block-input">
+                          <input class="form-control sizeInput" id="inputProject" placeholder="Project name, ..." type="text" value='{{ project }}' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">
+                          <input class="form-control has-warning sizeInput" id="inputStudy" placeholder="Study name, ..." type="text" value='{{ study }}' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
+                          <input class="form-control sizeInput" id="inputVersion" placeholder="Version" value="{{ version }}" type="number" min='0' v-model="version">
+                        </div>
+                        <div v-if='$validation1.project.dirty'>
+                          <span class="help-block text-danger" v-if="$validation1.project.required" >Choose a project name please.</span>
+                          <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits.</span>
+                        </div>
+                        <div v-if='$validation1.study.dirty'>
+                          <span class="help-block text-danger" v-if="$validation1.study.required">Choose a study name please.</span>
+                          <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits.</span>
+                        </div>
                         <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name already exists</span>
                       </div>
                     </div>
+
+                    <div class="form-group">
+                      <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
+                      <div class="col-md-9">
+                        <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='{{ urlPreview }}' v-model='urlPreview' disabled>
+                      </div>
+                    </div>
                   </div>
-                  <br />
+                  
                   <div class="panel-footer">
                     <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
-                    <button v-if='$validation1.valid' type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Save</button>
-                    <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Save</button>
+                    <button v-if='$validation1.valid' type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Create</button>
+                    <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Create</button>
                     <div id='loader' style='display:none; text-align: center;'>
                       <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading" /><br />
                       <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                     </div>
                     <div id='errorLoader' style='display:none; text-align: center;'>
-                      <span class="text-danger" id="errorLoaderAddInstance">An error was received, please try again.</span>
-                      <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Try again</button>
+                      <span class="text-danger" id="errorLoaderAddInstance">An error was received.</span>
+                      <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                     </div>
                   </div>    
                 </fieldset>

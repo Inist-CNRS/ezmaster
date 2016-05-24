@@ -72,7 +72,7 @@ module.exports = function (router, core) {
             elements.Names[0] = splittedName[1];
             elements.Created = moment.unix(elements.Created).format('YYYY/MM/DD');
 
-            container['title'] = obj.title;
+            container['longName'] = obj.longName;
             container['description'] = elements;
 
             arrayObject.push(container);
@@ -81,6 +81,42 @@ module.exports = function (router, core) {
           });
         });
       })();
+    });
+  });
+
+  router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
+    var container = docker.getContainer(req.params.containerId);
+
+    container.inspect(function (err, data) {
+      if (err) { return next (err); }
+      
+      if (req.body.action == 'start' && data.State.Running == false) {
+        container.start(function (err, datas, container) {
+          if (err) { return next (err); }
+          res.status(200).send('Starting done');
+        });
+      }
+      else if (req.body.action == 'stop' && data.State.Running == true) {
+        container.stop(function (err, datas, container) {
+          if (err) { return next (err); }
+          res.status(200).send('Stoping done');
+        });
+      }
+      else if (req.body.action == 'updateConfig') {
+        var splittedName = data.Name.split('/');
+
+        jsonfile.writeFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), req.body.newConfig, function (err) {
+          if (err) { return next (err); }
+
+          if (data.State.Running == true) {
+            container.restart(function (err) {
+              if (err) { return next (err); }
+              res.status(200).send('Update done'); 
+            });
+          }
+          else { res.status(200).send('Update done'); }
+        });
+      }
     });
   });
 
@@ -93,74 +129,33 @@ module.exports = function (router, core) {
     }
   });
 
-  router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
+  router.route('/-/v1/instances/:containerId').get(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.params.containerId);
 
-    container.inspect(function (err, data) {
-      if (err) { return next (err); }
-      
-      if (req.body.action == 'start' && data.State.Running == false) {
-        container.start(function (err, datas, container) {
-          if (err) { return next (err); }
-          res.send(200);
-        });
-      }
-      else if (req.body.action == 'stop' && data.State.Running == true) {
-        container.stop(function (err, datas, container) {
-          if (err) { return next (err); }
-          res.send(200);
-        });
-      }
-      else if (req.body.action == 'updateConfig') {
-        var splittedName = data.Name.split('/');
-
-        jsonfile.writeFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), req.body.newConfig, function (err) {
-          if (err) { return next (err); }
-
-          if (data.State.Running == true) {
-            container.restart(function (err) {
-              if (err) { return next (err); }
-              res.send(200); 
-            });
-          }
-          else { res.send(200); }
-        });
-      }
-    });
-  });
-
-  router.route('/-/v1/instances/:containerId/info').get(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.params.containerId);
-
-    container.inspect(function (err, data) {
-      if (err) { return next (err); }
-
-      var splittedName = data.Name.split('/')
-        , directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
-        , result = {};
-
-      getSize(directoryDatas, function (err, size) {
-        if (err) { return next (err); }
-
-        result['technicalName'] = splittedName[1];
-        result['size'] = filesize(size);
-        res.send(result);
-      });
-    });
-  });
-
-  router.route('/-/v1/instances/:containerId/config').get(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.params.containerId);
-
+    console.info(req.query);
     container.inspect(function (err, data) {
       if (err) { return next (err); }
 
       var splittedName = data.Name.split('/');
 
-      jsonfile.readFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), function (err, obj) {
-        if (err) { return next (err); }
-        res.send(obj);
-      });
+      if(req.query.action == 'info') {
+        var directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
+          , result = {};
+
+        getSize(directoryDatas, function (err, size) {
+          if (err) { return next (err); }
+
+          result['technicalName'] = splittedName[1];
+          result['size'] = filesize(size);
+          return res.status(200).send(result);
+        });
+      }
+      else if (req.query.action == 'config') {
+        jsonfile.readFile(path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'), function (err, obj) {
+          if (err) { return next (err); }
+          return res.status(200).send(obj);
+        });
+      }
     });
   });
 
@@ -191,7 +186,7 @@ module.exports = function (router, core) {
 
         rimraf(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err) {
           if (err) { return next (err); }
-          res.send(200);
+          res.status(200).send('Removing done');
         });        
       });
     });
@@ -199,28 +194,18 @@ module.exports = function (router, core) {
 
   router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
     var technicalName = req.body.technicalName
-      , title = req.body.title
+      , longName = req.body.longName
       , image = req.body.app
       , project = req.body.project
       , version = req.body.version
       , study = req.body.study
       , result = {};
 
-    var concat = project + '-' + study + '-' + version;
-    if (title == "") {
-      return res.status(400).send('Enter a valid title');
-    }
-    if (/^[a-z0-9]+$/.test(project) == false) {
+    if (/^[a-z0-9]+$/.test(project) == false && project != "" && project != null) {
       return res.status(400).send('Enter a valid project name');
     }
-    if (/^[a-z0-9]+$/.test(study) == false) {
+    if (/^[a-z0-9]+$/.test(study) == false && study != "" && study != null) {
       return res.status(400).send('Enter a valid study name');
-    }
-    if (/^[0-9]+$/.test(version) == false) {
-      return res.status(400).send('Enter a valid instance version');
-    }
-    if (technicalName != concat) {
-      return res.status(400).send('The technical name is wrong');
     }
 
     docker.pull(image, function (err, stream) {
@@ -243,17 +228,17 @@ module.exports = function (router, core) {
               freeport(function(err, port) {
                 if(err) { return next (err); }
                 
-                var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e MONGODB_URI '+
+                var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
                 '--net=ezmaster_default --link ezmaster_db '+
                 '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
                   '/root/data.json '+
                 '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
                 '--name '+technicalName+' '+image;
 
-                var newTitle = {
-                  "title" : title
+                var newlongName = {
+                  "longName" : longName
                 }
-                jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newTitle, function (err) {
+                jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newlongName, function (err) {
                   if (err) { return next (err); }
                 });
 
