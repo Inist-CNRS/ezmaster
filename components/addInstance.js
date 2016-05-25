@@ -35,7 +35,8 @@ var vm = new Vue({
   			if (result.status == 200) { location.reload(); }
   		}, function (error) {
         if(error.status == 400) {
-          this.errorPull = error.data;
+          this.codeErrorPull = error.status;
+          this.messageErrorPull = error.data;
           document.getElementById("loader").style.display = 'none';
           document.getElementById("errorLoader").style.display = 'block';
         }
@@ -53,7 +54,8 @@ var vm = new Vue({
   	study : '',
   	technicalName : '',
     urlPreview : '',
-    errorPull : ''
+    messageErrorPull : '',
+    codeErrorPull : ''
   }
 });
 

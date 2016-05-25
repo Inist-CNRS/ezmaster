@@ -170,7 +170,7 @@
 
                       <div class="col-md-9">
                         <input class="form-control" id="inputLongName" placeholder="Ex: free comment, title, note, ..." type="text" v-model="longName">
-                        <span class="help-block">Default value : "Free comment of <i>technical name</i>."</span>
+                        <span class="help-block">Default value : "Free comment of project-study-version."</span>
                       </div>
                     </div>
 
@@ -179,26 +179,26 @@
 
                       <div class="col-md-9">
                         <div class="block-input">
-                          <input class="form-control sizeInput" id="inputProject" placeholder="Project name, ..." type="text" value='{{ project }}' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
-                          <input class="form-control has-warning sizeInput" id="inputStudy" placeholder="Study name, ..." type="text" value='{{ study }}' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
-                          <input class="form-control sizeInput" id="inputVersion" placeholder="Version" value="{{ version }}" type="number" min='0' v-model="version">
+                          <input class="form-control sizeInput" id="inputProject" placeholder="Project name, ..." type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
+                          <input class="form-control has-warning sizeInput" id="inputStudy" placeholder="Study name, ..." type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
+                          <input class="form-control sizeInput" id="inputVersion" placeholder="Version" value="[[  version ]]" type="number" min='0' v-model="version">
                         </div>
                         <div v-if='$validation1.project.dirty'>
                           <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
                           <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits for the first part.</span>
                         </div>
                         <div v-if='$validation1.study.dirty'>
-                          <span class="help-block text-danger" v-if="$validation1.study.required">Please, fill the second part of the technical name.</span>
+                          <span class="help-block text-danger" v-if="$validation1.study.required">Fill the second part of the technical name.</span>
                           <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
                         </div>
-                        <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "{{ technicalName }}" already exists</span>
+                        <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "[[ technicalName ]]" already exists</span>
                       </div>
                     </div>
 
                     <div class="form-group">
                       <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
                       <div class="col-md-9">
-                        <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='{{ urlPreview }}' v-model='urlPreview' disabled>
+                        <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='[[  urlPreview ]]' v-model='urlPreview' disabled>
                       </div>
                     </div>
                   </div>
@@ -213,7 +213,7 @@
                       <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                     </div>
                     <div id='errorLoader' style='display:none; text-align: center;'>
-                      <span class="text-danger" id="errorLoaderAddInstance">An error was received : {{ errorPull }} .</span><br />
+                      <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
                       <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                     </div>
                   </div>    
