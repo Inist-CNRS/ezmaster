@@ -90,7 +90,7 @@ var vue = new Vue({
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'block';
         var opts = {
-          modes: ['text', 'tree']
+          modes: ['text', 'tree', 'view', 'form', 'code']
         }
         editor = new JSONEditor(document.getElementById('jsoneditor'), opts);
         editor.set(result.data);
