@@ -18,15 +18,23 @@ var path = require('path')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
-  , os = require('os')
-  , freePort = [];
+  , os = require('os');
 
 jsonfile.spaces = 2;
 
 var freePortSplitted = process.env.EZMASTER_FREE_PORT_RANGE.split('-');
-for (var i = freePortSplitted[0]; i <= freePortSplitted[1]; i++) {
-  freePort.push(i);
-}
+
+jsonfile.readFile(path.join(__dirname, '../instances/instances-settings.json'), function (err, obj) {
+  if (err) { return next (err); }
+  if (obj.maxPort == 49152) {
+    var newPort = {
+      "maxPort" : freePortSplitted[0]
+    }
+    jsonfile.writeFile(path.join(__dirname, '../instances/instances-settings.json'), newPort, function (err) {
+      if (err) { return next (err); }
+    });
+  }
+});
 
 module.exports = function (router, core) {
 
@@ -62,7 +70,6 @@ module.exports = function (router, core) {
 
             if (elements.State === 'running') {
               container['status'] = true;
-              // container['address'] = 'http://'+os.networkInterfaces().eth0[0].address+':'+elements.Ports[0].PublicPort;
               container['address'] = 'http://'+process.env.EZMASTER_PUBLIC_IP+':'+elements.Ports[0].PublicPort;
               container['target'] = 'ezmaster';
             }
@@ -231,26 +238,36 @@ module.exports = function (router, core) {
               fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
                 if (err) { return next (err); }
 
-                var port = freePort[0];
-                freePort.splice(0, 1);
+                jsonfile.readFile(path.join(__dirname, '../instances/instances-settings.json'), function (err, obj) {
+                  if (err) { return next(err); }
+                  var port = parseInt(obj.maxPort) + 1;
+                  console.info(port);
 
-                var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
-                '--net=ezmaster_default --link ezmaster_db '+
-                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
-                  '/root/data.json '+
-                '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
-                '--name '+technicalName+' '+image;
+                  var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
+                  '--net=ezmaster_default --link ezmaster_db '+
+                  '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
+                    '/root/data.json '+
+                  '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
+                  '--name '+technicalName+' '+image;
 
-                var newlongName = {
-                  "longName" : longName
-                }
-                jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newlongName, function (err) {
-                  if (err) { return next (err); }
-                });
+                  var data = {
+                    "maxPort" : port
+                  }
+                  jsonfile.writeFile(path.join(__dirname, '../instances/instances-settings.json'), data, function (err) {
+                    if (err) { return next(err); }
+                  });
 
-                exec(cmd, function (err, stdout, stderr) {
-                  if (err) { return next (err); }
-                  return res.status(200).send('Instance created');
+                  var newlongName = {
+                    "longName" : longName
+                  }
+                  jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newlongName, function (err) {
+                    if (err) { return next (err); }
+                  });
+
+                  exec(cmd, function (err, stdout, stderr) {
+                    if (err) { return next (err); }
+                    return res.status(200).send('Instance created');
+                  });
                 });
               });
             });
