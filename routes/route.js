@@ -25,13 +25,13 @@ jsonfile.spaces = 2;
 var freePortSplitted = process.env.EZMASTER_FREE_PORT_RANGE.split('-');
 
 jsonfile.readFile(path.join(__dirname, '../instances/instances-settings.json'), function (err, obj) {
-  if (err) { return next (err); }
+  if (err) { return err; }
   if (obj.maxPort == 49152) {
     var newPort = {
       "maxPort" : freePortSplitted[0]
     }
     jsonfile.writeFile(path.join(__dirname, '../instances/instances-settings.json'), newPort, function (err) {
-      if (err) { return next (err); }
+      if (err) { return err; }
     });
   }
 });
