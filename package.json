@@ -33,7 +33,6 @@
     "dockerode": "^2.2.10",
     "file-exists": "^1.0.0",
     "filesize": "^3.3.0",
-    "freeport": "^1.0.5",
     "get-folder-size": "^1.0.0",
     "jbj-parse": "^1.0.0",
     "jsonfile": "^2.3.1",
@@ -51,6 +50,7 @@
     "istanbul": "^0.4.2",
     "jshint": "^2.9.1",
     "mocha": "^2.4.5",
-    "nodemon": "^1.9.1"
+    "nodemon": "^1.9.1",
+    "supertest": "^1.2.0"
   }
 }

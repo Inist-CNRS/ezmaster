@@ -44,7 +44,7 @@ module.exports = function (router, core) {
         var elements = containers.pop()
           , container = {};
 
-        if (!elements) { return res.send(arrayObject); }
+        if (!elements) { return res.status(200).send(arrayObject); }
 
         var splittedName = elements.Names[0].split('/');
 
@@ -230,7 +230,7 @@ module.exports = function (router, core) {
 
               fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
                 if (err) { return next (err); }
-                
+
                 var port = freePort[0];
                 freePort.splice(0, 1);
 

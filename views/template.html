@@ -63,10 +63,12 @@
                       </div>
                       <div class="panel-body">
                         <div id="jsoneditor"></div>
+                        <span id='spanConfigError' class='text-danger'></span>
                       </div>
                       <div class="panel-footer">
                         <a class="btn btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
-                        <a style='float:right' class="btn btn-info" v-on:click="updateConfig">Update</a>
+                        <a style='float:right' id='buttonUpdate' class="btn btn-info" v-on:click="updateConfig">Update</a>
+                        <a style='float:right; display:none' id='buttonUpdateDisable' class="btn btn-info" disabled>Update</a>
                       </div>
                     </div>
                   </div>
@@ -121,10 +123,12 @@
                       </div>
                       <div class="panel-body">
                         <div id="jsoneditor"></div>
+                        <span id='spanConfigError' class='text-danger'></span>
                       </div>
                       <div class="panel-footer">
                         <a class="btn btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
-                        <a style='float:right' class="btn btn-info" v-on:click="updateConfig">Update</a>
+                        <a style='float:right' id='buttonUpdate' class="btn btn-info" v-on:click="updateConfig">Update</a>
+                        <a style='float:right; display:none' id='buttonUpdateDisable' class="btn btn-info" disabled>Update</a>
                       </div>
                     </div>
                   </div>
@@ -170,7 +174,7 @@
 
                       <div class="col-md-9">
                         <input class="form-control" id="inputLongName" placeholder="Ex: free comment, title, note, ..." type="text" v-model="longName">
-                        <span class="help-block">Default value : "Free comment of project-study-version."</span>
+                        <span class="help-block">Default value : "Free comment of <i>project-study-version</i>."</span>
                       </div>
                     </div>
 

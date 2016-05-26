@@ -1,12 +1,13 @@
 /* global Vue, $, location */
 'use strict';
 
-var editor = null
+var optsEditor = {}
+  , editor = new JSONEditor()
   , idToDelete = null
   , idToConfig = null
   , heartbeats = require('heartbeats');
 
-var vue = new Vue({
+var vm = new Vue({
   el: '#instances-table',
   ready : function () {
     var self = this;
@@ -24,15 +25,11 @@ var vue = new Vue({
 
     var heart_1 = heartbeats.createHeart(1000);
     heart_1.createEvent(1, {repeat : 30}, function(heartbeat, last){
-      if (verifRefresh()) {
-        refresh();
-      }
+      if (verifRefresh()) { refresh(); }
       if (last == true) {
         var heart_2 = heartbeats.createHeart(60000);
         heart_2.createEvent(1, function (heartbeat, last) {
-          if (verifRefresh()) {
-            refresh();
-          }
+          if (verifRefresh()) { refresh(); }
         });
       }
     });
@@ -89,10 +86,24 @@ var vue = new Vue({
       idToConfig = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'block';
-        var opts = {
-          modes: ['text', 'tree', 'view', 'form', 'code']
-        }
-        editor = new JSONEditor(document.getElementById('jsoneditor'), opts);
+        optsEditor = { 
+          modes: ['tree', 'view', 'code'],
+          onChange : function() {
+            try {
+              editor.get();
+              document.getElementById('spanConfigError').style.display = "none";
+              document.getElementById('buttonUpdateDisable').style.display = 'none';
+              document.getElementById('buttonUpdate').style.display = 'block';
+            }
+            catch (e) {
+              document.getElementById('spanConfigError').innerHTML = e;
+              document.getElementById('buttonUpdate').style.display = 'none';
+              document.getElementById('buttonUpdateDisable').style.display = 'block';
+              document.getElementById('spanConfigError').style.display = "block";
+            }
+          }
+        };
+        editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
         editor.set(result.data);
       });
     },
@@ -117,14 +128,10 @@ var vue = new Vue({
   }
 });
 
-module.exports = vue;
+module.exports = vm;
 
 function refresh () {
-  vue.$http.get('/-/v1/instances').then(function (result) {
-    vue.$set('containers', result.data);
+  vm.$http.get('/-/v1/instances').then(function (result) {
+    vm.$set('containers', result.data);
   }, console.error);
-}
-
-function interval() {
-
 }
