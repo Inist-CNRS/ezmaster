@@ -22,20 +22,6 @@ var path = require('path')
 
 jsonfile.spaces = 2;
 
-var freePortSplitted = process.env.EZMASTER_FREE_PORT_RANGE.split('-');
-
-jsonfile.readFile(path.join(__dirname, '../instances/instances-settings.json'), function (err, obj) {
-  if (err) { return err; }
-  if (obj.maxPort == 49152) {
-    var newPort = {
-      "maxPort" : freePortSplitted[0]
-    }
-    jsonfile.writeFile(path.join(__dirname, '../instances/instances-settings.json'), newPort, function (err) {
-      if (err) { return err; }
-    });
-  }
-});
-
 module.exports = function (router, core) {
 
   router.route('/').get(function (req, res, next) {
@@ -45,6 +31,7 @@ module.exports = function (router, core) {
   router.route('/-/v1/instances').get(function (req, res, next) {
     var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
     docker.listContainers({all : true}, function (err, containers) {
+      if (err) { return next (err); }
 
       var arrayObject = [];
       (function check() {
@@ -238,36 +225,59 @@ module.exports = function (router, core) {
               fs.appendFile(path.join(__dirname, '../instances/'+technicalName+'/config/data.json'), '{}', function (err) {
                 if (err) { return next (err); }
 
-                jsonfile.readFile(path.join(__dirname, '../instances/instances-settings.json'), function (err, obj) {
-                  if (err) { return next(err); }
-                  var port = parseInt(obj.maxPort) + 1;
-                  console.info(port);
+                var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
+                
+                docker.listContainers({all : true}, function (err, containers) {
+                  if (err) { return next (err); }
 
-                  var cmd = 'docker run -d -p '+port+':3000 -e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
-                  '--net=ezmaster_default --link ezmaster_db '+
-                  '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
-                    '/root/data.json '+
-                  '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
-                  '--name '+technicalName+' '+image;
+                  var portMax = 0
+                    , freePortSplitted = process.env.EZMASTER_FREE_PORT_RANGE.split('-');
 
-                  var data = {
-                    "maxPort" : port
-                  }
-                  jsonfile.writeFile(path.join(__dirname, '../instances/instances-settings.json'), data, function (err) {
-                    if (err) { return next(err); }
-                  });
+                  (function checkPort() {
+                    var element = containers.pop();
 
-                  var newlongName = {
-                    "longName" : longName
-                  }
-                  jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newlongName, function (err) {
-                    if (err) { return next (err); }
-                  });
+                    if (element) {
+                      var splittedName = element.Names[0].split('/');
+                      if (instancesArray.indexOf(splittedName[1]) === -1) { 
+                        return checkPort(); 
+                      }
 
-                  exec(cmd, function (err, stdout, stderr) {
-                    if (err) { return next (err); }
-                    return res.status(200).send('Instance created');
-                  });
+                      var container = docker.getContainer(element.Id);
+
+                      container.inspect(function (err, data) {
+                        if (err) { return next (err); }
+
+                        var keys =  Object.keys(data.HostConfig.PortBindings)
+                          , currentPort = data.HostConfig.PortBindings[keys[0]][0].HostPort;
+                        console.info(splittedName[1] + "," + currentPort);
+                        console.info(portMax);
+                        if (currentPort >= portMax) { portMax = parseInt(currentPort) + 1; }
+                        return checkPort();
+                      });
+                    }
+                    else {
+                      if (portMax == 0) { portMax = freePortSplitted[0]; }
+                      console.info('!ELEMEMT !!!!!');
+                      var cmd = 'docker run -d -p '+portMax+':3000 -e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
+                      '--net=ezmaster_default --link ezmaster_db '+
+                      '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+
+                        '/root/data.json '+
+                      '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
+                      '--name '+technicalName+' '+image;
+
+                      var newlongName = {
+                        "longName" : longName
+                      }
+                      jsonfile.writeFile(path.join(__dirname, '../manifests/'+technicalName+'.json'), newlongName, function (err) {
+                        if (err) { return next (err); }
+                      });
+
+                      exec(cmd, function (err, stdout, stderr) {
+                        if (err) { return next (err); }
+                        return res.status(200).send('Instance created');
+                      });
+                    }
+                  })();
                 });
               });
             });
