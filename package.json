@@ -28,7 +28,7 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.15.0",
-    "castor-core": "^3.9.1",
+    "castor-core": "^4.2.3",
     "debug": "^2.2.0",
     "dockerode": "^2.2.10",
     "file-exists": "^1.0.0",

@@ -9,10 +9,18 @@ var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT ?
 module.exports = {
   connectionURI: 'mongodb://' + mongoHostPort + '/ezmaster',
   collectionName: 'data',
-  browserifyModules : ['vue', 'vue-resource', 'components/addInstance', 'components/table', 'vue-validator', 'heartbeats'],
+  browserifyModules : [
+    'vue'
+    , 'vue-resource'
+    , 'components/addInstance'
+    , 'components/table'
+    , 'vue-validator'
+    , 'heartbeats'
+  ],
   rootURL : '/',
   routes: [
-    'route.js'
+    'route.js',
+    'status.js'
   ],
   filters: ['jbj-parse']
 };

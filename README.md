@@ -26,7 +26,6 @@ cd ezmaster
 make docker-install
 make docker-run-prod
 # make docker-stop-prod to stop it
-# if you have timeout during the pull, check 'Changing timeout' on this README
 # the app is listening at http://127.0.0.1:3000/
 ```
 
@@ -38,7 +37,6 @@ git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
 make docker-install
 make docker-run-dev
-# if you have timeout during the pull, check 'Changing timeout' on this README
 # the app is listening at http://127.0.0.1:3000/
 ```
 
@@ -48,7 +46,6 @@ git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
 make docker-install
 make docker-run-debug
-# if you have timeout during the pull, check 'Changing timeout' on this README
 # the app is listening at http://127.0.0.1:3000/
 ```
 

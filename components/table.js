@@ -48,6 +48,7 @@ var vm = new Vue({
       var data = {
         action : 'stop'
       };
+      console.log(event);
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         refresh();
       }, console.error);

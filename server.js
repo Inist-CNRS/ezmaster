@@ -5,6 +5,7 @@ var ccore = require('castor-core');
 
 module.exports = function(config, start) {
   config.set('theme', __dirname);
+  config.set('timeout', 1E6);
   start();
 };
 
