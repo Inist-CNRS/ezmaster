@@ -5,8 +5,8 @@ Administration of docker applications without any IT skills.
 ## Requirements
 
 - docker-compose version 2
-#### Environement variables
-```shell
+
+- ```shell
 - export EZMASTER_PUBLIC_IP='host_ip'
 - export EZMASTER_FREE_PORT_RANGE='49152-60000 (for example)' 
 # We recommend to use the port 49152 as minimal port
@@ -46,13 +46,5 @@ make docker-run-debug
 # if you have timeout during the pull, check 'Changing timeout' on this README
 # the app is listening at http://127.0.0.1:3000/
 ```
-
-### Changing timeout
-
-In castor-core module, in file "starter.js", please add 
-```shell 
-srv.timeout = 1E6;
-```
-at line 236.
 
 
