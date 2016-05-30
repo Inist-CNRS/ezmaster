@@ -88,7 +88,7 @@ var vm = new Vue({
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'block';
         optsEditor = { 
-          modes: ['tree', 'view', 'code'],
+          mode: 'code',
           onChange : function() {
             try {
               editor.get();
