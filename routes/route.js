@@ -60,7 +60,7 @@ module.exports = function (router, core) {
               container['status'] = true;
               container['address'] =
                 'http://'+process.env.EZMASTER_PUBLIC_IP+':'+elements.Ports[0].PublicPort;
-              container['target'] = 'ezmaster';
+              container['target'] = splittedName[1];
             }
             else if (elements.State === 'exited') {
               container['status'] = false;
