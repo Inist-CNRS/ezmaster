@@ -5,6 +5,8 @@ node_js:
 services:
   - docker
 before_install:
+  - sudo apt-get update
+  - sudo apt-get install docker-engine
   - make install
   - make build
   - make run-debug
