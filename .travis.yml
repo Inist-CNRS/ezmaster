@@ -5,6 +5,7 @@ node_js:
 services:
   - docker
 before_install:
+  - make install
   - make build
   - make run-debug
 script:
