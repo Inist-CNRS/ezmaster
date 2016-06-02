@@ -12,16 +12,19 @@ build: ## build the docker inistcnrs/ezmaster image localy
 	@docker build -t inistcnrs/ezmaster --build-arg http_proxy --build-arg https_proxy .
 
 run-debug: ## run ezmaster in debug mode with dockerized nodejs and mongodb process
-	@NODE_ENV=development docker-compose -f ./docker-compose.debug.yml up --force-recreate
+	@docker-compose -f ./docker-compose.debug.yml up --force-recreate
 
 run-dev: ## run ezmaster in dev mode with dockerized nodejs/nodemon and mongodb process
-	@NODE_ENV=development docker-compose -f ./docker-compose.dev.yml up --force-recreate
+	@docker-compose -f ./docker-compose.dev.yml up --force-recreate
 
 run-prod: ## run ezmaster in production mode with the full dockerized image (see build)
-	@NODE_ENV=production docker-compose -f ./docker-compose.yml up -d --force-recreate
+	@docker-compose -f ./docker-compose.yml up -d --force-recreate
+
+start-prod: ## start ezmaster production daemon (needs a first run-prod the first time)
+	@docker-compose -f ./docker-compose.yml start
 
 stop-prod: ## stop ezmaster production daemon
-	@NODE_ENV=production docker-compose -f ./docker-compose.yml stop
+	@docker-compose -f ./docker-compose.yml stop
 
 # makefile rule used to keep current user's unix rights on the docker mounted files
 chown:
