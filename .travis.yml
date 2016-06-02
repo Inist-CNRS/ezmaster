@@ -1,10 +1,11 @@
+sudo: required
 language: node_js
 node_js:
-  - 4.3.1
+  - 4.4.0
 services:
-  - mongodb
+  - docker
+before_install:
+  - make build
+  - make run-debug
 script:
-  - npm test
-cache:
-  directories:
-    - node_modules
+  - make test
