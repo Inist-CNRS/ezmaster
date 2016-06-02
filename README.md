@@ -4,6 +4,7 @@ Administration of docker applications without any IT skills.
 
 ## Requirements
 
+- docker >= 1.10
 - docker-compose version 2
 
 #### Environement variables
@@ -23,8 +24,8 @@ export EZMASTER_FREE_PORT_RANGE='49152-60000'
 ```shell
 git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
-make docker-install
-make docker-run-prod
+make install
+make run-prod
 # make docker-stop-prod to stop it
 # the app is listening at http://127.0.0.1:3000/
 ```
@@ -35,8 +36,8 @@ make docker-run-prod
 ```shell
 git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
-make docker-install
-make docker-run-dev
+make install
+make run-dev
 # the app is listening at http://127.0.0.1:3000/
 ```
 
@@ -44,8 +45,8 @@ make docker-run-dev
 ```shell
 git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
-make docker-install
-make docker-run-debug
+make install
+make run-debug
 # the app is listening at http://127.0.0.1:3000/
 ```
 
