@@ -26,7 +26,7 @@ git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
 make install
 make run-prod
-# make docker-stop-prod to stop it
+# make stop-prod to stop it
 # the app is listening at http://127.0.0.1:3000/
 ```
 
