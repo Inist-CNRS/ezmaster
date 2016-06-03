@@ -456,3 +456,8 @@ img.github {
 .block-input {
   display: block;
 }
+
+.form-group.required .control-label:after { 
+   content:" *";
+   color:red;
+}
