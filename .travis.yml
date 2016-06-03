@@ -22,3 +22,5 @@ before_install:
   - make run-prod
 script:
   - make test
+notifications:
+  slack: 'inist-dpi:53Jp5iUZeRidSGZn0TukMSKo#activity'
