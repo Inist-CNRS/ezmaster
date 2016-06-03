@@ -19,6 +19,6 @@ before_install:
   - make install
   # ezmaster server build and run (before make test)
   - make build
-  - make run-debug
+  - make run-prod
 script:
   - make test
