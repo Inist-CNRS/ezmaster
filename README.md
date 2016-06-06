@@ -14,7 +14,7 @@ Administration of docker applications without any IT skills.
 # the following example uses the eth0 ip adress
 export EZMASTER_PUBLIC_IP=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
 # the ports ezmarster is allowed to use for instances
-export EZMASTER_FREE_PORT_RANGE='49152-60000'
+export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # We recommend to use the port 49152 as minimal port
 ```
 
