@@ -9,6 +9,9 @@ describe('the ezmaster application', function () {
   request = request('http://127.0.0.1:3000');
 
   describe('GET', function () {
+
+    this.timeout(5000);
+
     it('index route', function (done) {
       request.get('/').expect(200, function (err) {
         done(err);

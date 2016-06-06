@@ -20,7 +20,7 @@
             <td>[[ item.description.Names[0] ]]</td>
             <td>[[ item.description.Created ]]</td>
             <td>[[ item.description.Image ]]</td>
-            <td> <span>Started <img src='/assets/img/check.png' alt='Instance working'></span> </td>
+            <td> <span>Started</span> </td>
             <td class="actions">
               <ul class="bread" style="margin-bottom:0px">
                 <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
@@ -80,7 +80,7 @@
             <td>[[ item.description.Names[0] ]]</td>
             <td>[[ item.description.Created ]]</td>
             <td>[[ item.description.Image ]]</td>
-            <td><span v-else>Stopped <img src='/assets/img/close.png' alt="Instance doesn't work"></span></td>
+            <td><span v-else>Stopped</span></td>
             <td class="actions">
               <ul class="bread" style="margin-bottom:0px">
                 <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
@@ -177,12 +177,12 @@
                       </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                       <label class="col-md-3 control-label">Technical name</label>
 
                       <div class="col-md-9">
                         <div class="block-input">
-                          <input class="form-control sizeInput" id="inputProject" placeholder="Project name, ..." type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
+                          <input class="form-control sizeInput " id="inputProject" placeholder="Project name, ..." type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
                           <input class="form-control has-warning sizeInput" id="inputStudy" placeholder="Study name, ..." type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
                           <input class="form-control sizeInput" id="inputVersion" placeholder="Version" value="[[  version ]]" type="number" min='0' v-model="version">
                         </div>

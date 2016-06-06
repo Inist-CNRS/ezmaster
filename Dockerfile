@@ -27,12 +27,12 @@ WORKDIR /app
 # If the test fails, the image
 # will not be built
 RUN npm config set strict-ssl false \
-    npm install && \
+	npm install -q && \
     # npm test && \
     # Then just install
     # production node modules
     rm -rf ./node_modules && \
-    npm install --production && \
+    npm install -q --production && \
     npm cache clean
 
 # data folder is a volume because it will
