@@ -457,7 +457,6 @@ img.github {
   display: block;
 }
 
-.form-group.required .control-label:after { 
-   content:" *";
-   color:red;
+#inputLongName, #inputProject, #inputStudy { 
+   background-color:#ffcccc;
 }

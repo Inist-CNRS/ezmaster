@@ -170,21 +170,25 @@
 
                     <div class="form-group">
                       <label for="inputLongName" class="col-md-3 control-label">Long name</label>
-
                       <div class="col-md-9">
-                        <input class="form-control" id="inputLongName" placeholder="Ex: free comment, title, note, ..." type="text" v-model="longName">
-                        <span class="help-block">Default value : "Free comment of <i>project-study-version</i>."</span>
+                        <input class="form-control" id="inputLongName" placeholder=" Ex : Title, Comment, Note, etc" type="text" value='[[ longName ]]' v-model="longName" v-validate:longName="{ required: true }">
+                        <!-- <span class="help-block">Default value : "Free comment of <i>project-study-version</i>."</span> -->
+                        <!--
+                        <div v-if='$validation1.longName.dirty'>
+                          <span class="help-block text-danger" v-if="$validation1.longName.required">Fill the Long name.</span>
+                        </div>
+                        -->
                       </div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group">
                       <label class="col-md-3 control-label">Technical name</label>
 
                       <div class="col-md-9">
                         <div class="block-input">
-                          <input class="form-control sizeInput " id="inputProject" placeholder="Project name, ..." type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
-                          <input class="form-control has-warning sizeInput" id="inputStudy" placeholder="Study name, ..." type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
-                          <input class="form-control sizeInput" id="inputVersion" placeholder="Version" value="[[  version ]]" type="number" min='0' v-model="version">
+                          <input class="form-control sizeInput" id="inputProject" placeholder=" Ex : Project name" type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
+                          <input class="form-control has-warning sizeInput" id="inputStudy" placeholder=" Ex : Study name" type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
+                          <input class="form-control sizeInput" id="inputVersion" placeholder=" Version" value="[[  version ]]" type="number" min='0' v-model="version">
                         </div>
                         <div v-if='$validation1.project.dirty'>
                           <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
