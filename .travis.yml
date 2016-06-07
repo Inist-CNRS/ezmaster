@@ -20,6 +20,8 @@ before_install:
   # ezmaster server build and run (before make test)
   - make build
   - make run-prod
+  # to show some logs if the server do not start correctly
+  - sleep 30 ; docker-compose logs
 script:
   - make test
 notifications:
