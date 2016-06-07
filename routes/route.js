@@ -266,7 +266,6 @@ module.exports = function (router, core) {
                     }
                     else {
                       if (portMax == 0) { portMax = freePortSplitted[0]; }
-
                       var cmd = 'docker run -d -p '+portMax+':3000 ' + 
                       '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
                       '--net=ezmaster_default --link ezmaster_db '+
