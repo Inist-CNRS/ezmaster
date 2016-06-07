@@ -22,6 +22,10 @@ module.exports = {
     'route.js',
     'status.js'
   ],
+  middlewares: {
+    '/*': 'reverseproxy.js'
+  },
+
   filters: ['jbj-parse']
 };
 module.exports.package = require('./package.json');
