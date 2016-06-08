@@ -21,6 +21,7 @@ services:
       MONGODB_URI: "ezmaster_db:27017"
       EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
+      EZMASTER_PUBLIC_DOMAIN : ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
     working_dir: /app
     ports:

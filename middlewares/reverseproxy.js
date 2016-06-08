@@ -2,7 +2,7 @@
 "use strict";
 
 var httpProxy = require('http-proxy');
-
+var instances = require('../helpers/instances');
 
 
 /*
@@ -14,9 +14,9 @@ module.exports = function(options, core) {
 
   var proxy = httpProxy.createProxyServer({})
     , domainEnv = core.config.get('domainProxy')
-    , data = { };
+    , data = instances.getInstancesReverseProxy();
 
-  return function(req, res , next) {
+  return function(req, res, next) {
 
     var reqServer = req.headers['x-forwarded-server']
       , reqHost = req.headers['x-forwarded-host']
