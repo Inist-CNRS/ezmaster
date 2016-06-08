@@ -7,12 +7,13 @@ var optsEditor = {}
   , idToConfig = null
   , heartbeats = require('heartbeats');
 
+// view for the instances table in HTML which id is instances-table.
 var vm = new Vue({
   el: '#instances-table',
-  ready : function () {
+  ready : function () {   // When the table is ready...
     var self = this;
-    self.$http.get('/-/v1/instances').then(function (result) {
-      self.$set('containers', result.data);
+    self.$http.get('/-/v1/instances').then(function (result) {    // ... call the route /-/v1/instances with a get wich get the instances list.
+      self.$set('containers', result.data); // Store the instances list into the variable containers used into the HTML with v-for.
     }, console.error);
 
     function verifRefresh() {
@@ -42,6 +43,8 @@ var vm = new Vue({
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         refresh();
       }, console.error);
+      // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element. Here, the instance id.
+      // button start > li > ul > td > tr > id="[[ item.description.Id ]]"
     },
 
     stopInstance : function (event) {
