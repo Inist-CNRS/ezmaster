@@ -29,12 +29,9 @@ module.exports = function (router, core) {
   });
 
   router.route('/-/v1/instances').get(function (req, res, next) {
-    var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
-    docker.listContainers({all : true}, function (err, containers) {
-      if (err) { return next(err); }
-
+    
       var arrayObject = getInstances.getInstances(req, res, next);
-    });
+    
   });
 
   router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
