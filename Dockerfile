@@ -41,4 +41,4 @@ VOLUME /app/data
 
 # run the application
 CMD ["npm", "start"]
-EXPOSE 3000
+EXPOSE 35267

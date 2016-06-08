@@ -29,7 +29,7 @@ services:
       EZMASTER_PATH: ${PWD}
     working_dir: /app
     ports:
-      - 3000:3000
+      - 35267:3000
     depends_on:
       - ezmaster_db
     command: ./ezmaster
