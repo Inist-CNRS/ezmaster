@@ -7,11 +7,6 @@ services:
   ezmaster:
     container_name: ezmaster
     image: inistcnrs/ezmaster:latest
-    build: 
-      context: .
-      args: 
-        - http_proxy
-        - https_proxy
     links:
       - ezmaster_db
     volumes:

@@ -18,6 +18,7 @@ before_install:
   # ezmaster install (for make test)
   - make install
   # ezmaster server must be alive background before make test
+  - make build
   - docker-compose -f ./docker-compose.debug.yml up --force-recreate -d
   # to show some logs if the server do not start correctly
   - sleep 120 ; docker-compose logs
