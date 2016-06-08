@@ -1,5 +1,7 @@
 # ezmaster
 
+[![Build Status](https://travis-ci.org/Inist-CNRS/ezmaster.svg?branch=master)](https://travis-ci.org/Inist-CNRS/ezmaster)
+
 Administration of docker applications without any IT skills.
 
 ## Requirements
