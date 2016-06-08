@@ -35,7 +35,7 @@ npm: ## npm wrapper. example: make npm install --save mongodb-querystring
 	@make chown
 
 test: ## run ezmaster unit tests
-	@npm test
+	@docker-compose -f ./docker-compose.debug.yml exec ezmaster npm test
 
 coverage: ## run istanbul to have how much % of the ezmaster code is covered by tests
 	@./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec
