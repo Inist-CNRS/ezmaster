@@ -14,7 +14,7 @@ var path = require('path')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
-  , getInstances = require('../helpers/getinstances');
+  , instances = require('../helpers/instances');
 
 
 

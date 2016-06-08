@@ -18,7 +18,7 @@ var path = require('path')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
-  , getInstances = require('../helpers/getinstances');
+  , instances = require('../helpers/instances');
 
 jsonfile.spaces = 2;
 
@@ -30,7 +30,7 @@ module.exports = function (router, core) {
 
   router.route('/-/v1/instances').get(function (req, res, next) {
     
-      var arrayObject = getInstances.getInstances(req, res, next);
+      var arrayObject = instances.getInstances(req, res, next);
     
   });
 
