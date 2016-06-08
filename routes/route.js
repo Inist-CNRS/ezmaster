@@ -33,8 +33,6 @@ module.exports = function (router, core) {
     docker.listContainers({all : true}, function (err, containers) {
       if (err) { return next(err); }
 
-      var arrayObject = [];
-
       var arrayObject = getInstances.getInstances(req, res, next);
     });
   });
