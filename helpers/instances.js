@@ -76,8 +76,71 @@ module.exports.getInstances = function (req, res, next) {
           });
 
       })();
+    
+    });
 
-      return arrayObject;
+};
+
+
+
+module.exports.getInstancesReverseProxy = function () {
+
+    var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
+    docker.listContainers({all : true}, function (err, containers) {
+
+      if (err) { return; }
+      
+      var arrayObject = [];
+
+      (function check () {
+
+          var elements = containers.pop()
+            , container = {};
+
+          if (!elements) { return arrayObject; }
+
+          var splittedName = elements.Names[0].split('/');
+
+          if (instancesArray.indexOf(splittedName[1]) === -1) { return check(); }
+
+          var img = docker.getImage(elements.Image);
+
+          jsonfile.readFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json')
+          , function (err, obj) {
+
+            if (err) { return; }
+
+            img.inspect(function (err, data) {
+
+              if (err) { return; }
+
+              if (elements.State === 'running') {
+                container['status'] = true;
+                container['address'] =
+                  'http://'+process.env.EZMASTER_PUBLIC_IP+':'+elements.Ports[0].PublicPort;
+                container['target'] = splittedName[1];
+              }
+              else if (elements.State === 'exited') {
+                container['status'] = false;
+                container['address'] = '';
+                container['target'] = '';
+              }
+
+              elements.Image = data.RepoTags[0];
+              elements.Names[0] = splittedName[1];
+              elements.Created = moment.unix(elements.Created).format('YYYY/MM/DD');
+
+              container['longName'] = obj.longName;
+              container['description'] = elements;
+
+              arrayObject.push(container);
+              check();
+
+            });
+            
+          });
+
+      })();
     
     });
 
