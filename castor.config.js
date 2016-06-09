@@ -6,14 +6,14 @@ var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT ?
                     process.env.EZMASTER_MONGODB_HOST_PORT :
                     'localhost:27017';
 
-var domainProxy = process.env.EZMASTER_PUBLIC_DOMAIN ?
+var publicDomain = process.env.EZMASTER_PUBLIC_DOMAIN ?
                   process.env.EZMASTER_PUBLIC_DOMAIN :
                   null;
 
 module.exports = {
   connectionURI: 'mongodb://' + mongoHostPort + '/ezmaster',
   collectionName: 'data',
-  domainProxy: domainProxy,
+  publicDomain: publicDomain,
   browserifyModules : [
     'vue'
     , 'vue-resource'

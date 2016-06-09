@@ -13,7 +13,7 @@ module.exports = function(options, core) {
 
 
   var proxy = httpProxy.createProxyServer({})
-    , domainEnv = core.config.get('domainProxy')
+    , domainEnv = core.config.get('publicDomain')
     , data = instances.getInstancesReverseProxy();
 
   return function(req, res, next) {
