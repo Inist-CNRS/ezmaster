@@ -460,3 +460,7 @@ img.github {
 #inputLongName, #inputProject, #inputStudy { 
    background-color:#ffcccc;
 }
+
+#urlPreview{
+    background-color:#CFD8DC;
+}
