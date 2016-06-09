@@ -6,8 +6,6 @@ var path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('castor:route:' + basename)
   , bodyParser = require('body-parser')
-  , moment = require('moment')
- , util = require('util')
   , fs = require('fs')
   , getSize = require('get-folder-size')
   , filesize = require('filesize')
@@ -29,9 +27,7 @@ module.exports = function (router, core) {
   });
 
   router.route('/-/v1/instances').get(function (req, res, next) {
-    
-      var arrayObject = instances.getInstances(req, res, next);
-    
+    instances.getInstances(req, res, next);
   });
 
   router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
@@ -39,7 +35,6 @@ module.exports = function (router, core) {
 
     container.inspect(function (err, data) {
       if (err) { return next(err); }
-
       if (req.body.action == 'start' && data.State.Running == false) {
         container.start(function (err, datas, container) {
           if (err) { return next(err); }
@@ -64,7 +59,7 @@ module.exports = function (router, core) {
           if (data.State.Running == true) {
             container.restart(function (err) {
               if (err) { return next(err); }
-              res.status(200).send('Update done'); 
+              res.status(200).send('Update done');
             });
           }
           else { res.status(200).send('Update done'); }
@@ -186,7 +181,7 @@ module.exports = function (router, core) {
                 if (err) { return next(err); }
 
                 var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
-                
+
                 docker.listContainers({all : true}, function (err, containers) {
                   if (err) { return next(err); }
 
@@ -216,16 +211,18 @@ module.exports = function (router, core) {
                     }
                     else {
                       if (portMax == 0) { portMax = freePortSplitted[0]; }
-                      var cmd = 'docker run -d -p '+portMax+':3000 ' + 
+                      var cmd = 'docker run -d -p '+portMax+':3000 ' +
                       '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
                       '--net=ezmaster_default --link ezmaster_db '+
-                      '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/config/data.json:'+'/root/data.json '+
-                      '-v '+process.env.EZMASTER_PATH+'/instances/'+technicalName+'/data/:/root/data/ '+
+                      '-v '+process.env.EZMASTER_PATH+'/instances/'+
+                      technicalName+'/config/data.json:'+'/root/data.json '+
+                      '-v '+process.env.EZMASTER_PATH+'/instances/'
+                      +technicalName+'/data/:/root/data/ '+
                       '--name '+technicalName+' '+image;
 
                       var newlongName = {
                         'longName' : longName
-                      }
+                      };
                       jsonfile.writeFile(
                         path.join(__dirname, '../manifests/'+technicalName+'.json')
                         , newlongName, function (err) {
