@@ -55,7 +55,7 @@ module.exports.getInstances = function (req, res, next) {
                 container['address'] = 'http://'+process.env.EZMASTER_PUBLIC_IP+':'+elements.Ports[0].PublicPort;
                 if(!process.env.EZMASTER_PUBLIC_IP)
                   container['address'] = 'http://127.0.0.1:'+elements.Ports[0].PublicPort;
-                
+
                 container['target'] = splittedName[1];
               }
               else if (elements.State === 'exited') {
@@ -111,7 +111,7 @@ module.exports.getInstancesReverseProxy = function () {
 
             img.inspect(function (err, data) {
 
-              if (elements.State === 'running') {
+              if ((elements.State === 'running') || (elements.State === 'exited')) {
 
                 // Only get id and port
                 container['id'] = elements.Id;
@@ -119,7 +119,7 @@ module.exports.getInstancesReverseProxy = function () {
 
                 arrayObject.push(container);
               }
-              
+
               check();
 
             });
