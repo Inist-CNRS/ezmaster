@@ -111,15 +111,20 @@ module.exports.getInstancesReverseProxy = function () {
 
             img.inspect(function (err, data) {
 
-              if ((elements.State === 'running') || (elements.State === 'exited')) {
-
+              if (elements.State === 'running') {
                 // Only get id and port
                 container['id'] = elements.Id;
                 container['port'] = elements.Ports[0].PublicPort;
 
-                arrayObject.push(container);
+              }
+              else if (elements.State === 'exited') {
+                // Only get id and port
+                container['id'] = elements.Id;
+                container['port'] = elements.Ports[0];
+                
               }
 
+              arrayObject.push(container);
               check();
 
             });
