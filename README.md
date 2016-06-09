@@ -9,12 +9,12 @@ Administration of docker applications without any IT skills.
 - docker version >= 1.10
 - docker-compose version >= 1.7
 
-#### Environement variables
+#### Environment variables
 
 ```shell
-# Environement variable the IP ezmaster instances will use to be joinable from outside.
+# Environment variable the IP ezmaster instances will use to be joinable from outside.
 export EZMASTER_PUBLIC_IP="Your IP"
-# Environement variable the ports ezmaster is allowed to use for instances.
+# Environment variable the ports ezmaster is allowed to use for instances.
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # We recommend to use the port 49152 as minimal port.
 ```
