@@ -10,10 +10,16 @@ var publicDomain = process.env.EZMASTER_PUBLIC_DOMAIN ?
                   process.env.EZMASTER_PUBLIC_DOMAIN :
                   null;
 
+var publicIP = process.env.EZMASTER_PUBLIC_IP ?
+                    process.env.EZMASTER_PUBLIC_IP :
+                    '127.0.0.1';
+                  
+
 module.exports = {
   connectionURI: 'mongodb://' + mongoHostPort + '/ezmaster',
   collectionName: 'data',
   publicDomain: publicDomain,
+  publicIP: publicIP,
   browserifyModules : [
     'vue'
     , 'vue-resource'

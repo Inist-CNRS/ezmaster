@@ -51,8 +51,11 @@ module.exports.getInstances = function (req, res, next) {
 
               if (elements.State === 'running') {
                 container['status'] = true;
-                container['address'] =
-                  'http://'+process.env.EZMASTER_PUBLIC_IP+':'+elements.Ports[0].PublicPort;
+
+                container['address'] = 'http://'+process.env.EZMASTER_PUBLIC_IP+':'+elements.Ports[0].PublicPort;
+                if(!process.env.EZMASTER_PUBLIC_IP)
+                  container['address'] = 'http://127.0.0.1:'+elements.Ports[0].PublicPort;
+                
                 container['target'] = splittedName[1];
               }
               else if (elements.State === 'exited') {
