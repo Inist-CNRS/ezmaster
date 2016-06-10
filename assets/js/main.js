@@ -1,4 +1,4 @@
-/* global $, document, JSONEditor, nColumns, view */
+'use strict';
 
 var Vue = require('vue');
 
@@ -11,7 +11,7 @@ Vue.validator('numeric', function (val) {
   return /^[0-9]+$/.test(val);
 });
 Vue.validator('lowercaseAndDigits', function (val) {
-	return /^[a-z0-9]+$/.test(val);
+  return /^[a-z0-9]+$/.test(val);
 });
 
 require('components/addInstance');
