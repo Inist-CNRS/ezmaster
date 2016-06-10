@@ -51,7 +51,7 @@ module.exports = function (router, core) {
         var splittedName = data.Name.split('/');
 
         jsonfile.writeFile(
-          path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'),
+          path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
           req.body.newConfig, function (err) {
          
           if (err) { return next(err); }
@@ -100,7 +100,7 @@ module.exports = function (router, core) {
       }
       else if (req.query.action == 'config') {
         jsonfile.readFile(
-        path.join(__dirname, '../instances/', splittedName[1], '/config/data.json'),
+        path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
         function (err, obj) {
 
           if (err) { return next(err); }
@@ -175,7 +175,7 @@ module.exports = function (router, core) {
               if (err) { return next(err); }
 
               fs.appendFile(
-              path.join(__dirname, '../instances/'+technicalName+'/config/data.json')
+              path.join(__dirname, '../instances/'+technicalName+'/config/config.json')
               , '{}', function (err) {
 
                 if (err) { return next(err); }
@@ -215,7 +215,7 @@ module.exports = function (router, core) {
                       '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
                       '--net=ezmaster_default --link ezmaster_db '+
                       '-v '+process.env.EZMASTER_PATH+'/instances/'+
-                      technicalName+'/config/data.json:'+'/root/data.json '+
+                      technicalName+'/config/config.json:'+'/root/data.json '+
                       '-v '+process.env.EZMASTER_PATH+'/instances/'
                       +technicalName+'/data/:/root/data/ '+
                       '--name '+technicalName+' '+image;
