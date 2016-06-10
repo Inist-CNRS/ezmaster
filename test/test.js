@@ -1,8 +1,6 @@
 /* global describe, it */
 'use strict';
-var assert = require('chai').assert
-	, request = require('supertest')
-	, path = require('path');
+var request = require('supertest')
 
 describe('the ezmaster application', function () {
 
