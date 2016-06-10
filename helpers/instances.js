@@ -72,7 +72,7 @@ module.exports.getInstances = function (req, res, next) {
           arrayObject.push(container);
           check();
 
-        });            
+        });
       });
     })();
   });
@@ -86,7 +86,9 @@ module.exports.getInstancesReverseProxy = function () {
   var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
 
   docker.listContainers({all : true}, function (err, containers) {
-        
+
+    if (err) { return err; }
+
     var arrayObject = [];
 
     (function check () {
@@ -105,7 +107,11 @@ module.exports.getInstancesReverseProxy = function () {
       jsonfile.readFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json')
       , function (err, obj) {
 
+        if (err) { return err; }
+
         img.inspect(function (err, data) {
+
+          if (err) { return err; }
 
           if (elements.State === 'running') {
             // Only get id and port
@@ -115,13 +121,13 @@ module.exports.getInstancesReverseProxy = function () {
           else if (elements.State === 'exited') {
             // Only get id and port
             container['id'] = elements.Id;
-            container['port'] = elements.Ports[0];  
+            container['port'] = elements.Ports[0];
           }
 
           arrayObject.push(container);
           check();
 
-        });            
+        });
       });
     })();
   });
