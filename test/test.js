@@ -1,6 +1,6 @@
 /* global describe, it */
 'use strict';
-var request = require('supertest')
+var request = require('supertest');
 
 describe('the ezmaster application', function () {
 
