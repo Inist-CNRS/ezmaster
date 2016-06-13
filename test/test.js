@@ -4,7 +4,7 @@ var request = require('supertest');
 
 describe('the ezmaster application', function () {
 
-  request = request('http://127.0.0.1:3000');
+  request = request('http://127.0.0.1:35267');
 
   describe('GET', function () {
 
