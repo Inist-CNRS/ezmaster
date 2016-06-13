@@ -16,7 +16,8 @@ var path = require('path')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
-  , instances = require('../helpers/instances');
+  , instances = require('../helpers/instances')
+  , util = require('utile');
 
 jsonfile.spaces = 2;
 
@@ -160,6 +161,7 @@ module.exports = function (router, core) {
       res.status(409).send('Technical name already exists');
     }
     else {
+    
       docker.pull(image, function (err, stream) {
         if (err) { return res.status(400).send(err); }
 
@@ -215,9 +217,9 @@ module.exports = function (router, core) {
                       '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
                       '--net=ezmaster_default --link ezmaster_db '+
                       '-v '+process.env.EZMASTER_PATH+'/instances/'+
-                      technicalName+'/config/config.json:'+'/root/data.json '+
+                      technicalName+'/config/config.json:'+'/opt/ezmaster/config/config.json '+
                       '-v '+process.env.EZMASTER_PATH+'/instances/'
-                      +technicalName+'/data/:/root/data/ '+
+                      +technicalName+'/data/:/opt/ezmaster/data/ '+
                       '--name '+technicalName+' '+image;
 
                       var newlongName = {
@@ -244,5 +246,9 @@ module.exports = function (router, core) {
       });
     }
   });
-
 };
+
+
+
+
+
