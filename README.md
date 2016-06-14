@@ -13,12 +13,11 @@ Administration of docker applications without any IT skills.
 
 ```shell
 # Environment variable the IP ezmaster instances will use to be joinable from outside.
-export EZMASTER_PUBLIC_IP="Your IP"
+	export EZMASTER_PUBLIC_IP="Your IP"
 # Environment variable the ports ezmaster is allowed to use for instances.
-export EZMASTER_FREE_PORT_RANGE="49152-60000"
+	export EZMASTER_FREE_PORT_RANGE="35267-60000"
 # Environment variable specifying the instances public domain.
-export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
-# We recommend to use the port 49152 as minimal port.
+	export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 ```
 
 
