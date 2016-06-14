@@ -13,14 +13,23 @@ Administration of docker applications without any IT skills.
 
 ```shell
 # Environment variable the IP ezmaster instances will use to be joinable from outside.
-	export EZMASTER_PUBLIC_IP="Your IP"
+# Default is "127.0.0.1"
+export EZMASTER_PUBLIC_IP="Your IP"
+
 
 # Environment variable the ports ezmaster is allowed to use for instances.
-# It is recommended to use 49152 as minimal port.
-	export EZMASTER_FREE_PORT_RANGE="49152-60000"
+# Default is "49152-60000" (notice: 49152 is recommended as the minimal port)
+export EZMASTER_FREE_PORT_RANGE="49152-60000"
 	
 # Environment variable specifying the instances public domain.
-	export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
+# 
+# Default is empty and it means the reverse proxy feature will not be enabled
+# 
+# On the following example, if we have a "abc-def-4" (tech name) instance, then
+# it will be joinable at this URL: http://abc-def-4.lod-test.istex.fr
+# Tech. name is the prefix used and concatenated to the public domain
+export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
+
 ```
 
 
