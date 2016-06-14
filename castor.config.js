@@ -9,10 +9,12 @@ var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT ?
 var publicDomain = process.env.EZMASTER_PUBLIC_DOMAIN ?
                   process.env.EZMASTER_PUBLIC_DOMAIN :
                   null;
-
+/*
 var publicIP = process.env.EZMASTER_PUBLIC_IP ?
                     process.env.EZMASTER_PUBLIC_IP :
                     '127.0.0.1';
+*/
+var publicIP = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1';
                   
 
 module.exports = {
