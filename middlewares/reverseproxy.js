@@ -24,12 +24,16 @@ module.exports = function(options, core) {
       ;
 
     console.log('reverseproxy#1',reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
-   console.log("########## DEBUG ##########");
-   console.log("DATA : " + data);
-   console.log("REQSUBDOMAIN : " + reqSubdomain);
-   console.log("REQSERVER : " + reqServer);
-   console.log("DOMAINENV : " + domainEnv);
-   console.log("########## FIN DEBUG ##########");
+
+    console.log("");
+    console.log("########## DEBUG ##########");
+    console.log("DATA : " + data);
+    console.log("REQSUBDOMAIN : " + reqSubdomain);
+    console.log("REQSERVER : " + reqServer);
+    console.log("DOMAINENV : " + domainEnv);
+    console.log("########## FIN DEBUG ##########");
+    console.log("");
+    
     if(reqSubdomain && (reqServer === domainEnv) && data !== undefined) {
 
       console.log('reverseproxy#1.1');
