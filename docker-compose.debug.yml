@@ -1,5 +1,4 @@
 # ezmaster docker-compose dedicated for development
-# same as docker-compose.debug.yml but using nodemon
 version: '2'
 
 services:
