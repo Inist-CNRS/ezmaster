@@ -55,7 +55,7 @@ make run-debug
 
 ## Architecture Diagram
 
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/032571c8dc459feeecd5f204c463bccebc22bf54/doc/ezmaster_Architecture_Diagram.png)
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/d97293f5cf1d3395e924ada68364792781231d38/doc/ezmaster_Architecture_Diagram.png)
 
 
 
