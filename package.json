@@ -34,7 +34,7 @@
     "file-exists": "^1.0.0",
     "filesize": "^3.3.0",
     "get-folder-size": "^1.0.0",
-    "http-proxy":"^1.13.3",
+    "http-proxy": "^1.13.3",
     "jbj-parse": "^1.0.0",
     "jsonfile": "^2.3.1",
     "kuler": "0.0.0",
@@ -42,6 +42,7 @@
     "moment": "^2.13.0",
     "mongodb-querystring": "^1.0.2",
     "rimraf": "^2.5.2",
+    "utile": "^0.3.0",
     "vue": "^1.0.18",
     "vue-resource": "^0.7.0",
     "vue-validator": "^2.1.1"
