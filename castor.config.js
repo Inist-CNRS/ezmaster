@@ -2,18 +2,10 @@
 // to allow mongodb host and port injection thanks
 // to the EZMASTER_MONGODB_HOST_PORT environment parameter
 // (docker uses it)
-var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT ?
-                    process.env.EZMASTER_MONGODB_HOST_PORT :
-                    'localhost:27017';
+var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT || 'localhost:27017';
 
-var publicDomain = process.env.EZMASTER_PUBLIC_DOMAIN ?
-                  process.env.EZMASTER_PUBLIC_DOMAIN :
-                  null;
-/*
-var publicIP = process.env.EZMASTER_PUBLIC_IP ?
-                    process.env.EZMASTER_PUBLIC_IP :
-                    '127.0.0.1';
-*/
+var publicDomain = process.env.EZMASTER_PUBLIC_DOMAIN || null;
+
 var publicIP = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1';
                   
 
