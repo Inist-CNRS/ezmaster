@@ -53,6 +53,9 @@ make run-debug
 # ezmaster is listening at http://127.0.0.1:3000/
 ```
 
+## Architecture Diagram
+
+![alt tag](https://github.com/Inist-CNRS/ezmaster/doc/ezmaster_Architecture_Diagram.png)
 
 
 
