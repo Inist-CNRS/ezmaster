@@ -1,8 +1,20 @@
 NODE_VERSION=4.4.0
 .PHONY: help install npm clean test coverage lint build run-debug run-prod stop-prod run-prod run-debug chown
 
+.DEFAULT_GOAL := help
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+# If the first argument is one of the supported commands...
+SUPPORTED_COMMANDS := version
+SUPPORTS_MAKE_ARGS := $(findstring $(firstword $(MAKECMDGOALS)), $(SUPPORTED_COMMANDS))
+ifneq "$(SUPPORTS_MAKE_ARGS)" ""
+    # use the rest as arguments for the command
+    COMMAND_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+    # ...and turn them into do-nothing targets
+    $(eval $(COMMAND_ARGS):;@:)
+endif
 
 install: ## install depedencies thanks to a dockerized npm install
 	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:${NODE_VERSION} npm install -q
@@ -43,3 +55,16 @@ lint: ## to check the coding rules
 clean: ## remove node_modules and temp files
 	@rm -Rf ./node_modules/ ./npm-debug.log
 
+# example: make version v=0.0.3
+version:
+ifdef COMMAND_ARGS
+	@echo "---> Creating a new version with npm version"
+	npm version $(COMMAND_ARGS)
+	@echo "---> Patching docker-compose.yml (prod file) for using this version"
+	VERSION=$(cat package.json | jq -r .version)
+	sed -i "s#\(image: inistcnrs/ezmaster:\)\([a-z0-9]\+\)#\1${VERSION}#g" docker-compose.yml
+	@echo "---> TODO : commit the patch and move the tag"
+else
+	@echo "Usage: make version <arg> (same as npm syntax)"
+	@npm version --help
+endif
