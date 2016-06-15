@@ -62,9 +62,9 @@ ifdef COMMAND_ARGS
 	npm version $(COMMAND_ARGS)
 	@echo "---> Patching docker-compose.yml (prod file) for using this version"
 	VERSION=$(cat package.json | jq -r .version)
-	sed -i "s#\(image: inistcnrs/ezmaster:\)\([a-z0-9]\+\)#\1${VERSION}#g" docker-compose.yml
-	git commit docker-compose.yml -m "Release $VERSION"
-	git tag --force v$VERSION $(git rev-parse HEAD)
+	sed -i "s#\(image: inistcnrs/ezmaster:\)\([\.a-z0-9]\+\)#\1${VERSION}#g" docker-compose.yml
+	git commit docker-compose.yml -m "Release ${VERSION}"
+	git tag --force v${VERSION} $(git rev-parse HEAD)
 	@echo "---> TODO : commit the patch and move the tag"
 else
 	@echo "Usage: make version <arg> (same as npm syntax)"
