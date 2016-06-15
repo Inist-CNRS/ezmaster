@@ -7,7 +7,7 @@ services:
   # displaying the IHM and providing REST routes
   ezmaster:
     container_name: ezmaster
-    image: inistcnrs/ezmaster:2.0.2 # todo fix the tag when possible
+    image: inistcnrs/ezmaster:2.0.4 # todo fix the tag when possible
     links:
       - ezmaster_db
     volumes:
