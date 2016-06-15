@@ -18,7 +18,9 @@ export EZMASTER_PUBLIC_IP="Your IP"
 
 
 # Environment variable the ports ezmaster is allowed to use for instances.
-# Default is "49152-60000" (notice: 49152 is recommended as the minimal port)
+# Default is "49152-60000". 
+# Notice : 49152 is recommended as the minimal port.
+# 	See http://www.tcpipguide.com/free/t_TCPIPApplicationAssignmentsandServerPortNumberRang-2.htm
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 	
 # Environment variable specifying the instances public domain.
