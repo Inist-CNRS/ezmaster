@@ -55,8 +55,7 @@ lint: ## to check the coding rules
 clean: ## remove node_modules and temp files
 	@rm -Rf ./node_modules/ ./npm-debug.log
 
-# example: make version v=0.0.3
-version:
+version: ## to create a new ezmaster version (same way npm version works)
 ifdef COMMAND_ARGS
 	@echo "---> Creating a new version with npm version"
 	npm version $(COMMAND_ARGS)
@@ -64,6 +63,7 @@ ifdef COMMAND_ARGS
 	sed -i "s#\(image: inistcnrs/ezmaster:\)\([\.a-z0-9]\+\)#\1$(shell cat package.json | jq -r .version)#g" docker-compose.yml
 	git commit docker-compose.yml -m "Release $(shell cat package.json | jq -r .version)"
 	git tag --force v$(shell cat package.json | jq -r .version) $(git rev-parse HEAD)
+	@echo "---> Now, do not forget to push your tags: git push --tags"
 else
 	@echo "Usage: make version <arg> (same as npm syntax)"
 	@npm version --help
