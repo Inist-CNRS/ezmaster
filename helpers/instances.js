@@ -80,23 +80,28 @@ module.exports.getInstances = function (req, res, next) {
 };
 
 
-
-module.exports.getInstancesReverseProxy = function () {
+module.exports.getInstancesReverseProxy = function (callback) {
 
   var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
+  
 
   docker.listContainers({all : true}, function (err, containers) {
 
-    if (err) { return err; }
+    if (err) { return callback(err); }
 
     var arrayObject = [];
+
+
 
     (function check () {
 
       var elements = containers.pop();
       var container = {};
 
-      if (!elements) { return arrayObject; }
+      if (!elements) {          
+
+        return callback(null, arrayObject); 
+      }
 
       var splittedName = elements.Names[0].split('/');
 
@@ -107,11 +112,11 @@ module.exports.getInstancesReverseProxy = function () {
       jsonfile.readFile(path.join(__dirname, '../manifests/', splittedName[1] + '.json')
       , function (err, obj) {
 
-        if (err) { return err; }
+        if (err) { return callback(err); }
 
         img.inspect(function (err, data) {
 
-          if (err) { return err; }
+          if (err) { return callback(err); }
 
           if (elements.State === 'running') {
             // Only get id and port
@@ -132,3 +137,9 @@ module.exports.getInstancesReverseProxy = function () {
     })();
   });
 };
+
+
+
+
+
+

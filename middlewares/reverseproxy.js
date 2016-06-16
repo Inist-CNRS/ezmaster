@@ -4,37 +4,47 @@
 var httpProxy = require('http-proxy');
 var instances = require('../helpers/instances');
 
+var async = require('async');
 
-/*
- * Proxy redirect middleware
- */
-
-module.exports = function(options, core) {
+module.exports = function(options, core, data) {
 
 
   var proxy = httpProxy.createProxyServer({})
-    , domainEnv = core.config.get('publicDomain')
-    , data = instances.getInstancesReverseProxy();
+    , domainEnv = core.config.get('publicDomain');
+
 
   return function(req, res, next) {
 
+    
+
+
+    var data = instances.getInstancesReverseProxy(function(err,data){
+      console.log(err,data);
     var reqServer = req.headers['x-forwarded-server']
       , reqHost = req.headers['x-forwarded-host']
       , reqSubdomain = reqHost ? reqHost.split('.') : null
       ;
+
+          
 
     console.log('reverseproxy#1',reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
 
     console.log("");
     console.log("########## DEBUG ##########");
     console.log("DATA : " + data);
+    console.log("REQHOST : " + reqHost);
     console.log("REQSUBDOMAIN : " + reqSubdomain);
     console.log("REQSERVER : " + reqServer);
     console.log("DOMAINENV : " + domainEnv);
     console.log("########## FIN DEBUG ##########");
     console.log("");
+
     
     if(reqSubdomain && (reqServer === domainEnv) && data !== undefined) {
+
+
+
+    
 
       console.log('reverseproxy#1.1');
 
@@ -87,7 +97,7 @@ module.exports = function(options, core) {
       console.log('reverseproxy#1.0');
       next();
     }
+    })
   }
+  
 }
-
-
