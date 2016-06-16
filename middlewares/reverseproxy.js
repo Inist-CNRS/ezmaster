@@ -79,7 +79,7 @@ module.exports = function(options, core, data) {
       }, undefined);
 
       if (found !== undefined) {
-        var url = 'http://127.0.0.1:' + data[found].port;
+        var url = 'http://'+publicIP+'' + data[found].port;
         console.log('reverseproxy#1.1.1', url);
         proxy.web(req, res, { target: url });
         proxy.on('error', function(e) {
