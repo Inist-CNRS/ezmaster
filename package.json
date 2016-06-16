@@ -27,6 +27,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "async": "^2.0.0-rc.6",
     "body-parser": "^1.15.0",
     "castor-core": "^4.2.3",
     "debug": "^2.2.0",
