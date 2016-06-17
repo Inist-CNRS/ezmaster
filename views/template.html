@@ -231,4 +231,40 @@
       </div>
     </div>
 
+
+
+
+
+
+<!-- Tests socket.io -->
+
+    <div id="div_messages"></div>
+
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+    <!--  On fait récupérer au client le fichier socket.io.js. 
+          Celui-ci est automatiquement fourni par le serveur node.js via le module socket.io.
+          Le code qu'il contient permet de gérer la communication avec le serveur du côté du client.
+    -->
+    
+    <script src="../socket.io/socket.io.js"></script>
+      
+      <script>
+      
+        var socket = io.connect('http://127.0.0.1:35267');
+
+        // On écoute l'arrivée de messages de type "message_hello" en provenance du serveur.
+        socket.on('message_hello', function(message) {
+          
+          // On ajoute le message du serveur dans la div d'id div_messages.
+          $('#bienvenue').html('<p>' + message + '</p>' + $('#bienvenue').html());
+          
+        })
+
+        
+      </script>
+
+
+
+
 {% endblock %}

@@ -23,6 +23,8 @@ jsonfile.spaces = 2;
 
 module.exports = function (router, core) {
 
+  var config = core.config;
+
   router.route('/').get(function (req, res, next) {
     return res.render('template.html');
   });

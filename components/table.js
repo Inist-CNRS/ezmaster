@@ -11,6 +11,9 @@ var optsEditor = {}
 var vm = new Vue({
   el: '#instances-table',
   ready : function () {   // When the table is ready...
+
+
+    
     var self = this;
     self.$http.get('/-/v1/instances').then(function (result) {    // ... call the route /-/v1/instances with a get wich get the instances list.
       self.$set('containers', result.data); // Store the instances list into the variable containers used into the HTML with v-for.
@@ -24,6 +27,11 @@ var vm = new Vue({
       else { return false; }
     }
 
+
+
+// POLLING AJAX CI DESSOUS toutes les 30 secondes (à remplacer)
+
+
     var heart_1 = heartbeats.createHeart(1000);
     heart_1.createEvent(1, {repeat : 30}, function(heartbeat, last){
       if (verifRefresh()) { refresh(); }
@@ -34,7 +42,16 @@ var vm = new Vue({
         });
       }
     });
+
+
+
+
   },
+
+
+
+
+
   methods: {
     startInstance : function (event) {
       var data = {
