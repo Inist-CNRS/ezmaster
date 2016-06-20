@@ -36,7 +36,6 @@
     "ent": "^2.2.0",
     "express": "^4.14.0",
     "express-session": "^1.13.0",
-    "express_session": "^1.13.0",
     "file-exists": "^1.0.0",
     "filesize": "^3.3.0",
     "fs": "^0.0.2",
