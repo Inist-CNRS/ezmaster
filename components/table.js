@@ -31,7 +31,7 @@ var vm = new Vue({
 
 // POLLING AJAX CI DESSOUS toutes les 30 secondes (à remplacer)
 
-
+/*
     var heart_1 = heartbeats.createHeart(1000);
     heart_1.createEvent(1, {repeat : 30}, function(heartbeat, last){
       if (verifRefresh()) { refresh(); }
@@ -42,7 +42,7 @@ var vm = new Vue({
         });
       }
     });
-
+*/
 
 
 

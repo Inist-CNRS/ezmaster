@@ -236,9 +236,16 @@
 
 
 
-<!-- Tests socket.io -->
+<!-- socket.io -->
 
-    <div id="div_messages"></div>
+  <div id="messages_listview">
+
+    <ul id="ihm_messages" class="list-group">
+
+    </ul>
+
+  </div>
+
 
     <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
@@ -249,20 +256,27 @@
     
     <script src="../socket.io/socket.io.js"></script>
       
-      <script>
-      
-        var socket = io.connect('http://127.0.0.1:35267');
+    <script>
 
-        // On écoute l'arrivée de messages de type "message_hello" en provenance du serveur.
-        socket.on('message_hello', function(message) {
-          
-          // On ajoute le message du serveur dans la div d'id div_messages.
-          $('#bienvenue').html('<p>' + message + '</p>' + $('#bienvenue').html());
-          
-        })
+
+    
+      var socket = io.connect('http://127.0.0.1:35267');
+
+      // On écoute l'arrivée de messages de type "message_welcome" en provenance du serveur.
+      socket.on('message', function(les_messages) {
+        
+        $('#ihm_messages').empty();
+        for (var i=0; i<les_messages.length; i++)
+        {
+            $('#ihm_messages').html('<li class="list-group-item">' + les_messages[i] + '</li>' + $('#ihm_messages').html());
+        }
+
 
         
-      </script>
+      })
+
+      
+    </script>
 
 
 

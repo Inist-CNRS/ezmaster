@@ -416,7 +416,7 @@ img.github {
 #instances-table {
 	width: 95%;
 	margin: auto;
-	margin-bottom: 5%;
+	margin-bottom: 2%;
     margin-top: 5%;
 }
 
@@ -463,4 +463,9 @@ img.github {
 
 #urlPreview{
     background-color:#CFD8DC;
+}
+
+#messages_listview {
+  margin-left: 2.5%;
+  margin-top: 2%;
 }

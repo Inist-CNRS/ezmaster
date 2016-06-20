@@ -31,9 +31,11 @@ module.exports = function(config, start) {
     io.sockets.on('connection', function (socket) {
       config.set('socket', socket);
       
-      // On envoie un message de type message_hello au client : /views/template.html
+      /*
+      // On envoie un message de type message_welcome au client : /views/template.html
       var message = "Welcome";
-      socket.emit('message_hello', message);
+      socket.emit('message', message);
+      */
 
     });
 

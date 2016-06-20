@@ -17,7 +17,10 @@ var path = require('path')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances')
+  , session = require('express-session')
   , util = require('utile');
+
+
 
 jsonfile.spaces = 2;
 
@@ -26,11 +29,37 @@ module.exports = function (router, core) {
   var config = core.config;
 
   router.route('/').get(function (req, res, next) {
+
+    if(!req.session.messages)
+      req.session.messages = new Array();
+
     return res.render('template.html');
+  
   });
 
   router.route('/-/v1/instances').get(function (req, res, next) {
+    
     instances.getInstances(req, res, next);
+
+
+
+        
+
+
+
+
+
+        req.session.messages.push("Instances Récupérées");
+
+        config.get('socket').emit('message', req.session.messages);
+    
+
+
+
+
+
+
+
   });
 
   router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
@@ -144,6 +173,11 @@ module.exports = function (router, core) {
         });
       });
     });
+  
+          req.session.messages.push("Instance Supprimée");
+
+          config.get('socket').emit('message', req.session.messages);
+
   });
 
   router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
@@ -236,6 +270,22 @@ module.exports = function (router, core) {
 
                       exec(cmd, function (err, stdout, stderr) {
                         if (err) { return next(err); }
+
+
+
+
+
+          req.session.messages.push("Instance Créée");
+
+          config.get('socket').emit('message', req.session.messages);
+
+
+
+
+
+
+
+
                         return res.status(200).send('Instance created');
                       });
                     }
@@ -249,8 +299,6 @@ module.exports = function (router, core) {
     }
   });
 };
-
-
 
 
 
