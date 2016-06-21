@@ -50,7 +50,7 @@ coverage: ## run istanbul to have how much % of the ezmaster code is covered by 
 	@docker-compose -f ./docker-compose.debug.yml exec ezmaster ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec
 
 lint: ## to check the coding rules
-	@./node_modules/.bin/eslint *.js components/ heartbeats/ helpers/ loaders/ routes/ test/ views/ assets/
+	@docker-compose -f ./docker-compose.debug.yml exec ezmaster ./node_modules/.bin/eslint *.js components/ heartbeats/ helpers/ loaders/ routes/ test/ views/ assets/
 
 clean: ## remove node_modules and temp files
 	@rm -Rf ./node_modules/ ./npm-debug.log
