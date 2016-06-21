@@ -40,8 +40,29 @@ module.exports = function (router, core) {
     
     instances.getInstances(req, res, next);
 
-    //req.session.messages.push("Instances Reloaded");
+  /* 
+    // RECUP RESULTAT DE DOCKER STAT POUR AFFICHER LOAD AVERAGE, ETC
+    var command_docker_stats = 'docker stats';
+
+    exec(command_docker_stats, function (err, stdout, stderr) {
+      if (err) { 
+
+        req.session.messages.push(err);
+        config.get('socket').emit('message', req.session.messages);
+
+        return next(err); 
+
+      }
+
+      req.session.messages.push(stdout);
+      config.get('socket').emit('message', req.session.messages);
+
+    });
+  */
+
     config.get('socket').emit('message', req.session.messages);
+
+
 
   });
 
@@ -142,8 +163,8 @@ module.exports = function (router, core) {
   router.route('/-/v1/instances/verif').get(bodyParser(), function (req, res, next) {
     if (fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == false) {
 
-      req.session.messages.push('Technical name does not exists');
-      config.get('socket').emit('message', req.session.messages);
+      //req.session.messages.push('Technical name does not exists');
+      //config.get('socket').emit('message', req.session.messages);
 
       res.status(200).send('Technical name does not exists');
 
@@ -183,8 +204,8 @@ module.exports = function (router, core) {
           result['technicalName'] = splittedName[1];
           result['size'] = filesize(size);
 
-          req.session.messages.push(result);
-          config.get('socket').emit('message', req.session.messages);
+          //req.session.messages.push(result);
+          //config.get('socket').emit('message', req.session.messages);
 
           return res.status(200).send(result);
         });
@@ -203,8 +224,8 @@ module.exports = function (router, core) {
 
           }
 
-          req.session.messages.push(obj);
-          config.get('socket').emit('message', req.session.messages);
+          //req.session.messages.push(obj);
+          //config.get('socket').emit('message', req.session.messages);
 
           return res.status(200).send(obj);
         });

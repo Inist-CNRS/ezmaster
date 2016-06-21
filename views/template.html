@@ -236,47 +236,38 @@
 
 
 
-<!-- socket.io -->
+<!-- SOCKET.IO -->
 
-  <div id="messages_listview">
-
-    <ul id="ihm_messages" class="list-group">
-
-    </ul>
-
-  </div>
+  <div id="messages_box"></div>
 
 
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-    <!--  On fait récupérer au client le fichier socket.io.js. 
-          Celui-ci est automatiquement fourni par le serveur node.js via le module socket.io.
-          Le code qu'il contient permet de gérer la communication avec le serveur du côté du client.
-    -->
+  <!--  
+    On fait récupérer au client le fichier socket.io.js. 
+    Celui-ci est automatiquement fourni par le serveur node.js via le module socket.io.
+    Le code qu'il contient permet de gérer la communication avec le serveur du côté du client.
+  -->
+  
+  <script src="../socket.io/socket.io.js"></script>
     
-    <script src="../socket.io/socket.io.js"></script>
+  <script>
+
+    var socket = io.connect('http://127.0.0.1:35267');
+
+    // On écoute l'arrivée de messages de type "message" en provenance du serveur.
+    socket.on('message', function(les_messages) {
       
-    <script>
+      $('#messages_box').empty();
+      for (var i=0; i<les_messages.length; i++) {
+          $('#messages_box').html('<div class="well well-sm">' + les_messages[i] + '</div>' + $('#messages_box').html());
+      }
 
-
-    
-      var socket = io.connect('http://127.0.0.1:35267');
-
-      // On écoute l'arrivée de messages de type "message_welcome" en provenance du serveur.
-      socket.on('message', function(les_messages) {
-        
-        $('#ihm_messages').empty();
-        for (var i=0; i<les_messages.length; i++)
-        {
-            $('#ihm_messages').html('<li class="list-group-item">' + les_messages[i] + '</li>' + $('#ihm_messages').html());
-        }
-
-
-        
-      })
 
       
-    </script>
+    })
+
+  </script>
 
 
 

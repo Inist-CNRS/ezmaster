@@ -19,6 +19,10 @@ var vm = new Vue({
       self.$set('containers', result.data); // Store the instances list into the variable containers used into the HTML with v-for.
     }, console.error);
 
+
+
+// POLLING AJAX CI DESSOUS toutes les 30 secondes (à remplacer)
+  /*
     function verifRefresh() {
       if (document.getElementById('modal-delete-instance').style.display != 'block' && 
           document.getElementById('modal-update-config').style.display != 'block') {
@@ -27,11 +31,6 @@ var vm = new Vue({
       else { return false; }
     }
 
-
-
-// POLLING AJAX CI DESSOUS toutes les 30 secondes (à remplacer)
-
-/*
     var heart_1 = heartbeats.createHeart(1000);
     heart_1.createEvent(1, {repeat : 30}, function(heartbeat, last){
       if (verifRefresh()) { refresh(); }
@@ -42,7 +41,7 @@ var vm = new Vue({
         });
       }
     });
-*/
+  */
 
 
 
