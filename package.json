@@ -47,12 +47,8 @@
     "vue": "^1.0.18",
     "vue-resource": "^0.7.0",
     "express-session": "^1.13.0",
-    "async": "^2.0.0-rc.6",
-    "express": "^4.14.0",
-    "ejs": "^2.4.2",
     "http": "^0.0.0",
     "fs": "^0.0.2",
-    "ent": "^2.2.0",
     "vue-validator": "^2.1.1"
   },
   "devDependencies": {
