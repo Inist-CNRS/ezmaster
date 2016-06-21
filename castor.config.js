@@ -13,6 +13,7 @@ module.exports = {
   connectionURI: 'mongodb://' + mongoHostPort + '/ezmaster',
   collectionName: 'data',
   publicDomain: publicDomain,
+  port: 35267,
   publicIP: publicIP,
   browserifyModules : [
     'vue'
