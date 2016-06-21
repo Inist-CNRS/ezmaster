@@ -60,7 +60,7 @@ module.exports = function (router, core) {
     });
   */
 
-    config.get('socket').emit('message', req.session.messages);
+//    config.get('socket').emit('message', req.session.messages);
 
 
 
