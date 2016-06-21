@@ -24,7 +24,7 @@ services:
       EZMASTER_PATH: ${PWD}
     working_dir: /app
     ports:
-      - 35267:35267
+      - 35267:3000
     depends_on:
       - ezmaster_db
     # restart this cointainer if it crashes because:
