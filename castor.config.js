@@ -6,7 +6,7 @@ var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT || 'localhost:27017';
 
 var publicDomain = process.env.EZMASTER_PUBLIC_DOMAIN || null;
 
-var publicIP = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1:35267';
+var publicIP = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1';
                   
 
 module.exports = {
