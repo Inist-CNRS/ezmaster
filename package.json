@@ -31,9 +31,12 @@
     "castor-core": "^4.2.3",
     "debug": "^2.2.0",
     "dockerode": "^2.2.10",
+    "express-session": "^1.13.0",
     "file-exists": "^1.0.0",
     "filesize": "^3.3.0",
+    "fs": "^0.0.2",
     "get-folder-size": "^1.0.0",
+    "http": "0.0.0",
     "http-proxy": "^1.13.3",
     "jbj-parse": "^1.0.0",
     "jsonfile": "^2.3.1",
@@ -46,9 +49,6 @@
     "utile": "^0.3.0",
     "vue": "^1.0.18",
     "vue-resource": "^0.7.0",
-    "express-session": "^1.13.0",
-    "http": "^0.0.0",
-    "fs": "^0.0.2",
     "vue-validator": "^2.1.1"
   },
   "devDependencies": {
@@ -60,5 +60,3 @@
     "supertest": "^1.2.0"
   }
 }
-
-
