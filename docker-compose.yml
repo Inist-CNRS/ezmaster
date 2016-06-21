@@ -1,10 +1,12 @@
-# ezmaster docker-compose dedicated to production 
+# ezmaster docker-compose.yml dedicated to production 
 version: '2'
 
 services:
 
-  # this is the nodejs application in charge of the web server
-  # displaying the IHM and providing REST routes
+  # This is the nodejs application in charge of the web server
+  # displaying the IHM and providing REST routes.
+  # It uses the dockerhub autobuild ezmaster images:
+  # https://hub.docker.com/r/inistcnrs/ezmaster/
   ezmaster:
     container_name: ezmaster
     image: inistcnrs/ezmaster:2.0.7
@@ -32,7 +34,7 @@ services:
     # - usually a nodejs application need forever, pm2 or equivalent 
     restart: always
 
-  # mongodb used by ezmaster to store parameters, metadata etc...
+  # Mongodb used by ezmaster to store parameters, metadata etc...
   # about ezmaster apps and instances
   ezmaster_db:
     container_name: ezmaster_db
