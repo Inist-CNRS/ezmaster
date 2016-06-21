@@ -14,6 +14,7 @@ module.exports = {
   collectionName: 'data',
   publicDomain: publicDomain,
   publicIP: publicIP,
+  port: 35267,
   browserifyModules : [
     'vue'
     , 'vue-resource'
