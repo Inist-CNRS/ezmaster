@@ -3,8 +3,7 @@
 
 var httpProxy = require('http-proxy');
 var instances = require('../helpers/instances');
-
-var async = require('async');
+var util = require('utile');
 
 module.exports = function(options, core, data) {
 
@@ -15,7 +14,7 @@ module.exports = function(options, core, data) {
 
   return function(req, res, next) {
 
-    
+
 
 
     var data = instances.getInstancesReverseProxy(function(err,data){
@@ -25,7 +24,7 @@ module.exports = function(options, core, data) {
       , reqSubdomain = reqHost ? reqHost.split('.') : null
       ;
 
-          
+
 
     console.log('reverseproxy#1',reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
 
@@ -39,12 +38,12 @@ module.exports = function(options, core, data) {
     console.log("########## FIN DEBUG ##########");
     console.log("");
 
-    
+
     if(reqSubdomain && (reqServer === domainEnv) && data !== undefined) {
 
 
 
-    
+
 
       console.log('reverseproxy#1.1');
 
@@ -99,5 +98,5 @@ module.exports = function(options, core, data) {
     }
     })
   }
-  
+
 }
