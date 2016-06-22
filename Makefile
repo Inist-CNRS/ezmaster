@@ -56,6 +56,7 @@ clean: ## remove node_modules and temp files
 	@rm -Rf ./node_modules/ ./npm-debug.log
 
 version: ## creates a new ezmaster version (same way npm version works)
+	@test -f /usr/bin/jq || (echo "Needs: sudo apt-get install --y jq" && exit 1)
 ifdef COMMAND_ARGS
 	@./tools/make-version $(COMMAND_ARGS)
 else
