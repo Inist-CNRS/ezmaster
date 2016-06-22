@@ -29,40 +29,16 @@ module.exports = function (router, core) {
 
   router.route('/').get(function (req, res, next) {
 
-    if(!req.session.messages)
+    if (!req.session.messages)
       req.session.messages = new Array();
 
     return res.render('template.html');
-  
+
   });
 
   router.route('/-/v1/instances').get(function (req, res, next) {
-    
+
     instances.getInstances(req, res, next);
-
-  /* 
-    // RECUP RESULTAT DE DOCKER STAT POUR AFFICHER LOAD AVERAGE, ETC
-    var command_docker_stats = 'docker stats';
-
-    exec(command_docker_stats, function (err, stdout, stderr) {
-      if (err) { 
-
-        req.session.messages.push(err);
-        config.get('socket').emit('message', req.session.messages);
-
-        return next(err); 
-
-      }
-
-      req.session.messages.push(stdout);
-      config.get('socket').emit('message', req.session.messages);
-
-    });
-  */
-
-//    config.get('socket').emit('message', req.session.messages);
-
-
 
   });
 
@@ -70,48 +46,17 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if (err) { 
-
-        req.session.messages.push(err);
-        config.get('socket').emit('message', req.session.messages);
-
-        return next(err); 
-
-      }
+      if (err) { return next(err); }
       if (req.body.action == 'start' && data.State.Running == false) {
         container.start(function (err, datas, container) {
-          if (err) { 
-
-            req.session.messages.push(err);
-            config.get('socket').emit('message', req.session.messages);
-
-            return next(err); 
-
-          }
-
-          req.session.messages.push("Instance Started");
-          config.get('socket').emit('message', req.session.messages);
-
+          if (err) { return next(err); }
           res.status(200).send('Starting done');
-
         });
       }
       else if (req.body.action == 'stop' && data.State.Running == true) {
         container.stop(function (err, datas, container) {
-          if (err) { 
-
-            req.session.messages.push(err);
-            config.get('socket').emit('message', req.session.messages);
-
-            return next(err);
-
-          }
-
-          req.session.messages.push("Instance Stopped");
-          config.get('socket').emit('message', req.session.messages);
-
+          if (err) { return next(err); }
           res.status(200).send('Stoping done');
-
         });
       }
       else if (req.body.action == 'updateConfig') {
@@ -120,62 +65,29 @@ module.exports = function (router, core) {
         jsonfile.writeFile(
           path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
           req.body.newConfig, function (err) {
-         
-          if (err) { 
 
-            req.session.messages.push(err);
-            config.get('socket').emit('message', req.session.messages);
+            if (err) { return next(err); }
 
-            return next(err); 
-
-          }
-
-          if (data.State.Running == true) {
-            container.restart(function (err) {
-              if (err) { 
-
-                req.session.messages.push(err);
-                config.get('socket').emit('message', req.session.messages);
-
-                return next(err); 
-
-              }
-
-              req.session.messages.push('Update done');
-              config.get('socket').emit('message', req.session.messages);
-
+            if (data.State.Running == true) {
+              container.restart(function (err) {
+                if (err) { return next(err); }
+                res.status(200).send('Update done');
+              });
+            }
+            else {
               res.status(200).send('Update done');
-            });
-          }
-          else { 
-              
-            req.session.messages.push('Update done');
-            config.get('socket').emit('message', req.session.messages);
-
-            res.status(200).send('Update done'); 
-
-          }
-        });
+            }
+          });
       }
     });
   });
 
   router.route('/-/v1/instances/verif').get(bodyParser(), function (req, res, next) {
     if (fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == false) {
-
-      //req.session.messages.push('Technical name does not exists');
-      //config.get('socket').emit('message', req.session.messages);
-
       res.status(200).send('Technical name does not exists');
-
     }
     else {
-
-      req.session.messages.push('Technical name '+req.query.technicalName+' already exists');
-      config.get('socket').emit('message', req.session.messages);
-
       res.status(409).send('Technical name '+req.query.technicalName+' already exists');
-
     }
   });
 
@@ -183,14 +95,7 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if (err) { 
-
-        req.session.messages.push(err);
-        config.get('socket').emit('message', req.session.messages);
-
-        return next(err); 
-
-      }
+      if (err) { return next(err); }
 
       var splittedName = data.Name.split('/');
 
@@ -204,9 +109,6 @@ module.exports = function (router, core) {
           result['technicalName'] = splittedName[1];
           result['size'] = filesize(size);
 
-          //req.session.messages.push(result);
-          //config.get('socket').emit('message', req.session.messages);
-
           return res.status(200).send(result);
         });
       }
@@ -215,17 +117,7 @@ module.exports = function (router, core) {
         path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
         function (err, obj) {
 
-          if (err) { 
-
-            req.session.messages.push(err);
-            config.get('socket').emit('message', req.session.messages);
-
-            return next(err); 
-
-          }
-
-          //req.session.messages.push(obj);
-          //config.get('socket').emit('message', req.session.messages);
+          if (err) { return next(err); }
 
           return res.status(200).send(obj);
         });
@@ -237,77 +129,31 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
-      if (err) { 
-
-        req.session.messages.push(err);
-        config.get('socket').emit('message', req.session.messages);
-
-        return next(err); 
-
-      }
+      if (err) { return next(err); }
 
       if (data.State.Running == true) {
         container.stop(function (err, datas, cont) {
-          if (err) { 
-
-            req.session.messages.push(err);
-            config.get('socket').emit('message', req.session.messages);
-
-            return next(err); 
-
-          }
+          if (err) { return next(err); }
 
           container.remove(function (err, datas, cont) {
-            if (err) { 
-
-              req.session.messages.push(err);
-              config.get('socket').emit('message', req.session.messages);
-
-              return next(err); 
-
-            }
+            if (err) { return next(err); }
           });
         });
       }
       else if (data.State.Running == false) {
         container.remove(function (err, datas, cont) {
-          if (err) { 
-
-            req.session.messages.push(err);
-            config.get('socket').emit('message', req.session.messages);
-
-            return next(err); 
-
-          }
+          if (err) { return next(err); }
         });
       }
 
       var splittedName = data.Name.split('/');
       rimraf(path.join(__dirname, '../instances/', splittedName[1]), function (err) {
-        if (err) { 
-
-          req.session.messages.push(err);
-          config.get('socket').emit('message', req.session.messages);
-
-          return next(err);
-
-        }
+        if (err) { return next(err); }
 
         rimraf(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err) {
-          if (err) { 
-
-            req.session.messages.push(err);
-            config.get('socket').emit('message', req.session.messages);
-
-            return next(err); 
-
-          }
-
-          req.session.messages.push("Instance Deleted");
-          config.get('socket').emit('message', req.session.messages);
+          if (err) { return next(err); }
 
           res.status(200).send('Removing done');
-
         });
       });
     });
@@ -322,96 +168,45 @@ module.exports = function (router, core) {
 
     if (/^[a-z0-9]+$/.test(project) == false && project != '' && project != null) {
 
-      req.session.messages.push('Enter a valid project name');
-      config.get('socket').emit('message', req.session.messages);
-
       return res.status(400).send('Enter a valid project name');
 
     }
     if (/^[a-z0-9]+$/.test(study) == false && study != '' && study != null) {
-      
-      req.session.messages.push('Enter a valid study name');
-      config.get('socket').emit('message', req.session.messages);
 
       return res.status(400).send('Enter a valid study name');
 
     }
     if (fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == true) {
-      
-      req.session.messages.push('Technical name already exists');
-      config.get('socket').emit('message', req.session.messages);
 
       res.status(409).send('Technical name already exists');
 
     }
     else {
-    
+
       docker.pull(image, function (err, stream) {
-        if (err) { 
-
-          req.session.messages.push(err);
-          config.get('socket').emit('message', req.session.messages);
-
-          return res.status(400).send(err); 
-
-        }
+        if (err) { return res.status(400).send(err); }
 
         docker.modem.followProgress(stream, onFinished);
 
         function onFinished(err, output) {
-          if (err) { 
-
-            req.session.messages.push(err);
-            config.get('socket').emit('message', req.session.messages);
-
-            return res.status(400).send(err); 
-
-          }
+          if (err) { return res.status(400).send(err); }
 
           mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), function (err) {
-            if (err) { 
-
-              req.session.messages.push(err);
-              config.get('socket').emit('message', req.session.messages);
-
-              return next(err); 
-
-            }
+            if (err) { return next(err); }
 
             mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), function (err) {
-              if (err) { 
-
-                req.session.messages.push(err);
-                config.get('socket').emit('message', req.session.messages);
-
-                return next(err); 
-
-              }
+              if (err) { return next(err); }
 
               fs.appendFile(
               path.join(__dirname, '../instances/'+technicalName+'/config/config.json')
               , '{}', function (err) {
 
-                if (err) { 
-
-                  req.session.messages.push(err);
-                  config.get('socket').emit('message', req.session.messages);
-
-                  return next(err); 
-
-                }
+                if (err) { return next(err); }
 
                 var instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
 
                 docker.listContainers({all : true}, function (err, containers) {
-                  if (err) { 
-
-                    req.session.messages.push(err);
-                    config.get('socket').emit('message', req.session.messages);
-
-                    return next(err); 
-
-                  }
+                  if (err) { return next(err); }
 
                   var portMax = 0
                     , freePortSplitted = process.env.EZMASTER_FREE_PORT_RANGE.split('-');
@@ -428,14 +223,7 @@ module.exports = function (router, core) {
                       var container = docker.getContainer(element.Id);
 
                       container.inspect(function (err, data) {
-                        if (err) { 
-
-                          req.session.messages.push(err);
-                          config.get('socket').emit('message', req.session.messages);
-
-                          return next(err); 
-
-                        }
+                        if (err) { return next(err); }
 
                         var keys =  Object.keys(data.HostConfig.PortBindings)
                           , currentPort = data.HostConfig.PortBindings[keys[0]][0].HostPort;
@@ -461,29 +249,11 @@ module.exports = function (router, core) {
                       jsonfile.writeFile(
                         path.join(__dirname, '../manifests/'+technicalName+'.json')
                         , newlongName, function (err) {
-
-                        if (err) { 
-
-                          req.session.messages.push(err);
-                          config.get('socket').emit('message', req.session.messages);
-
-                          return next(err); 
-
-                        }
-                      });
+                          if (err) { return next(err); }
+                        });
 
                       exec(cmd, function (err, stdout, stderr) {
-                        if (err) { 
-
-                          req.session.messages.push(err);
-                          config.get('socket').emit('message', req.session.messages);
-
-                          return next(err); 
-
-                        }
-
-                        req.session.messages.push("Instance Created");
-                        config.get('socket').emit('message', req.session.messages);
+                        if (err) { return next(err); }
 
                         return res.status(200).send('Instance created');
                       });
