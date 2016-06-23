@@ -36,11 +36,11 @@ module.exports = function (router, core) {
 
   });
 
-  router.route('/-/v1/instances').get(function (req, res, next) {
 
-    instances.getInstances(req, res, next);
+    instances.getInstances(function(err,data){
 
-  });
+      console.log(err,data);
+
 
   router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
     var container = docker.getContainer(req.params.containerId);
@@ -267,4 +267,5 @@ module.exports = function (router, core) {
       });
     }
   });
+});
 };
