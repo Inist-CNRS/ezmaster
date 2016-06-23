@@ -35,6 +35,7 @@
     "filesize": "^3.3.0",
     "fs": "^0.0.2",
     "get-folder-size": "^1.0.0",
+    "glob": "^7.0.5",
     "http-proxy": "^1.13.3",
     "jbj-parse": "^1.0.0",
     "jsonfile": "^2.3.1",
