@@ -15,11 +15,11 @@
       </thead>
       <tbody>
         <template v-for="item in containers">
-          <tr v-if="[[ item.status ]] == 'true'" class="success" id="[[ item.description.Id ]]">
+          <tr v-if="[[ item.running ]] == 'true'" class="success" id="[[ item.containerId ]]">
             <td>[[ item.longName ]]</td>
-            <td>[[ item.description.Names[0] ]]</td>
-            <td>[[ item.description.Created ]]</td>
-            <td>[[ item.description.Image ]]</td>
+            <td>[[ item.technicalName ]]</td>
+            <td>[[ item.creationDate ]]</td>
+            <td>[[ item.app ]]</td>
             <td> <span>Started</span> </td>
             <td class="actions">
               <ul class="bread" style="margin-bottom:0px">
@@ -75,11 +75,11 @@
               </div>
             </td>
           </tr>
-          <tr v-else class="danger" id="[[ item.description.Id ]]">
+          <tr v-else class="danger" id="[[ item.containerId ]]">
             <td>[[ item.longName ]]</td>
-            <td>[[ item.description.Names[0] ]]</td>
-            <td>[[ item.description.Created ]]</td>
-            <td>[[ item.description.Image ]]</td>
+            <td>[[ item.technicalName ]]</td>
+            <td>[[ item.creationDate ]]</td>
+            <td>[[ item.app ]]</td>
             <td><span v-else>Stopped</span></td>
             <td class="actions">
               <ul class="bread" style="margin-bottom:0px">
@@ -208,7 +208,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="panel-footer">
                     <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
                     <button v-if="$validation1.valid" type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Create</button>
@@ -222,7 +222,7 @@
                       <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
                       <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                     </div>
-                  </div>    
+                  </div>
                 </fieldset>
               </form>
             </validator>
@@ -243,28 +243,28 @@
 
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
-  <!--  
-    On fait récupérer au client le fichier socket.io.js. 
+  <!--
+    On fait récupérer au client le fichier socket.io.js.
     Celui-ci est automatiquement fourni par le serveur node.js via le module socket.io.
     Le code qu'il contient permet de gérer la communication avec le serveur du côté du client.
   -->
-  
+
   <script src="../socket.io/socket.io.js"></script>
-    
+
   <script>
 
     var socket = io.connect('http://127.0.0.1:35267');
 
     // On écoute l'arrivée de messages de type "message" en provenance du serveur.
     socket.on('message', function(les_messages) {
-      
+
       $('#messages_box').empty();
       for (var i=0; i<les_messages.length; i++) {
           $('#messages_box').html('<div class="well well-sm">' + les_messages[i] + '</div>' + $('#messages_box').html());
       }
 
 
-      
+
     })
 
   </script>

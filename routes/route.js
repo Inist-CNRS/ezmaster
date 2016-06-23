@@ -29,17 +29,21 @@ module.exports = function (router, core) {
 
   router.route('/').get(function (req, res, next) {
 
-    if (!req.session.messages)
-      req.session.messages = new Array();
-
     return res.render('template.html');
 
   });
 
 
+  router.route('/-/v1/instances').get(function (req, res, next) {
+
     instances.getInstances(function(err,data){
 
       console.log(err,data);
+      return res.status(200).send(data);
+
+    });
+
+  });
 
 
   router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
@@ -267,5 +271,4 @@ module.exports = function (router, core) {
       });
     }
   });
-});
 };

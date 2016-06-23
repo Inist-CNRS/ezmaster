@@ -17,7 +17,7 @@ module.exports = function(options, core, data) {
 
 
 
-    var data = instances.getInstances(function(err,data){
+    instances.getInstances(function(err,data){
     var reqServer = req.headers['x-forwarded-server']
       , reqHost = req.headers['x-forwarded-host']
       , reqSubdomain = reqHost ? reqHost.split('.') : null
@@ -75,6 +75,8 @@ module.exports = function(options, core, data) {
         }
         return;
       }, undefined);
+
+      console.log("########## FOUND : " + found + " ##########");
 
       if (found !== undefined) {
         var url = 'http://'+publicIP+':' + data[found].port;
