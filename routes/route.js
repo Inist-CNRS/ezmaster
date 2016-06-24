@@ -40,7 +40,6 @@ module.exports = function (router, core) {
 
       console.log(data);
 
-
       return res.status(200).send(data);
 
     });
