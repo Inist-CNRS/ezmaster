@@ -10,7 +10,7 @@ module.exports = function(options, core, data) {
 
   var proxy = httpProxy.createProxyServer({})
     , domainEnv = core.config.get('publicDomain')
-    ,publicIP = core.config.get('publiciP');;
+    ,publicIP = core.config.get('publicIP');;
 
 
   return function(req, res, next) {
