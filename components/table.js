@@ -85,7 +85,6 @@ var vm = new Vue({
         this.technicalNameToDelete = result.data.technicalName;
         this.sizeToDelete = result.data.size;
         document.getElementById('modal-delete-instance').style.display = 'block';
-        refresh();
       }, console.error);
     },
 
@@ -95,12 +94,14 @@ var vm = new Vue({
 
     deleteInstance : function (event) {
       this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
+        document.getElementById('modal-delete-instance').style.display = 'none';
         refresh();
       }, console.error);
     },
 
     cancelConfig : function (event) {
-      refresh();
+      document.getElementById('modal-update-config').style.display = 'none';
+      //refresh();
     },
 
     displayConfig : function (event) {
@@ -110,6 +111,7 @@ var vm = new Vue({
       idToConfig = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'block';
+        //refresh();
         optsEditor = {
           mode: 'code',
           onChange : function() {
@@ -127,7 +129,7 @@ var vm = new Vue({
             }
           }
         };
-        editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
+        //editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
         editor.set(result.data);
       });
     },
@@ -141,6 +143,7 @@ var vm = new Vue({
         , newTitle : newConfig.title
       };
       this.$http.put('/-/v1/instances/'+idToConfig, data).then(function (result) {
+        document.getElementById('modal-update-config').style.display = 'none';
         refresh();
       });
     }
