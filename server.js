@@ -10,6 +10,8 @@
 
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
+var heartbeats = require('heartbeats');
+var instances = require('./helpers/instances');
 
 // config : variable contenant tous les éléments de la configuration de l'application.
 // start : fonction de callback définie un peu plus bas.
@@ -26,6 +28,26 @@ module.exports = function(config, start) {
 
     // Use socket.io on the server.
     var io = require('socket.io').listen(server);
+/*
+    io.sockets.on('connection', function (socket){
+
+      // HEARTBEAT
+        var heart_1 = heartbeats.createHeart(1000);   // repeat every 1000 millisecond = every 1 second
+        heart_1.createEvent(1, {repeat : 0}, function(heartbeat, last){   // repeat:0 for infinite repeat
+
+          // Instructions effectuées à chaque battement.
+            console.log("########## BEAT ! ##########");
+            instances.getInstances(function(err,data){
+
+              socket.broadcast.emit('message type : refresh_instances_on_off', data);
+
+              // Plus qu'a récup data sur le template et à traiter les instances une par une pour actualiser leur état.
+
+            });
+        });
+    });
+*/
+
 
     if (err instanceof Error) {
       console.error(kuler("Unable to init the server.", "red"), kuler(err.toString(), 'orangered'));

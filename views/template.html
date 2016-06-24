@@ -256,11 +256,11 @@
     var socket = io.connect('http://127.0.0.1:35267');
 
     // On écoute l'arrivée de messages de type "message" en provenance du serveur.
-    socket.on('message', function(les_messages) {
+    socket.on('message type : refresh_instances_on_off', function(les_instances) {
 
       $('#messages_box').empty();
-      for (var i=0; i<les_messages.length; i++) {
-          $('#messages_box').html('<div class="well well-sm">' + les_messages[i] + '</div>' + $('#messages_box').html());
+      for (var i=0; i<les_instances.length; i++) {
+          $('#messages_box').html('<div class="well well-sm">' + les_instances[i]['technicalName'] + '</div>' + $('#messages_box').html());
       }
 
 

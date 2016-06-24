@@ -21,17 +21,26 @@ var path = require('path')
     util.async.parallel([
 
       // get manifest de toutes les instances
-      function(handleManifests){  
-        var arrayTechnicalNames =[];
+      function(handleManifests){
+        var arrayTechnicalNames = [];
+
+
 
         glob("manifests/*.json", function(err, files) { // read the folder or folders if you want: example json/**/*.json
-          
+
+
+
           if(err) {
             console.log("cannot read the folder, something goes wrong with glob", err);
           }
+
           var i = 1;
 
+          if(files.length === 0)
+            handleManifests(null,arrayTechnicalNames);
+
           files.forEach(function(file) {
+
 
 
             var technicalName = file.split('/')[1].split('.')[0];
@@ -42,70 +51,76 @@ var path = require('path')
                 console.log("cannot read the file, something goes wrong with the file", err);
               }
 
-              var manifest = [];
+              var manifest = {};
               var data = JSON.parse(data);
               manifest['longName'] = data.longName;
               manifest['technicalName'] = technicalName;
               arrayTechnicalNames.push(manifest);
-              ;
-              
 
               if(i===files.length){
+
                 //console.log("NAMES:"+util.inspect(arrayTechnicalNames));
                 handleManifests(null,arrayTechnicalNames);
               }
+
               i++;
+
             });
 
           });
-          
+
 
         });
-        
-        
-      }, 
+
+
+      },
 
       // docker.listContainers
       function(handleContainers){
 
-        var arrayInstances=[];
+        var arrayInstances = [];
 
         docker.listContainers({all : true}, function (err, containers) {
 
           containers.forEach(function(data){
 
-
-            var instance = [];
-
+            var instance = {};
 
             instance['technicalName'] = data.Names[0].split('/')[1];
             instance['containerId'] = data.Id;
             instance['dataPath'] = "datapath";
             instance['creationDate'] = moment.unix(data.Created).format('YYYY/MM/DD')
-            instance['app'] = data.Image;     
+            instance['app'] = data.Image;
 
             if (data.State === 'running') {
               instance['running'] = true;
               instance['port'] = data.Ports[0].PublicPort;
+
+              instance['address'] = 'http://'+process.env.EZMASTER_PUBLIC_IP+':'+data.Ports[0].PublicPort;
+              if(!process.env.EZMASTER_PUBLIC_IP)
+                instance['address'] = 'http://127.0.0.1:'+data.Ports[0].PublicPort;
+
+                instance['target'] = data.Names[0].split('/')[1];
+
             }
             else if (data.State === 'exited') {
               instance['running'] = false;
               instance['port'] = [];
+              instance['address'] = '';
+              instance['target'] = '';
             }
 
             arrayInstances.push(instance);
 
-
-
           })
           handleContainers(null,arrayInstances);
-         });
+        });
 
-        
-        
-        
-        
-        } 
+
+
+
+
+      }
 
 
   ], function (err, results) {
@@ -115,7 +130,9 @@ var path = require('path')
     // ignore containers having a unknow technical name
     // (ezmaster him self or mongodb or other containers running on the machine)
     //if (arrayTechnicalNames.indexOf(arrayInstances.technicalName) === -1) { return check(); }
-    var res=[];
+
+    //var res=[];
+    var res = {}; // Le tableau associatif des instances que l'on retournera à la fin.
 
     //console.log(util.inspect(results));
 
@@ -129,15 +146,16 @@ var path = require('path')
 
         if (manifest.technicalName === data.technicalName) {
 
-              instance['longName']=manifest.longName;
-              res.push(instance);
-              
-                        
+              instance['longName'] = manifest.longName;
+              //res.push(instance);
+              res[instance['technicalName']] = instance;
+
+              console.log("########## TECH NAME : " + instance['technicalName'] + " ##########");
+
+
         };
-      });   
+      });
     });
     return cb(null,res);
   });
 }
-
- 

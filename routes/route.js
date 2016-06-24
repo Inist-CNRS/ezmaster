@@ -38,7 +38,9 @@ module.exports = function (router, core) {
 
     instances.getInstances(function(err,data){
 
-      console.log(err,data);
+      console.log(data);
+
+
       return res.status(200).send(data);
 
     });

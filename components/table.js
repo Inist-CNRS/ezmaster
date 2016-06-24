@@ -13,7 +13,7 @@ var vm = new Vue({
   ready : function () {   // When the table is ready...
 
 
-    
+
     var self = this;
     self.$http.get('/-/v1/instances').then(function (result) {    // ... call the route /-/v1/instances with a get wich get the instances list.
       self.$set('containers', result.data); // Store the instances list into the variable containers used into the HTML with v-for.
@@ -24,7 +24,7 @@ var vm = new Vue({
 // POLLING AJAX CI DESSOUS toutes les 30 secondes (à remplacer)
   /*
     function verifRefresh() {
-      if (document.getElementById('modal-delete-instance').style.display != 'block' && 
+      if (document.getElementById('modal-delete-instance').style.display != 'block' &&
           document.getElementById('modal-update-config').style.display != 'block') {
         return true;
       }
@@ -56,6 +56,9 @@ var vm = new Vue({
       var data = {
         action : 'start'
       };
+
+      console.log("########## ID : " + event + " ##########");
+
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         refresh();
       }, console.error);
@@ -82,6 +85,7 @@ var vm = new Vue({
         this.technicalNameToDelete = result.data.technicalName;
         this.sizeToDelete = result.data.size;
         document.getElementById('modal-delete-instance').style.display = 'block';
+        refresh();
       }, console.error);
     },
 
@@ -106,7 +110,7 @@ var vm = new Vue({
       idToConfig = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'block';
-        optsEditor = { 
+        optsEditor = {
           mode: 'code',
           onChange : function() {
             try {

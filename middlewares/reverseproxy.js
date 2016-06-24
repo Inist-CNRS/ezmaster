@@ -24,7 +24,6 @@ module.exports = function(options, core, data) {
       ;
 
 
-
     console.log('reverseproxy#1',reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
 
     console.log("");
