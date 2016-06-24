@@ -76,7 +76,7 @@ module.exports = function(options, core, data) {
       console.log("########## FOUND : " + found + " ##########");
 
       if (found !== undefined) {
-        var url = 'http://'+found+"."+domainEnv+':'+ data[found].port;
+        var url = 'http://'+found+':'+ data[found].port;
         console.log('reverseproxy#1.1.1', url);
         proxy.web(req, res, { target: url });
         proxy.on('error', function(e) {
