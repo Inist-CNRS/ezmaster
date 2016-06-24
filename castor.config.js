@@ -27,7 +27,8 @@ module.exports = {
     'status.js'
   ],
   middlewares: {
-    '/*': 'reverseproxy.js'
+    // '/' means to catch all the URLs (warning do not use '/*')
+    '/': 'reverseproxy.js'
   },
   filters: ['jbj-parse'],
 };
