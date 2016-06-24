@@ -49,7 +49,7 @@ module.exports = function(options, core, data) {
 
       var found = Object.keys(data)
       .map(function(z) {
-        data[z].current = data[z].technicalName;
+        data[z].current = data[z].technicalName.split('-');
         data[z].current[2] = data[z].current[2] === undefined ? 0 : Number(data[z].current[2]);
         if (Number.isNaN(data[z].current[2])) {
           data[z].current[2] = 0;
