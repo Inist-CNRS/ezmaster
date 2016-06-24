@@ -26,7 +26,7 @@ services:
       - 35267:35267
     depends_on:
       - ezmaster_db
-    command: ./ezmaster
+    command: ./node_modules/.bin/nodemon ./ezmaster
 
   ezmaster_db:
     container_name: ezmaster_db
