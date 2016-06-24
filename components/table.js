@@ -108,6 +108,9 @@ var vm = new Vue({
       var data = {
         action : 'config'
       }
+
+      document.getElementById('jsoneditor').innerHTML = "";
+
       idToConfig = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'block';
@@ -129,7 +132,7 @@ var vm = new Vue({
             }
           }
         };
-        //editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
+        editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
         editor.set(result.data);
       });
     },
@@ -144,7 +147,7 @@ var vm = new Vue({
       };
       this.$http.put('/-/v1/instances/'+idToConfig, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'none';
-        refresh();
+        //refresh();
       });
     }
   },
