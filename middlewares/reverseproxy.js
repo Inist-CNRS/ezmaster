@@ -9,7 +9,8 @@ module.exports = function(options, core, data) {
 
 
   var proxy = httpProxy.createProxyServer({})
-    , domainEnv = core.config.get('publicDomain');
+    , domainEnv = core.config.get('publicDomain')
+    ,publicIP = core.config.get('publiciP');;
 
 
   return function(req, res, next) {
@@ -38,9 +39,6 @@ module.exports = function(options, core, data) {
 
 
     if(reqSubdomain && (reqServer === domainEnv) && data !== undefined) {
-
-
-
 
 
       console.log('reverseproxy#1.1');
