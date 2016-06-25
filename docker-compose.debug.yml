@@ -22,7 +22,8 @@ services:
       EZMASTER_PATH: ${PWD}
       NODE_ENV: "development"
       DEBUG: "ezmaster*"
-    tty: true # to have nice debug(...) outputs
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
       - 35267:35267
     depends_on:

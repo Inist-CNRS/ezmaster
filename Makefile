@@ -25,7 +25,8 @@ build: ## build the docker inistcnrs/ezmaster image localy
 
 run-debug: ## run ezmaster in debug mode with dockerized nodejs and mongodb process
 	@docker-compose -f ./docker-compose.debug.yml up -d --force-recreate
-	@docker-compose -f ./docker-compose.debug.yml logs -f ezmaster
+	@# attach to the ezmaster container in order to be able to stop it easily with CTRL+C
+	@docker attach ezmaster
 
 run-prod: ## run ezmaster in production mode with the full dockerized image (see build)
 	@docker-compose -f ./docker-compose.yml up -d --force-recreate
