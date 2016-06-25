@@ -43,7 +43,7 @@ cd ezmaster
 make install
 make run-prod
 # make stop-prod to stop it
-# ezmaster is listening at http://127.0.0.1:3000/
+# ezmaster is listening at http://127.0.0.1:35267/
 ```
 
 
@@ -54,7 +54,7 @@ git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
 make install
 make run-dev
-# ezmaster is listening at http://127.0.0.1:3000/
+# ezmaster is listening at http://127.0.0.1:35267/
 ```
 
 ## Install and run for debug
@@ -63,7 +63,7 @@ git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
 make install
 make run-debug
-# ezmaster is listening at http://127.0.0.1:3000/
+# ezmaster is listening at http://127.0.0.1:35267/
 ```
 
 ## Diagrams
