@@ -4,7 +4,7 @@
 
 var path = require('path')
   , basename = path.basename(__filename, '.js')
-  , debug = require('debug')('castor:route:' + basename)
+  , debug = require('debug')('ezmaster:' + basename)
   , bodyParser = require('body-parser')
   , fs = require('fs')
   , getSize = require('get-folder-size')
@@ -38,7 +38,7 @@ module.exports = function (router, core) {
 
     instances.getInstances(function(err,data){
 
-      console.log(data);
+      debug(data);
 
       return res.status(200).send(data);
 
