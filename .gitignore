@@ -3,6 +3,7 @@ assets/bundle.js
 config.local.js
 node_modules
 coverage/
+tmp/
 
 
 lib-cov
