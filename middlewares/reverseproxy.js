@@ -5,8 +5,13 @@ var httpProxy = require('http-proxy');
 var instances = require('../helpers/instances');
 var util = require('utile');
 
-module.exports = function(options, core, data) {
+var path = require('path');
+var basename = path.basename(__filename, '.js');
+var debug = require('debug')('ezmaster:' + basename);
 
+
+module.exports = function(options, core, data) {
+  debug('Loading reverseproxy middleware');
 
   var proxy = httpProxy.createProxyServer({})
     , domainEnv = core.config.get('publicDomain')
@@ -25,23 +30,23 @@ module.exports = function(options, core, data) {
       ;
 
 
-    console.log('reverseproxy#1',reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
+    debug('reverseproxy#1',reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
 
-    console.log("");
-    console.log("########## DEBUG ##########");
-    console.log("DATA : " + data);
-    console.log("REQHOST : " + reqHost);
-    console.log("REQSUBDOMAIN : " + reqSubdomain);
-    console.log("REQSERVER : " + reqServer);
-    console.log("DOMAINENV : " + domainEnv);
-    console.log("########## FIN DEBUG ##########");
-    console.log("");
+    debug("");
+    debug("########## DEBUG ##########");
+    debug("DATA : " + data);
+    debug("REQHOST : " + reqHost);
+    debug("REQSUBDOMAIN : " + reqSubdomain);
+    debug("REQSERVER : " + reqServer);
+    debug("DOMAINENV : " + domainEnv);
+    debug("########## FIN DEBUG ##########");
+    debug("");
 
 
     if(reqSubdomain && (reqServer === domainEnv) && data !== undefined) {
 
 
-      console.log('reverseproxy#1.1');
+      debug('reverseproxy#1.1');
 
       var search = reqSubdomain[0].split('-');
 
@@ -73,11 +78,11 @@ module.exports = function(options, core, data) {
         return;
       }, undefined);
 
-      console.log("########## FOUND : " + found + " ##########");
+      debug("########## FOUND : " + found + " ##########");
 
       if (found !== undefined) {
         var url = 'http://'+found+':'+ '3000';
-        console.log('reverseproxy#1.1.1', url);
+        debug('reverseproxy#1.1.1', url);
         proxy.web(req, res, { target: url });
         proxy.on('error', function(e) {
           console.error("reverseproxy#1.1.2", e);
@@ -86,12 +91,12 @@ module.exports = function(options, core, data) {
         return;
       }
       else {
-        console.log('reverseproxy#1.2');
+        debug('reverseproxy#1.2');
         res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
       }
     }
     else {
-      console.log('reverseproxy#1.0');
+      debug('reverseproxy#1.0');
       next();
     }
     })
