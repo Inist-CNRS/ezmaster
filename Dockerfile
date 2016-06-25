@@ -35,9 +35,11 @@ RUN npm config set strict-ssl false \
     npm install -q --production && \
     npm cache clean
 
-# data folder is a volume because it will
-# contains the user's data files (ex: CSV)
-VOLUME /app/data
+# instances and manifests folders are a volume
+# because they will for example contains the user's
+# data files (ex: CSV)
+VOLUME /app/instances
+VOLUME /app/manifests
 
 # run the application
 CMD ["npm", "start"]
