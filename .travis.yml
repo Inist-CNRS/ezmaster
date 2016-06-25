@@ -14,7 +14,7 @@ before_install:
   - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
   # ezmaster install (for make test)
   - make install
-  # ezmaster server must be alive background before make test
+  # ezmaster server must be alive background before making test
   - make build
   - docker-compose -f ./docker-compose.debug.yml up --force-recreate -d
   # to show some logs if the server do not start correctly
