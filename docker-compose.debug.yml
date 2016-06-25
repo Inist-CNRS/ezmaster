@@ -11,17 +11,18 @@ services:
     volumes:
       - .:/app
       - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app
     environment:
       http_proxy:  ${http_proxy}
       https_proxy: ${https_proxy}
-      NODE_ENV: "development"
-      DEBUG: "castor*,console*"
       EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017"
       EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
-    working_dir: /app
+      NODE_ENV: "development"
+      DEBUG: "ezmaster*"
+    tty: true # to have nice debug(...) outputs
     ports:
       - 35267:35267
     depends_on:
