@@ -9,7 +9,7 @@ services:
   # https://hub.docker.com/r/inistcnrs/ezmaster/
   ezmaster:
     container_name: ezmaster
-    image: inistcnrs/ezmaster:2.1.3
+    image: inistcnrs/ezmaster:2.1.4
     links:
       - ezmaster_db
     volumes:
