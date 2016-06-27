@@ -24,7 +24,7 @@ module.exports = function(options, core, data) {
 
 
     instances.getInstances(function(err,data){
-    var reqServer = req.headers['x-forwarded-server']
+      var reqServer = req.headers['x-forwarded-server']
       , reqHost = req.headers['x-forwarded-host']
       , reqSubdomain = reqHost ? reqHost.split('.') : null
       ;
