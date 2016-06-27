@@ -59,21 +59,11 @@ var path = require('path')
               // return the manifests when the
               // last file is handled
               if (manifests.length == files.length) {
-
-                // On trie manifests dans l'ordre alphabétique des technical names.
-                  manifests.sort(sortBy('technicalName'));
-
                 return handleManifests(null, manifests);
-
               }
             });
-
           });
-
-
         });
-
-
       },
 
       // Retrives the instances docker informations. Ex:
@@ -97,7 +87,7 @@ var path = require('path')
             instance.technicalName = data.Names[0].split('/')[1];
             instance.containerId   = data.Id;
             instance.dataPath      = '/instances/'+instance.technicalName+'/';
-            instance.creationDate  = moment.unix(data.Created).format('YYYY/MM/DD')
+            instance.creationDate  = moment.unix(data.Created).format('YYYY/MM/DD HH:mm:ss')
             instance.app           = data.Image;
 
             if (data.State === 'running') {
@@ -127,11 +117,13 @@ var path = require('path')
             dockerInstances.push(instance);
           });
 
+          // Sort dockerInstances by creationDate so as to conserve same order while displaying instances on the client.
+              dockerInstances.sort(sortBy('creationDate'));
+
           // once docker containers are parsed we return the
           // ezmaster formated instances list
           return handleDockerInstances(null, dockerInstances);
         });
-
       }
 
 
@@ -142,8 +134,8 @@ var path = require('path')
     // (example: ezmaster itself or ezmaster_db
     // or any other containers currently running on the machine)
     var ezmasterInstances = {};
-    results[0].forEach(function (manifest) {
-      results[1].forEach(function (dockerInstance) {
+    results[1].forEach(function (dockerInstance) {
+      results[0].forEach(function (manifest) {
         if (manifest.technicalName === dockerInstance.technicalName) {
           ezmasterInstances[manifest.technicalName] = _.assign(dockerInstance, manifest);
         }
