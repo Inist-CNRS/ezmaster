@@ -46,18 +46,7 @@ make run-prod
 # ezmaster is listening at http://127.0.0.1:35267/
 ```
 
-
-## Install and run for developments
-
-```shell
-git clone https://github.com/Inist-CNRS/ezmaster.git
-cd ezmaster
-make install
-make run-dev
-# ezmaster is listening at http://127.0.0.1:35267/
-```
-
-## Install and run for debug
+## Install and run for developments/debug
 ```shell
 git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
