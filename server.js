@@ -10,7 +10,7 @@
 
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
-var heartbeats = require('heartbeats');
+//var heartbeats = require('heartbeats');
 var instances = require('./helpers/instances');
 
 // config : variable contenant tous les éléments de la configuration de l'application.
