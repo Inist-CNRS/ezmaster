@@ -26,6 +26,20 @@ module.exports = function(options, core, data) {
       , reqSubdomain = reqHost ? reqHost.split('.') : null
       ;
 
+
+      debug('reverseproxy#1',reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
+
+      debug("");
+      debug("########## DEBUG ##########");
+      debug("DATA : " + data);
+      debug("REQHOST : " + reqHost);
+      debug("REQSUBDOMAIN : " + reqSubdomain);
+      debug("REQSERVER : " + reqServer);
+      debug("DOMAINENV : " + domainEnv);
+      debug("########## FIN DEBUG ##########");
+      debug("");
+
+
       if (reqSubdomain && (reqServer === domainEnv) && data !== undefined) {
 
 
@@ -55,7 +69,7 @@ module.exports = function(options, core, data) {
           if (search[2] === undefined) {
             return w;
           }
-          if (data[w].current[0] === search[0] && data[w].current[1] === search[1] 
+          if (data[w].current[0] === search[0] && data[w].current[1] === search[1]
             && data[w].current[2] === Number(search[2])) {
             return w;
           }
