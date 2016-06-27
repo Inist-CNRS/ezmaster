@@ -10,31 +10,31 @@ var vm = new Vue({
 
     cancelAddInstance : function (event) {
       location.reload();
-  	},
+    },
 
-  	addInstance : function (event) {
-  		this.longName = document.getElementById('inputLongName').value;
-  		this.project = document.getElementById('inputProject').value;
-  		this.study = document.getElementById('inputStudy').value;
-  		this.version = document.getElementById('inputVersion').value;
+    addInstance : function (event) {
+      this.longName = document.getElementById('inputLongName').value;
+      this.project = document.getElementById('inputProject').value;
+      this.study = document.getElementById('inputStudy').value;
+      this.version = document.getElementById('inputVersion').value;
 
-			document.getElementById('save').style.display = 'none';
-			document.getElementById('close_modal').style.display = 'none';
-			document.getElementById('loader').style.display = 'block';
+      document.getElementById('save').style.display = 'none';
+      document.getElementById('close_modal').style.display = 'none';
+      document.getElementById('loader').style.display = 'block';
 
       if (this.longName == '') { this.longName = 'Free comment of '+this.technicalName; }
 
-      var data = {
-  			'longName' : this.longName,
-  			'project' : this.project,
-  			'version' : this.version,
-  			'study': this.study,
-  			'technicalName' :  this.technicalName,
-  			'app' : document.getElementById('app').value
-  		};
-  		this.$http.post('/-/v1/instances', data).then(function (result) {
-  			if (result.status == 200) { location.reload(); }
-  		}, function (error) {
+        var data = {
+          'longName' : this.longName,
+          'project' : this.project,
+          'version' : this.version,
+          'study': this.study,
+          'technicalName' :  this.technicalName,
+          'app' : document.getElementById('app').value
+        };
+      this.$http.post('/-/v1/instances', data).then(function (result) {
+        if (result.status == 200) { location.reload(); }
+      }, function (error) {
         if (error.status == 400) {
           this.codeErrorPull = error.status;
           this.messageErrorPull = error.data;
@@ -42,18 +42,18 @@ var vm = new Vue({
           document.getElementById('errorLoader').style.display = 'block';
         }
       });
-  	},
+    },
 
     tryAgain : function (event) {
       location.reload();
     }
   },
   data : {
-  	longName : '',
-  	project: '',
-  	version : '',
-  	study : '',
-  	technicalName : '',
+    longName : '',
+    project: '',
+    version : '',
+    study : '',
+    technicalName : '',
     urlPreview : '',
     messageErrorPull : '',
     codeErrorPull : ''
@@ -65,12 +65,12 @@ module.exports = vm;
 
 vm.$watch('longName', function(data) {
 
-      var value = document.forms['Form']['inputLongName'].value;
+  var value = document.forms['Form']['inputLongName'].value;
 
-      if (value == '')
-        document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
-      else
-        document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
+  if (value == '')
+    document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
+  else
+    document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
 
 });
 
@@ -79,24 +79,24 @@ vm.$watch('longName', function(data) {
 
 vm.$watch('study', function(data) {
 
-      var value = document.forms['Form']['inputStudy'].value;
+  var value = document.forms['Form']['inputStudy'].value;
 
-      if (/^[a-z0-9]+$/.test(value)==false || value == '')
-        document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
-      else
-        document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
+  if (/^[a-z0-9]+$/.test(value)==false || value == '')
+    document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
+  else
+    document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
 
 });
 
 
 vm.$watch('project', function(data) {
 
-      var value = document.forms['Form']['inputProject'].value;
+  var value = document.forms['Form']['inputProject'].value;
 
-      if (/^[a-z0-9]+$/.test(value)==false || value == '')
-        document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
-      else
-        document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
+  if (/^[a-z0-9]+$/.test(value)==false || value == '')
+    document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
+  else
+    document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
 
 });
 
@@ -134,15 +134,15 @@ vm.$watch('version', function (data) {
 function verif (tn) {
   var data = {
     'technicalName' : tn
-  }
+  };
   vm.$http.get('/-/v1/instances/verif', data).then(function (result) {
-    if (result.status == 200) {  
+    if (result.status == 200) {
       document.getElementById('technicalNameExists').style.display = 'none';
       document.getElementById('save').style.display = 'block';
       document.getElementById('saveTechnicalExists').style.display = 'none';
     }
   }, function (error) {
-    if (error.status == 409) { 
+    if (error.status == 409) {
       document.getElementById('technicalNameExists').style.display = 'block';
       document.getElementById('save').style.display = 'none';
       document.getElementById('saveTechnicalExists').style.display = 'block';
