@@ -24,14 +24,14 @@ var vm = new Vue({
 
       if (this.longName == '') { this.longName = 'Free comment of '+this.technicalName; }
 
-        var data = {
-          'longName' : this.longName,
-          'project' : this.project,
-          'version' : this.version,
-          'study': this.study,
-          'technicalName' :  this.technicalName,
-          'app' : document.getElementById('app').value
-        };
+      var data = {
+        'longName' : this.longName,
+        'project' : this.project,
+        'version' : this.version,
+        'study': this.study,
+        'technicalName' :  this.technicalName,
+        'app' : document.getElementById('app').value
+      };
       this.$http.post('/-/v1/instances', data).then(function (result) {
         if (result.status == 200) { location.reload(); }
       }, function (error) {
