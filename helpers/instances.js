@@ -11,6 +11,7 @@ var path = require('path')
   , glob = require('glob')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
+  , sortBy = require('sort-by')
   , _ = require('lodash');
 
 
@@ -58,7 +59,12 @@ var path = require('path')
               // return the manifests when the
               // last file is handled
               if (manifests.length == files.length) {
+
+                // On trie manifests dans l'ordre alphabétique des technical names.
+                  manifests.sort(sortBy('technicalName'));
+
                 return handleManifests(null, manifests);
+
               }
             });
 
@@ -90,7 +96,7 @@ var path = require('path')
             // Example of data.Names[0]: /myprj-mystudy-5
             instance.technicalName = data.Names[0].split('/')[1];
             instance.containerId   = data.Id;
-            instance.dataPath      = '/instances/'+technicalName+'/';
+            instance.dataPath      = '/instances/'+instance.technicalName+'/';
             instance.creationDate  = moment.unix(data.Created).format('YYYY/MM/DD')
             instance.app           = data.Image;
 
