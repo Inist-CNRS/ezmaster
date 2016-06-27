@@ -10,8 +10,9 @@
 
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
-//var heartbeats = require('heartbeats');
-//var instances = require('./helpers/instances');
+
+var heartbeats = require('heartbeats');
+var instances = require('./helpers/instances');
 
 // config : variable contenant tous les éléments de la configuration de l'application.
 // start : fonction de callback définie un peu plus bas.
@@ -27,29 +28,34 @@ module.exports = function(config, start) {
   start(function online(err, server) {
 
     // Use socket.io on the server.
-    /*var io = require('socket.io').listen(server);
+    var io = require('socket.io').listen(server);
+
 
     io.sockets.on('connection', function (socket){
-
+/*
       // HEARTBEAT
-      // repeat every 1000 millisecond = every 1 second
+
+        // Repeat every 1000 millisecond = every 1 second.
         var heart_1 = heartbeats.createHeart(1000);
+
         // repeat:0 for infinite repeat
         heart_1.createEvent(1, {repeat : 0}, function(heartbeat, last){
 
           // Instructions effectuées à chaque battement.
             console.log("########## BEAT ! ##########");
+
             instances.getInstances(function(err,data){
 
               socket.broadcast.emit('message type : refresh_instances_on_off', data);
 
-              // Plus qu'a récup data sur le template
-              //et à traiter les instances une par une pour actualiser leur état.
+              // On récup ensuite data sur template.html et on regarde pour chaque instance si son état doit être actualisé.
 
             });
+
         });
-    });
 */
+    });
+
 
 
     if (err instanceof Error) {
