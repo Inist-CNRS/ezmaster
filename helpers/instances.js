@@ -4,7 +4,7 @@
 
 var path = require('path')
   , basename = path.basename(__filename, '.js')
-  , debug = require('debug')('castor:route:' + basename)
+  , debug = require('debug')('ezmaster:' + basename)
   , moment = require('moment')
   , util = require('utile')
   , fs = require('fs')

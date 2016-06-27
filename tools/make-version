@@ -25,4 +25,4 @@ git tag --force v${VERSION} $(git rev-parse HEAD)
 
 
 echo "---> Now, do not forget to push your tags:"
-echo "     git push ; git push --tags"
+echo "     git push && git push --tags"

@@ -1,0 +1,15 @@
+{   
+  "ignore": [
+    "instances/*",
+    "manifests/*",
+    "README.md",
+    "LICENSE",
+    "Makefile",
+    "*.yml",
+    "nodemon.json",
+    "package.json",
+    "Dockerfile",
+    "assets/*",
+    "views/*"
+  ]
+}

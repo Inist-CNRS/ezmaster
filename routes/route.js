@@ -4,7 +4,7 @@
 
 var path = require('path')
   , basename = path.basename(__filename, '.js')
-  , debug = require('debug')('castor:route:' + basename)
+  , debug = require('debug')('ezmaster:' + basename)
   , bodyParser = require('body-parser')
   , fs = require('fs')
   , getSize = require('get-folder-size')
@@ -38,7 +38,7 @@ module.exports = function (router, core) {
 
     instances.getInstances(function(err,data){
 
-      console.log(data);
+      debug(data);
 
       return res.status(200).send(data);
 
@@ -238,7 +238,8 @@ module.exports = function (router, core) {
                       });
                     }
                     else {
-                      if (portMax == 0) { portMax = freePortSplitted[0]; }
+                      debug(portMax)
+                      if (!Number.isInteger(portMax) || portMax == 0) { portMax = freePortSplitted[0]; }
                       var cmd = 'docker run -d -p '+portMax+':3000 ' +
                       '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
                       '--net=ezmaster_default --link ezmaster_db '+

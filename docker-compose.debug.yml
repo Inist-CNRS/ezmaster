@@ -11,22 +11,24 @@ services:
     volumes:
       - .:/app
       - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app
     environment:
       http_proxy:  ${http_proxy}
       https_proxy: ${https_proxy}
-      NODE_ENV: "development"
-      DEBUG: "castor*,console*"
       EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017"
       EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
-    working_dir: /app
+      NODE_ENV: "development"
+      DEBUG: "ezmaster*"
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
       - 35267:35267
     depends_on:
       - ezmaster_db
-    command: ./ezmaster
+    command: ./node_modules/.bin/nodemon ./ezmaster
 
   ezmaster_db:
     container_name: ezmaster_db
