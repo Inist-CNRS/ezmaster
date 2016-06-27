@@ -17,28 +17,13 @@ module.exports = function(options, core, data) {
 
   return function(req, res, next) {
 
-
-
-
     instances.getInstances(function (err, data) {
       var reqServer = req.headers['x-forwarded-server']
       , reqHost = req.headers['x-forwarded-host']
       , reqSubdomain = reqHost ? reqHost.split('.') : null
       ;
 
-
       debug('reverseproxy#1',reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
-
-      debug("");
-      debug("########## DEBUG ##########");
-      debug("DATA : " + data);
-      debug("REQHOST : " + reqHost);
-      debug("REQSUBDOMAIN : " + reqSubdomain);
-      debug("REQSERVER : " + reqServer);
-      debug("DOMAINENV : " + domainEnv);
-      debug("########## FIN DEBUG ##########");
-      debug("");
-
 
       if (reqSubdomain && (reqServer === domainEnv) && data !== undefined) {
 
@@ -95,5 +80,4 @@ module.exports = function(options, core, data) {
       }
     });
   };
-
 };
