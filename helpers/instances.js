@@ -8,10 +8,9 @@ var path = require('path')
   , moment = require('moment')
   , util = require('utile')
   , fs = require('fs')
-  , glob = require("glob")
+  , glob = require(('glob')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
-  , jsonfile = require('jsonfile')
   , _ = require('lodash');
 
 
@@ -34,14 +33,14 @@ var path = require('path')
           }
 
           // if no files then return an empty array
-          if (files.length === 0) {            
+          if (files.length === 0) {
             return handleManifests(null, []);
           }
 
           var manifests = [];
           files.forEach(function (file) {
 
-            // Extract the technicalName from the filename and read 
+            // Extract the technicalName from the filename and read
             // the manifest content to get other metadata
             // Notice: filename example 'manifests/myprj-mystudy-5.json'
             //         then technicalName will be 'myprj-mystudy-5'
@@ -91,21 +90,21 @@ var path = require('path')
             // Example of data.Names[0]: /myprj-mystudy-5
             instance.technicalName = data.Names[0].split('/')[1];
             instance.containerId   = data.Id;
-            instance.dataPath      = "datapath"; // TODO
+            instance.dataPath      = '/instances/'+technicalName+'/';
             instance.creationDate  = moment.unix(data.Created).format('YYYY/MM/DD')
             instance.app           = data.Image;
 
             if (data.State === 'running') {
-              
+
               instance.running = true;
               instance.port    = data.Ports[0].PublicPort;
-              
+
               // TODO: comments needed
               //       maybe "address" is wrongly named ? publicUrl would be better ?
-              instance.address = 'http://' 
-                + process.env.EZMASTER_PUBLIC_IP 
+              instance.address = 'http://'
+                + process.env.EZMASTER_PUBLIC_IP
                 + ':' + data.Ports[0].PublicPort;
-              if(!process.env.EZMASTER_PUBLIC_IP) {
+              if (!process.env.EZMASTER_PUBLIC_IP) {
                 instance.address = 'http://127.0.0.1:' + data.Ports[0].PublicPort;
               }
               instance.target = data.Names[0].split('/')[1];
@@ -122,7 +121,7 @@ var path = require('path')
             dockerInstances.push(instance);
           });
 
-          // once docker containers are parsed we return the 
+          // once docker containers are parsed we return the
           // ezmaster formated instances list
           return handleDockerInstances(null, dockerInstances);
         });
@@ -134,16 +133,17 @@ var path = require('path')
 
     // retrives results from the two callbacks (manifests files and docker metadata)
     // and ignore docker containers not listed in the manifests ("unknown technicalName")
-    // (example: ezmaster itself or ezmaster_db or any other containers currently running on the machine)
+    // (example: ezmaster itself or ezmaster_db
+    // or any other containers currently running on the machine)
     var ezmasterInstances = {};
-    results[0].forEach (function (manifest) {
+    results[0].forEach(function (manifest) {
       results[1].forEach(function (dockerInstance) {
-        if (manifest.technicalName === dockerInstance.technicalName) {          
+        if (manifest.technicalName === dockerInstance.technicalName) {
           ezmasterInstances[manifest.technicalName] = _.assign(dockerInstance, manifest);
-        };
+        }
       });
     });
 
     return cb(null, ezmasterInstances);
   });
-}
+};
