@@ -5,7 +5,7 @@ var optsEditor = {}
   , editor = new JSONEditor()
   , idToDelete = null
   , idToConfig = null
-  , heartbeats = require('heartbeats');
+  /*, heartbeats = require('heartbeats')*/;
 
 // view for the instances table in HTML which id is instances-table.
 var vm = new Vue({
