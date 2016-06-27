@@ -16,7 +16,7 @@ module.exports = {
   port: 35267,
   baseURL: baseURL,
   browserifyModules : [
-      'vue'
+    'vue'
     , 'vue-resource'
     , 'components/addInstance'
     , 'components/table'
@@ -32,7 +32,7 @@ module.exports = {
     // '/' means to catch all the URLs (warning do not use '/*')
     '/': 'reverseproxy.js'
   },
-  filters: ['jbj-parse'],
+  filters: ['jbj-parse']
 };
 
 module.exports.package = require('./package.json');

@@ -11,7 +11,7 @@
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
 //var heartbeats = require('heartbeats');
-var instances = require('./helpers/instances');
+//var instances = require('./helpers/instances');
 
 // config : variable contenant tous les éléments de la configuration de l'application.
 // start : fonction de callback définie un peu plus bas.
@@ -27,13 +27,15 @@ module.exports = function(config, start) {
   start(function online(err, server) {
 
     // Use socket.io on the server.
-    var io = require('socket.io').listen(server);
-/*
+    /*var io = require('socket.io').listen(server);
+
     io.sockets.on('connection', function (socket){
 
       // HEARTBEAT
-        var heart_1 = heartbeats.createHeart(1000);   // repeat every 1000 millisecond = every 1 second
-        heart_1.createEvent(1, {repeat : 0}, function(heartbeat, last){   // repeat:0 for infinite repeat
+      // repeat every 1000 millisecond = every 1 second
+        var heart_1 = heartbeats.createHeart(1000);
+        // repeat:0 for infinite repeat
+        heart_1.createEvent(1, {repeat : 0}, function(heartbeat, last){
 
           // Instructions effectuées à chaque battement.
             console.log("########## BEAT ! ##########");
@@ -41,7 +43,8 @@ module.exports = function(config, start) {
 
               socket.broadcast.emit('message type : refresh_instances_on_off', data);
 
-              // Plus qu'a récup data sur le template et à traiter les instances une par une pour actualiser leur état.
+              // Plus qu'a récup data sur le template
+              //et à traiter les instances une par une pour actualiser leur état.
 
             });
         });
@@ -50,15 +53,17 @@ module.exports = function(config, start) {
 
 
     if (err instanceof Error) {
-      console.error(kuler("Unable to init the server.", "red"), kuler(err.toString(), 'orangered'));
+      console.error(kuler('Unable to init the server.', 'red'), kuler(err.toString(), 'orangered'));
       process.exit(3);
       return;
     }
     var pack = config.get('package');
     if (pack) {
-      console.info(kuler('App detected.', 'olive'), kuler(pack.name + ' ' + pack.version, 'limegreen'));
+      console.info(kuler('App detected.', 'olive'), kuler(pack.name
+        + ' ' + pack.version, 'limegreen'));
     }
-    console.info(kuler('Server is listening.', 'olive'),  kuler(config.get('baseURL') + "/", "limegreen"));
+    console.info(kuler('Server is listening.', 'olive'),  kuler(config.get('baseURL')
+      + '/', 'limegreen'));
 
   });
 };

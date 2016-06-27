@@ -16,16 +16,13 @@ var path = require('path')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
-  , instances = require('../helpers/instances')
-  , util = require('utile');
+  , instances = require('../helpers/instances');
 
 
 
 jsonfile.spaces = 2;
 
 module.exports = function (router, core) {
-
-  var config = core.config;
 
   router.route('/').get(function (req, res, next) {
 
@@ -36,7 +33,7 @@ module.exports = function (router, core) {
 
   router.route('/-/v1/instances').get(function (req, res, next) {
 
-    instances.getInstances(function(err,data){
+    instances.getInstances(function (err, data) {
 
       debug(data);
 
@@ -88,7 +85,8 @@ module.exports = function (router, core) {
   });
 
   router.route('/-/v1/instances/verif').get(bodyParser(), function (req, res, next) {
-    if (fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == false) {
+    if (fileExists(path.join(__dirname, '../manifests/'
+      +req.query.technicalName+'.json')) == false) {
       res.status(200).send('Technical name does not exists');
     }
     else {
@@ -238,8 +236,11 @@ module.exports = function (router, core) {
                       });
                     }
                     else {
-                      debug(portMax)
-                      if (!Number.isInteger(portMax) || portMax == 0) { portMax = freePortSplitted[0]; }
+                      debug(portMax);
+                      if (!Number.isInteger(portMax) || portMax == 0) {
+                        portMax = freePortSplitted[0];
+                      }
+
                       var cmd = 'docker run -d -p '+portMax+':3000 ' +
                       '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
                       '--net=ezmaster_default --link ezmaster_db '+

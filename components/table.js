@@ -1,4 +1,4 @@
-/* global Vue, $, location */
+/* global Vue*/
 'use strict';
 
 var optsEditor = {}
@@ -13,10 +13,11 @@ var vm = new Vue({
   ready : function () {   // When the table is ready...
 
 
-
+    // ... call the route /-/v1/instances with a get wich get the instances list.
+    // Store the instances list into the variable containers used into the HTML with v-for.
     var self = this;
-    self.$http.get('/-/v1/instances').then(function (result) {    // ... call the route /-/v1/instances with a get wich get the instances list.
-      self.$set('containers', result.data); // Store the instances list into the variable containers used into the HTML with v-for.
+    self.$http.get('/-/v1/instances').then(function (result) {
+      self.$set('containers', result.data);
     }, console.error);
 
 
@@ -57,12 +58,11 @@ var vm = new Vue({
         action : 'start'
       };
 
-      console.log("########## ID : " + event + " ##########");
-
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         refresh();
       }, console.error);
-      // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element. Here, the instance id.
+      // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
+      // Here, the instance id.
       // button start > li > ul > td > tr > id="[[ item.description.Id ]]"
     },
 
@@ -70,7 +70,7 @@ var vm = new Vue({
       var data = {
         action : 'stop'
       };
-      console.log(event);
+
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         refresh();
       }, console.error);
@@ -79,11 +79,11 @@ var vm = new Vue({
     confirmationDelete : function (event) {
       var data = {
         action : 'info'
-      }
+      };
       idToDelete = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        this.technicalNameToDelete = result.data.technicalName;                             // ICI ENLEVER DATA POUR TEST
-        this.sizeToDelete = result.data.size;                                               // ICI ENLEVER DATA POUR TEST
+        this.technicalNameToDelete = result.data.technicalName; // ICI ENLEVER DATA POUR TEST
+        this.sizeToDelete = result.data.size; // ICI ENLEVER DATA POUR TEST
         document.getElementById('modal-delete-instance').style.display = 'block';
       }, console.error);
     },
@@ -107,9 +107,9 @@ var vm = new Vue({
     displayConfig : function (event) {
       var data = {
         action : 'config'
-      }
+      };
 
-      document.getElementById('jsoneditor').innerHTML = "";
+      document.getElementById('jsoneditor').innerHTML = '';
 
       idToConfig = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
@@ -120,7 +120,7 @@ var vm = new Vue({
           onChange : function() {
             try {
               editor.get();
-              document.getElementById('spanConfigError').style.display = "none";
+              document.getElementById('spanConfigError').style.display = 'none';
               document.getElementById('buttonUpdateDisable').style.display = 'none';
               document.getElementById('buttonUpdate').style.display = 'block';
             }
@@ -128,7 +128,7 @@ var vm = new Vue({
               document.getElementById('spanConfigError').innerHTML = e;
               document.getElementById('buttonUpdate').style.display = 'none';
               document.getElementById('buttonUpdateDisable').style.display = 'block';
-              document.getElementById('spanConfigError').style.display = "block";
+              document.getElementById('spanConfigError').style.display = 'block';
             }
           }
         };
