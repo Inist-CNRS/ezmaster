@@ -4,11 +4,11 @@ var vm = new Vue({
   el: '#addInstance',
   methods : {
 
-  	displayFormAddInstance : function (event) {
+    displayFormAddInstance : function (event) {
       document.getElementById('modal-add-instance').style.display = 'block';
     },
 
-  	cancelAddInstance : function (event) {
+    cancelAddInstance : function (event) {
       location.reload();
   	},
 
@@ -23,7 +23,7 @@ var vm = new Vue({
 			document.getElementById('loader').style.display = 'block';
 
       if (this.longName == '') { this.longName = 'Free comment of '+this.technicalName; }
-  		
+
       var data = {
   			'longName' : this.longName,
   			'project' : this.project,
@@ -31,7 +31,7 @@ var vm = new Vue({
   			'study': this.study,
   			'technicalName' :  this.technicalName,
   			'app' : document.getElementById('app').value
-  		}
+  		};
   		this.$http.post('/-/v1/instances', data).then(function (result) {
   			if (result.status == 200) { location.reload(); }
   		}, function (error) {
@@ -65,9 +65,9 @@ module.exports = vm;
 
 vm.$watch('longName', function(data) {
 
-      var value = document.forms["Form"]["inputLongName"].value;
+      var value = document.forms['Form']['inputLongName'].value;
 
-      if (value == "")
+      if (value == '')
         document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
       else
         document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
@@ -79,9 +79,9 @@ vm.$watch('longName', function(data) {
 
 vm.$watch('study', function(data) {
 
-      var value = document.forms["Form"]["inputStudy"].value;
+      var value = document.forms['Form']['inputStudy'].value;
 
-      if (/^[a-z0-9]+$/.test(value)==false || value == "")
+      if (/^[a-z0-9]+$/.test(value)==false || value == '')
         document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
       else
         document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
@@ -91,9 +91,9 @@ vm.$watch('study', function(data) {
 
 vm.$watch('project', function(data) {
 
-      var value = document.forms["Form"]["inputProject"].value;
+      var value = document.forms['Form']['inputProject'].value;
 
-      if (/^[a-z0-9]+$/.test(value)==false || value == "")
+      if (/^[a-z0-9]+$/.test(value)==false || value == '')
         document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
       else
         document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
