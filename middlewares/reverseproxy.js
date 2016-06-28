@@ -2,13 +2,14 @@
 'use strict';
 
 /**
- * 
+ *
  * Example with curl to test the reverse proxy:
  * export EZMASTER_PUBLIC_DOMAIN="data.istex.fr"
  * make run-debug
- * curl -v --proxy "" -H "X-Forwarded-Host: aa-bb-1.data.istex.fr" -H "X-Forwarded-Server: data.istex.fr" http://127.0.0.1:35267/
+ * curl -v --proxy "" -H "X-Forwarded-Host: aa-bb-1.data.istex.fr"
+ * ++ -H "X-Forwarded-Server: data.istex.fr" http://127.0.0.1:35267/
  * curl -v --proxy "" -H "Host: aa-bb-1.data.istex.fr" http://127.0.0.1:35267/
- * 
+ *
  */
 
 var path      = require('path');
@@ -24,7 +25,8 @@ module.exports = function(options, core) {
   var proxy = httpProxy.createProxyServer({})
     , publicDomain = core.config.get('publicDomain');
 
-  debug('Loading reverseproxy middleware: ' + (publicDomain ? 'enabled [' + publicDomain + ']' : 'disabled'));
+  debug('Loading reverseproxy middleware: '
+    + (publicDomain ? 'enabled [' + publicDomain + ']' : 'disabled'));
 
   return function(req, res, next) {
 
@@ -32,15 +34,15 @@ module.exports = function(options, core) {
       var host         = req.headers['host']
         , reqServer    = req.headers['x-forwarded-server']
         , reqHost      = req.headers['x-forwarded-host']
-        , reqSubdomain = reqHost ? reqHost.split('.') : false
-      ;
+        , reqSubdomain = reqHost ? reqHost.split('.') : false;
 
-      debug('reverseproxy#1', host, ' ', reqSubdomain,' && (', reqServer, ' === ', publicDomain, ")");
+      debug('reverseproxy#1', host, ' ', reqSubdomain,
+        ' && (', reqServer, ' === ', publicDomain, ')');
 
       // Two way to activate the RP:
       // with an explicit "Host" header
       // with the special X-Forwarded-* headers
-      var isRpEnabled = {}; 
+      var isRpEnabled = {};
       isRpEnabled.byHost       = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
       debug(isRpEnabled);  // TODO : rendra capable le RP de gérer le header "Host"
@@ -55,7 +57,8 @@ module.exports = function(options, core) {
         var found = Object.keys(instances)
           .map(function(z) {
             instances[z].current = instances[z].technicalName.split('-');
-            instances[z].current[2] = instances[z].current[2] === undefined ? 0 : Number(instances[z].current[2]);
+            instances[z].current[2] = instances[z].current[2] === undefined
+              ? 0 : Number(instances[z].current[2]);
             if (Number.isNaN(instances[z].current[2])) {
               instances[z].current[2] = 0;
             }

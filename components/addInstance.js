@@ -1,3 +1,4 @@
+/* global Vue, global document*/
 'use strict';
 
 var vm = new Vue({
