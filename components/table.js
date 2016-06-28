@@ -1,4 +1,4 @@
-/* global Vue */
+/* global Vue, global document, global JSONEditor*/
 'use strict';
 
 var optsEditor = {}
