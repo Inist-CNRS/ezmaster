@@ -140,7 +140,7 @@
     </table>
 
     <div id='addInstance'>
-      <button id="add_instance" class="btn btn-raised btn-primary" v-on:click="displayFormAddInstance">Add an instance</button>
+      <button id="add_instance" class="btn btn-raised btn-primary" v-on:click="displayFormAddInstance" v-on:keyup.esc="cancelAddInstance" >Add an instance</button>
 
       <div class="modal" id="modal-add-instance">
         <div class="modal-dialog">

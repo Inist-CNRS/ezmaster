@@ -9,7 +9,7 @@ var vm = new Vue({
     },
 
     cancelAddInstance : function (event) {
-      location.reload();
+      document.getElementById('modal-add-instance').style.display = 'none';
     },
 
     addInstance : function (event) {
