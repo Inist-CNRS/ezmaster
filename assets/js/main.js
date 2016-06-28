@@ -15,4 +15,4 @@ Vue.validator('lowercaseAndDigits', function (val) {
 });
 
 require('components/addInstance');
-require('components/table');
+var vm = require('components/table');
