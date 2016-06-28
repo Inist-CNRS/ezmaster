@@ -14,9 +14,6 @@ var heartbeats = require('heartbeats');
 
 var instances = require('./helpers/instances');
 
-// Use socket.io on the server.
-var io = require('socket.io').listen(server);
-
 // config : variable contenant tous les éléments de la configuration de l'application.
 // start : fonction de callback définie un peu plus bas.
 module.exports = function(config, start) {
@@ -29,6 +26,9 @@ module.exports = function(config, start) {
   // Récupération d'une éventuelle erreur dans err.
   // Récupération du serveur web dans la variable server si ça s'est bien passé.
   start(function online(err, server) {
+
+    // Use socket.io on the server.
+    var io = require('socket.io').listen(server);
 
     io.sockets.on('connection', function (socket){
 
