@@ -86,7 +86,7 @@ module.exports.getInstances = function (cb) {
           // Example of data.Names[0]: /myprj-mystudy-5
           instance.technicalName = data.Names[0].split('/')[1];
           instance.containerId   = data.Id;
-          instance.dataPath      = '/instances/'+instance.technicalName+'/';
+          instance.dataPath      = '/ezmaster/instances/'+instance.technicalName+'/';
           instance.creationDate  = moment.unix(data.Created).format('YYYY/MM/DD HH:mm:ss');
           instance.app           = data.Image;
 
