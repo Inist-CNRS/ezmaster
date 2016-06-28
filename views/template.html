@@ -232,19 +232,17 @@
     </div>
 
 
-
-
-
-
-<!-- SOCKET.IO -->
-
-  <div id="messages_box"></div>
-
 {% endblock %}
 
 
 {% block scripts %}
 
+  <!-- SOCKET.IO -->
+
+  <!-- Div uniquement utilisée pour les tests socket. -->
+  <div id="messages_box"></div>
+
+  <!-- JQuery utilisé pour les tests socket. -->
   <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
   <!--
@@ -252,31 +250,34 @@
     Celui-ci est automatiquement fourni par le serveur node.js via le module socket.io.
     Le code qu'il contient permet de gérer la communication avec le serveur du côté du client.
   -->
-
   <script src="../socket.io/socket.io.js"></script>
 
   <script>
 
+    // Connexion avec socket.
     var socket = io.connect('http://127.0.0.1:35267');
 
     // On écoute l'arrivée de messages de type "message type : refresh_instances_on_off" en provenance du serveur.
     socket.on('message type : refresh_instances_on_off', function(les_instances) {
+
+      // On actualise 'containers' ce qui va automatiquement refresh la liste des instances sur la page web.
       vm.$set('containers', les_instances);
 
-      //$('#messages_box').empty();
-/*
-      for(var key in les_instances)
-      {
-        $('#messages_box').html('<div class="well well-sm">' + les_instances[key].technicalName + '</div>' + $('#messages_box').html());
-      }
-*/
+      // MESSAGE DE DEBUG
       $('#messages_box').html('<div class="well well-sm">CHANGE DETECTED</div>' + $('#messages_box').html());
+
+      // VIEUX TESTS
+        //$('#messages_box').empty();
+        /*
+        for(var key in les_instances)
+        {
+          $('#messages_box').html('<div class="well well-sm">' + les_instances[key].technicalName + '</div>' + $('#messages_box').html());
+        }
+        */
 
     })
 
   </script>
-
-
 
 
 {% endblock %}

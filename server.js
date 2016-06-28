@@ -5,14 +5,17 @@
 /*jshint node:true, laxcomma:true*/
 /*eslint global-require:"warn"*/
 
-
 'use strict';
 
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
 
 var heartbeats = require('heartbeats');
+
 var instances = require('./helpers/instances');
+
+// Use socket.io on the server.
+var io = require('socket.io').listen(server);
 
 // config : variable contenant tous les éléments de la configuration de l'application.
 // start : fonction de callback définie un peu plus bas.
@@ -27,34 +30,32 @@ module.exports = function(config, start) {
   // Récupération du serveur web dans la variable server si ça s'est bien passé.
   start(function online(err, server) {
 
-    // Use socket.io on the server.
-    var io = require('socket.io').listen(server);
-
-
     io.sockets.on('connection', function (socket){
 
-      // HEARTBEAT
-
+      // La liste référence des instances.
         var les_instances = {};
+
+      // LE COEUR HEARTBEATS
 
         // Repeat every 1000 millisecond = every 1 second.
         var heart_1 = heartbeats.createHeart(2000);
 
-        // repeat:0 for infinite repeat
+        // For infinite repeat we use {repeat : 0}.
         heart_1.createEvent(1, {repeat : 0}, function(heartbeat, last){
 
-          // Instructions effectuées à chaque battement.
-            console.log("########## BEAT ! ##########");
+          // Instructions effectuées à chaque battement du coeur Heartbeats.
 
             instances.getInstances(function(err,data){
 
-              if(!(JSON.stringify(les_instances) === JSON.stringify(data)))
+              // S'il y a des différences entre les_instances de référence et celle tout juste récupérée dans data.
+              if(!(JSON.stringify(les_instances) === JSON.stringify(data) ))
               {
+                // On actualise les_instances de référence avec cette nouvelle version.
                 les_instances = data;
+
+                // On broadcast à tous les utilisateurs cette nouvelle version qui servira à mettre à jour la variable 'containers' dans template.html.
                 socket.broadcast.emit('message type : refresh_instances_on_off', data);
               }
-
-              // On récup ensuite data sur template.html et on regarde pour chaque instance si son état doit être actualisé.
 
             });
 
