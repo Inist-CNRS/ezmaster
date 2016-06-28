@@ -41,9 +41,9 @@ module.exports = function(options, core) {
       // with an explicit "Host" header
       // with the special X-Forwarded-* headers
       var isRpEnabled = {}; 
-      isRpEnabled.byHost       = host.slice(-domainEnv.length) === domainEnv; // TODO : gérer ce cas
+      isRpEnabled.byHost       = domainEnv ? (host.slice(-domainEnv.length) === domainEnv) : false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === domainEnv);
-      debug(isRpEnabled);
+      debug(isRpEnabled);  // TODO : rendra capable le RP de gérer le header "Host"
 
       if (reqSubdomain && (reqServer === domainEnv) && instances !== undefined) {
 
