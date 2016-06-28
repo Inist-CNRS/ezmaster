@@ -22,9 +22,9 @@ var instances = require('../helpers/instances');
 module.exports = function(options, core) {
 
   var proxy = httpProxy.createProxyServer({})
-    , domainEnv = core.config.get('publicDomain');
+    , publicDomain = core.config.get('publicDomain');
 
-  debug('Loading reverseproxy middleware: ' + (domainEnv ? 'enabled [' + domainEnv + ']' : 'disabled'));
+  debug('Loading reverseproxy middleware: ' + (publicDomain ? 'enabled [' + publicDomain + ']' : 'disabled'));
 
   return function(req, res, next) {
 
@@ -35,17 +35,17 @@ module.exports = function(options, core) {
         , reqSubdomain = reqHost ? reqHost.split('.') : false
       ;
 
-      debug('reverseproxy#1', host, ' ', reqSubdomain,' && (', reqServer, ' === ', domainEnv, ")");
+      debug('reverseproxy#1', host, ' ', reqSubdomain,' && (', reqServer, ' === ', publicDomain, ")");
 
       // Two way to activate the RP:
       // with an explicit "Host" header
       // with the special X-Forwarded-* headers
       var isRpEnabled = {}; 
-      isRpEnabled.byHost       = domainEnv ? (host.slice(-domainEnv.length) === domainEnv) : false;
-      isRpEnabled.byXForwarded = reqSubdomain && (reqServer === domainEnv);
+      isRpEnabled.byHost       = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
+      isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
       debug(isRpEnabled);  // TODO : rendra capable le RP de gérer le header "Host"
 
-      if (reqSubdomain && (reqServer === domainEnv) && instances !== undefined) {
+      if (reqSubdomain && (reqServer === publicDomain) && instances !== undefined) {
 
 
         debug('reverseproxy#1.1');
