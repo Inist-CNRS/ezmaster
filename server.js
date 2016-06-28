@@ -11,7 +11,7 @@
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
 
-//var heartbeats = require('heartbeats');
+var heartbeats = require('heartbeats');
 var instances = require('./helpers/instances');
 
 // config : variable contenant tous les éléments de la configuration de l'application.
@@ -32,11 +32,13 @@ module.exports = function(config, start) {
 
 
     io.sockets.on('connection', function (socket){
-/*
+
       // HEARTBEAT
 
+        var les_instances = {};
+
         // Repeat every 1000 millisecond = every 1 second.
-        var heart_1 = heartbeats.createHeart(1000);
+        var heart_1 = heartbeats.createHeart(2000);
 
         // repeat:0 for infinite repeat
         heart_1.createEvent(1, {repeat : 0}, function(heartbeat, last){
@@ -46,14 +48,18 @@ module.exports = function(config, start) {
 
             instances.getInstances(function(err,data){
 
-              socket.broadcast.emit('message type : refresh_instances_on_off', data);
+              if(!(JSON.stringify(les_instances) === JSON.stringify(data)))
+              {
+                les_instances = data;
+                socket.broadcast.emit('message type : refresh_instances_on_off', data);
+              }
 
               // On récup ensuite data sur template.html et on regarde pour chaque instance si son état doit être actualisé.
 
             });
 
         });
-*/
+
     });
 
 

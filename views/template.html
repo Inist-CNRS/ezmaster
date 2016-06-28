@@ -259,11 +259,13 @@
     socket.on('message type : refresh_instances_on_off', function(les_instances) {
 
       //$('#messages_box').empty();
-
+/*
       for(var key in les_instances)
       {
         $('#messages_box').html('<div class="well well-sm">' + les_instances[key].technicalName + '</div>' + $('#messages_box').html());
       }
+*/
+      $('#messages_box').html('<div class="well well-sm">CHANGE DETECTED</div>' + $('#messages_box').html());
 
     })
 
