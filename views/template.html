@@ -1,5 +1,8 @@
+
+<!-- Signifie que ce fichier utilise les blocs de la page layout.html -->
 {% extends "layout.html" %}
 
+<!-- Extension du bloc body de layout.html. -->
 {% block body %}
 
     <table id="instances-table" class="table table-striped">
@@ -232,9 +235,11 @@
     </div>
 
 
+<!-- Fin de l'extension du bloc body de layout.html. -->
 {% endblock %}
 
 
+<!-- Extension du bloc scripts de layout.html. -->
 {% block scripts %}
 
   <!-- SOCKET.IO -->
@@ -280,4 +285,5 @@
   </script>
 
 
+<!-- Fin de l'extension du bloc scripts de layout.html. -->
 {% endblock %}
