@@ -9,7 +9,6 @@
     "nodemon.json",
     "package.json",
     "Dockerfile",
-    "assets/*",
-    "views/*"
+    "assets/*"
   ]
 }
