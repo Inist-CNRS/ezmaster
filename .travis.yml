@@ -21,5 +21,7 @@ before_install:
   - sleep 120 ; docker-compose logs
 script:
   - make test
+after_script:
+  - docker-compose logs
 notifications:
   slack: 'inist-dpi:53Jp5iUZeRidSGZn0TukMSKo#activity'
