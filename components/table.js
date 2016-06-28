@@ -1,4 +1,4 @@
-/* global Vue*/
+/* global Vue */
 'use strict';
 
 var optsEditor = {}
