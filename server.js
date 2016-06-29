@@ -33,28 +33,28 @@ module.exports = function(config, start) {
     io.sockets.on('connection', function (socket){
 
       // La liste référence des instances.
-        var les_instances = {};
+        var cacheInstances = {};
 
       // LE COEUR HEARTBEATS
 
         // Repeat every 1000 millisecond = every 1 second.
-        var heart_1 = heartbeats.createHeart(2000);
+        var heart1 = heartbeats.createHeart(2000);
 
         // For infinite repeat we use {repeat : 0}.
-        heart_1.createEvent(1, {repeat : 0}, function(heartbeat, last){
+        heart1.createEvent(1, {repeat : 0}, function(heartbeat, last){
 
           // Instructions effectuées à chaque battement du coeur Heartbeats.
 
-            instances.getInstances(function(err,data){
+            instances.getInstances(function(err,beatInstances){
 
               // S'il y a des différences entre les_instances de référence et celle tout juste récupérée dans data.
-              if(!(JSON.stringify(les_instances) === JSON.stringify(data) ))
-              {
-                // On actualise les_instances de référence avec cette nouvelle version.
-                les_instances = data;
+              // On actualise les_instances de référence avec cette nouvelle version.
+              // On broadcast à tous les utilisateurs cette nouvelle version qui servira à mettre à jour la variable 'containers' dans template.html.
+              if(!(JSON.stringify(cacheInstances) === JSON.stringify(beatInstances) )) {
 
-                // On broadcast à tous les utilisateurs cette nouvelle version qui servira à mettre à jour la variable 'containers' dans template.html.
-                socket.broadcast.emit('message type : refresh_instances_on_off', data);
+                cacheInstances = beatInstances;
+                socket.broadcast.emit('refreshInstances', beatInstances);
+
               }
 
             });
