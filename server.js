@@ -45,6 +45,8 @@ module.exports = function(config, start) {
 
           // Instructions done on each Heartbeats heart beat.
 
+  console.log("########## BEAT ! ##########");
+
             instances.getInstances(function(err,beatInstances){
 
               // If there are some differences between cacheInstances (reference) and beatInstances (just get) :
