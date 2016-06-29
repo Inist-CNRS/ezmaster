@@ -41,7 +41,7 @@ module.exports = function(config, start) {
         var heart1 = heartbeats.createHeart(5000);
 
         // For infinite repeat we use {repeat : 0}.
-        heart1.createEvent(6, {repeat : 0}, function(heartbeat, last){
+        heart1.createEvent(1, function(heartbeat, last){
 
           // Instructions done on each Heartbeats heart beat.
 
