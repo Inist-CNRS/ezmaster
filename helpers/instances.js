@@ -117,9 +117,10 @@ module.exports.getInstances = function (cb) {
           dockerInstances.push(instance);
         });
 
-        // Sort dockerInstances by creationDate
-        // so as to conserve same order while displaying instances on the client.
-        dockerInstances.sort(sortBy('creationDate'));
+        // Sort dockerInstances by creationDate.
+        // Aim : conserve same order while displaying instances on the client.
+        // The '-' means that we want a reversed order.
+        dockerInstances.sort(sortBy('-creationDate'));
 
         // once docker containers are parsed we return the
         // ezmaster formated instances list
