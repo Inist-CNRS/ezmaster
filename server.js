@@ -30,7 +30,10 @@ module.exports = function(config, start) {
     // Use socket.io on the server.
     var io = require('socket.io').listen(server);
 
-    io.sockets.on('connection', function (socket){
+
+
+
+
 
       // Caching the instances list to have a reference for comparisons to come.
         var cacheInstances = {};
@@ -38,7 +41,6 @@ module.exports = function(config, start) {
       // THE HEARTBEATS HEART
 
         // Repeat every 5000 milliseconds = every 5 seconds.
-        var heart1 = null;
         heart1 = heartbeats.createHeart(10000);
 
         // For infinite repeat we use {repeat : 0}.
@@ -46,7 +48,7 @@ module.exports = function(config, start) {
 
           // Instructions done on each heart beat.
 
-  console.log("########## BEAT ! ##########");
+            console.log("########## BEAT ! ##########");
 
             instances.getInstances(function(err,beatInstances){
 
@@ -64,7 +66,26 @@ module.exports = function(config, start) {
 
         });
 
+
+
+
+
+
+
+
+
+    io.sockets.on('connection', function (socket){
+
+
+
     });
+
+
+
+
+
+
+
 
 
 
