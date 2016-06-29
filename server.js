@@ -41,7 +41,7 @@ module.exports = function(config, start) {
       // THE HEARTBEATS HEART
 
         // Repeat every 5000 milliseconds = every 5 seconds.
-        var heart1 = heartbeats.createHeart(10000);
+        var heart1 = heartbeats.createHeart(5000);
 
         // For infinite repeat we use {repeat : 0}.
         heart1.createEvent(1, {repeat : 0}, function(heartbeat, last){
@@ -58,7 +58,7 @@ module.exports = function(config, start) {
               if(!(JSON.stringify(cacheInstances) === JSON.stringify(beatInstances) )) {
 
                 cacheInstances = beatInstances;
-                //socket.broadcast.emit('refreshInstances', beatInstances);
+                io.socket.broadcast.emit('refreshInstances', beatInstances);
 
               }
 
