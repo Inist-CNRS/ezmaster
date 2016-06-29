@@ -10,9 +10,11 @@
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
 
-var heartbeats = require('heartbeats');
+// var heartbeats = require('heartbeats');
 
-var instances = require('./helpers/instances');
+// var instances = require('./helpers/instances');
+
+var serverHeart = require('./helpers/serverHeart');
 
 // config : variable containing app configuration elements.
 // start : callback function declared a bit later.
@@ -39,39 +41,17 @@ module.exports = function(config, start) {
     // When a user connects to the server.
     io.sockets.on('connection', function (socket){
 
-      // If no heart already created on the server, we create one and the bool becomes true.
-      if(!heartAlreadyCreated) {
+        // If no heart already created on the server, we create one and the bool becomes true.
+        if(!heartAlreadyCreated) {
 
-        heartAlreadyCreated = true;
+          heartAlreadyCreated = true;
 
-        // THE HEARTBEATS HEART
+          serverHeart.serverHeart(cacheInstances, socket);
 
-          // Repeat every 5000 milliseconds = every 5 seconds.
-          var heart1 = heartbeats.createHeart(5000);
 
-          // For infinite repeat we use {repeat : 0}.
-          heart1.createEvent(1, {repeat : 0}, function(heartbeat, last){
+        }
 
-            // Instructions done on each heart beat.
 
-              // Debug
-              //console.log("########## BEAT ! ##########");
-
-              instances.getInstances(function(err,beatInstances){
-
-                // If there are some differences between cacheInstances (reference) and beatInstances (just get) :
-                  // Update cacheInstances with beatInstances.
-                  // Broadcast to all users this new version to update the 'containers' variable in template.html.
-                if(!(JSON.stringify(cacheInstances) === JSON.stringify(beatInstances) )) {
-
-                  cacheInstances = beatInstances;
-                  socket.broadcast.emit('refreshInstances', beatInstances);
-
-                }
-
-              });
-          });
-      }
     });
 
 
