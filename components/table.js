@@ -21,8 +21,7 @@ var vm = new Vue({
     }, console.error);
 
 
-
-// POLLING AJAX CI DESSOUS toutes les 30 secondes (à remplacer)
+// POLLING AJAX - OLD VERSION
   /*
     function verifRefresh() {
       if (document.getElementById('modal-delete-instance').style.display != 'block' &&
@@ -45,10 +44,7 @@ var vm = new Vue({
   */
 
 
-
   },
-
-
 
 
 
@@ -82,8 +78,8 @@ var vm = new Vue({
       };
       idToDelete = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        this.technicalNameToDelete = result.data.technicalName; // ICI ENLEVER DATA POUR TEST
-        this.sizeToDelete = result.data.size; // ICI ENLEVER DATA POUR TEST
+        this.technicalNameToDelete = result.data.technicalName;
+        this.sizeToDelete = result.data.size;
         document.getElementById('modal-delete-instance').style.display = 'block';
       }, console.error);
     },

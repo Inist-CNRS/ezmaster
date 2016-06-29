@@ -1,8 +1,8 @@
 
-<!-- Signifie que ce fichier utilise les blocs de la page layout.html -->
+<!-- Means that this file uses page layout.html blocs. -->
 {% extends "layout.html" %}
 
-<!-- Extension du bloc body de layout.html. -->
+<!-- Extension of bloc body from layout.html. -->
 {% block body %}
 
     <table id="instances-table" class="table table-striped">
@@ -175,11 +175,6 @@
                       <label for="inputLongName" class="col-md-3 control-label">Long name</label>
                       <div class="col-md-9">
                         <input class="form-control" id="inputLongName" name="inputLongName" placeholder=" Ex : Title, Comment, Note, etc" type="text" value='[[ longName ]]' v-model="longName" v-validate:longName="{ required: true }">
-                        <!--
-                        <div v-if='$validation1.longName.dirty'>
-                          <span class="help-block text-danger" v-if="$validation1.longName.required">Fill the Long name.</span>
-                        </div>
-                        -->
                       </div>
                     </div>
 
@@ -235,40 +230,40 @@
     </div>
 
 
-<!-- Fin de l'extension du bloc body de layout.html. -->
+<!-- End of extension of bloc body from layout.html. -->
 {% endblock %}
 
 
-<!-- Extension du bloc scripts de layout.html. -->
+<!-- Extension of bloc scripts from layout.html. -->
 {% block scripts %}
 
   <!-- SOCKET.IO -->
 
-    <!-- Div uniquement utilisée pour les tests socket. -->
+    <!-- Div used for socket tests. -->
     <!-- <div id="messages_box"></div> -->
 
-    <!-- JQuery utilisé pour les tests socket. -->
+    <!-- JQuery used for socket tests. -->
     <!-- <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
 
     <!--
-      On fait récupérer au client le fichier socket.io.js.
-      Celui-ci est automatiquement fourni par le serveur node.js via le module socket.io.
-      Le code qu'il contient permet de gérer la communication avec le serveur du côté du client.
+      Get the socket.io.js script.
+      It is automatically provided by the nodeJS server thanks to the socket.io module.
+      It allows to manage communication with the server from client side.
     -->
     <script src="../socket.io/socket.io.js"></script>
 
     <script>
 
-      // Connexion avec socket.
+      // Socket connection.
       var socket = io.connect('http://127.0.0.1:35267');
 
-      // On écoute l'arrivée de messages de type "message type : refresh_instances_on_off" en provenance du serveur.
+      // Listen incoming messages typed as 'refreshInstances' from the server.
       socket.on('refreshInstances', function(beatInstances) {
 
-        // On actualise 'containers' ce qui va automatiquement refresh la liste des instances sur la page web.
+        // Update 'containers' which will automatically refresh the instances list on the web page.
         vm.$set('containers', beatInstances);
 
-        // MESSAGE DE DEBUG
+        // Debug message.
         // $('#messages_box').html('<div class="well well-sm">CHANGE DETECTED</div>' + $('#messages_box').html());
 
       })
@@ -276,5 +271,5 @@
     </script>
 
 
-<!-- Fin de l'extension du bloc scripts de layout.html. -->
+<!-- End of extension of bloc scripts from layout.html. -->
 {% endblock %}

@@ -1,6 +1,6 @@
 
-// Ce fichier est le point d'entrée de l'application.
-// Il permet de lancer le serveur web contenu dans la variable server.
+// This file is the app starting point.
+// It launches the server contained in the 'server' variable.
 
 /*jshint node:true, laxcomma:true*/
 /*eslint global-require:"warn"*/
@@ -14,17 +14,17 @@ var heartbeats = require('heartbeats');
 
 var instances = require('./helpers/instances');
 
-// config : variable contenant tous les éléments de la configuration de l'application.
-// start : fonction de callback définie un peu plus bas.
+// config : variable containing app configuration elements.
+// start : callback function declared a bit later.
 module.exports = function(config, start) {
 
-  // Initialisation de la configuration de l'application avant le lancement du serveur web.
+  // App configuration initialisation before web server launch.
   config.set('theme', __dirname);
   config.set('timeout', 1E6);
 
-  // Démarrage du serveur web.
-  // Récupération d'une éventuelle erreur dans err.
-  // Récupération du serveur web dans la variable server si ça s'est bien passé.
+  // Web server launch.
+  // err : to catch errors.
+  // If all good, the 'server' variable contains the server.
   start(function online(err, server) {
 
     // Use socket.io on the server.
@@ -32,10 +32,10 @@ module.exports = function(config, start) {
 
     io.sockets.on('connection', function (socket){
 
-      // La liste référence des instances.
+      // Caching the instances list to have a reference for comparisons to come.
         var cacheInstances = {};
 
-      // LE COEUR HEARTBEATS
+      // THE HEARTBEATS HEART
 
         // Repeat every 1000 millisecond = every 1 second.
         var heart1 = heartbeats.createHeart(2000);
@@ -43,13 +43,13 @@ module.exports = function(config, start) {
         // For infinite repeat we use {repeat : 0}.
         heart1.createEvent(1, {repeat : 0}, function(heartbeat, last){
 
-          // Instructions effectuées à chaque battement du coeur Heartbeats.
+          // Instructions done on each Heartbeats heart beat.
 
             instances.getInstances(function(err,beatInstances){
 
-              // S'il y a des différences entre les_instances de référence et celle tout juste récupérée dans data.
-              // On actualise les_instances de référence avec cette nouvelle version.
-              // On broadcast à tous les utilisateurs cette nouvelle version qui servira à mettre à jour la variable 'containers' dans template.html.
+              // If there are some differences between cacheInstances (reference) and beatInstances (just get) :
+                // Update cacheInstances with beatInstances.
+                // Broadcast to all users this new version to update the 'containers' variable in template.html.
               if(!(JSON.stringify(cacheInstances) === JSON.stringify(beatInstances) )) {
 
                 cacheInstances = beatInstances;
