@@ -37,8 +37,8 @@ module.exports = function(config, start) {
 
       // THE HEARTBEATS HEART
 
-        // Repeat every 1000 millisecond = every 1 second.
-        var heart1 = heartbeats.createHeart(2000);
+        // Repeat every 5000 milliseconds = every 5 seconds.
+        var heart1 = heartbeats.createHeart(5000);
 
         // For infinite repeat we use {repeat : 0}.
         heart1.createEvent(1, {repeat : 0}, function(heartbeat, last){
