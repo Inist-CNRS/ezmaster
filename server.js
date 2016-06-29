@@ -35,9 +35,6 @@ module.exports = function(config, start) {
     // Bool to check if a heart has already been created on the server.
     var heartAlreadyCreated = false;
 
-    // Caching the instances list to have a reference for comparisons to come.
-    var cacheInstances = {};
-
     // When a user connects to the server.
     io.sockets.on('connection', function (socket){
 
@@ -46,11 +43,9 @@ module.exports = function(config, start) {
 
           heartAlreadyCreated = true;
 
-          serverHeart.serverHeart(cacheInstances, socket);
-
+          serverHeart.serverHeart(socket);
 
         }
-
 
     });
 
