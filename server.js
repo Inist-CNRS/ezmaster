@@ -30,21 +30,19 @@ module.exports = function(config, start) {
     // Use socket.io on the server.
     var io = require('socket.io').listen(server);
 
+    // Bool to check if a heart has already been created on the server.
     var heartAlreadyCreated = false;
 
     // Caching the instances list to have a reference for comparisons to come.
     var cacheInstances = {};
 
-
+    // When a user connects to the server.
     io.sockets.on('connection', function (socket){
 
+      // If no heart already created on the server, we create one and the bool becomes true.
       if(!heartAlreadyCreated) {
 
-
-
         heartAlreadyCreated = true;
-
-
 
         // THE HEARTBEATS HEART
 
@@ -56,7 +54,8 @@ module.exports = function(config, start) {
 
             // Instructions done on each heart beat.
 
-              console.log("########## BEAT ! ##########");
+              // Debug
+              //console.log("########## BEAT ! ##########");
 
               instances.getInstances(function(err,beatInstances){
 
@@ -69,22 +68,10 @@ module.exports = function(config, start) {
                   socket.broadcast.emit('refreshInstances', beatInstances);
 
                 }
-
               });
-
           });
-
       }
-
     });
-
-
-
-
-
-
-
-
 
 
     if (err instanceof Error) {
