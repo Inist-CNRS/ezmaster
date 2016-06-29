@@ -68,6 +68,7 @@ module.exports = function(config, start) {
                   socket.broadcast.emit('refreshInstances', beatInstances);
 
                 }
+
               });
           });
       }
