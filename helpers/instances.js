@@ -25,8 +25,9 @@ module.exports.getInstances = function (cb) {
 
       // read the content of manifests folders in order to
       // extract the instances technicalName and some metadata
-      var manifestPath = path.join(__dirname, '../manifests/*.json').toString();
-      glob(manifestPath, function (err, files) {
+      //TODO
+      //var manifestPath = path.join(__dirname, '../manifests/*.json').toString();
+      glob('manifests/*.json', function (err, files) {
 
         if (err) {
           debug('cannot read the folder, something goes wrong with glob', err);
