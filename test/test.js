@@ -42,10 +42,6 @@ describe('Run fakeapp', function () {
 
   var dockerInstances = [];
 
-  var cmd = 'docker rm -f fakeapp';
-
-  exec(cmd, function (err, stdout, stderr) {});
-
   var cmd = 'docker run -d -p 60000:3000 ' +
             '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
             '--net=ezmaster_default --link ezmaster_db '+
@@ -78,9 +74,15 @@ describe('Run fakeapp', function () {
       });
       done(assert.equal(found,true));
 
+      var cmd = 'docker rm -f fakeapp';
+
+      exec(cmd, function (err, stdout, stderr) {});
+
+
       
 
   });
+
 
   
 
