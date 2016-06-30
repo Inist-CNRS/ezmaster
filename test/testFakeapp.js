@@ -8,15 +8,6 @@ var request = require('supertest')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'});
 
-before(function() {
-   
-  var cmd = 'docker build -t fakeapp --build-arg https_proxy --build-arg http_proxy .';
-
-  exec(cmd, function (err, stdout, stderr) {});
-
-
-});
-
 
 describe('Run fakeapp', function () {
 
