@@ -4,16 +4,14 @@
 // View for the machine infos table in HTML which id is infosMachineTable.
 var vmTableInfosMachine = new Vue({
 
-
   el: '#infosMachineTable',
-
 
   ready : function () {   // When the table is ready...
 
     var self = this;
     var infosMachine = {};
 
-    // Declare the variable infosMachine used in template.html as an object.
+    // Give the just created infosMachine object to the infosMachine variable used in template.html.
     self.$set('infosMachine', infosMachine);
 
   },

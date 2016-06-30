@@ -8,7 +8,7 @@ var optsEditor = {}
   /*, heartbeats = require('heartbeats')*/;
 
 // view for the instances table in HTML which id is instances-table.
-var vm = new Vue({
+var vmTableInstances = new Vue({
   el: '#instances-table',
   ready : function () {   // When the table is ready...
 
@@ -154,10 +154,10 @@ var vm = new Vue({
   }
 });
 
-module.exports = vm;
+module.exports = vmTableInstances;
 
 function refresh () {
-  vm.$http.get('/-/v1/instances').then(function (result) {
-    vm.$set('containers', result.data);
+  vmTableInstances.$http.get('/-/v1/instances').then(function (result) {
+    vmTableInstances.$set('containers', result.data);
   }, console.error);
 }

@@ -20,6 +20,7 @@ module.exports = {
     , 'vue-resource'
     , 'components/addInstance'
     , 'components/table'
+    , 'components/infosMachineTable'
     , 'vue-validator'
     , 'heartbeats'
   ],

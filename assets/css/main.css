@@ -420,6 +420,13 @@ img.github {
     margin-top: 5%;
 }
 
+#infosMachineTable {
+    width: 95%;
+    margin: auto;
+    margin-bottom: 2%;
+    margin-top: 2%;
+}
+
 .bread {
   list-style: none;
   padding-left: 0px;
@@ -457,7 +464,7 @@ img.github {
   display: block;
 }
 
-#inputLongName, #inputProject, #inputStudy { 
+#inputLongName, #inputProject, #inputStudy {
    background-color:#FFCDD2;
 }
 
