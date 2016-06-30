@@ -2,8 +2,7 @@
 'use strict';
 
 // Travis run this file while building.
-var request = require('supertest')
-  , exec = require('child_process').execSync
+var execSync = require('child_process').execSync
   , assert = require('chai').assert
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'});
@@ -20,16 +19,20 @@ describe('Run fakeapp', function () {
             +'/datasets/fakeapp/:/opt/ezmaster/data/ '+
             '--name fakeapp fakeapp';
 
-  exec(cmd, function (err, stdout, stderr) {});
+  execSync(cmd, function (err, stdout, stderr) {
+    if (err) { return next(err); 
+  });
 
 
-   docker.listContainers({ all : true }, function (err, containers) {
-       
-        containers.forEach(function (data) {
-          dockerInstances.push(data.Names[0].split('/')[1]);
-        });
+  docker.listContainers({ all : true }, function (err, containers) {
 
+    if (err) { return next(err); }
+
+    containers.forEach(function (data) {
+      dockerInstances.push(data.Names[0].split('/')[1]);
     });
+
+  });
 
   it('Found fakeapp', function (done) {
 
@@ -37,24 +40,18 @@ describe('Run fakeapp', function () {
     var found = false;
 
 
-      dockerInstances.forEach (function (instance) {
-        
-        if(instance.toString() == 'fakeapp'){;
-          found = true;
-        }
-      });
-      done(assert.equal(found,true));
+    dockerInstances.forEach(function (instance) {
 
-      var cmd = 'docker rm -f fakeapp';
+      if (instance.toString() == 'fakeapp') {
+        found = true;
+      }
+    });
+    done(assert.equal(found, true));
 
-      exec(cmd, function (err, stdout, stderr) {});
+    var cmd = 'docker rm -f fakeapp';
 
-
-      
-
+    execSync(cmd, function (err, stdout, stderr) {
+      if (err) { return next(err); }
+    });
   });
-
-
-  
-
 });

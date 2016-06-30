@@ -66,40 +66,40 @@ module.exports = vm;
 
 // Manage field color changes in the addInstance form.
 
-  vm.$watch('longName', function(data) {
+vm.$watch('longName', function(data) {
 
-    var value = document.forms['Form']['inputLongName'].value;
+  var value = document.forms['Form']['inputLongName'].value;
 
-    if (value == '')
-      document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
-    else
-      document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
+  if (value == '')
+    document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
+  else
+    document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
 
-  });
-
-
-  vm.$watch('study', function(data) {
-
-    var value = document.forms['Form']['inputStudy'].value;
-
-    if (/^[a-z0-9]+$/.test(value)==false || value == '')
-      document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
-    else
-      document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
-
-  });
+});
 
 
-  vm.$watch('project', function(data) {
+vm.$watch('study', function(data) {
 
-    var value = document.forms['Form']['inputProject'].value;
+  var value = document.forms['Form']['inputStudy'].value;
 
-    if (/^[a-z0-9]+$/.test(value)==false || value == '')
-      document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
-    else
-      document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
+  if (/^[a-z0-9]+$/.test(value)==false || value == '')
+    document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
+  else
+    document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
 
-  });
+});
+
+
+vm.$watch('project', function(data) {
+
+  var value = document.forms['Form']['inputProject'].value;
+
+  if (/^[a-z0-9]+$/.test(value)==false || value == '')
+    document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
+  else
+    document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
+
+});
 
 
 
