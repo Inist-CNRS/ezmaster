@@ -1,4 +1,4 @@
-{   
+{
   "ignore": [
     "instances/*",
     "manifests/*",
@@ -10,5 +10,6 @@
     "package.json",
     "Dockerfile",
     "assets/*"
-  ]
+  ],
+  "ext": "js, json, html"
 }

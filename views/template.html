@@ -230,6 +230,27 @@
     </div>
 
 
+    <table id="infosMachineTable" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Load Average (1 min)</th>
+          <th>Load Average (5 min)</th>
+          <th>Load Average (10 min)</th>
+          <th>Total Memory</th>
+          <th>Free Memory</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>[[ infosMachine.totalMemory ]]</td>
+          <td>Doe</td>
+          <td>john@example.com</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+
 <!-- End of extension of bloc body from layout.html. -->
 {% endblock %}
 
@@ -240,10 +261,10 @@
   <!-- SOCKET.IO -->
 
     <!-- Div used for socket tests. -->
-    <!-- <div id="messages_box"></div> -->
+    <div id="messages_box"></div>
 
     <!-- JQuery used for socket tests. -->
-    <!-- <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
     <!--
       Get the socket.io.js script.
@@ -257,7 +278,8 @@
       // Socket connection.
       // To test on vilodex, use 192.168.31.146:35267
       // To test on local, use 127.0.0.1:35267
-      var socket = io.connect('http://192.168.31.146:35267');
+      var socket = io.connect('http://127.0.0.1:35267');
+      // var socket = io.connect('http://192.168.31.146:35267');
 
       // Listen incoming messages typed as 'refreshInstances' from the server.
       socket.on('refreshInstances', function(beatInstances) {
@@ -269,6 +291,21 @@
         // $('#messages_box').html('<div class="well well-sm">CHANGE DETECTED</div>' + $('#messages_box').html());
 
       })
+
+      socket.on('refreshInfosMachine', function(infosMachine) {
+
+        $('#messages_box').empty();
+
+        $('#messages_box').html('<div class="well well-sm">Load Average 1 minute : ' + infosMachine["loadAverage"][0] + '\n Load Average 5 minutes : ' + infosMachine["loadAverage"][1] + '\n</div>' + $('#messages_box').html());
+
+        // Update 'infosMachine' which will automatically refresh the infosMachineTable component.
+        vmTableInfosMachine.$set('infosMachine', infosMachine);
+
+      })
+
+
+
+
 
     </script>
 
