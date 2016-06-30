@@ -64,7 +64,7 @@ module.exports.heartRefreshInfosMachine = function (socket) {
 		var lengthDesired = 5;
 		infosMachine['loadAverage'][0] = (infosMachine['loadAverage'][0]+'').substring(0,lengthDesired);
 		infosMachine['loadAverage'][1] = (infosMachine['loadAverage'][1]+'').substring(0,lengthDesired);
-		infosMachine['loadAverage'][2] = (infosMachine['loadAverage'][2]+).substring(0,lengthDesired);
+		infosMachine['loadAverage'][2] = (infosMachine['loadAverage'][2]+'').substring(0,lengthDesired);
 
 
 		infosMachine['totalMemory'] = convertBytesToOctets(os.totalmem()); // os.totalmem() returns the total amount of system memory in bytes.
