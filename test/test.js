@@ -47,7 +47,7 @@ describe('Run fakeapp', function () {
             '--net=ezmaster_default --link ezmaster_db '+
             '-v '+process.env.EZMASTER_PATH+'/test'
             +'/datasets/fakeapp/:/opt/ezmaster/data/ '+
-            '--name fakeapp hello-world';
+            '--name fakeapp fakeapp';
 
   exec(cmd, function (err, stdout, stderr) {});
 
