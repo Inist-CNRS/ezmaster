@@ -32,18 +32,30 @@ module.exports = function(config, start) {
     // Use socket.io on the server.
     var io = require('socket.io').listen(server);
 
-    // Bool to check if a heart has already been created on the server.
-    var heartAlreadyCreated = false;
+    // Bool to check if a heartRefreshInstances has already been created on the server.
+    var heartRefreshInstancesAlreadyCreated = false;
+
+    // Bool to check if a heartRefreshInfosMachine has already been created on the server.
+    var heartRefreshInfosMachineAlreadyCreated = false;
 
     // When a user connects to the server.
     io.sockets.on('connection', function (socket){
 
-        // If no heart already created on the server, we create one and the bool becomes true.
-        if(!heartAlreadyCreated) {
+        // If no heartRefreshInstances already created on the server, we create one and the associated bool becomes true.
+        if(!heartRefreshInstancesAlreadyCreated) {
 
-          heartAlreadyCreated = true;
+          heartRefreshInstancesAlreadyCreated = true;
 
-          serverHeart.serverHeart(socket);
+          serverHeart.heartRefreshInstances(socket);
+
+        }
+
+        // If no heartRefreshInfosMachine already created on the server, we create one and the associated bool becomes true.
+        if(!heartRefreshInfosMachineAlreadyCreated) {
+
+          heartRefreshInfosMachineAlreadyCreated = true;
+
+          serverHeart.heartRefreshInfosMachine(socket);
 
         }
 
