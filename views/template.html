@@ -230,21 +230,23 @@
     </div>
 
 
-    <table id="infosMachineTable" class="table table-bordered">
+    <table id="infosMachineTable" class="table table-condensed">
       <thead>
         <tr>
           <th>Load Average (1 min)</th>
           <th>Load Average (5 min)</th>
-          <th>Load Average (10 min)</th>
+          <th>Load Average (15 min)</th>
           <th>Total Memory</th>
           <th>Free Memory</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr class="info">
+          <td>[[ (infosMachine.loadAverage)[0] ]]</td>
+          <td>[[ (infosMachine.loadAverage)[1] ]]</td>
+          <td>[[ (infosMachine.loadAverage)[2] ]]</td>
           <td>[[ infosMachine.totalMemory ]]</td>
-          <td>Doe</td>
-          <td>john@example.com</td>
+          <td>[[ infosMachine.freeMemory ]]</td>
         </tr>
       </tbody>
     </table>
@@ -261,10 +263,10 @@
   <!-- SOCKET.IO -->
 
     <!-- Div used for socket tests. -->
-    <div id="messages_box"></div>
+    <!-- <div id="messages_box"></div> -->
 
     <!-- JQuery used for socket tests. -->
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <!-- <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
 
     <!--
       Get the socket.io.js script.
@@ -278,34 +280,27 @@
       // Socket connection.
       // To test on vilodex, use 192.168.31.146:35267
       // To test on local, use 127.0.0.1:35267
-      var socket = io.connect('http://127.0.0.1:35267');
-      // var socket = io.connect('http://192.168.31.146:35267');
+      // var socket = io.connect('http://127.0.0.1:35267');
+      var socket = io.connect('http://192.168.31.146:35267');
 
       // Listen incoming messages typed as 'refreshInstances' from the server.
       socket.on('refreshInstances', function(beatInstances) {
 
-        // Update 'containers' which will automatically refresh the instances list on the web page.
-        vm.$set('containers', beatInstances);
+        // Update variable 'containers' which will automatically refresh the instances-table component.
+        vmTableInstances.$set('containers', beatInstances);
 
         // Debug message.
         // $('#messages_box').html('<div class="well well-sm">CHANGE DETECTED</div>' + $('#messages_box').html());
 
       })
 
+      // Listen incoming messages typed as 'refreshInfosMachine' from the server.
       socket.on('refreshInfosMachine', function(infosMachine) {
 
-        $('#messages_box').empty();
-
-        $('#messages_box').html('<div class="well well-sm">Load Average 1 minute : ' + infosMachine["loadAverage"][0] + '\n Load Average 5 minutes : ' + infosMachine["loadAverage"][1] + '\n</div>' + $('#messages_box').html());
-
-        // Update 'infosMachine' which will automatically refresh the infosMachineTable component.
+        // Update variable 'infosMachine' which will automatically refresh the infosMachineTable component.
         vmTableInfosMachine.$set('infosMachine', infosMachine);
 
       })
-
-
-
-
 
     </script>
 
