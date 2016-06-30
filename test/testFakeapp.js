@@ -20,7 +20,7 @@ describe('Run fakeapp', function () {
             '--name fakeapp fakeapp';
 
   execSync(cmd, function (err, stdout, stderr) {
-    if (err) { return next(err); 
+    if (err) { return next(err); }
   });
 
 

@@ -25,8 +25,8 @@ module.exports.getInstances = function (cb) {
 
       // read the content of manifests folders in order to
       // extract the instances technicalName and some metadata
-      // TODO: ajouter __dirname + "/../
-      glob('manifests/*.json', function (err, files) {
+      var manifestPath = path.join(__dirname, '../manifests/*.json').toString();
+      glob(manifestPath, function (err, files) {
 
         if (err) {
           debug('cannot read the folder, something goes wrong with glob', err);
@@ -78,6 +78,10 @@ module.exports.getInstances = function (cb) {
 
       docker.listContainers({ all : true }, function (err, containers) {
 
+        if (err) {
+          return handleDockerInstances(err);
+        }
+
         var dockerInstances = [];
         containers.forEach(function (data) {
 
@@ -86,7 +90,8 @@ module.exports.getInstances = function (cb) {
           // Example of data.Names[0]: /myprj-mystudy-5
           instance.technicalName = data.Names[0].split('/')[1];
           instance.containerId   = data.Id;
-          instance.dataPath      = process.env.EZMASTER_PATH+'/instances/' +instance.technicalName+'/data/';
+          instance.dataPath      = process.env.EZMASTER_PATH+'/instances/'
+            +instance.technicalName+'/data/';
           instance.creationDate  = moment.unix(data.Created).format('YYYY/MM/DD HH:mm:ss');
           instance.app           = data.Image;
 
@@ -95,13 +100,11 @@ module.exports.getInstances = function (cb) {
             instance.running = true;
             instance.port    = data.Ports[0].PublicPort;
 
-            // TODO: comments needed
-            //       maybe "address" is wrongly named ? publicUrl would be better ?
-            instance.address = 'http://'
+            instance.publicURL = 'http://'
               + process.env.EZMASTER_PUBLIC_IP
               + ':' + data.Ports[0].PublicPort;
             if (!process.env.EZMASTER_PUBLIC_IP) {
-              instance.address = 'http://127.0.0.1:' + data.Ports[0].PublicPort;
+              instance.publicURL = 'http://127.0.0.1:' + data.Ports[0].PublicPort;
             }
             instance.target = data.Names[0].split('/')[1];
 
@@ -109,7 +112,7 @@ module.exports.getInstances = function (cb) {
 
             instance.running = false;
             instance.port    = [];
-            instance.address = '';
+            instance.publicURL = '';
             instance.target  = '';
 
           }
@@ -131,6 +134,8 @@ module.exports.getInstances = function (cb) {
 
   ], function (err, results) {
 
+
+    if (err) { return next(err); }
     // retrives results from the two callbacks (manifests files and docker metadata)
     // and ignore docker containers not listed in the manifests ("unknown technicalName")
     // (example: ezmaster itself or ezmaster_db
