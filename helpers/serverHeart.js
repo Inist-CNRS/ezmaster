@@ -3,12 +3,14 @@
 var heartbeats = require('heartbeats');
 var instances = require('./instances');
 var os = require('os');
+var filesize = require('filesize');
+
 
 
 module.exports.heartRefreshInstances = function (socket) {
 
-	// Caching the instances list to have a reference for comparisons to come.
-	var cacheInstances = {};
+    // Caching the instances list to have a reference for comparisons to come.
+    var cacheInstances = {};
 
     // THE HEARTBEATS HEART : This one refreshes the instances list on table.js component.
     // Repeat every 5000 milliseconds = every 5 seconds.
@@ -21,24 +23,24 @@ module.exports.heartRefreshInstances = function (socket) {
     // Debug
     //console.log("########## BEAT HEART 1 ! ##########");
 
-	    instances.getInstances(function(err, beatInstances) {
+        instances.getInstances(function(err, beatInstances) {
 
-	    	if (err) { return next(err); }
+            if (err) { return next(err); }
 
-		    // If there are some differences between cacheInstances (reference)
-		    //and beatInstances (just get) :
-		    // Update cacheInstances with beatInstances.
-		    // Broadcast to all users this new version to update
-		    //the 'containers' variable in template.html and refresh the table.js component.
-		    if (!(JSON.stringify(cacheInstances) === JSON.stringify(beatInstances))) {
+            // If there are some differences between cacheInstances (reference)
+            //and beatInstances (just get) :
+            // Update cacheInstances with beatInstances.
+            // Broadcast to all users this new version to update
+            //the 'containers' variable in template.html and refresh the table.js component.
+            if (!(JSON.stringify(cacheInstances) === JSON.stringify(beatInstances))) {
 
-		        cacheInstances = beatInstances;
-		        socket.broadcast.emit('refreshInstances', beatInstances);
+                cacheInstances = beatInstances;
+                socket.broadcast.emit('refreshInstances', beatInstances);
 
-		    }
+            }
 
-	    });
-	});
+        });
+    });
 };
 
 
@@ -53,57 +55,29 @@ module.exports.heartRefreshInfosMachine = function (socket) {
     // For infinite repeat we use {repeat : 0}.
     heart2.createEvent(1, {repeat : 0}, function(heartbeat, last) {
 
-	    // Instructions done on each heart beat.
-	    // Debug
-	    //console.log("########## BEAT HEART 2 ! ##########");
-		// Getting machine information we want to display.
-		var infosMachine = {};
+        // Instructions done on each heart beat.
 
-		infosMachine['loadAverage'] = os.loadavg(); // Returns an array containing the 1, 5, and 15 minute load averages.
-		// Trunc loadAverage values.
-		var lengthDesired = 5;
-		infosMachine['loadAverage'][0] = (infosMachine['loadAverage'][0]+'').substring(0,lengthDesired);
-		infosMachine['loadAverage'][1] = (infosMachine['loadAverage'][1]+'').substring(0,lengthDesired);
-		infosMachine['loadAverage'][2] = (infosMachine['loadAverage'][2]+'').substring(0,lengthDesired);
+        // Debug
+        //console.log("########## BEAT HEART 2 ! ##########");
 
+        // Getting machine information we want to display.
+            var infosMachine = {};
 
-		infosMachine['totalMemory'] = convertBytesToOctets(os.totalmem()); // os.totalmem() returns the total amount of system memory in bytes.
-		infosMachine['freeMemory'] = convertBytesToOctets(os.freemem()); // os.freemem() returns the amount of free system memory in bytes.
-		function convertBytesToOctets(number) {
+            infosMachine.loadAverage = os.loadavg(); // Returns an array containing the 1, 5, and 15 minute load averages.
+            // Trunc loadAverage values.
+            var numberOfDecimalNumbers = 2;
+            infosMachine.loadAverage[0] = infosMachine.loadAverage[0].toFixed(numberOfDecimalNumbers);
+            infosMachine.loadAverage[1] = infosMachine.loadAverage[1].toFixed(numberOfDecimalNumbers);
+            infosMachine.loadAverage[2] = infosMachine.loadAverage[2].toFixed(numberOfDecimalNumbers);
 
-		    if ((number+'').length < 3)
-		        return (number+'').substring(0,lengthDesired) + ' o';
-		    else if ((number+'').length >= 3 && (number+'').length < 6)
-		        return ((number/1000)+'').substring(0,lengthDesired) + ' ko';
-		    else if ((number+'').length >= 6 && (number+'').length < 9)
-		        return ((number/1000000)+'').substring(0,lengthDesired) + ' Mo';
-		    else if ((number+'').length >= 9 && (number+'').length < 12)
-		        return ((number/1000000000)+'').substring(0,lengthDesired) + ' Go';
-		    else if ((number+'').length >= 12 && (number+'').length < 15)
-		        return ((number/1000000000000)+'').substring(0,lengthDesired) + ' To';
-		    else if ((number+'').length >= 15 && (number+'').length < 18)
-		        return ((number/1000000000000000)+'').substring(0,lengthDesired) + ' Po';
-		    else if ((number+'').length >= 18 && (number+'').length < 21)
-		        return ((number/1000000000000000000)+'').substring(0,lengthDesired) + ' Eo';
-		    else if ((number+'').length >= 21 && (number+'').length < 24)
-		    	return ((number/1000000000000000000000)+'').substring(0,lengthDesired) + ' Zo';
-		    else if ((number+'').length >= 24 && (number+'').length < 27)
-		        return ((number/1000000000000000000000000)+'').substring(0,lengthDesired) + ' Yo';
+            infosMachine.totalMemory = filesize(os.totalmem()); // os.totalmem() returns the total amount of system memory in bytes.
+            infosMachine.freeMemory = filesize(os.freemem()); // os.freemem() returns the amount of free system memory in bytes.
 
-		}
-
-	    // Broadcast to all users the machine information. They are caught and displayed on template.html inside infosMachineTable.js component.
-	    socket.broadcast.emit('refreshInfosMachine', infosMachine);
+        // Broadcast to all users the machine information. They are caught and displayed on template.html inside infosMachineTable.js component.
+        socket.broadcast.emit('refreshInfosMachine', infosMachine);
 
     });
 };
-
-
-
-
-
-
-
 
 
 
