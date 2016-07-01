@@ -76,6 +76,12 @@ module.exports.heartRefreshInfosMachine = function (socket) {
         // Broadcast to all users the machine information. They are caught and displayed on template.html inside infosMachineTable.js component.
         socket.broadcast.emit('refreshInfosMachine', infosMachine);
 
+        // When we come on the page, while testing in local, machine info are not displayed, we have to refresh for that.
+        // To solve this problem we do a simple emit because in local, our pc is the server so the emit.broadcast send to OTHER users.
+        // On the vilodex, obviously no issue because the server broadcast to all users.
+        // As a consequence, this line can be commented when the code is deployed on the vilodex.
+        socket.emit('refreshInfosMachine', infosMachine);
+
     });
 };
 

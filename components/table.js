@@ -23,11 +23,10 @@ var vmTableInstances = new Vue({
     }, console.error);
 
 
+    self.$http.get('/-/v3/config.js').then(function (result) {
+      self.$set('publicDomain', result.data.publicDomain);
+    }, console.error);
 
-
-  self.$http.get('/-/v3/config.js').then(function (result) {
-    self.$set('publicDomain', result.data.publicDomain);
-  }, console.error);
 
 
 // POLLING AJAX - OLD VERSION
@@ -54,8 +53,6 @@ var vmTableInstances = new Vue({
 
 
   },
-
-
 
 
 
