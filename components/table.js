@@ -5,9 +5,9 @@ var optsEditor = {}
   , editor = new JSONEditor()
   , idToDelete = null
   , idToConfig = null
+  , util = require('utile')
   /*, heartbeats = require('heartbeats')*/;
 
-var core = require('../castor.config');
 
 // view for the instances table in HTML which id is instances-table.
 var vmTableInstances = new Vue({
@@ -23,7 +23,12 @@ var vmTableInstances = new Vue({
     }, console.error);
 
 
-    self.$set('publicDomain', core.publicDomain);
+
+
+  self.$http.get('/-/v3/config.js').then(function (result) {
+    self.$set('publicDomain', result.data.publicDomain);
+  }, console.error);
+
 
 // POLLING AJAX - OLD VERSION
   /*

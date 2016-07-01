@@ -26,6 +26,7 @@ module.exports = {
   ],
   rootURL : '/',
   routes: [
+    'config.js',
     'route.js',
     'status.js'
   ],
