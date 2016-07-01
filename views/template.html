@@ -30,7 +30,9 @@
                 <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
                 <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
                 <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
-                <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.address ]]'>To access</a></li>
+                <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>To access </a></li>
+                <li v-if="[[ publicDomain ]]!== '127.0.0.1'" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='[[ item.target ]].[[ publicDomain ]]'>Access Public</a></li>
+
               </ul>
 
               <div class="modal" id="modal-delete-instance">
@@ -43,8 +45,8 @@
                       </div>
                       <div class="panel-body">
                         <p>
-                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ technicalNameToDelete ]]</span> ?</span><br /><br />
-                          <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
+                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ technicalNameToDelete ]]</span> ?</span><br /><br />
+                          <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
                         </p><br />
                       </div>
                       <div class="panel-footer">
@@ -103,8 +105,8 @@
                       </div>
                       <div class="panel-body">
                         <p>
-                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ technicalNameToDelete ]]</span> ?</span><br /><br />
-                          <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
+                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ technicalNameToDelete ]]</span> ?</span><br /><br />
+                          <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
                         </p><br />
                       </div>
                       <div class="panel-footer">
@@ -174,7 +176,7 @@
                     <div class="form-group">
                       <label for="inputLongName" class="col-md-3 control-label">Long name</label>
                       <div class="col-md-9">
-                        <input class="form-control" id="inputLongName" name="inputLongName" placeholder=" Ex : Title, Comment, Note, etc" type="text" value='[[ longName ]]' v-model="longName" v-validate:longName="{ required: true }">
+                        <input class="form-control" id="inputLongName" name="inputLongName" placeholder=" Ex : Title, Comment, Note, etc" type="text" value='[[ longName ]]' v-model="longName" v-validate:longName="{ required: true }">
                       </div>
                     </div>
 
@@ -183,9 +185,9 @@
 
                       <div class="col-md-9">
                         <div class="block-input">
-                          <input class="form-control sizeInput" id="inputProject" name="inputProject" placeholder=" Ex : Project name" type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
+                          <input class="form-control sizeInput" id="inputProject" name="inputProject" placeholder=" Ex : Project name" type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
                           <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" placeholder=" Ex : Study name" type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
-                          <input class="form-control sizeInput" id="inputVersion" placeholder=" Version" value="[[  version ]]" type="number" min='0' v-model="version">
+                          <input class="form-control sizeInput" id="inputVersion" placeholder=" Version" value="[[  version ]]" type="number" min='0' v-model="version">
                         </div>
                         <div v-if='$validation1.project.dirty'>
                           <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
@@ -195,11 +197,11 @@
                           <span class="help-block text-danger" v-if="$validation1.study.required">Fill the second part of the technical name.</span>
                           <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
                         </div>
-                        <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "[[ technicalName ]]" already exists</span>
+                        <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "[[ technicalName ]]" already exists</span>
                       </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" v-if="[[ publicDomain ]] != '127.0.0.1'">
                       <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
                       <div class="col-md-9">
                         <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='[[  urlPreview ]]' v-model='urlPreview' disabled>
@@ -217,7 +219,7 @@
                       <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                     </div>
                     <div id='errorLoader' style='display:none; text-align: center;'>
-                      <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
+                      <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
                       <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                     </div>
                   </div>
@@ -254,32 +256,23 @@
     <script src="../socket.io/socket.io.js"></script>
 
     <script>
-
       // Socket connection.
       // To test on vilodex, use 192.168.31.146:35267
       // To test on local, use 127.0.0.1:35267
       var socket = io.connect('http://127.0.0.1:35267');
       // var socket = io.connect('http://192.168.31.146:35267');
-
       // Listen incoming messages typed as 'refreshInstances' from the server.
       socket.on('refreshInstances', function(beatInstances) {
-
         // Update variable 'containers' which will automatically refresh the instances-table component.
         vmTableInstances.$set('containers', beatInstances);
-
         // Debug message.
         // $('#messages_box').html('<div class="well well-sm">CHANGE DETECTED</div>' + $('#messages_box').html());
-
       })
-
       // Listen incoming messages typed as 'refreshInfosMachine' from the server.
       socket.on('refreshInfosMachine', function(infosMachine) {
-
         // Update variable 'infosMachine' which will automatically refresh the infosMachineTable component.
         vmTableInfosMachine.$set('infosMachine', infosMachine);
-
       })
-
     </script>
 
 
