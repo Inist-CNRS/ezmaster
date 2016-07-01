@@ -230,28 +230,6 @@
     </div>
 
 
-    <table id="infosMachineTable" class="table table-condensed">
-      <thead>
-        <tr>
-          <th>Load Average (1 min)</th>
-          <th>Load Average (5 min)</th>
-          <th>Load Average (15 min)</th>
-          <th>Total Memory</th>
-          <th>Free Memory</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="info">
-          <td>[[ (infosMachine.loadAverage)[0] ]]</td>
-          <td>[[ (infosMachine.loadAverage)[1] ]]</td>
-          <td>[[ (infosMachine.loadAverage)[2] ]]</td>
-          <td>[[ infosMachine.totalMemory ]]</td>
-          <td>[[ infosMachine.freeMemory ]]</td>
-        </tr>
-      </tbody>
-    </table>
-
-
 
 <!-- End of extension of bloc body from layout.html. -->
 {% endblock %}
@@ -280,8 +258,8 @@
       // Socket connection.
       // To test on vilodex, use 192.168.31.146:35267
       // To test on local, use 127.0.0.1:35267
-      // var socket = io.connect('http://127.0.0.1:35267');
-      var socket = io.connect('http://192.168.31.146:35267');
+      var socket = io.connect('http://127.0.0.1:35267');
+      // var socket = io.connect('http://192.168.31.146:35267');
 
       // Listen incoming messages typed as 'refreshInstances' from the server.
       socket.on('refreshInstances', function(beatInstances) {
