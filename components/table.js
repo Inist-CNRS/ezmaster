@@ -24,7 +24,8 @@ var vmTableInstances = new Vue({
 
 
     self.$set('publicDomain', core.publicDomain);
-
+    debug(core.publicDomain);
+    console.info(core.publicDomain);
 
 // POLLING AJAX - OLD VERSION
   /*
