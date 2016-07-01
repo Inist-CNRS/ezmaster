@@ -63,7 +63,8 @@ module.exports.heartRefreshInfosMachine = function (socket) {
         // Getting machine information we want to display.
             var infosMachine = {};
 
-            infosMachine.loadAverage = os.loadavg(); // Returns an array containing the 1, 5, and 15 minute load averages.
+            // Returns an array containing the 1, 5, and 15 minute load averages.
+            infosMachine.loadAverage = os.loadavg();
             // Trunc loadAverage values.
             var numberOfDecimalNumbers = 2;
             infosMachine.loadAverage[0] = infosMachine.loadAverage[0].toFixed(numberOfDecimalNumbers);
@@ -77,7 +78,8 @@ module.exports.heartRefreshInfosMachine = function (socket) {
         socket.broadcast.emit('refreshInfosMachine', infosMachine);
 
         // When we come on the page, while testing in local, machine info are not displayed, we have to refresh for that.
-        // To solve this problem we do a simple emit because in local, our pc is the server so the emit.broadcast send to OTHER users.
+        // To solve this problem we do a simple emit because in local,
+        //our pc is the server so the emit.broadcast send to OTHER users.
         // On the vilodex, obviously no issue because the server broadcast to all users.
         // As a consequence, this line can be commented when the code is deployed on the vilodex.
         socket.emit('refreshInfosMachine', infosMachine);

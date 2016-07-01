@@ -5,7 +5,6 @@ var optsEditor = {}
   , editor = new JSONEditor()
   , idToDelete = null
   , idToConfig = null
-  , util = require('utile')
   /*, heartbeats = require('heartbeats')*/;
 
 

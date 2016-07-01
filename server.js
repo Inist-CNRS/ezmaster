@@ -39,25 +39,27 @@ module.exports = function(config, start) {
     var heartRefreshInfosMachineAlreadyCreated = false;
 
     // When a user connects to the server.
-    io.sockets.on('connection', function (socket){
+    io.sockets.on('connection', function (socket) {
 
-        // If no heartRefreshInstances already created on the server, we create one and the associated bool becomes true.
-        if(!heartRefreshInstancesAlreadyCreated) {
+        // If no heartRefreshInstances already created on the server,
+        // we create one and the associated bool becomes true.
+      if (!heartRefreshInstancesAlreadyCreated) {
 
-          heartRefreshInstancesAlreadyCreated = true;
+        heartRefreshInstancesAlreadyCreated = true;
 
-          serverHeart.heartRefreshInstances(socket);
+        serverHeart.heartRefreshInstances(socket);
 
-        }
+      }
 
-        // If no heartRefreshInfosMachine already created on the server, we create one and the associated bool becomes true.
-        if(!heartRefreshInfosMachineAlreadyCreated) {
+      // If no heartRefreshInfosMachine already created on the server,
+      // we create one and the associated bool becomes true.
+      if (!heartRefreshInfosMachineAlreadyCreated) {
 
-          heartRefreshInfosMachineAlreadyCreated = true;
+        heartRefreshInfosMachineAlreadyCreated = true;
 
-          serverHeart.heartRefreshInfosMachine(socket);
+        serverHeart.heartRefreshInfosMachine(socket);
 
-        }
+      }
 
     });
 
