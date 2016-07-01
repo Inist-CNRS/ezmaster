@@ -31,7 +31,7 @@
                 <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
                 <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
                 <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>To access </a></li>
-                <li v-if="[[ publicDomain ]] != '127.0.0.1'" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="_blank" class="publicLink" href='http://[[ item.technicalName ]].[[ publicDomain ]]'>Public Access</a></li>
+                <li v-if="[[ publicDomain ]] != '127.0.0.1'" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='[[ item.target ]].[[ publicDomain ]]'>Access Public</a></li>
 
               </ul>
 
@@ -257,18 +257,10 @@
 
     <script>
       // Socket connection.
-
-
-          var socket;
-          vmTableInstances.$http.get('/-/v3/config.js').then(function (result) {
-            socket = io.connect('http://'+result.data.publicIP+':'+result.data.port);
-          }, console.error);
-
-
       // To test on vilodex, use 192.168.31.146:35267
       // To test on local, use 127.0.0.1:35267
-      // var socket = io.connect('http://127.0.0.1:35267');
-      //var socket = io.connect('http://192.168.31.146:35267');
+      var socket = io.connect('http://127.0.0.1:35267');
+      // var socket = io.connect('http://192.168.31.146:35267');
       // Listen incoming messages typed as 'refreshInstances' from the server.
       socket.on('refreshInstances', function(beatInstances) {
         // Update variable 'containers' which will automatically refresh the instances-table component.
