@@ -8,11 +8,13 @@ var vmTableInfosMachine = new Vue({
 
   ready : function () {   // When the table is ready...
 
-    var self = this;
-    var infosMachine = {};
+    /* // After tests I notice that it is useless to initialize infosMachine, a template.html variable, here.
+        var self = this;
+        var infosMachine = {};
 
-    // Give the just created infosMachine object to the infosMachine variable used in template.html.
-    self.$set('infosMachine', infosMachine);
+        // Give the just created infosMachine object to the infosMachine variable used in template.html.
+        self.$set('infosMachine', infosMachine);
+    */
 
   },
 

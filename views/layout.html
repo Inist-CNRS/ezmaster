@@ -46,11 +46,63 @@
 
   <body>
 
+    <nav class="navbar navbar-light" style="background-color: #0277BD;">
+
+      <div class="container-fluid">
+
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/" data-toggle="tab">EzMaster</a>
+        </div>
+
+        <ul class="nav navbar-nav">
+          <li class="active"></li>
+          <li></li>
+          <li></li>
+        </ul>
+
+        <ul class="nav nav-tabs navbar-nav navbar-right">
+
+          <li class="infosMachine">
+
+                <table id="infosMachineTable" class="table table-condensed">
+                  <thead>
+                    <tr>
+                      <th>Load Average 1'</th>
+                      <th>Load Average 5'</th>
+                      <th>Load Average 15'</th>
+                      <th>Total Memory</th>
+                      <th>Free Memory</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>[[ (infosMachine.loadAverage)[0] ]]</td>
+                      <td>[[ (infosMachine.loadAverage)[1] ]]</td>
+                      <td>[[ (infosMachine.loadAverage)[2] ]]</td>
+                      <td>[[ infosMachine.totalMemory ]]</td>
+                      <td>[[ infosMachine.freeMemory ]]</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+
+
+    <!--
     <ul id="menu" class="nav nav-tabs" style="margin-bottom: 15px;">
+
       <li class="active">
         <a href="/" data-toggle="tab"><h3>ezMaster</h3></a>
       </li>
+
     </ul>
+    -->
+
+
 
 
     {% block body %}{% endblock %}
