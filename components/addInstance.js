@@ -3,6 +3,12 @@
 
 var vm = new Vue({
   el: '#addInstance',
+
+  self.$http.get('/-/v3/config.js').then(function (result) {
+    self.$set('publicDomain', result.data.publicDomain);
+  }, console.error);
+
+
   methods : {
 
     displayFormAddInstance : function (event) {
