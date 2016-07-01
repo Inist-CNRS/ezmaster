@@ -30,7 +30,9 @@
                 <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
                 <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
                 <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
-                <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.address ]]'>To access</a></li>
+
+                <li v-if="[[ publicDomain ]] === '127.0.0.1'" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='[[ item.target ]].[[ publicDomain ]]'>To access</a></li>
+                <li v-else class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>To access</a></li>
               </ul>
 
               <div class="modal" id="modal-delete-instance">
@@ -199,7 +201,7 @@
                       </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" v-if="[[ publicDomain ]] === '127.0.0.1'" display:'none'>
                       <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
                       <div class="col-md-9">
                         <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='[[  urlPreview ]]' v-model='urlPreview' disabled>

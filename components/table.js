@@ -7,6 +7,8 @@ var optsEditor = {}
   , idToConfig = null
   /*, heartbeats = require('heartbeats')*/;
 
+var core = require('../castor.config');
+
 // view for the instances table in HTML which id is instances-table.
 var vmTableInstances = new Vue({
   el: '#instances-table',
@@ -19,6 +21,9 @@ var vmTableInstances = new Vue({
     self.$http.get('/-/v1/instances').then(function (result) {
       self.$set('containers', result.data);
     }, console.error);
+
+
+    self.$set('publicDomain', core.publicDomain);
 
 
 // POLLING AJAX - OLD VERSION
@@ -45,6 +50,8 @@ var vmTableInstances = new Vue({
 
 
   },
+
+
 
 
 
