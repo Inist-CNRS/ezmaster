@@ -25,9 +25,8 @@ module.exports.getInstances = function (cb) {
 
       // read the content of manifests folders in order to
       // extract the instances technicalName and some metadata
-      //TODO
-      //var manifestPath = path.join(__dirname, '../manifests/*.json').toString();
-      glob('manifests/*.json', function (err, files) {
+      var manifestPath = path.join(__dirname, '../manifests/*.json').toString();
+      glob(manifestPath, function (err, files) {
 
         if (err) {
           debug('cannot read the folder, something goes wrong with glob', err);
@@ -46,7 +45,7 @@ module.exports.getInstances = function (cb) {
           // the manifest content to get other metadata
           // Notice: filename example 'manifests/myprj-mystudy-5.json'
           //         then technicalName will be 'myprj-mystudy-5'
-          var technicalName = file.split('/')[1].split('.')[0];
+          var technicalName = file.split('/')[3].split('.')[0];
           fs.readFile(file, 'utf8', function (err, manifestContent) {
             if (err) {
               debug('cannot read the file, something goes wrong with the file', err);
@@ -136,7 +135,7 @@ module.exports.getInstances = function (cb) {
   ], function (err, results) {
 
 
-    if (err) { return next(err); }
+    if (err) { return cb(err); }
     // retrives results from the two callbacks (manifests files and docker metadata)
     // and ignore docker containers not listed in the manifests ("unknown technicalName")
     // (example: ezmaster itself or ezmaster_db

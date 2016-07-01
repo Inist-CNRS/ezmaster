@@ -1,4 +1,4 @@
-/* global describe, it */
+/* global describe, it*/
 'use strict';
 
 // Travis run this file while building.
@@ -8,7 +8,7 @@ var execSync = require('child_process').execSync
   , docker = new Docker({ socketPath: '/var/run/docker.sock'});
 
 
-describe('Run fakeapp', function () {
+describe('Run fakeapp', function (cb) {
 
   var dockerInstances = [];
 
@@ -19,14 +19,12 @@ describe('Run fakeapp', function () {
             +'/datasets/fakeapp/:/opt/ezmaster/data/ '+
             '--name fakeapp fakeapp';
 
-  execSync(cmd, function (err, stdout, stderr) {
-    if (err) { return next(err); }
-  });
+  execSync(cmd);
 
 
   docker.listContainers({ all : true }, function (err, containers) {
 
-    if (err) { return next(err); }
+    if (err) { return cb(err); }
 
     containers.forEach(function (data) {
       dockerInstances.push(data.Names[0].split('/')[1]);
@@ -50,8 +48,6 @@ describe('Run fakeapp', function () {
 
     var cmd = 'docker rm -f fakeapp';
 
-    execSync(cmd, function (err, stdout, stderr) {
-      if (err) { return next(err); }
-    });
+    execSync(cmd);
   });
 });
