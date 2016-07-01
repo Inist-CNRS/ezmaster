@@ -373,6 +373,7 @@ img.github {
 
 #add_instance {
   margin-left: 2.5%;
+  background-color:#0277BD;
 }
 
 #menu {
@@ -465,14 +466,32 @@ img.github {
 }
 
 #inputLongName, #inputProject, #inputStudy {
-   background-color:#FFCDD2;
+   background-color:        #FFCDD2;
 }
 
 #urlPreview{
-    background-color:#CFD8DC;
+    background-color:       #CFD8DC;
 }
 
 #messages_box {
-  margin-left: 2.5%;
-  margin-top: 2%;
+  margin-left:              2.5%;
+  margin-top:               2%;
+}
+
+.infosMachine {
+    width:                  450px;
+    font-size:              10px;
+    background-color:       #0277BD;
+}
+
+#save {
+    background-color:#0277BD;
+}
+
+.titleFormAddInstance {
+    color:white;
+}
+
+#infosMachineTable {
+    text-align: center;
 }
