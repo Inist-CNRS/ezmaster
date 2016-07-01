@@ -48,6 +48,7 @@
     "rimraf": "^2.5.2",
     "socket.io": "^1.4.8",
     "sort-by": "^1.1.1",
+    "underscore": "^1.8.3",
     "utile": "^0.3.0",
     "vue": "^1.0.18",
     "vue-resource": "^0.7.0",
