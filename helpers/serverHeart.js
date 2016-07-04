@@ -32,7 +32,7 @@ module.exports.heartRefreshInstances = function (socket) {
             // If there are some differences between cacheInstances (reference)
             // and beatInstances (just get) :
             // Update cacheInstances with beatInstances.
-            // Broadcast to all users this new version to update
+            // Broadcast to all clients this new version to update
             // the 'containers' variable in template.html and refresh the table.js component.
             if (!(JSON.stringify(cacheInstances) === JSON.stringify(beatInstances))) {
 
@@ -83,9 +83,9 @@ module.exports.heartRefreshInfosMachine = function (socket) {
         socket.broadcast.emit('refreshInfosMachine', infosMachine);
 
         // When we come on the web page, while testing in local, machine info are not displayed, we have to refresh the page for that.
-        // In local, our pc is the server so the emit.broadcast send to OTHER users and our pc doesn't receive the message.
-        // On the vilodex, obviously no issue because the server broadcast to all users and our pc is not the server so it receives the message too.
-        // To solve this local testing problem we add a simple emit which sends a message to ALL users.
+        // In local, our pc is the server. The emit.broadcast sends a message to ALL clients except the sender, so our pc doesn't receive the message because it sends it.
+        // On the vilodex, obviously no issue because the server broadcast to all clients and our pc is not the sender so it receives the message.
+        // To solve this local testing problem we add a simple emit which sends a message to all clients.
         // As a consequence, this line can be commented when the code is deployed on the vilodex.
         socket.emit('refreshInfosMachine', infosMachine);
 
