@@ -12,8 +12,7 @@ var path = require('path')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
   , sortBy = require('sort-by')
-  , _ = require('lodash')
-  , underscore = require('underscore');
+  , _ = require('lodash');
 
 
 
@@ -46,7 +45,7 @@ module.exports.getInstances = function (cb) {
           // the manifest content to get other metadata
           // Notice: filename example 'manifests/myprj-mystudy-5.json'
           //         then technicalName will be 'myprj-mystudy-5'
-          var technicalName = underscore.last(file.split('.')[0].split('/'));
+          var technicalName = _.last(file.split('.')[0].split('/'));
           fs.readFile(file, 'utf8', function (err, manifestContent) {
             if (err) {
               debug('cannot read the file, something goes wrong with the file', err);
