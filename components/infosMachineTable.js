@@ -8,7 +8,7 @@ var vmTableInfosMachine = new Vue({
 
   ready : function () {   // When the table is ready...
 
-    /* // After tests I notice that it is useless to initialize infosMachine, a template.html variable, here.
+    /* // After tests I notice that it is useless to initialize here the infosMachine variable used in template.html.
         var self = this;
         var infosMachine = {};
 

@@ -47,7 +47,7 @@ module.exports.heartRefreshInstances = function (socket) {
 module.exports.heartRefreshInfosMachine = function (socket) {
 
     // THE HEARTBEATS HEART : This one refreshes machine information
-    //on infosMachine.js component.
+    // on infosMachine.js component.
 
     // Repeat every 1000 milliseconds = every 1 seconds.
     var heart2 = heartbeats.createHeart(1000);
@@ -58,27 +58,32 @@ module.exports.heartRefreshInfosMachine = function (socket) {
         // Instructions done on each heart beat.
 
         // Debug
-        //console.log("########## BEAT HEART 2 ! ##########");
+        // console.log("########## BEAT HEART 2 ! ##########");
 
         // Getting machine information we want to display.
             var infosMachine = {};
 
-            infosMachine.loadAverage = os.loadavg(); // Returns an array containing the 1, 5, and 15 minute load averages.
+            // Returns an array containing the 1, 5, and 15 minute load averages.
+            infosMachine.loadAverage = os.loadavg();
+
             // Trunc loadAverage values.
             var numberOfDecimalNumbers = 2;
             infosMachine.loadAverage[0] = infosMachine.loadAverage[0].toFixed(numberOfDecimalNumbers);
             infosMachine.loadAverage[1] = infosMachine.loadAverage[1].toFixed(numberOfDecimalNumbers);
             infosMachine.loadAverage[2] = infosMachine.loadAverage[2].toFixed(numberOfDecimalNumbers);
 
-            infosMachine.totalMemory = filesize(os.totalmem()); // os.totalmem() returns the total amount of system memory in bytes.
-            infosMachine.freeMemory = filesize(os.freemem()); // os.freemem() returns the amount of free system memory in bytes.
+            // os.totalmem() returns the total amount of system memory in bytes.
+            infosMachine.totalMemory = filesize(os.totalmem());
+            // os.freemem() returns the amount of free system memory in bytes.
+            infosMachine.freeMemory = filesize(os.freemem());
 
         // Broadcast to all users the machine information. They are caught and displayed on template.html inside infosMachineTable.js component.
         socket.broadcast.emit('refreshInfosMachine', infosMachine);
 
         // When we come on the page, while testing in local, machine info are not displayed, we have to refresh for that.
-        // To solve this problem we do a simple emit because in local, our pc is the server so the emit.broadcast send to OTHER users.
-        // On the vilodex, obviously no issue because the server broadcast to all users.
+        // In local, our pc is the server so the emit.broadcast send to OTHER users and our pc doesn't receive the message.
+        // On the vilodex, obviously no issue because the server broadcast to all users and our pc is not the server so it receives the message too.
+        // To solve this local testing problem we add a simple emit which sends a message to ALL users.
         // As a consequence, this line can be commented when the code is deployed on the vilodex.
         socket.emit('refreshInfosMachine', infosMachine);
 
