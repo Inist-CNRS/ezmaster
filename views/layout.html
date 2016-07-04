@@ -68,18 +68,14 @@
                 <table id="infosMachineTable" class="table table-condensed">
                   <thead>
                     <tr>
-                      <th>Load Average 1'</th>
-                      <th>Load Average 5'</th>
-                      <th>Load Average 15'</th>
+                      <th>Load Averages</th>
                       <th>Total Memory</th>
                       <th>Free Memory</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>[[ (infosMachine.loadAverage)[0] ]]</td>
-                      <td>[[ (infosMachine.loadAverage)[1] ]]</td>
-                      <td>[[ (infosMachine.loadAverage)[2] ]]</td>
+                      <td>[[ (infosMachine.loadAverage)[0] ]] - [[ (infosMachine.loadAverage)[1] ]] - [[ (infosMachine.loadAverage)[2] ]]</td>
                       <td>[[ infosMachine.totalMemory ]]</td>
                       <td>[[ infosMachine.freeMemory ]]</td>
                     </tr>

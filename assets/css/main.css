@@ -479,7 +479,7 @@ img.github {
 }
 
 .infosMachine {
-    width:                  450px;
+    width:                  300px;
     font-size:              10px;
     background-color:       #0277BD;
 }
@@ -492,6 +492,7 @@ img.github {
     color:white;
 }
 
-#infosMachineTable {
+#infosMachineTable th, td {
     text-align: center;
+    vertical-align: middle;
 }
