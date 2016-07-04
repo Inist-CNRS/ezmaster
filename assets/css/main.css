@@ -492,7 +492,6 @@ img.github {
     color:white;
 }
 
-#infosMachineTable th, td {
+#infosMachineTable th, #infosMachineTable td {
     text-align: center;
-    vertical-align: middle;
 }
