@@ -55,11 +55,12 @@ make run-debug
 # ezmaster is listening at http://127.0.0.1:35267/
 ```
 
-## Modficiation for your Dockerfile
+## How to Ezmasterize an application.
+# Dockerfile Modifications :
 ```shell
-FROM ....
+FROM ubuntu or node or ...
 
-#3000 is the default port
+# 3000 is the default port
 EXPOSE 3000
 
 RUN sudo mkdir -p /opt/ezmaster/config/
@@ -72,7 +73,7 @@ Example: (The EZVis Dockerfile)
 FROM ubuntu:14.04
 
 # The next line is useful only if you are behind a proxy
-#ENV http_proxy=http://proxyout.domain.com:8080 https_proxy=http://proxyout.domain.com:8080
+# ENV http_proxy=http://proxyout.domain.com:8080 https_proxy=http://proxyout.domain.com:8080
 
 RUN apt-get update -y
 RUN apt-get install nodejs -y
