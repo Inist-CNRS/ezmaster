@@ -30,7 +30,8 @@ module.exports = function(options, core) {
 
   return function(req, res, next) {
 
-    instances.getInstances(true, function (err, instances) {              // ########## ICI ##########
+    instances.getInstances(false, function (err, instances) {              // ########## ICI ##########
+      console.log("########## PAS RELIST ##########");
       var host         = req.headers['host']
         , reqServer    = req.headers['x-forwarded-server']
         , reqHost      = req.headers['x-forwarded-host']
