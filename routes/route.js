@@ -36,6 +36,8 @@ module.exports = function (router, core) {
 
     instances.getInstances(instancesChangesBool, function (err, data) {
 
+      if (err) { return next(err); }
+
       debug(data);
 
       return res.status(200).send(data);
@@ -61,7 +63,9 @@ module.exports = function (router, core) {
 
           instancesChangesBool = true;
           instances.getInstances(instancesChangesBool, function (err, data) {
-            console.log("########## getInstances() START ##########");
+            if (err) { return next(err); }
+
+            console.log('########## getInstances() START ##########');
           });
           instancesChangesBool = false;
 
@@ -86,7 +90,9 @@ module.exports = function (router, core) {
 
           instancesChangesBool = true;
           instances.getInstances(instancesChangesBool, function (err, data) {
-            console.log("########## getInstances() STOP ##########");
+            if (err) { return next(err); }
+
+            console.log('########## getInstances() STOP ##########');
           });
           instancesChangesBool = false;
 
@@ -126,11 +132,13 @@ module.exports = function (router, core) {
 
 
 
-          instancesChangesBool = true;
-          instances.getInstances(instancesChangesBool, function (err, data) {
-            console.log("########## getInstances() UPDATE CONFIG ##########");
-          });
-          instancesChangesBool = false;
+        instancesChangesBool = true;
+        instances.getInstances(instancesChangesBool, function (err, data) {
+          if (err) { return next(err); }
+
+          console.log('########## getInstances() UPDATE CONFIG ##########');
+        });
+        instancesChangesBool = false;
 
 
 

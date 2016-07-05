@@ -20,12 +20,14 @@ before(function() {
   execSync(cmd);
 
   //Docker command for creating the container
-  var cmd = 'docker run -d -p 60000:3000 ' +
+  cmd = 'docker run -d -p 60000:3000 ' +
           '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
           '--net=ezmaster_default --link ezmaster_db '+
           '-v '+process.env.EZMASTER_PATH+'/test'
           +'/datasets/fakeapp/:/opt/ezmaster/data/ '+
           '--name fakeapp fakeapp';
+
+  execSync(cmd);
 
   //Creating the manifest and writting the longName inside
   var newlongName = {
@@ -37,8 +39,6 @@ before(function() {
     , newlongName, function (err) {
       if (err) { return new Error(err); }
     });
-
-  execSync(cmd);
 
 
 });
@@ -56,8 +56,6 @@ describe('Test fakeapp', function (cb) {
       if (!res.body.fakeapp) { return new Error('fakeapp not found!'); }
     })
     .end(done);
-
-
 
   });
 

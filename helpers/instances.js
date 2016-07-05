@@ -12,7 +12,7 @@ var path = require('path')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
   , sortBy = require('sort-by')
-  , _ = require('lodash')
+  , _ = require('lodash');
 
 
 
