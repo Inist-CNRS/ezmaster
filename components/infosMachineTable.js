@@ -29,7 +29,7 @@ var vmTableInfosMachine = new Vue({
       };
 
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        refresh();
+
       }, console.error);
     }
 
