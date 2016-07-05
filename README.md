@@ -55,7 +55,7 @@ make run-debug
 # ezmaster is listening at http://127.0.0.1:35267/
 ```
 
-## How to Ezmasterize an application.
+## Ezmasterizing an application
 ### Dockerfile Modifications :
 ```shell
 FROM ubuntu or node or ...
