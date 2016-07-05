@@ -1,3 +1,2 @@
-FROM scratch
-COPY hello /
-CMD ["/hello"]
+FROM node:4.4.0
+RUN echo "Hello docker!"
