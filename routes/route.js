@@ -235,7 +235,7 @@ module.exports = function (router, core) {
 
           instancesChangesBool = true;
           instances.getInstances(instancesChangesBool, function (err, data) {
-            console.log("########## getInstances() DELETE ##########");
+            console.log('########## getInstances() DELETE ##########');
           });
           instancesChangesBool = false;
 

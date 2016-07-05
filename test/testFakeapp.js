@@ -1,4 +1,4 @@
-/* global describe, it*/
+/* global describe, it, before, after*/
 'use strict';
 
 // Travis run this file while building.
