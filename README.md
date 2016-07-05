@@ -56,7 +56,7 @@ make run-debug
 ```
 
 ## How to Ezmasterize an application.
-# Dockerfile Modifications :
+### Dockerfile Modifications :
 ```shell
 FROM ubuntu or node or ...
 
