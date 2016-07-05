@@ -30,8 +30,11 @@ module.exports = function(options, core) {
 
   return function(req, res, next) {
 
-    // false for instancesChangesBool because when this code is executed the cache is already present in getInstances().
+    // false for instancesChangesBool because when this code is executed
+    //the cache is already present in getInstances().
     instances.getInstances(false, function (err, instances) {
+      if(err) { return new Error(err); }
+
       var host         = req.headers['host']
         , reqServer    = req.headers['x-forwarded-server']
         , reqHost      = req.headers['x-forwarded-host']

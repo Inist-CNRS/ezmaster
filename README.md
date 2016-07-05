@@ -18,15 +18,15 @@ export EZMASTER_PUBLIC_IP="Your IP"
 
 
 # Environment variable the ports ezmaster is allowed to use for instances.
-# Default is "49152-60000". 
+# Default is "49152-60000".
 # Notice : 49152 is recommended as the minimal port.
 # 	See http://www.tcpipguide.com/free/t_TCPIPApplicationAssignmentsandServerPortNumberRang-2.htm
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
-	
+
 # Environment variable specifying the instances public domain.
-# 
+#
 # Default is empty and it means the reverse proxy feature will not be enabled
-# 
+#
 # On the following example, if we have a "abc-def-4" (tech name) instance, then
 # it will be joinable at this URL: http://abc-def-4.lod-test.istex.fr
 # Tech. name is the prefix used and concatenated to the public domain
@@ -54,6 +54,43 @@ make install
 make run-debug
 # ezmaster is listening at http://127.0.0.1:35267/
 ```
+
+## Modficiation for your Dockerfile
+```shell
+FROM ....
+
+#3000 is the default port
+EXPOSE 3000
+
+RUN sudo mkdir -p /opt/ezmaster/config/
+RUN sudo ln -s ###path to your config file### /opt/ezmaster/config/config.json
+RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
+```
+
+Example: (The EZVis Dockerfile)
+```shell
+FROM ubuntu:14.04
+
+# The next line is useful only if you are behind a proxy
+#ENV http_proxy=http://proxyout.domain.com:8080 https_proxy=http://proxyout.domain.com:8080
+
+RUN apt-get update -y
+RUN apt-get install nodejs -y
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN apt-get install npm -y
+RUN npm install --production ezvis -g
+
+ADD startup.sh /
+
+EXPOSE 3000
+
+CMD bash /startup.sh
+
+RUN sudo mkdir -p /opt/ezmaster/config/
+RUN sudo ln -s /root/data.json /opt/ezmaster/config/config.json
+RUN sudo ln -s /root/data /opt/ezmaster/data
+```
+
 
 ## Diagrams
 

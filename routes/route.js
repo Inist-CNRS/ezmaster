@@ -104,7 +104,8 @@ module.exports = function (router, core) {
             }
           });
 
-        // When a new config is given to an instance, we call getInstances() to update the instances list cache.
+        // When a new config is given to an instance
+        //we call getInstances() to update the instances list cache.
         // instancesChangesBool set to true because we have to rebuild the list in getInstances().
         instancesChangesBool = true;
         instances.getInstances(instancesChangesBool, function (err, data) {
