@@ -1,4 +1,4 @@
-
+/*global Vue*/
 'use strict';
 
 // View for the machine infos table in HTML which id is infosMachineTable.
