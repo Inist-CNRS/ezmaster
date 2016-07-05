@@ -30,8 +30,8 @@ module.exports = function(options, core) {
 
   return function(req, res, next) {
 
-    instances.getInstances(false, function (err, instances) {              // ########## ICI ##########
-      console.log("########## PAS RELIST ##########");
+    // false for instancesChangesBool because when this code is executed the cache is already present in getInstances().
+    instances.getInstances(false, function (err, instances) {
       var host         = req.headers['host']
         , reqServer    = req.headers['x-forwarded-server']
         , reqHost      = req.headers['x-forwarded-host']

@@ -24,7 +24,8 @@ module.exports.heartRefreshInstances = function (socket) {
 
         // Debug
         // console.log("########## BEAT HEART 1 ! ##########");
-        // ########## ICI ##########
+
+        // false for instancesChangesBool because here, we just need to get the getInstances() cache.
         instances.getInstances(false, function(err, beatInstances) {
 
             if (err) { return new Error(err); }

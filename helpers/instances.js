@@ -15,13 +15,21 @@ var path = require('path')
   , _ = require('lodash');
 
 
-
+// Cache explanations :
+  // We store the instances cache here.
+  // We create a bool in route.js which take true if an action changing an instance is performed (start, stop, delete, update config).
+  // Still in route.js, when such an action occurs we call getInstances() with the bool as one of its parameters.
+  // getInstance() checks the bool :
+    // If true : get the instances list, updates the cache and returns the list.
+    // If false : returns the cache.
 var cacheInstances = {};
 
 
-
+// instancesChangesBool : the bool to check if somme modifications occured on one or multiple instances.
+// cb : callback function.
 module.exports.getInstances = function (instancesChangesBool, cb) {
 
+  // If some modifications occured on one or multiple instances, we have to get the list and update the cache.
   if (instancesChangesBool) {
 
     util.async.parallel([
@@ -155,10 +163,14 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
         });
       });
 
+      // cacheInstances update with the just get instances list.
       cacheInstances = ezmasterInstances;
+
+      // return the just get list.
       return cb(null, ezmasterInstances);
     });
   }
+  // If no modifications occured on one or multiple instances, we just have to return the cache.
   else {
 
     return cb(null, cacheInstances);

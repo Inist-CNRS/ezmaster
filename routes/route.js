@@ -18,8 +18,8 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances');
 
+// The bool to check if some modifications occured on one or multiple instances.
 var instancesChangesBool = true;
-
 
 jsonfile.spaces = 2;
 
@@ -56,24 +56,14 @@ module.exports = function (router, core) {
         container.start(function (err, datas, container) {
           if (err) { return next(err); }
 
-
-
-
-
-
+          // When an instance is started, we call getInstances() to update the instances list cache.
+          // instancesChangesBool set to true because we have to rebuild the list in getInstances().
           instancesChangesBool = true;
           instances.getInstances(instancesChangesBool, function (err, data) {
             if (err) { return next(err); }
-
-            console.log('########## getInstances() START ##########');
           });
+          // instancesChangesBool come back to false because the cache is up to date.
           instancesChangesBool = false;
-
-
-
-
-
-
 
           res.status(200).send('Starting done');
         });
@@ -82,26 +72,14 @@ module.exports = function (router, core) {
         container.stop(function (err, datas, container) {
           if (err) { return next(err); }
 
-
-
-
-
-
-
+          // When an instance is stopped, we call getInstances() to update the instances list cache.
+          // instancesChangesBool set to true because we have to rebuild the list in getInstances().
           instancesChangesBool = true;
           instances.getInstances(instancesChangesBool, function (err, data) {
             if (err) { return next(err); }
-
-            console.log('########## getInstances() STOP ##########');
           });
+          // instancesChangesBool come back to false because the cache is up to date.
           instancesChangesBool = false;
-
-
-
-
-
-
-
 
           res.status(200).send('Stoping done');
         });
@@ -126,24 +104,14 @@ module.exports = function (router, core) {
             }
           });
 
-
-
-
-
-
-
+        // When a new config is given to an instance, we call getInstances() to update the instances list cache.
+        // instancesChangesBool set to true because we have to rebuild the list in getInstances().
         instancesChangesBool = true;
         instances.getInstances(instancesChangesBool, function (err, data) {
           if (err) { return next(err); }
-
-          console.log('########## getInstances() UPDATE CONFIG ##########');
         });
+        // instancesChangesBool come back to false because the cache is up to date.
         instancesChangesBool = false;
-
-
-
-
-
 
       }
     });
@@ -226,26 +194,14 @@ module.exports = function (router, core) {
       });
     });
 
-
-
-
-
-
-
-
-          instancesChangesBool = true;
-          instances.getInstances(instancesChangesBool, function (err, data) {
-            console.log('########## getInstances() DELETE ##########');
-          });
-          instancesChangesBool = false;
-
-
-
-
-
-
-
-
+    // When an instance is deleted, we call getInstances() to update the instances list cache.
+    // instancesChangesBool set to true because we have to rebuild the list in getInstances().
+    instancesChangesBool = true;
+    instances.getInstances(instancesChangesBool, function (err, data) {
+      if (err) { return next(err); }
+    });
+    // instancesChangesBool come back to false because the cache is up to date.
+    instancesChangesBool = false;
 
   });
 
