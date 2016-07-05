@@ -30,7 +30,7 @@ module.exports = function(options, core) {
 
   return function(req, res, next) {
 
-    instances.getInstances(function (err, instances) {
+    instances.getInstances(true, function (err, instances) {              // ########## ICI ##########
       var host         = req.headers['host']
         , reqServer    = req.headers['x-forwarded-server']
         , reqHost      = req.headers['x-forwarded-host']

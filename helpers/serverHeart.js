@@ -25,7 +25,7 @@ module.exports.heartRefreshInstances = function (socket) {
         // Debug
         // console.log("########## BEAT HEART 1 ! ##########");
 
-        instances.getInstances(function(err, beatInstances) {
+        instances.getInstances(false, function(err, beatInstances) {                      // ########## ICI ##########
 
             if (err) { return next(err); }
 

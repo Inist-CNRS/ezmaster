@@ -18,6 +18,7 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances');
 
+var instancesChangesBool = true;
 
 
 jsonfile.spaces = 2;
@@ -33,7 +34,7 @@ module.exports = function (router, core) {
 
   router.route('/-/v1/instances').get(function (req, res, next) {
 
-    instances.getInstances(function (err, data) {
+    instances.getInstances(instancesChangesBool, function (err, data) {
 
       debug(data);
 
@@ -52,12 +53,50 @@ module.exports = function (router, core) {
       if (req.body.action == 'start' && data.State.Running == false) {
         container.start(function (err, datas, container) {
           if (err) { return next(err); }
+
+
+
+
+
+
+          instancesChangesBool = true;
+          instances.getInstances(instancesChangesBool, function (err, data) {
+            console.log("########## getInstances() START ##########");
+          });
+          instancesChangesBool = false;
+
+
+
+
+
+
+
           res.status(200).send('Starting done');
         });
       }
       else if (req.body.action == 'stop' && data.State.Running == true) {
         container.stop(function (err, datas, container) {
           if (err) { return next(err); }
+
+
+
+
+
+
+
+          instancesChangesBool = true;
+          instances.getInstances(instancesChangesBool, function (err, data) {
+            console.log("########## getInstances() STOP ##########");
+          });
+          instancesChangesBool = false;
+
+
+
+
+
+
+
+
           res.status(200).send('Stoping done');
         });
       }
@@ -80,6 +119,24 @@ module.exports = function (router, core) {
               res.status(200).send('Update done');
             }
           });
+
+
+
+
+
+
+
+          instancesChangesBool = true;
+          instances.getInstances(instancesChangesBool, function (err, data) {
+            console.log("########## getInstances() UPDATE CONFIG ##########");
+          });
+          instancesChangesBool = false;
+
+
+
+
+
+
       }
     });
   });
@@ -160,6 +217,28 @@ module.exports = function (router, core) {
         });
       });
     });
+
+
+
+
+
+
+
+
+          instancesChangesBool = true;
+          instances.getInstances(instancesChangesBool, function (err, data) {
+            console.log("########## getInstances() DELETE ##########");
+          });
+          instancesChangesBool = false;
+
+
+
+
+
+
+
+
+
   });
 
   router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
