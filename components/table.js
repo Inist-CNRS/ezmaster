@@ -51,8 +51,8 @@ var vmTableInstances = new Vue({
   */
 
 
-  },
 
+  },
 
 
   methods: {
