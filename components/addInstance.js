@@ -1,6 +1,12 @@
 /* global Vue, global document, global location*/
 'use strict';
 
+var self = this;
+var publicDomain;
+self.$http.get('/-/v3/config.js').then(function (result) {
+  publicDomain = result.data.publicDomain;
+}, console.error);
+
 var vm = new Vue({
   el: '#addInstance',
 
@@ -8,12 +14,10 @@ var vm = new Vue({
 
 
     var self = this;
-    var publicDomain;
 
 
     self.$http.get('/-/v3/config.js').then(function (result) {
       self.$set('publicDomain', result.data.publicDomain);
-      publicDomain = result.data.publicDomain;
     }, console.error);
   },
 
@@ -119,14 +123,6 @@ vm.$watch('project', function(data) {
 
 
 vm.$watch('project', function(data) {
-
-  var self = this;
-  var publicDomain;
-
-
-    self.$http.get('/-/v3/config.js').then(function (result) {
-      publicDomain = result.data.publicDomain;
-    }, console.error);
 
 
   this.project = data;
