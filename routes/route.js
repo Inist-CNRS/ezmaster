@@ -62,7 +62,7 @@ module.exports = function (router, core) {
           instances.getInstances(instancesChangesBool, function (err, data) {
             if (err) { return next(err); }
           });
-          // instancesChangesBool come back to false because the cache is up to date.
+          // instancesChangesBool comes back to false because the cache is up to date.
           instancesChangesBool = false;
 
           res.status(200).send('Starting done');
@@ -78,7 +78,7 @@ module.exports = function (router, core) {
           instances.getInstances(instancesChangesBool, function (err, data) {
             if (err) { return next(err); }
           });
-          // instancesChangesBool come back to false because the cache is up to date.
+          // instancesChangesBool comes back to false because the cache is up to date.
           instancesChangesBool = false;
 
           res.status(200).send('Stoping done');
@@ -111,7 +111,7 @@ module.exports = function (router, core) {
         instances.getInstances(instancesChangesBool, function (err, data) {
           if (err) { return next(err); }
         });
-        // instancesChangesBool come back to false because the cache is up to date.
+        // instancesChangesBool comes back to false because the cache is up to date.
         instancesChangesBool = false;
 
       }
@@ -201,7 +201,7 @@ module.exports = function (router, core) {
     instances.getInstances(instancesChangesBool, function (err, data) {
       if (err) { return next(err); }
     });
-    // instancesChangesBool come back to false because the cache is up to date.
+    // instancesChangesBool comes back to false because the cache is up to date.
     instancesChangesBool = false;
 
   });
@@ -305,6 +305,15 @@ module.exports = function (router, core) {
 
                       exec(cmd, function (err, stdout, stderr) {
                         if (err) { return next(err); }
+
+                        // When an instance is created, we call getInstances() to update the instances list cache.
+                        // instancesChangesBool set to true because we have to rebuild the list in getInstances().
+                        instancesChangesBool = true;
+                        instances.getInstances(instancesChangesBool, function (err, data) {
+                          if (err) { return next(err); }
+                        });
+                        // instancesChangesBool comes back to false because the cache is up to date.
+                        instancesChangesBool = false;
 
                         return res.status(200).send('Instance created');
                       });
