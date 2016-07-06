@@ -57,7 +57,6 @@
     "chai": "^3.5.0",
     "eslint": "^2.13.1",
     "istanbul": "^0.4.4",
-    "jshint": "^2.9.2",
     "mocha": "^2.5.3",
     "nodemon": "^1.9.2",
     "supertest": "^1.2.0"
