@@ -31,7 +31,7 @@
                 <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
                 <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
                 <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>To access </a></li>
-                <li v-if="[[ publicDomain ]] != '127.0.0.1'" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='[[ item.target ]].[[ publicDomain ]]'>Access Public</a></li>
+                <li v-if="[[ publicDomain ]] != '127.0.0.1'" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='http://[[ item.target ]].[[ publicDomain ]]'>Access Public</a></li>
 
               </ul>
 
@@ -204,7 +204,7 @@
                     <div class="form-group" v-if="[[ publicDomain ]] != '127.0.0.1'">
                       <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
                       <div class="col-md-9">
-                        <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='[[  urlPreview ]]' v-model='urlPreview' disabled>
+                        <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='[[  urlPreview ]].[[ publicDomain ]]' v-model='urlPreview' disabled>
                       </div>
                     </div>
                   </div>
