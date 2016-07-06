@@ -44,6 +44,9 @@ module.exports = function (router, core) {
 
     });
 
+    // instancesChangesBool set to false because the cache is up to date.
+    instancesChangesBool = false;
+
   });
 
 
