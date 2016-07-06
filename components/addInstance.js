@@ -8,10 +8,12 @@ var vm = new Vue({
 
 
     var self = this;
+    var publicDomain;
 
 
     self.$http.get('/-/v3/config.js').then(function (result) {
       self.$set('publicDomain', result.data.publicDomain);
+      publicDomain = result.data.publicDomain;
     }, console.error);
   },
 
@@ -122,7 +124,7 @@ vm.$watch('project', function(data) {
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
-  this.urlPreview = 'http://'+this.technicalName;
+  this.urlPreview = 'http://'+this.technicalName.publicDomain;
   verif(this.technicalName);
 });
 
@@ -132,7 +134,7 @@ vm.$watch('study', function (data) {
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
-  this.urlPreview = 'http://'+this.technicalName;
+  this.urlPreview = 'http://'+this.technicalName.publicDomain;
   verif(this.technicalName);
 });
 
@@ -142,7 +144,7 @@ vm.$watch('version', function (data) {
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
-  this.urlPreview = 'http://'+this.technicalName;
+  this.urlPreview = 'http://'+this.technicalName.publicDomain;
   verif(this.technicalName);
 });
 
