@@ -30,7 +30,6 @@ var vm = new Vue({
     },
 
     addInstance : function (event) {
-        console.error("AAAAAAAAAAAAAAAAAAAAAAAAAAAA"+publicDomain);
       this.longName = document.getElementById('inputLongName').value;
       this.project = document.getElementById('inputProject').value;
       this.study = document.getElementById('inputStudy').value;
