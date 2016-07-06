@@ -124,7 +124,7 @@ vm.$watch('project', function(data) {
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
-  this.urlPreview = 'http://'+this.technicalName.publicDomain;
+  this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   verif(this.technicalName);
 });
 
@@ -134,7 +134,7 @@ vm.$watch('study', function (data) {
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
-  this.urlPreview = 'http://'+this.technicalName.publicDomain;
+  this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   verif(this.technicalName);
 });
 
@@ -144,7 +144,7 @@ vm.$watch('version', function (data) {
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
-  this.urlPreview = 'http://'+this.technicalName.publicDomain;
+  this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   verif(this.technicalName);
 });
 
