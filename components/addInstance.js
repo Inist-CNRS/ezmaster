@@ -127,7 +127,6 @@ vm.$watch('project', function(data) {
     self.$http.get('/-/v3/config.js').then(function (result) {
       publicDomain = result.data.publicDomain;
     }, console.error);
-  },
 
 
   this.project = data;
