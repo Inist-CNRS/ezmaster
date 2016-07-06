@@ -36,8 +36,6 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
   //we have to get the list and update the cache.
   if (instancesChangesBool) {
 
-    console.log("########## TRUE ##########");
-
     util.async.parallel([
 
       // retrieve all instances manifests from the files
@@ -179,7 +177,6 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
   // If no modifications occured on one or multiple instances, we just have to return the cache.
   else {
 
-    console.log("########## FALSE ##########");
     return cb(null, cacheInstances);
 
   }
