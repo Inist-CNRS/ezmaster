@@ -2,7 +2,6 @@
 // This file is the app starting point.
 // It launches the server contained in the 'server' variable.
 
-/*jshint node:true, laxcomma:true*/
 /*eslint global-require:"warn"*/
 
 'use strict';

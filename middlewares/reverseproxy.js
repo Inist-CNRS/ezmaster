@@ -1,4 +1,4 @@
-/*jshint node:true, laxcomma:true */
+
 'use strict';
 
 /**
