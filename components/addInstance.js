@@ -119,6 +119,17 @@ vm.$watch('project', function(data) {
 
 
 vm.$watch('project', function(data) {
+
+  var self = this;
+  var publicDomain;
+
+
+    self.$http.get('/-/v3/config.js').then(function (result) {
+      publicDomain = result.data.publicDomain;
+    }, console.error);
+  },
+
+
   this.project = data;
 
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
