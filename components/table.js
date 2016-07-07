@@ -1,6 +1,9 @@
 /* global Vue, global document, global JSONEditor*/
 'use strict';
 
+// Socket connection.
+var socket = io();
+
 var optsEditor = {}
   , editor = new JSONEditor()
   , idToDelete = null
@@ -168,3 +171,10 @@ function refresh () {
     vmTableInstances.$set('containers', result.data);
   }, console.error);
 }
+
+
+// Listen incoming messages typed as 'refreshInstances' from the server.
+socket.on('refreshInstances', function(beatInstances) {
+  // Update variable 'containers' which will automatically refresh the instances-table component.
+  vmTableInstances.$set('containers', beatInstances);
+})

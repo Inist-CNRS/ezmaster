@@ -1,6 +1,9 @@
 /*global Vue*/
 'use strict';
 
+// Socket connection.
+var socket = io();
+
 // View for the machine infos table in HTML which id is infosMachineTable.
 var vmTableInfosMachine = new Vue({
 
@@ -44,5 +47,13 @@ var vmTableInfosMachine = new Vue({
 
 
 });
+
+
+// Listen incoming messages typed as 'refreshInfosMachine' from the server.
+socket.on('refreshInfosMachine', function(infosMachine) {
+  // Update variable 'infosMachine' which will automatically refresh the infosMachineTable component.
+  vmTableInfosMachine.$set('infosMachine', infosMachine);
+})
+
 
 module.exports = vmTableInfosMachine;

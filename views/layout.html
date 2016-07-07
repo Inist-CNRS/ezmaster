@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,7 +41,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
       <![endif]-->
 
-      {% block styles %}{% endblock %}
+    {% block styles %}{% endblock %}
 
   </head>
 
@@ -89,27 +90,37 @@
     </nav>
 
 
-
     {% block body %}{% endblock %}
 
+    <!--
+      Get the socket.io.js script.
+      It is automatically provided by the nodeJS server thanks to the socket.io module.
+      It allows to manage communication with the server from client side.
+    -->
+    <script src="../socket.io/socket.io.js"></script>
 
 
     <!-- Bootstrap core JavaScript
-      ================================================== -->
-      <!-- Placed at the end of the document so the pages load faster -->
-      <script src="/libs.js"></script>
-      <script src="/libs/jquery/dist/jquery.min.js"></script>
-      <script src="/libs/jquery-migrate/dist/jquery-migrate.min.js"></script>
-      <script src="/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-      <script src="/libs/bootstrap-material-design/dist/js/ripples.min.js"></script>
-      <script src="/libs/bootstrap-material-design/dist/js/material.min.js"></script>
-      <script>
-$(document).ready(function() {
-  // This command is used to initialize some elements and make them work properly
-  $.material.init();
-});
-      </script>
-      <script src="/assets/js/main.js"></script>
-     {% block scripts %}{% endblock %}
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/libs.js"></script>
+    <script src="/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/libs/jquery-migrate/dist/jquery-migrate.min.js"></script>
+    <script src="/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/libs/bootstrap-material-design/dist/js/ripples.min.js"></script>
+    <script src="/libs/bootstrap-material-design/dist/js/material.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // This command is used to initialize some elements and make them work properly
+        $.material.init();
+      });
+    </script>
+    <script src="/assets/js/main.js"></script>
+
+
+
+    {% block scripts %}{% endblock %}
+
   </body>
+
 </html>

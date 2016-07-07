@@ -232,6 +232,14 @@
     </div>
 
 
+    <!-- MOVED TO layout.html. -->
+      <!--
+        Get the socket.io.js script.
+        It is automatically provided by the nodeJS server thanks to the socket.io module.
+        It allows to manage communication with the server from client side.
+      -->
+      <!-- <script src="../socket.io/socket.io.js"></script> -->
+
 
 <!-- End of extension of bloc body from layout.html. -->
 {% endblock %}
@@ -240,40 +248,37 @@
 <!-- Extension of bloc scripts from layout.html. -->
 {% block scripts %}
 
-  <!-- SOCKET.IO -->
+  <!-- ANCIENT SOCKET CODE MOVED INTO RELATED COMPONENTS : table.js and infosMachineTable.js. -->
+  <!-- STILL REACTIVABLE TO PERFORM SOME TESTS. -->
 
-    <!-- Div used for socket tests. -->
-    <!-- <div id="messages_box"></div> -->
+      <!-- Div used for socket tests. -->
+      <!-- <div id="messages_box"></div> -->
 
-    <!-- JQuery used for socket tests. -->
-    <!-- <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
+      <!-- JQuery used for socket tests. -->
+      <!-- <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script> -->
+
 
     <!--
-      Get the socket.io.js script.
-      It is automatically provided by the nodeJS server thanks to the socket.io module.
-      It allows to manage communication with the server from client side.
+      <script>
+        // Socket connection.
+        // To test on vilodex, use : var socket = io.connect('http://192.168.31.146:35267');
+        // To test on local, use : var socket = io.connect('http://127.0.0.1:35267');
+        // It is also possible to specify nothing, in that case the server determines automatically the right address to use.
+        var socket = io.connect();
+        // Listen incoming messages typed as 'refreshInstances' from the server.
+        socket.on('refreshInstances', function(beatInstances) {
+          // Update variable 'containers' which will automatically refresh the instances-table component.
+          vmTableInstances.$set('containers', beatInstances);
+          // Debug message.
+          // $('#messages_box').html('<div class="well well-sm">CHANGE DETECTED</div>' + $('#messages_box').html());
+        })
+        // Listen incoming messages typed as 'refreshInfosMachine' from the server.
+        socket.on('refreshInfosMachine', function(infosMachine) {
+          // Update variable 'infosMachine' which will automatically refresh the infosMachineTable component.
+          vmTableInfosMachine.$set('infosMachine', infosMachine);
+        })
+      </script>
     -->
-    <script src="../socket.io/socket.io.js"></script>
-
-    <script>
-      // Socket connection.
-      // To test on vilodex, use : var socket = io.connect('http://192.168.31.146:35267');
-      // To test on local, use : var socket = io.connect('http://127.0.0.1:35267');
-      // It is also possible to specify nothing, in that case the server determines automatically the right address to use.
-      var socket = io.connect();
-      // Listen incoming messages typed as 'refreshInstances' from the server.
-      socket.on('refreshInstances', function(beatInstances) {
-        // Update variable 'containers' which will automatically refresh the instances-table component.
-        vmTableInstances.$set('containers', beatInstances);
-        // Debug message.
-        // $('#messages_box').html('<div class="well well-sm">CHANGE DETECTED</div>' + $('#messages_box').html());
-      })
-      // Listen incoming messages typed as 'refreshInfosMachine' from the server.
-      socket.on('refreshInfosMachine', function(infosMachine) {
-        // Update variable 'infosMachine' which will automatically refresh the infosMachineTable component.
-        vmTableInfosMachine.$set('infosMachine', infosMachine);
-      })
-    </script>
 
 
 <!-- End of extension of bloc scripts from layout.html. -->
