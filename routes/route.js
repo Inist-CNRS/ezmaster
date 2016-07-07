@@ -96,18 +96,6 @@ module.exports = function (router, core) {
 
             if (err) { return next(err); }
 
-
-            // When a new config is given to an instance
-            //we call getInstances() to update the instances list cache.
-            // instancesChangesBool set to true because we have to rebuild the list in getInstances().
-            instancesChangesBool = true;
-            instances.getInstances(instancesChangesBool, function (err, data) {
-              if (err) { return next(err); }
-            });
-            // instancesChangesBool comes back to false because the cache is up to date.
-            instancesChangesBool = false;
-
-
             if (data.State.Running == true) {
               container.restart(function (err) {
                 if (err) { return next(err); }
@@ -118,6 +106,17 @@ module.exports = function (router, core) {
               res.status(200).send('Update done');
             }
           });
+
+        // When a new config is given to an instance
+        //we call getInstances() to update the instances list cache.
+        // instancesChangesBool set to true because we have to rebuild the list in getInstances().
+        instancesChangesBool = true;
+        instances.getInstances(instancesChangesBool, function (err, data) {
+          if (err) { return next(err); }
+        });
+        // instancesChangesBool comes back to false because the cache is up to date.
+        instancesChangesBool = false;
+
       }
     });
   });
@@ -194,21 +193,19 @@ module.exports = function (router, core) {
         rimraf(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err) {
           if (err) { return next(err); }
 
-          // When an instance is deleted, we call getInstances() to update the instances list cache.
-          // instancesChangesBool set to true because we have to rebuild the list in getInstances().
-          instancesChangesBool = true;
-          instances.getInstances(instancesChangesBool, function (err, data) {
-            if (err) { return next(err); }
-          });
-          // instancesChangesBool comes back to false because the cache is up to date.
-          instancesChangesBool = false;
-
           res.status(200).send('Removing done');
         });
       });
     });
 
-
+    // When an instance is deleted, we call getInstances() to update the instances list cache.
+    // instancesChangesBool set to true because we have to rebuild the list in getInstances().
+    instancesChangesBool = true;
+    instances.getInstances(instancesChangesBool, function (err, data) {
+      if (err) { return next(err); }
+    });
+    // instancesChangesBool comes back to false because the cache is up to date.
+    instancesChangesBool = false;
 
   });
 
