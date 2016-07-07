@@ -9,10 +9,6 @@
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
 
-// var heartbeats = require('heartbeats');
-
-// var instances = require('./helpers/instances');
-
 var serverHeart = require('./helpers/serverHeart');
 
 // config : variable containing app configuration elements.
@@ -40,13 +36,27 @@ module.exports = function(config, start) {
     // When a user connects to the server.
     io.sockets.on('connection', function (socket) {
 
+
+
+
+
+
+      config.set('socket', socket);
+
+
+
+
+
+
+
+
         // If no heartRefreshInstances already created on the server,
         // we create one and the associated bool becomes true.
       if (!heartRefreshInstancesAlreadyCreated) {
 
         heartRefreshInstancesAlreadyCreated = true;
 
-        serverHeart.heartRefreshInstances(socket);
+        //serverHeart.heartRefreshInstances(socket);
 
       }
 
@@ -56,7 +66,7 @@ module.exports = function(config, start) {
 
         heartRefreshInfosMachineAlreadyCreated = true;
 
-        serverHeart.heartRefreshInfosMachine(socket);
+        //serverHeart.heartRefreshInfosMachine(socket);
 
       }
 
