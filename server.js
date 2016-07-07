@@ -9,7 +9,7 @@
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
 
-var serverHeart = require('./helpers/serverHeart');
+
 
 // config : variable containing app configuration elements.
 // start : callback function declared a bit later.

@@ -51,12 +51,12 @@ module.exports = {
     {
       // Every 1 beat call a script describing things to do.
       beat : 1,
-      require: '../../../../helpers/serverHeart.js'
+      require: 'heartEventRefreshInfosMachine'
     },
     {
       // Every 5 beats call a script describing things to do.
       beat : 5,
-      require: '../../../../helpers/serverHeart2.js'
+      require: 'heartEventRefreshInstances'
     }
   ],
 

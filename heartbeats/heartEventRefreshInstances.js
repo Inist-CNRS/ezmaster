@@ -1,7 +1,7 @@
 
 'use strict';
 
-var instances = require('./instances');
+var instances = require('../helpers/instances');
 var path = require('path');
 var basename = path.basename(__filename, '.js');
 var debug = require('debug')('castor:heartbeat:' + basename);
