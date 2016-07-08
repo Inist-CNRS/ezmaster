@@ -48,9 +48,7 @@ describe('Create fakeapp', function () {
     request
     .post('/-/v1/instances')
     .send(data)
-    .expect(function (res){
-        if (res.status != 200) { return new Error('fakeapp not created!'); }
-    }).end(done);
+    .expect(200).end(done);
 
 
 
@@ -62,7 +60,7 @@ describe('Found fakeapp', function () {
 
   it('Found fakeapp', function (done) {
     request.get('/-/v1/instances/').expect(function (res) {
-      if (!res.body['test-fakeapp']) { return new Error('fakeapp not found!'); }
+      if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
     })
     .end(done);
 
