@@ -2,7 +2,7 @@
 'use strict';
 
 // Travis run this file while building.
-/*var execSync = require('child_process').exec
+var execSync = require('child_process').exec
   , jsonfile = require('jsonfile')
   , path = require('path')
   , fs = require('fs')
@@ -36,21 +36,28 @@ describe('Test fakeapp', function () {
 
   it('Create fakeapp', function (done) {
 
-    var fakeapp = new Object();
 
-    fakeapp.body= {
-      longName: 'fakeapp',
-      project: 'test',
-      version: '',
-      study: 'fakeapp',
-      technicalName: 'test-fakeapp',
-      app: 'fakeapp'};
+    var longName = 'fakeapp';
+    var project = 'test';
+    var version = '';
+    var study = 'fakeapp';
+    var technicalName = 'test-fakeapp';
+    var app = 'fakeapp';
+
+    var data = {
+        'longName' : longName,
+        'project' : project,
+        'version' : version,
+        'study': study,
+        'technicalName' :  technicalName,
+        'app' : app
+      };
 
     request
-    .post('/-/v1/instances/'+fakeapp)
+    .post('/-/v1/instances', data)
     .expect(200, function (err) {
       done(err);
-  });
+    });
 
 
 
@@ -83,7 +90,3 @@ describe('Delete fakeapp', function () {
 
   });
 });
-
-
-
-});*/
