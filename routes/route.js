@@ -16,6 +16,7 @@ var path = require('path')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
+  , util = require('utile')
   , instances = require('../helpers/instances');
 
 // The bool to check if some modifications occured on one or multiple instances.
