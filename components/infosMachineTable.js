@@ -1,4 +1,4 @@
-/*global Vue*/
+/*global Vue, global io*/
 'use strict';
 
 // Socket connection.
@@ -49,11 +49,13 @@ var vmTableInfosMachine = new Vue({
 });
 
 
-// Listen incoming messages typed as 'refreshInfosMachine' from the server (here the message comes from eventRefreshInfosMachine.js).
+// Listen incoming messages typed as 'refreshInfosMachine' from the server.
+// Here the message comes from eventRefreshInfosMachine.js.
 socket.on('refreshInfosMachine', function(infosMachine) {
-  // Update variable 'infosMachine' which will automatically refresh the infosMachineTable component.
+  // Update variable 'infosMachine'.
+  // This will automatically refresh the infosMachineTable component.
   vmTableInfosMachine.$set('infosMachine', infosMachine);
-})
+});
 
 
 module.exports = vmTableInfosMachine;

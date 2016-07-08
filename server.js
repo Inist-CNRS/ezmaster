@@ -29,7 +29,7 @@ module.exports = function(config, start) {
     // When a user connects to the server.
     io.sockets.on('connection', function (socket) {
 
-      // Feed the socket variable declared in castor.config.js with the callback function socket parameter.
+      // Feed the socket variable declared in castor.config.js.
       config.set('socket', socket);
 
     });

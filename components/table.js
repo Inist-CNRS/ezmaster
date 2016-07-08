@@ -1,4 +1,4 @@
-/* global Vue, global document, global JSONEditor*/
+/* global Vue, global document, global JSONEditor, global io*/
 'use strict';
 
 // Socket connection.
@@ -147,8 +147,9 @@ function refresh () {
 }
 
 
-// Listen incoming messages typed as 'refreshInstances' from the server (here the message comes from eventRefreshInstances.js).
+// Listen incoming messages typed as 'refreshInstances' from the server.
+// Here the message comes from eventRefreshInstances.js.
 socket.on('refreshInstances', function(beatInstances) {
   // Update variable 'containers' which will automatically refresh the instances-table component.
   vmTableInstances.$set('containers', beatInstances);
-})
+});

@@ -51,19 +51,22 @@ module.exports = {
   // THE HEARTBEATS SECTION - HEARTRATE AND EVENTS
 
   // The heart will beat every 1 second.
-  "heartrate": 1000,
+  'heartrate': 1000,
 
   // Heartbeats events declared here.
   // We just have to mention the file name to search instead of a complete path because
-  // castor is configured to search events scripts from the project root in the directory named 'heartbeats'.
+  // castor is configured to search events scripts from the project root
+  // in the directory named 'heartbeats'.
   heartbeats: [
     {
-      // Every 1 beat (so here every 1 seconds) call a script which refreshes the machine information.
+      // Every 1 beat (so here every 1 seconds)
+      // call a script which refreshes the machine information.
       beat : 1,
       require: 'eventRefreshInfosMachine'
     },
     {
-      // Every 5 beats (so here every 5 seconds) call a script which refreshes the instances list.
+      // Every 5 beats (so here every 5 seconds)
+      // call a script which refreshes the instances list.
       beat : 5,
       require: 'eventRefreshInstances'
     }
