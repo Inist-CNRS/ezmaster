@@ -20,7 +20,7 @@ var execSync = require('child_process').exec
 //Before all the test
 before(function() {
 
-  var cmd = 'docker build -t fakeapp --build-arg https_proxy --build-arg http_proxy '
+  var cmd = 'docker build --tag fakeapp -t fakeapp --build-arg https_proxy --build-arg http_proxy '
             +__dirname+'/datasets/fakeapp/';
 
   execSync(cmd);
@@ -29,7 +29,7 @@ before(function() {
 });
 
 
-describe('Test fakeapp', function () {
+describe('Create fakeapp', function () {
 
 
   request = request('http://127.0.0.1:35267');
@@ -42,16 +42,16 @@ describe('Test fakeapp', function () {
         'version' : '',
         'study': 'fakeapp',
         'technicalName' :  'test-fakeapp',
-        'app' : 'fakeapp:latest'
+        'app' : 'inistcnrs/ezvis'
       };
 
     request
     .post('/-/v1/instances')
     .send(data)
-    .expect(function(err){
-      return new Error('fakeapp not created!');
-    }).
-    end(done);
+    .expect(function (res){
+        if (res.status != 200) { return new Error('fakeapp not created!'); }
+    }).end(done);
+
 
 
 
