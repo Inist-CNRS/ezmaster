@@ -1,4 +1,9 @@
 
+// This file is a Heartbeats event script which is executed each x heart beats.
+// The x value is specified in the event declaration in castor.config.js.
+// This event refreshes the machine information on infosMachineTable.js component.
+// This is possible by sending these information with socket to the component infosMachineTable.js listening to messages coming from here.
+
 'use strict';
 
 var os = require('os');
@@ -10,31 +15,34 @@ var debug = require('debug')('castor:heartbeat:' + basename);
 module.exports = function(options, core) {
   options = options || {};
 
-  // At the launch
-  console.log('########## LAUNCH HEART REFRESH INFOS MACHINE ##########');
+  // On Heart Launch.
+
+    // console.log('########## LAUNCH HEART REFRESH INFOS MACHINE ##########');
+
+    var socket;
 
 
-  var socket;
+  // On each event call.
 
-  // At each beat
-  return function (heartbeat, last) {
+    return function (heartbeat, last) {
 
-    console.log('########## BEAT HEART REFRESH INFOS MACHINE ##########');
+      // console.log('########## HEART EVENT REFRESH INFOS MACHINE ##########');
 
-    if (!socket) {
-      socket = core.config.get('socket');
-
+      // It's possible that the castor.config socket variable has not been fed in server.js when we want to take it here.
+      // As a consequence, we check if it's ok.
+      // if not ok : we just return in order to stop the event.
+      // The next event call will do this test again and continue if socket is ok.
+      // To sum up : we wait until the socket is ok.
       if (!socket) {
-        console.log('########## NO SOCKET ##########');
-        return;
+        socket = core.config.get('socket');
+
+        if (!socket) {
+          // console.log('########## NO SOCKET ##########');
+          return;
+        }
       }
-    }
 
-
-    // THE HEARTBEATS HEART : This one refreshes machine information
-    // on infosMachine.js component.
-
-    // Getting machine information we want to display.
+      // Getting machine information we want to display.
         var infosMachine = {};
 
         // Returns an array containing the 1, 5, and 15 minutes load averages.
@@ -51,28 +59,22 @@ module.exports = function(options, core) {
         // os.freemem() returns the amount of free system memory in bytes.
         infosMachine.freeMemory = filesize(os.freemem());
 
-    // Broadcast to all users the machine information.
-    //They are caught and displayed on template.html inside infosMachineTable.js component.
-    socket.broadcast.emit('refreshInfosMachine', infosMachine);
+      // Broadcast to all users the machine information to update the 'infosMachine' variable and refresh the infosMachineTable.js component.
+      // This is the infosMachineTable.js component which receives the emit message.
+      socket.broadcast.emit('refreshInfosMachine', infosMachine);
 
-    // When we come on the web page, while testing in local,
-    //machine info are not displayed, we have to refresh the page for that.
-    // In local, our pc is the server.
-    //The emit.broadcast sends a message to ALL clients except the sender,
-    //so our pc doesn't receive the message because it sends it.
-    // On the vilodex, obviously no issue because the server broadcast
-    //to all clients and our pc is not the sender so it receives the message.
-    // To solve this local testing problem we add a simple emit which sends
-    //a message to all clients.
-    // As a consequence, this line can be commented when the code is deployed on the vilodex.
-    socket.emit('refreshInfosMachine', infosMachine);
+      // When we come on the web page, while testing in local,
+      // machine info are not displayed, we have to refresh the page for that.
+      // In local, our pc is the server.
+      // The emit.broadcast sends a message to ALL clients except the sender,
+      // so our pc doesn't receive the message because it sends it.
+      // On the vilodex, obviously no issue because the server broadcast
+      // to all clients and our pc is not the sender so it receives the message.
+      // To solve this local testing problem we add a simple emit which sends
+      // a message to all clients.
+      // As a consequence, this line can be commented when the code is deployed on the vilodex.
+      socket.emit('refreshInfosMachine', infosMachine);
 
+    };
 
-
-
-
-
-  };
 };
-
-

@@ -7,6 +7,9 @@ var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT || 'localhost:27017';
 var publicDomain  = process.env.EZMASTER_PUBLIC_DOMAIN || '127.0.0.1';
 var publicIP      = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1';
 var baseURL       = process.env.EZMASTER_PUBLIC_DOMAIN || 'http://' + publicIP + ':35267';
+
+// socket variable declared here, fed in server.js and used in the 2 heartbeats events.
+// The 2 heartbeats events are settled in the directory named 'heartbeats'.
 var socket        = null;
 
 module.exports = {
@@ -23,6 +26,8 @@ module.exports = {
 
   baseURL: baseURL,
 
+  // Export of the socket variable.
+  // It is now accessible with core.config.get('socket') or config.get('socket').
   socket: socket,
 
   browserifyModules : [
@@ -43,18 +48,22 @@ module.exports = {
     'status.js'
   ],
 
+  // THE HEARTBEATS SECTION - HEARTRATE AND EVENTS
+
   // The heart will beat every 1 second.
   "heartrate": 1000,
 
   // Heartbeats events declared here.
+  // We just have to mention the file name to search instead of a complete path because
+  // castor is configured to search events scripts from the project root in the directory named 'heartbeats'.
   heartbeats: [
     {
-      // Every 1 beat call a script describing things to do.
+      // Every 1 beat (so here every 1 seconds) call a script which refreshes the machine information.
       beat : 1,
       require: 'eventRefreshInfosMachine'
     },
     {
-      // Every 5 beats call a script describing things to do.
+      // Every 5 beats (so here every 5 seconds) call a script which refreshes the instances list.
       beat : 5,
       require: 'eventRefreshInstances'
     }

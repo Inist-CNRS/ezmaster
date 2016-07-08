@@ -49,7 +49,7 @@ var vmTableInfosMachine = new Vue({
 });
 
 
-// Listen incoming messages typed as 'refreshInfosMachine' from the server.
+// Listen incoming messages typed as 'refreshInfosMachine' from the server (here the message comes from eventRefreshInfosMachine.js).
 socket.on('refreshInfosMachine', function(infosMachine) {
   // Update variable 'infosMachine' which will automatically refresh the infosMachineTable component.
   vmTableInfosMachine.$set('infosMachine', infosMachine);

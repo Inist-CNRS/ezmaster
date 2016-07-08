@@ -29,32 +29,6 @@ var vmTableInstances = new Vue({
       self.$set('publicDomain', result.data.publicDomain);
     }, console.error);
 
-
-
-// POLLING AJAX - OLD VERSION
-  /*
-    function verifRefresh() {
-      if (document.getElementById('modal-delete-instance').style.display != 'block' &&
-          document.getElementById('modal-update-config').style.display != 'block') {
-        return true;
-      }
-      else { return false; }
-    }
-
-    var heart_1 = heartbeats.createHeart(1000);
-    heart_1.createEvent(1, {repeat : 30}, function(heartbeat, last){
-      if (verifRefresh()) { refresh(); }
-      if (last == true) {
-        var heart_2 = heartbeats.createHeart(60000);
-        heart_2.createEvent(1, function (heartbeat, last) {
-          if (verifRefresh()) { refresh(); }
-        });
-      }
-    });
-  */
-
-
-
   },
 
 
@@ -173,7 +147,7 @@ function refresh () {
 }
 
 
-// Listen incoming messages typed as 'refreshInstances' from the server.
+// Listen incoming messages typed as 'refreshInstances' from the server (here the message comes from eventRefreshInstances.js).
 socket.on('refreshInstances', function(beatInstances) {
   // Update variable 'containers' which will automatically refresh the instances-table component.
   vmTableInstances.$set('containers', beatInstances);

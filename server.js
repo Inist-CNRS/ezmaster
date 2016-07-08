@@ -10,7 +10,6 @@
 var kuler = require('kuler');
 
 
-
 // config : variable containing app configuration elements.
 // start : callback function declared a bit later.
 module.exports = function(config, start) {
@@ -27,48 +26,11 @@ module.exports = function(config, start) {
     // Use socket.io on the server.
     var io = require('socket.io').listen(server);
 
-    // Bool to check if a heartRefreshInstances has already been created on the server.
-    var heartRefreshInstancesAlreadyCreated = false;
-
-    // Bool to check if a heartRefreshInfosMachine has already been created on the server.
-    var heartRefreshInfosMachineAlreadyCreated = false;
-
     // When a user connects to the server.
     io.sockets.on('connection', function (socket) {
 
-
-
-
-
-
+      // Feed the socket variable declared in castor.config.js with the callback function socket parameter.
       config.set('socket', socket);
-
-
-
-
-
-
-
-
-        // If no heartRefreshInstances already created on the server,
-        // we create one and the associated bool becomes true.
-      if (!heartRefreshInstancesAlreadyCreated) {
-
-        heartRefreshInstancesAlreadyCreated = true;
-
-        //serverHeart.heartRefreshInstances(socket);
-
-      }
-
-      // If no heartRefreshInfosMachine already created on the server,
-      // we create one and the associated bool becomes true.
-      if (!heartRefreshInfosMachineAlreadyCreated) {
-
-        heartRefreshInfosMachineAlreadyCreated = true;
-
-        //serverHeart.heartRefreshInfosMachine(socket);
-
-      }
 
     });
 
