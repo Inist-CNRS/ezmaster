@@ -36,28 +36,22 @@ describe('Test fakeapp', function () {
 
   it('Create fakeapp', function (done) {
 
-
-    var longName = 'fakeapp';
-    var project = 'test';
-    var version = '';
-    var study = 'fakeapp';
-    var technicalName = 'test-fakeapp';
-    var app = 'fakeapp';
-
     var data = {
-        'longName' : longName,
-        'project' : project,
-        'version' : version,
-        'study': study,
-        'technicalName' :  technicalName,
-        'app' : app
+        'longName' : 'fakeapp',
+        'project' : 'test',
+        'version' : '',
+        'study': 'fakeapp',
+        'technicalName' :  'test-fakeapp',
+        'app' : 'fakeapp:latest'
       };
 
     request
-    .post('/-/v1/instances', data)
-    .expect(200, function (err) {
-      done(err);
-    });
+    .post('/-/v1/instances')
+    .send(data)
+    .expect(function(err){
+      return new Error('fakeapp not created!');
+    }).
+    end(done);
 
 
 
