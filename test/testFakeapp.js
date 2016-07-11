@@ -1,18 +1,12 @@
-/* global describe, it, before, after*/
+/* global describe, it, before*/
 'use strict';
 
 // Travis run this file while building.
 var execSync = require('child_process').exec
-  , jsonfile = require('jsonfile')
   , path = require('path')
-  , fs = require('fs')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
-  , mkdirp = require('mkdirp')
-  , request = require('supertest')
-  , Docker = require('dockerode')
-  , fileExists = require('file-exists')
-  , docker = new Docker({ socketPath: '/var/run/docker.sock'});
+  , request = require('supertest');
 
 
 //Build the fakeapp image
@@ -37,13 +31,13 @@ describe('Create fakeapp', function () {
   it('Create fakeapp', function (done) {
 
     var data = {
-        'longName' : 'fakeapp',
-        'project' : 'test',
-        'version' : '',
-        'study': 'fakeapp',
-        'technicalName' :  'test-fakeapp',
-        'app' : 'inistcnrs/ezvis'
-      };
+      'longName' : 'fakeapp',
+      'project' : 'test',
+      'version' : '',
+      'study': 'fakeapp',
+      'technicalName' :  'test-fakeapp',
+      'app' : 'inistcnrs/ezvis'
+    };
 
     request
     .post('/-/v1/instances')

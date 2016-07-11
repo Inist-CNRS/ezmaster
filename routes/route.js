@@ -16,7 +16,6 @@ var path = require('path')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
-  , util = require('utile')
   , instances = require('../helpers/instances');
 
 // The bool to check if some modifications occured on one or multiple instances.
@@ -311,8 +310,10 @@ module.exports = function (router, core) {
                       exec(cmd, function (err, stdout, stderr) {
                         if (err) { return next(err); }
 
-                        // When an instance is created, we call getInstances() to update the instances list cache.
-                        // instancesChangesBool set to true because we have to rebuild the list in getInstances().
+                        // When an instance is created
+                        //we call getInstances() to update the instances list cache.
+                        //instancesChangesBool set to true because
+                        //we have to rebuild the list in getInstances().
                         instancesChangesBool = true;
                         instances.getInstances(instancesChangesBool, function (err, data) {
                           if (err) { return next(err); }
