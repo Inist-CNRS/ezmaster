@@ -14,7 +14,7 @@ var execSync = require('child_process').exec
 //Before all the test
 before(function() {
 
-  var cmd = 'docker build --tag fakeapp -t fakeapp --build-arg https_proxy --build-arg http_proxy '
+  var cmd = 'docker build -t fakeapp --build-arg https_proxy --build-arg http_proxy '
             +__dirname+'/datasets/fakeapp/';
 
   execSync(cmd);
@@ -42,7 +42,9 @@ describe('Create fakeapp', function () {
     request
     .post('/-/v1/instances')
     .send(data)
-    .expect(200).end(done);
+    .expect(200, function (err) {
+      done(err);
+    });
 
 
 
