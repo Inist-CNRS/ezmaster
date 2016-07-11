@@ -495,3 +495,13 @@ img.github {
 #infosMachineTable th, #infosMachineTable td {
     text-align: center;
 }
+
+.infosMachine {
+    color:white;
+    text-decoration:none;
+}
+
+.infosMachine:hover, .infosMachine:visited, .infosMachine:active {
+    color:white;
+    text-decoration:none;
+}

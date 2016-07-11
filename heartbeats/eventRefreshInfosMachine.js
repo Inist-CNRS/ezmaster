@@ -9,6 +9,8 @@
 
 var os = require('os');
 var filesize = require('filesize');
+var numCPUs = require( 'num-cpus' );
+var disk = require('diskusage');
 var path = require('path');
 var basename = path.basename(__filename, '.js');
 var debug = require('debug')('castor:heartbeat:' + basename);
@@ -62,6 +64,19 @@ module.exports = function(options, core) {
     infosMachine.totalMemory = filesize(os.totalmem());
     // os.freemem() returns the amount of free system memory in bytes.
     infosMachine.freeMemory = filesize(os.freemem());
+    // RAM use percentage.
+    numberOfDecimalNumbers = 0;
+    infosMachine.useMemoryPercentage = (((os.totalmem() - os.freemem()) * 100) / os.totalmem()).toFixed(numberOfDecimalNumbers);
+
+    // CPUs number
+    infosMachine.nbCPUs = numCPUs;
+
+    // Disk information
+    disk.check('/', function(err, info) {
+      infosMachine.freeDisk = filesize(info.free);
+      infosMachine.totalDisk = filesize(info.total);
+      infosMachine.useDiskPercentage = (((info.total - info.free) * 100) / info.total).toFixed(numberOfDecimalNumbers);
+    });
 
 
     // Broadcast to all users the machine information to :
