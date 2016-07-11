@@ -15,7 +15,7 @@ var execSync = require('child_process').exec
 before(function() {
 
   var cmd = path.join('docker build -t fakeapp --build-arg https_proxy --build-arg http_proxy '
-            ,__dirname,'/datasets/fakeapp/');
+            , __dirname, '/datasets/fakeapp/');
 
   execSync(cmd);
 
