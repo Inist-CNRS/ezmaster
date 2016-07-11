@@ -39,7 +39,6 @@ module.exports = function (router, core) {
       if (err) { return next(err); }
 
       debug(data);
-
       return res.status(200).send(data);
 
     });

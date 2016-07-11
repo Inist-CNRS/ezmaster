@@ -9,7 +9,7 @@
 
 var os = require('os');
 var filesize = require('filesize');
-var numCPUs = require( 'num-cpus' );
+var numCPUs = require('num-cpus');
 var disk = require('diskusage');
 var path = require('path');
 var basename = path.basename(__filename, '.js');
@@ -66,16 +66,21 @@ module.exports = function(options, core) {
     infosMachine.freeMemory = filesize(os.freemem());
     // RAM use percentage.
     numberOfDecimalNumbers = 0;
-    infosMachine.useMemoryPercentage = (((os.totalmem() - os.freemem()) * 100) / os.totalmem()).toFixed(numberOfDecimalNumbers);
+    infosMachine.useMemoryPercentage = (((os.totalmem() - os.freemem()) * 100) /
+        os.totalmem()).toFixed(numberOfDecimalNumbers);
 
     // CPUs number
     infosMachine.nbCPUs = numCPUs;
 
     // Disk information
     disk.check('/', function(err, info) {
+
+      if (err) { return new Error(err); }
+
       infosMachine.freeDisk = filesize(info.free);
       infosMachine.totalDisk = filesize(info.total);
-      infosMachine.useDiskPercentage = (((info.total - info.free) * 100) / info.total).toFixed(numberOfDecimalNumbers);
+      infosMachine.useDiskPercentage = (((info.total - info.free) * 100) /
+        info.total).toFixed(numberOfDecimalNumbers);
     });
 
 
