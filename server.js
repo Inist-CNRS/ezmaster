@@ -9,6 +9,7 @@
 // To have docker messages with beautiful colors on console.
 var kuler = require('kuler');
 
+var socket = require('socket.io');
 
 // config : variable containing app configuration elements.
 // start : callback function declared a bit later.
@@ -24,7 +25,7 @@ module.exports = function(config, start) {
   start(function online(err, server) {
 
     // Use socket.io on the server.
-    var io = require('socket.io').listen(server);
+    var io = socket.listen(server);
 
     // When a user connects to the server.
     io.sockets.on('connection', function (socket) {
