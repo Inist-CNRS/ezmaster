@@ -97,7 +97,7 @@ RUN sudo ln -s /root/data /opt/ezmaster/data
 
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/d97293f5cf1d3395e924ada68364792781231d38/doc/ezmaster_Architecture_Diagram.png)
 
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/master/doc/Ezmaster_Main_Interactions.png)
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/9e8147f801f1f9f64ad6a7de03888e03d9e7b051/doc/Ezmaster_Main_Interactions_Version3.png)
 
 
 
