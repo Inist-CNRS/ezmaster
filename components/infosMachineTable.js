@@ -21,6 +21,14 @@ var vmTableInfosMachine = new Vue({
         self.$set('infosMachine', infosMachine);
     */
 
+    // Listen incoming messages typed as 'refreshInfosMachine' from the server.
+    // Here the message comes from eventRefreshInfosMachine.js.
+    socket.on('refreshInfosMachine', function(infosMachine) {
+      // Update variable 'infosMachine'.
+      // This will automatically refresh the infosMachineTable component.
+      vmTableInfosMachine.$set('infosMachine', infosMachine);
+    });
+
   },
 
 // Not used.
@@ -46,15 +54,6 @@ var vmTableInfosMachine = new Vue({
   }
 
 
-});
-
-
-// Listen incoming messages typed as 'refreshInfosMachine' from the server.
-// Here the message comes from eventRefreshInfosMachine.js.
-socket.on('refreshInfosMachine', function(infosMachine) {
-  // Update variable 'infosMachine'.
-  // This will automatically refresh the infosMachineTable component.
-  vmTableInfosMachine.$set('infosMachine', infosMachine);
 });
 
 

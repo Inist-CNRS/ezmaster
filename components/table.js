@@ -1,4 +1,6 @@
+
 /* global Vue, global document, global JSONEditor, global io*/
+
 'use strict';
 
 // Socket connection.
@@ -8,14 +10,14 @@ var optsEditor = {}
   , editor = new JSONEditor()
   , idToDelete = null
   , idToConfig = null
-  /*, heartbeats = require('heartbeats')*/;
 
 
 // view for the instances table in HTML which id is instances-table.
 var vmTableInstances = new Vue({
-  el: '#instances-table',
-  ready : function () {   // When the table is ready...
 
+  el: '#instances-table',
+
+  ready : function () {   // When the table is ready...
 
     // ... call the route /-/v1/instances with a get wich get the instances list.
     // Store the instances list into the variable containers used into the HTML with v-for.
@@ -29,17 +31,32 @@ var vmTableInstances = new Vue({
       self.$set('publicDomain', result.data.publicDomain);
     }, console.error);
 
+
+    // Listen incoming messages typed as 'refreshInstances' from the server.
+    // Here the message comes from eventRefreshInstances.js.
+    socket.on('refreshInstances', function(beatInstances) {
+      // Update variable 'containers' which will automatically refresh the instances-table component.
+      vmTableInstances.$set('containers', beatInstances);
+    });
+
   },
 
 
   methods: {
+
+    refresh : function () {
+      self.$http.get('/-/v1/instances').then(function (result) {
+        self.$set('containers', result.data);
+      }, console.error);
+    },
+
     startInstance : function (event) {
       var data = {
         action : 'start'
       };
 
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        refresh();
+        self.refresh();
       }, console.error);
       // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
       // Here, the instance id.
@@ -52,7 +69,7 @@ var vmTableInstances = new Vue({
       };
 
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        refresh();
+        self.refresh();
       }, console.error);
     },
 
@@ -75,13 +92,12 @@ var vmTableInstances = new Vue({
     deleteInstance : function (event) {
       this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
         document.getElementById('modal-delete-instance').style.display = 'none';
-        refresh();
+        self.refresh();
       }, console.error);
     },
 
     cancelConfig : function (event) {
       document.getElementById('modal-update-config').style.display = 'none';
-      //refresh();
     },
 
     displayConfig : function (event) {
@@ -94,7 +110,6 @@ var vmTableInstances = new Vue({
       idToConfig = event.path[4].id;
       this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'block';
-        //refresh();
         optsEditor = {
           mode: 'code',
           onChange : function() {
@@ -127,29 +142,18 @@ var vmTableInstances = new Vue({
       };
       this.$http.put('/-/v1/instances/'+idToConfig, data).then(function (result) {
         document.getElementById('modal-update-config').style.display = 'none';
-        //refresh();
       });
     }
+
   },
+
   data : {
     sizeToDelete : '',
     technicalNameToDelete : '',
     containers : []
   }
+
 });
+
 
 module.exports = vmTableInstances;
-
-function refresh () {
-  vmTableInstances.$http.get('/-/v1/instances').then(function (result) {
-    vmTableInstances.$set('containers', result.data);
-  }, console.error);
-}
-
-
-// Listen incoming messages typed as 'refreshInstances' from the server.
-// Here the message comes from eventRefreshInstances.js.
-socket.on('refreshInstances', function(beatInstances) {
-  // Update variable 'containers' which will automatically refresh the instances-table component.
-  vmTableInstances.$set('containers', beatInstances);
-});

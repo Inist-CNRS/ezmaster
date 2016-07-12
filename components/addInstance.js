@@ -1,16 +1,17 @@
+
 /* global Vue, global document, global location*/
+
 'use strict';
 
 var publicDomain;
 
 var vm = new Vue({
+
   el: '#addInstance',
 
   ready : function () {
 
-
     var self = this;
-
 
     self.$http.get('/-/v3/config.js').then(function (result) {
       self.$set('publicDomain', result.data.publicDomain);
@@ -75,7 +76,9 @@ var vm = new Vue({
     messageErrorPull : '',
     codeErrorPull : ''
   }
+
 });
+
 
 module.exports = vm;
 
@@ -118,11 +121,7 @@ vm.$watch('project', function(data) {
 });
 
 
-
 vm.$watch('project', function(data) {
-
-
-
 
   this.project = data;
 
@@ -132,6 +131,7 @@ vm.$watch('project', function(data) {
   this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   verif(this.technicalName);
 });
+
 
 vm.$watch('study', function (data) {
   this.study = data;
@@ -143,6 +143,7 @@ vm.$watch('study', function (data) {
   verif(this.technicalName);
 });
 
+
 vm.$watch('version', function (data) {
   this.version = data;
 
@@ -152,6 +153,7 @@ vm.$watch('version', function (data) {
   this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   verif(this.technicalName);
 });
+
 
 function verif (tn) {
   var data = {
