@@ -88,7 +88,7 @@ module.exports = function(options, core) {
     //  - update the 'infosMachine' variable
     //  - refresh the infosMachineTable.js component
     // This is the infosMachineTable.js component which receives the emit message.
-    // socket.broadcast.emit('refreshInfosMachine', infosMachine);
+    socket.broadcast.emit('refreshInfosMachine', infosMachine);
 
     // When we come on the web page, while testing in local,
     // machine info are not displayed, we have to refresh the page for that.
@@ -98,7 +98,7 @@ module.exports = function(options, core) {
     // On the vilodex, obviously no issue because the server broadcast
     // to all clients and our pc is not the sender so it receives the message.
     // To solve this local testing problem we add a simple emit which sends
-    // a message to all clients.
+    // a message to the current client who just connect to the server.
     // As a consequence, this line can be commented when the code is deployed on the vilodex.
     socket.emit('refreshInfosMachine', infosMachine);
 

@@ -62,8 +62,7 @@ module.exports = function(options, core) {
       if (!(JSON.stringify(cacheInstances) === JSON.stringify(beatInstances))) {
 
         cacheInstances = beatInstances;
-        //socket.broadcast.emit('refreshInstances', beatInstances);
-        socket.emit('refreshInstances', beatInstances);
+        socket.broadcast.emit('refreshInstances', beatInstances);
 
       }
 
