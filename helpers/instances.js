@@ -193,10 +193,6 @@ module.exports.refreshInstances = function (core) {
   var instances = require('./instances');
   var socket;
 
-  // We want to take the socket variable.
-  // This variable may not has been fed in server.js when we want to take it here.
-  // As a consequence, we wait until it's ok.
-  while (!socket) { console.log('########## NO SOCKET ##########'); }
   socket = core.socket;
 
   // true for instancesChangesBool because we need to update the cache and get the new instances list.
