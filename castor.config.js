@@ -10,7 +10,7 @@ var baseURL       = process.env.EZMASTER_PUBLIC_DOMAIN || 'http://' + publicIP +
 
 // socket variable declared here, fed in server.js and used in the 2 heartbeats events.
 // The 2 heartbeats events are settled in the directory named 'heartbeats'.
-var socket        = null;
+//var socket        = null;
 
 module.exports = {
 
