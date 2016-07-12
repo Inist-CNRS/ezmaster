@@ -27,7 +27,7 @@ request = request('http://127.0.0.1:35267');
 
 describe('Create fakeapp', function () {
 
-  this.timeout(8000);
+  this.timeout(15000);
 
   it('Create fakeapp', function (done) {
 
