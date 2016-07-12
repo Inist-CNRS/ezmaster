@@ -191,9 +191,9 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
 module.exports.refreshInstances = function (core) {
 
   var instances = require('./instances');
-  var socket;
 
-  socket = core.socket;
+  // Get the socket object stored in core.socket.
+  var socket = core.socket;
 
   // true for instancesChangesBool because we need to update the cache and get the new instances list.
   instances.getInstances(true, function(err, instancesList) {

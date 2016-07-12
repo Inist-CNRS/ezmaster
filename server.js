@@ -30,7 +30,7 @@ module.exports = function(config, start) {
     // When a user connects to the server.
     io.sockets.on('connection', function (socket) {
 
-      // Feed the socket variable declared in castor.config.js.
+      // Store the socket object into core in order to use it from files where we want to socket emit messages.
       core.socket = socket;
 
     });

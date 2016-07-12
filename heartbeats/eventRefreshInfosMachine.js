@@ -33,8 +33,8 @@ module.exports = function(options, core) {
 
     // console.log('########## HEART EVENT REFRESH INFOS MACHINE ##########');
 
-    // We want to take the castor.config socket variable.
-    // This variable may not has been fed in server.js when we want to take it here.
+    // We want to take the socket object stored in core.socket.
+    // core.socket may not has been fed in server.js when we want to take it here.
     // As a consequence, we check if it's ok.
     // if not ok : we just return in order to stop the event.
     // The next event call will do this test again and continue if socket is ok.
