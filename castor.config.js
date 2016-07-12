@@ -10,7 +10,7 @@ var baseURL       = process.env.EZMASTER_PUBLIC_DOMAIN || 'http://' + publicIP +
 
 // socket variable declared here, fed in server.js and used in the 2 heartbeats events.
 // The 2 heartbeats events are settled in the directory named 'heartbeats'.
-//var socket        = null;
+var socket        = null;
 
 module.exports = {
 
@@ -28,7 +28,7 @@ module.exports = {
 
   // Export of the socket variable.
   // It is now accessible with core.config.get('socket') or config.get('socket').
-  //socket: socket,
+  socket: socket,
 
   browserifyModules : [
     'vue'
@@ -63,13 +63,7 @@ module.exports = {
       // call a script which refreshes the machine information.
       beat : 1,
       require: 'eventRefreshInfosMachine'
-    },
-    /*{
-      // Every 5 beats (so here every 5 seconds)
-      // call a script which refreshes the instances list.
-      beat : 5,
-      require: 'eventRefreshInstances'
-    }*/
+    }
   ],
 
   middlewares: {

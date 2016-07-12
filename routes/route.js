@@ -61,9 +61,7 @@ module.exports = function (router, core) {
           // When an instance is started, we call getInstances() to update the instances list cache.
           // instancesChangesBool set to true because we have to rebuild the list in getInstances().
           instancesChangesBool = true;
-          instances.getInstances(instancesChangesBool, function (err, data) {
-            if (err) { return next(err); }
-          });
+          instances.refreshInstances(core);
           // instancesChangesBool comes back to false because the cache is up to date.
           instancesChangesBool = false;
 
@@ -77,9 +75,7 @@ module.exports = function (router, core) {
           // When an instance is stopped, we call getInstances() to update the instances list cache.
           // instancesChangesBool set to true because we have to rebuild the list in getInstances().
           instancesChangesBool = true;
-          instances.getInstances(instancesChangesBool, function (err, data) {
-            if (err) { return next(err); }
-          });
+          instances.refreshInstances(core);
           // instancesChangesBool comes back to false because the cache is up to date.
           instancesChangesBool = false;
 
@@ -110,9 +106,7 @@ module.exports = function (router, core) {
         //we call getInstances() to update the instances list cache.
         // instancesChangesBool set to true because we have to rebuild the list in getInstances().
         instancesChangesBool = true;
-        instances.getInstances(instancesChangesBool, function (err, data) {
-          if (err) { return next(err); }
-        });
+        instances.refreshInstances(core);
         // instancesChangesBool comes back to false because the cache is up to date.
         instancesChangesBool = false;
 
@@ -195,9 +189,7 @@ module.exports = function (router, core) {
           // When an instance is deleted, we call getInstances() to update the instances list cache.
           // instancesChangesBool set to true because we have to rebuild the list in getInstances().
           instancesChangesBool = true;
-          instances.getInstances(instancesChangesBool, function (err, data) {
-            if (err) { return next(err); }
-          });
+          instances.refreshInstances(core);
           // instancesChangesBool comes back to false because the cache is up to date.
           instancesChangesBool = false;
 
@@ -314,9 +306,7 @@ module.exports = function (router, core) {
                         //instancesChangesBool set to true because
                         //we have to rebuild the list in getInstances().
                         instancesChangesBool = true;
-                        instances.getInstances(instancesChangesBool, function (err, data) {
-                          if (err) { return next(err); }
-                        });
+                        instances.refreshInstances(core);
                         // instancesChangesBool comes back to false because the cache is up to date.
                         instancesChangesBool = false;
 

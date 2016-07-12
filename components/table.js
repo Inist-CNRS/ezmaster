@@ -45,8 +45,8 @@ var vmTableInstances = new Vue({
   methods: {
 
     refresh : function () {
-      self.$http.get('/-/v1/instances').then(function (result) {
-        self.$set('containers', result.data);
+      this.$http.get('/-/v1/instances').then(function (result) {
+        this.$set('containers', result.data);
       }, console.error);
     },
 
@@ -56,7 +56,7 @@ var vmTableInstances = new Vue({
       };
 
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        self.refresh();
+        this.refresh();
       }, console.error);
       // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
       // Here, the instance id.
@@ -69,7 +69,7 @@ var vmTableInstances = new Vue({
       };
 
       this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-        self.refresh();
+        this.refresh();
       }, console.error);
     },
 
@@ -92,7 +92,7 @@ var vmTableInstances = new Vue({
     deleteInstance : function (event) {
       this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
         document.getElementById('modal-delete-instance').style.display = 'none';
-        self.refresh();
+        this.refresh();
       }, console.error);
     },
 
