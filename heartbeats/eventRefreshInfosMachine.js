@@ -88,7 +88,7 @@ module.exports = function(options, core) {
     //  - update the 'infosMachine' variable
     //  - refresh the infosMachineTable.js component
     // This is the infosMachineTable.js component which receives the emit message.
-    socket.broadcast.emit('refreshInfosMachine', infosMachine);
+    // socket.broadcast.emit('refreshInfosMachine', infosMachine);
 
     // When we come on the web page, while testing in local,
     // machine info are not displayed, we have to refresh the page for that.
