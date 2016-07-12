@@ -28,7 +28,7 @@ module.exports = {
 
   // Export of the socket variable.
   // It is now accessible with core.config.get('socket') or config.get('socket').
-  socket: socket,
+  //socket: socket,
 
   browserifyModules : [
     'vue'
