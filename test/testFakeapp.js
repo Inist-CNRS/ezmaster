@@ -22,11 +22,12 @@ before(function() {
 
 });
 
+request = request('http://127.0.0.1:35267');
+
 
 describe('Create fakeapp', function () {
 
-
-  request = request('http://127.0.0.1:35267');
+  this.timeout(8000);
 
   it('Create fakeapp', function (done) {
 
@@ -45,7 +46,6 @@ describe('Create fakeapp', function () {
     .expect(200, function (err) {
       done(err);
     });
-
 
 
 
