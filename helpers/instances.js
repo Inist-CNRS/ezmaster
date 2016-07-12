@@ -17,32 +17,30 @@ var path = require('path')
 
 // Cache explanations :
   // We store the instances cache here.
-  // We create a bool in route.js which take true if an action changing
-  //an instance is performed (start, stop, delete, update config).
-  // Still in route.js, when such an action occurs we call getInstances()
-  //with the bool as one of its parameters.
-  // getInstance() checks the bool :
+  // We create a bool in route.js which take true if the cache is up to date.
+  // When an action is performed in route.js (start, stop, delete, update config, add instance),
+  // we call refreshInstances() which call getInstances(true) with the bool true as one of its parameters.
+  // getInstances() checks the bool :
     // If true : get the instances list, updates the cache and returns the list.
     // If false : returns the cache.
 var cacheInstances = {};
 
 
-// instancesChangesBool : the bool to check
-//if somme modifications occured on one or multiple instances.
+// instancesChangesBool : the bool to check if it is necessary
+// to rebuild the instances list or not.
 // cb : callback function.
 module.exports.getInstances = function (instancesChangesBool, cb) {
 
-  // If some modifications occured on one or multiple instances
-  //we have to get the list and update the cache.
+  // If we have to get the list and update the cache.
   if (instancesChangesBool) {
 
     util.async.parallel([
 
-      // retrieve all instances manifests from the files
+      // Retrieves all instances manifests from the files.
       function (handleManifests) {
 
-        // read the content of manifests folders in order to
-        // extract the instances technicalName and some metadata
+        // Read the content of manifests folders in order to
+        // extract the instances technicalName and some metadata.
         var manifestPath = path.join(__dirname, '../manifests/*.json').toString();
         glob(manifestPath, function (err, files) {
 
@@ -51,7 +49,7 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
             return handleManifests(err);
           }
 
-          // if no files then return an empty array
+          // If no files then return an empty array.
           if (files.length === 0) {
             return handleManifests(null, []);
           }
@@ -60,9 +58,9 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
           files.forEach(function (file) {
 
             // Extract the technicalName from the filename and read
-            // the manifest content to get other metadata
-            // Notice: filename example 'manifests/myprj-mystudy-5.json'
-            //         then technicalName will be 'myprj-mystudy-5'
+            // the manifest content to get other metadata.
+            // NOTA : filename example : 'manifests/myprj-mystudy-5.json'
+            //         then technicalName will be 'myprj-mystudy-5'.
             var technicalName = _.last(file.split('.')[0].split('/'));
             fs.readFile(file, 'utf8', function (err, manifestContent) {
               if (err) {
@@ -74,8 +72,8 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
               manifest.technicalName = technicalName;
               manifests.push(manifest);
 
-              // return the manifests when the
-              // last file is handled
+              // Return the manifests when the
+              // last file is handled.
               if (manifests.length == files.length) {
                 return handleManifests(null, manifests);
               }
@@ -84,10 +82,11 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
         });
       },
 
-      // Retrieves the instances docker informations. Ex:
+      // Retrieves the instances docker informations.
+      // Ex :
       // - technicalName: 'article-type-4',
       // - containerId: '1e254654654465446545465465456465465',
-      // (- dataPath: '/applis/lodex/home/instances/article-type-4')
+      // - dataPath: '/applis/lodex/home/instances/article-type-4'
       // - creationDate: '2016/03/17',
       // - port: 35284,
       // - app: 'inistcnrs/lodex:2.0.1',
@@ -105,7 +104,7 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
 
             var instance = {};
 
-            // Example of data.Names[0]: /myprj-mystudy-5
+            // Example of data.Names[0] : /myprj-mystudy-5
             instance.technicalName = data.Names[0].split('/')[1];
             instance.containerId   = data.Id;
             instance.dataPath      = process.env.EZMASTER_PATH+'/instances/'
@@ -143,8 +142,8 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
           // The '-' means that we want a reversed order.
           dockerInstances.sort(sortBy('-creationDate'));
 
-          // once docker containers are parsed we return the
-          // ezmaster formated instances list
+          // Once docker containers are parsed we return the
+          // Ezmaster formated instances list.
           return handleDockerInstances(null, dockerInstances);
         });
       }
@@ -154,10 +153,10 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
 
 
       if (err) { return cb(err); }
-      // retrieves results from the two callbacks (manifests files and docker metadata)
-      // and ignore docker containers not listed in the manifests ("unknown technicalName")
-      // (example: ezmaster itself or ezmaster_db
-      // or any other containers currently running on the machine)
+      // Retrieves results from the two callbacks (manifests files and docker metadata)
+      // and ignores docker containers not listed in the manifests ("unknown technicalName").
+      // Example: ezmaster itself or ezmaster_db
+      // or any other container currently running on the machine.
       var ezmasterInstances = {};
       results[1].forEach(function (dockerInstance) {
         results[0].forEach(function (manifest) {
@@ -170,11 +169,11 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
       // cacheInstances update with the just get instances list.
       cacheInstances = ezmasterInstances;
 
-      // return the just get list.
+      // Return the just get instances list.
       return cb(null, ezmasterInstances);
     });
   }
-  // If no modifications occured on one or multiple instances, we just have to return the cache.
+  // Else, we just have to return the cache.
   else {
 
     return cb(null, cacheInstances);
@@ -186,56 +185,31 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
 
 
 
-
-
-
-
-
-
-// This file is a Heartbeats event script which is executed each x heart beats.
-// The x value is specified in the event declaration in castor.config.js.
-// This event refreshes the instances list on table.js component.
+// This function refreshes the instances list on table.js component.
 // Done by sending the instances list with socket to the component table.js.
 // The component table.js is listening to messages coming from here.
-
 module.exports.refreshInstances = function (core) {
 
+  var instances = require('./instances');
+  var socket;
 
-  // A SUPPRIMER ? FAIRE TEST.
-    var path = require('path');
-    var basename = path.basename(__filename, '.js');
-    var debug = require('debug')('castor:heartbeat:' + basename);
+  // We want to take the socket variable.
+  // This variable may not has been fed in server.js when we want to take it here.
+  // As a consequence, we wait until it's ok.
+  while (!socket) { console.log('########## NO SOCKET ##########'); }
+  socket = core.socket;
 
-    var instances = require('./instances');
-    var socket;
+  // true for instancesChangesBool because we need to update the cache and get the new instances list.
+  instances.getInstances(true, function(err, instancesList) {
 
+    if (err) { return new Error(err); }
 
-      // We want to take the castor.config socket variable.
-      // This variable may not has been fed in server.js when we want to take it here.
-      // As a consequence, we check if it's ok.
-      // if not ok : we just return in order to stop the event.
-      // The next event call will do this test again and continue if socket is ok.
-      // To sum up : we wait until the socket is ok.
-      if (!socket) {
-        socket = core.config.get('socket');
+    // Broadcast to all clients this new version to :
+    //  - update the 'containers' variable
+    //  - refresh the table.js component
+    // This is the table.js component which receives the emit message.
+      socket.broadcast.emit('refreshInstances', instancesList);
 
-        if (!socket) {
-          // console.log('########## NO SOCKET ##########');
-          return;
-        }
-      }
-
-      // false for instancesChangesBool because here, we just need to get the getInstances() cache.
-      instances.getInstances(true, function(err, instancesList) {
-
-        if (err) { return new Error(err); }
-
-        // Broadcast to all clients this new version to :
-        //  - update the 'containers' variable
-        //  - refresh the table.js component
-        // This is the table.js component which receives the emit message.
-          socket.broadcast.emit('refreshInstances', instancesList);
-
-      });
+  });
 
 };

@@ -8,9 +8,6 @@ var publicDomain  = process.env.EZMASTER_PUBLIC_DOMAIN || '127.0.0.1';
 var publicIP      = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1';
 var baseURL       = process.env.EZMASTER_PUBLIC_DOMAIN || 'http://' + publicIP + ':35267';
 
-// socket variable declared here, fed in server.js and used in the 2 heartbeats events.
-// The 2 heartbeats events are settled in the directory named 'heartbeats'.
-var socket        = null;
 
 module.exports = {
 
@@ -25,10 +22,6 @@ module.exports = {
   port: 35267,
 
   baseURL: baseURL,
-
-  // Export of the socket variable.
-  // It is now accessible with core.config.get('socket') or config.get('socket').
-  socket: socket,
 
   browserifyModules : [
     'vue'
@@ -54,6 +47,7 @@ module.exports = {
   'heartrate': 1000,
 
   // Heartbeats events declared here.
+  // The heartbeats events are settled in the directory named 'heartbeats'.
   // We just have to mention the file name to search instead of a complete path because
   // castor is configured to search events scripts from the project root
   // in the directory named 'heartbeats'.

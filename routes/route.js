@@ -18,7 +18,7 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances');
 
-// The bool to check if some modifications occured on one or multiple instances.
+// The bool to check if the instances cache is up to date.
 var instancesChangesBool = true;
 
 jsonfile.spaces = 2;
@@ -58,12 +58,9 @@ module.exports = function (router, core) {
         container.start(function (err, datas, container) {
           if (err) { return next(err); }
 
-          // When an instance is started, we call getInstances() to update the instances list cache.
-          // instancesChangesBool set to true because we have to rebuild the list in getInstances().
-          instancesChangesBool = true;
+          // When an instance is started, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+          // The 'core' parameter allows to get the socket object inside refreshInstances().
           instances.refreshInstances(core);
-          // instancesChangesBool comes back to false because the cache is up to date.
-          instancesChangesBool = false;
 
           res.status(200).send('Starting done');
         });
@@ -72,12 +69,9 @@ module.exports = function (router, core) {
         container.stop(function (err, datas, container) {
           if (err) { return next(err); }
 
-          // When an instance is stopped, we call getInstances() to update the instances list cache.
-          // instancesChangesBool set to true because we have to rebuild the list in getInstances().
-          instancesChangesBool = true;
+          // When an instance is stopped, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+          // The 'core' parameter allows to get the socket object inside refreshInstances().
           instances.refreshInstances(core);
-          // instancesChangesBool comes back to false because the cache is up to date.
-          instancesChangesBool = false;
 
           res.status(200).send('Stoping done');
         });
@@ -102,13 +96,9 @@ module.exports = function (router, core) {
             }
           });
 
-        // When a new config is given to an instance
-        //we call getInstances() to update the instances list cache.
-        // instancesChangesBool set to true because we have to rebuild the list in getInstances().
-        instancesChangesBool = true;
+        // When a new config is given to an instance, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+        // The 'core' parameter allows to get the socket object inside refreshInstances().
         instances.refreshInstances(core);
-        // instancesChangesBool comes back to false because the cache is up to date.
-        instancesChangesBool = false;
 
       }
     });
@@ -186,12 +176,9 @@ module.exports = function (router, core) {
         rimraf(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err) {
           if (err) { return next(err); }
 
-          // When an instance is deleted, we call getInstances() to update the instances list cache.
-          // instancesChangesBool set to true because we have to rebuild the list in getInstances().
-          instancesChangesBool = true;
+          // When an instance is deleted, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+          // The 'core' parameter allows to get the socket object inside refreshInstances().
           instances.refreshInstances(core);
-          // instancesChangesBool comes back to false because the cache is up to date.
-          instancesChangesBool = false;
 
           res.status(200).send('Removing done');
         });
@@ -301,14 +288,9 @@ module.exports = function (router, core) {
                       exec(cmd, function (err, stdout, stderr) {
                         if (err) { return next(err); }
 
-                        // When an instance is created
-                        //we call getInstances() to update the instances list cache.
-                        //instancesChangesBool set to true because
-                        //we have to rebuild the list in getInstances().
-                        instancesChangesBool = true;
+                        // When an instance is created, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+                        // The 'core' parameter allows to get the socket object inside refreshInstances().
                         instances.refreshInstances(core);
-                        // instancesChangesBool comes back to false because the cache is up to date.
-                        instancesChangesBool = false;
 
                         return res.status(200).send('Instance created');
                       });
