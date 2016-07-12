@@ -12,6 +12,7 @@ var filesize = require('filesize');
 var numCPUs = require('num-cpus');
 var disk = require('diskusage');
 var path = require('path');
+var util = require('utile');
 var basename = path.basename(__filename, '.js');
 var debug = require('debug')('castor:heartbeat:' + basename);
 
@@ -39,7 +40,7 @@ module.exports = function(options, core) {
     // The next event call will do this test again and continue if socket is ok.
     // To sum up : we wait until the socket is ok.
     if (!socket) {
-      socket = core.config.get('socket');
+      socket = core.socket;
 
       if (!socket) {
         // console.log('########## NO SOCKET ##########');

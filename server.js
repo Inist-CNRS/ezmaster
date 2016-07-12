@@ -22,7 +22,7 @@ module.exports = function(config, start) {
   // Web server launch.
   // err : to catch errors.
   // If all good, the 'server' variable contains the server.
-  start(function online(err, server) {
+  start(function online(err, server, core) {
 
     // Use socket.io on the server.
     var io = socket.listen(server);
@@ -31,7 +31,7 @@ module.exports = function(config, start) {
     io.sockets.on('connection', function (socket) {
 
       // Feed the socket variable declared in castor.config.js.
-      config.set('socket', socket);
+      core.socket = socket;
 
     });
 
