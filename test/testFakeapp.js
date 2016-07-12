@@ -54,6 +54,8 @@ describe('Create fakeapp', function () {
 
 describe('Found fakeapp', function () {
 
+  this.timeout(60000);
+
   it('Found fakeapp', function (done) {
     request.get('/-/v1/instances/').expect(function (res) {
       if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
