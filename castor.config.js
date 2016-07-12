@@ -64,12 +64,12 @@ module.exports = {
       beat : 1,
       require: 'eventRefreshInfosMachine'
     },
-    {
+    /*{
       // Every 5 beats (so here every 5 seconds)
       // call a script which refreshes the instances list.
       beat : 5,
       require: 'eventRefreshInstances'
-    }
+    }*/
   ],
 
   middlewares: {
