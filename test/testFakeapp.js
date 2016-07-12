@@ -54,17 +54,17 @@ describe('Create fakeapp', function () {
 
 describe('Found fakeapp', function () {
 
-  this.timeout(60000);
-
   it('Found fakeapp', function (done) {
+
+    this.timeout(60000);
 
 
     setTimeout(function() {
-      request.get('/-/v1/instances/').expect(function (res) {
-        if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
-      })
-      .end(done);
-    }, 1000);
+    request.get('/-/v1/instances/').expect(function (res) {
+      if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
+    })
+    .end(done);
+  }, 5000);
 
   });
 });
