@@ -52,6 +52,7 @@ module.exports = function(options, core) {
       if (reqSubdomain && (reqServer === publicDomain) && instances !== undefined) {
 
         debug('reverseproxy#1.1');
+        console.log("########## BY X FORWARDED ##########");
 
         var search = reqSubdomain[0].split('-');
 
@@ -94,11 +95,14 @@ module.exports = function(options, core) {
             next(new Error('Bad gateway'));
           });
           return;
-        } else {
+        }
+        else {
           debug('reverseproxy#1.2');
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
-      } else {
+      }
+      else {
+        console.log("########## BY ELSE ##########");
         debug('reverseproxy#1.0');
         return next();
       }
