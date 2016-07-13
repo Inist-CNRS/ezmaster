@@ -8,7 +8,7 @@
   curl -v --proxy "" -H "X-Forwarded-Host: aa-bb-1.data.istex.fr"
   ++ -H "X-Forwarded-Server: data.istex.fr" http://127.0.0.1:35267/
   curl -v --proxy "" -H "Host: aa-bb-1.data.istex.fr" http://127.0.0.1:35267/
-*/
+ */
 
 var path      = require('path');
 var basename  = path.basename(__filename, '.js');
@@ -19,42 +19,37 @@ var instances = require('../helpers/instances');
 
 module.exports = function(options, core) {
 
-  // A new proxy is created by calling createProxyServer.
   var proxy = httpProxy.createProxyServer({});
-
-  // Get the publicDomain variable from castor.config.
   var publicDomain = core.config.get('publicDomain');
 
-  // DEBUG
   debug('Loading reverseproxy middleware: ' + (publicDomain ? 'enabled [' + publicDomain + ']' : 'disabled'));
 
-  //
   return function(req, res, next) {
 
     // false for instancesChangesBool because when this code is executed
     // the cache is already present in getInstances().
     instances.getInstances(false, function (err, instances) {
+
       if (err) { return new Error(err); }
 
-      var host         = req.headers['host']
-        , reqServer    = req.headers['x-forwarded-server']
-        , reqHost      = req.headers['x-forwarded-host']
-        , reqSubdomain = reqHost ? reqHost.split('.') : false
-        ;
+      var host         = req.headers['host'];
+      var reqServer    = req.headers['x-forwarded-server'];
+      var reqHost      = req.headers['x-forwarded-host'];
+      var reqSubdomain = reqHost ? reqHost.split('.') : false;
 
       debug('reverseproxy#1', host, ' ', reqSubdomain, ' && (', reqServer, ' === ', publicDomain, ')');
 
-      // Two way to activate the RP :
-      //  - with an explicit "Host" header
-      //  - with the special X-Forwarded-* headers
+      // Two way to activate the RP:
+      // with an explicit "Host" header
+      // with the special X-Forwarded-* headers
       var isRpEnabled = {};
       isRpEnabled.byHost = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
-      debug(isRpEnabled);  // TODO : rendra capable le RP de gérer le header "Host"
 
-      if (isRpEnabled.byXForwarded && instances !== undefined) {
+      // TODO : rendra capable le RP de gérer le header "Host"
+      console.log("########## isRpEnabled : " + isRpEnabled + " ##########");
 
-        console.log("########## BY X FORWARDED ##########");
+      if (reqSubdomain && (reqServer === publicDomain) && instances !== undefined) {
 
         debug('reverseproxy#1.1');
 
@@ -90,43 +85,23 @@ module.exports = function(options, core) {
             return;
           }, undefined);
 
-
-
         if (found !== undefined) {
           var url = 'http://'+found+':'+ '3000';
-
           debug('reverseproxy#1.1.1', url);
-
-          console.log("########## URL : "+url+" ##########");
-
           proxy.web(req, res, { target: url });
           proxy.on('error', function(e) {
             console.error('reverseproxy#1.1.2', e);
             next(new Error('Bad gateway'));
           });
           return;
-        }
-        else {
+        } else {
           debug('reverseproxy#1.2');
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
-      }
-      /*
-      else if(isRpEnabled.byHost && instances !== undefined) {
-
-          console.log("########## BY HOST ##########");
-
-          var url = 'http://'+host+':'+ '3000';
-          debug('reverseproxy#1.1.1', url);
-          proxy.web(req, res, { target: url });
-
-      }
-      */
-      else {
+      } else {
         debug('reverseproxy#1.0');
         return next();
       }
-
     });
   };
 };
