@@ -111,15 +111,17 @@ module.exports = function(options, core) {
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
       }
+      /*
       else if(isRpEnabled.byHost && instances !== undefined) {
-/*
+
           console.log("########## BY HOST ##########");
 
           var url = 'http://'+host+':'+ '3000';
           debug('reverseproxy#1.1.1', url);
           proxy.web(req, res, { target: url });
-*/
+
       }
+      */
       else {
         debug('reverseproxy#1.0');
         return next();
