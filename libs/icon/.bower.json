@@ -1,0 +1,12 @@
+{
+  "name": "icon",
+  "_cacheHeaders": {
+    "Content-Length": "318",
+    "Content-Type": "text/css; charset=utf-8"
+  },
+  "main": "index",
+  "_source": "http://fonts.googleapis.com/icon?family=Material+Icons",
+  "_target": "*",
+  "_originalSource": "http://fonts.googleapis.com/icon?family=Material+Icons",
+  "_direct": true
+}
