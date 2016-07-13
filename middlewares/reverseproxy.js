@@ -19,11 +19,16 @@ var instances = require('../helpers/instances');
 
 module.exports = function(options, core) {
 
+  // A new proxy is created by calling createProxyServer.
   var proxy = httpProxy.createProxyServer({});
+
+  // Get the publicDomain variable from castor.config.
   var publicDomain = core.config.get('publicDomain');
 
+  // DEBUG
   debug('Loading reverseproxy middleware: ' + (publicDomain ? 'enabled [' + publicDomain + ']' : 'disabled'));
 
+  //
   return function(req, res, next) {
 
     // false for instancesChangesBool because when this code is executed
@@ -42,12 +47,13 @@ module.exports = function(options, core) {
       // Two way to activate the RP :
       //  - with an explicit "Host" header
       //  - with the special X-Forwarded-* headers
+
       var isRpEnabled = {};
       isRpEnabled.byHost = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
       debug(isRpEnabled);  // TODO : rendra capable le RP de gérer le header "Host"
 
-      if (reqSubdomain && (reqServer === publicDomain) && instances !== undefined) {
+      if (isRpEnabled.byXForwarded && instances !== undefined) {
 
         debug('reverseproxy#1.1');
 
@@ -97,6 +103,13 @@ module.exports = function(options, core) {
           debug('reverseproxy#1.2');
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
+      }
+      else if(isRpEnabled.byHost && instances !== undefined) {
+
+          var url = 'http://'+host+':'+ '3000';
+          debug('reverseproxy#1.1.1', url);
+          proxy.web(req, res, { target: url });
+
       }
       else {
         debug('reverseproxy#1.0');
