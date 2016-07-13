@@ -101,6 +101,9 @@ module.exports = function(options, core) {
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
       }
+      else if (isRpEnabled.byHost) {
+        console.log("########## BY HOST ##########");
+      }
       else {
         console.log("########## BY ELSE ##########");
         debug('reverseproxy#1.0');
