@@ -111,6 +111,7 @@ module.exports = function(options, core) {
         console.log("########## BY HOST ##########");
         console.log("########## HOST : " + host + " ##########");
 
+      /*
         var search = reqSubdomain[0].split('-');
         console.log("########## SEARCH : " + search + " ##########");
 
@@ -160,6 +161,13 @@ module.exports = function(options, core) {
           debug('reverseproxy#1.2');
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
+      */
+
+          var url = 'http://'+host.split('.')[0]+':'+ '3000';
+          console.log("########## URL : " + url + " ##########");
+          proxy.web(req, res, { target: url });
+
+
       }
       else {
         console.log("########## BY ELSE ##########");
