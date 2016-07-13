@@ -53,8 +53,10 @@ module.exports = function(options, core) {
 
         debug('reverseproxy#1.1');
         console.log("########## BY X FORWARDED ##########");
+        console.log("########## HOST : " + host + " ##########");
 
         var search = reqSubdomain[0].split('-');
+        console.log("########## SEARCH : " + search + " ##########");
 
         var found = Object.keys(instances)
           .map(function(z) {
@@ -86,9 +88,12 @@ module.exports = function(options, core) {
             return;
           }, undefined);
 
+        console.log("########## FOUND : " + found + " ##########");
+
         if (found !== undefined) {
           var url = 'http://'+found+':'+ '3000';
           debug('reverseproxy#1.1.1', url);
+          console.log("########## URL : " + url + " ##########");
           proxy.web(req, res, { target: url });
           proxy.on('error', function(e) {
             console.error('reverseproxy#1.1.2', e);
@@ -104,6 +109,7 @@ module.exports = function(options, core) {
       else if (isRpEnabled.byHost) {
 
         console.log("########## BY HOST ##########");
+        console.log("########## HOST : " + host + " ##########");
 
         var search = reqSubdomain[0].split('-');
 
