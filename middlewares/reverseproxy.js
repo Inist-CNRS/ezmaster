@@ -112,6 +112,7 @@ module.exports = function(options, core) {
         console.log("########## HOST : " + host + " ##########");
 
         var search = reqSubdomain[0].split('-');
+        console.log("########## SEARCH : " + search + " ##########");
 
         var found = Object.keys(instances)
           .map(function(z) {
@@ -143,8 +144,11 @@ module.exports = function(options, core) {
             return;
           }, undefined);
 
+        console.log("########## FOUND : " + found + " ##########");
+
         if (found !== undefined) {
           var url = 'http://'+found+':'+ '3000';
+          console.log("########## URL : " + url + " ##########");
           proxy.web(req, res, { target: url });
           proxy.on('error', function(e) {
             console.error('reverseproxy#1.1.2', e);
