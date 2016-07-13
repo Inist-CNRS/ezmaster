@@ -39,9 +39,9 @@ module.exports = function(options, core) {
 
       debug('reverseproxy#1', host, ' ', reqSubdomain, ' && (', reqServer, ' === ', publicDomain, ')');
 
-      // Two way to activate the RP:
-      // with an explicit "Host" header
-      // with the special X-Forwarded-* headers
+      // Two way to activate the RP :
+      //  - with an explicit "Host" header
+      //  - with the special X-Forwarded-* headers
       var isRpEnabled = {};
       isRpEnabled.byHost = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
