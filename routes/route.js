@@ -28,6 +28,8 @@ var instancesChangesBool = true;
 
 jsonfile.spaces = 2;
 
+
+
 module.exports = function (router, core) {
 
   router.route('/').get(function (req, res, next) {
@@ -223,6 +225,7 @@ module.exports = function (router, core) {
 
     }
 
+
     if (/^[a-z0-9]+$/.test(study) == false && study != '' && study != null) {
 
       return res.status(400).send('Enter a valid study name');
@@ -230,45 +233,86 @@ module.exports = function (router, core) {
     }
 
 
-    function refreshAndReturn(err, stdout, stderr) {
-      if (err) { return next(err); }
+    if (fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == true) {
 
-      // When an instance is created, we call refreshInstances() to update the
-      // instances list cache and socket emit the updated list to all users.
-      // The 'core' parameter allows to get the socket object inside
-      // refreshInstances().
-      instances.refreshInstances(core);
+      res.status(409).send('Technical name already exists');
 
-      return res.status(200).send('Instance created');
+    }
+    else {
+
+      docker.pull(image, follow);
+
     }
 
 
-    function managePort(err, data) {
-      if (err) { return next(err); }
+    function follow(err, stream) {
+      if (err) { return res.status(400).send(err); }
 
-      var keys =  Object.keys(data.HostConfig.PortBindings);
-      var currentPort = data.HostConfig.PortBindings[keys[0]][0].HostPort;
+      docker.modem.followProgress(stream, onFinished);
 
-      if (currentPort >= portMax) {
-        portMax = parseInt(currentPort) + 1;
-      }
-
-      return checkPort();
     }
 
 
-    function checkPort() {
+    function onFinished(err, output) {
+      if (err) { return res.status(400).send(err); }
+
+      mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), makeDataDirectory);
+    }
+
+
+    function makeDataDirectory(err) {
+      if (err) { return next(err); }
+
+      mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), createConfigFile);
+    }
+
+
+    function createConfigFile(err) {
+      if (err) { return next(err); }
+
+      fs.appendFile(
+        path.join(
+          __dirname, '../instances/'+technicalName+'/config/config.json'
+        )
+        , '{}'
+        , readInstances
+      );
+    }
+
+
+    function readInstances(err) {
+      if (err) { return next(err); }
+
+      instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
+
+      docker.listContainers({all : true}, createInstance);
+    }
+
+
+    function createInstance(err, containersList) {
+      if (err) { return next(err); }
+
+      containers = containersList;
+
+      portMax = 0;
+      freePortSplitted = process.env.EZMASTER_FREE_PORT_RANGE.split('-');
+
+      checkContainer();
+    }
+
+
+    function checkContainer() {
       var element = containers.pop();
 
       if (element) {
         var splittedName = element.Names[0].split('/');
         if (instancesArray.indexOf(splittedName[1]) === -1) {
-          return checkPort();
+          return checkContainer();
         }
 
         var container = docker.getContainer(element.Id);
 
-        container.inspect(managePort);
+        container.inspect(checkPort);
       }
       else {
         debug(portMax);
@@ -299,76 +343,34 @@ module.exports = function (router, core) {
     }
 
 
-    function createInstance(err, containersList) {
+    function checkPort(err, data) {
       if (err) { return next(err); }
 
-      containers = containersList;
+      var keys =  Object.keys(data.HostConfig.PortBindings);
+      var currentPort = data.HostConfig.PortBindings[keys[0]][0].HostPort;
 
-      portMax = 0;
-      freePortSplitted = process.env.EZMASTER_FREE_PORT_RANGE.split('-');
+      if (currentPort >= portMax) {
+        portMax = parseInt(currentPort) + 1;
+      }
 
-      checkPort();
+      return checkContainer();
     }
 
 
-    function readInstances(err) {
+    function refreshAndReturn(err, stdout, stderr) {
       if (err) { return next(err); }
 
-      instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
+      // When an instance is created, we call refreshInstances() to update the
+      // instances list cache and socket emit the updated list to all users.
+      // The 'core' parameter allows to get the socket object inside
+      // refreshInstances().
+      instances.refreshInstances(core);
 
-      docker.listContainers({all : true}, createInstance);
+      return res.status(200).send('Instance created');
     }
 
-
-    function createConfigFile(err) {
-      if (err) { return next(err); }
-
-      fs.appendFile(
-        path.join(
-          __dirname, '../instances/'+technicalName+'/config/config.json'
-        )
-        , '{}'
-        , readInstances
-      );
-    }
-
-
-    function makeDataDirectory(err) {
-      if (err) { return next(err); }
-
-      mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), createConfigFile);
-    }
-
-
-    function onFinished(err, output) {
-      if (err) { return res.status(400).send(err); }
-
-      mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), makeDataDirectory);
-    }
-
-
-    function follow(err, stream) {
-      if (err) { return res.status(400).send(err); }
-
-      docker.modem.followProgress(stream, onFinished);
-
-    }
-
-
-    if (fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == true) {
-
-      res.status(409).send('Technical name already exists');
-
-    }
-    else {
-
-      docker.pull(image, follow);
-
-    }
-
-  });
+  }); // End of the route.
 
 
 
-
-};
+}; // End of module.exports = function (router, core) {
