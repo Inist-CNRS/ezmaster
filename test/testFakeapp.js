@@ -52,7 +52,7 @@ describe('Create fakeapp', function () {
   });
 });
 
-/*describe('Found fakeapp', function () {
+describe('Found fakeapp', function () {
 
   this.timeout(60000);
 
@@ -63,7 +63,7 @@ describe('Create fakeapp', function () {
     .end(done);
 
   });
-});*/
+});
 
 describe('Delete fakeapp', function () {
 
