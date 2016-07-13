@@ -12,7 +12,6 @@ var filesize = require('filesize');
 var numCPUs = require('num-cpus');
 var disk = require('diskusage');
 var path = require('path');
-var util = require('utile');
 var basename = path.basename(__filename, '.js');
 var debug = require('debug')('castor:heartbeat:' + basename);
 

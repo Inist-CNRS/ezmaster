@@ -58,7 +58,8 @@ module.exports = function (router, core) {
         container.start(function (err, datas, container) {
           if (err) { return next(err); }
 
-          // When an instance is started, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+          // When an instance is started, we call refreshInstances() to update
+          // the instances list cache and socket emit the updated list to all users.
           // The 'core' parameter allows to get the socket object inside refreshInstances().
           instances.refreshInstances(core);
 
@@ -69,7 +70,8 @@ module.exports = function (router, core) {
         container.stop(function (err, datas, container) {
           if (err) { return next(err); }
 
-          // When an instance is stopped, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+          // When an instance is stopped, we call refreshInstances() to update the
+          // instances list cache and socket emit the updated list to all users.
           // The 'core' parameter allows to get the socket object inside refreshInstances().
           instances.refreshInstances(core);
 
@@ -96,7 +98,8 @@ module.exports = function (router, core) {
             }
           });
 
-        // When a new config is given to an instance, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+        // When a new config is given to an instance, we call refreshInstances() to update the
+        // instances list cache and socket emit the updated list to all users.
         // The 'core' parameter allows to get the socket object inside refreshInstances().
         instances.refreshInstances(core);
 
@@ -176,7 +179,8 @@ module.exports = function (router, core) {
         rimraf(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err) {
           if (err) { return next(err); }
 
-          // When an instance is deleted, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
+          // When an instance is deleted, we call refreshInstances() to update the
+          // instances list cache and socket emit the updated list to all users.
           // The 'core' parameter allows to get the socket object inside refreshInstances().
           instances.refreshInstances(core);
 
@@ -288,8 +292,10 @@ module.exports = function (router, core) {
                       exec(cmd, function (err, stdout, stderr) {
                         if (err) { return next(err); }
 
-                        // When an instance is created, we call refreshInstances() to update the instances list cache and socket emit the updated list to all users.
-                        // The 'core' parameter allows to get the socket object inside refreshInstances().
+                        // When an instance is created, we call refreshInstances() to update the
+                        // instances list cache and socket emit the updated list to all users.
+                        // The 'core' parameter allows to get the socket object inside
+                        // refreshInstances().
                         instances.refreshInstances(core);
 
                         return res.status(200).send('Instance created');

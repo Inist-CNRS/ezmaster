@@ -60,11 +60,11 @@ describe('Found fakeapp', function () {
 
 
     setTimeout(function() {
-    request.get('/-/v1/instances/').expect(function (res) {
-      if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
-    })
-    .end(done);
-  }, 5000);
+      request.get('/-/v1/instances/').expect(function (res) {
+        if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
+      })
+      .end(done);
+    }, 5000);
 
   });
 });

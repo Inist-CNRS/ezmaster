@@ -10,6 +10,7 @@ var optsEditor = {}
   , editor = new JSONEditor()
   , idToDelete = null
   , idToConfig = null
+  ;
 
 
 // view for the instances table in HTML which id is instances-table.
@@ -35,7 +36,8 @@ var vmTableInstances = new Vue({
     // Listen incoming messages typed as 'refreshInstances' from the server.
     // Here the message comes from eventRefreshInstances.js.
     socket.on('refreshInstances', function(beatInstances) {
-      // Update variable 'containers' which will automatically refresh the instances-table component.
+      // Update variable 'containers' which will automatically
+      // refresh the instances-table component.
       vmTableInstances.$set('containers', beatInstances);
     });
 

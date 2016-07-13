@@ -12,14 +12,17 @@ var path = require('path')
   , Docker = require('dockerode')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
   , sortBy = require('sort-by')
-  , _ = require('lodash');
+  , _ = require('lodash')
+  , instances = require('./instances')
+  ;
 
 
 // Cache explanations :
   // We store the instances cache here.
   // We create a bool in route.js which take true if the cache is up to date.
   // When an action is performed in route.js (start, stop, delete, update config, add instance),
-  // we call refreshInstances() which call getInstances(true) with the bool true as one of its parameters.
+  // we call refreshInstances() which call getInstances(true) with
+  // the bool true as one of its parameters.
   // getInstances() checks the bool :
     // If true : get the instances list, updates the cache and returns the list.
     // If false : returns the cache.
@@ -190,12 +193,11 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
 // The component table.js is listening to messages coming from here.
 module.exports.refreshInstances = function (core) {
 
-  var instances = require('./instances');
-
   // Get the socket object stored in core.socket.
   var socket = core.socket;
 
-  // true for instancesChangesBool because we need to update the cache and get the new instances list.
+  // true for instancesChangesBool because we need to update the cache and
+  // get the new instances list.
   instances.getInstances(true, function(err, instancesList) {
 
     if (err) { return new Error(err); }
@@ -204,7 +206,7 @@ module.exports.refreshInstances = function (core) {
     //  - update the 'containers' variable
     //  - refresh the table.js component
     // This is the table.js component which receives the emit message.
-      socket.broadcast.emit('refreshInstances', instancesList);
+    socket.broadcast.emit('refreshInstances', instancesList);
 
   });
 
