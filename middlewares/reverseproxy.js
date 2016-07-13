@@ -54,6 +54,8 @@ module.exports = function(options, core) {
 
       if (isRpEnabled.byXForwarded && instances !== undefined) {
 
+        console.log("########## X FORWARDED ##########");
+
         debug('reverseproxy#1.1');
 
         var search = reqSubdomain[0].split('-');
@@ -88,9 +90,14 @@ module.exports = function(options, core) {
             return;
           }, undefined);
 
+
+
         if (found !== undefined) {
           var url = 'http://'+found+':'+ '3000';
+
           debug('reverseproxy#1.1.1', url);
+          console.log("########## URL : "+url+" ##########");
+
           proxy.web(req, res, { target: url });
           proxy.on('error', function(e) {
             console.error('reverseproxy#1.1.2', e);
