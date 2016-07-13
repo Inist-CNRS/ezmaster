@@ -1,59 +1,53 @@
 
 'use strict';
 
-/**
- *
- * Example with curl to test the reverse proxy:
- * export EZMASTER_PUBLIC_DOMAIN="data.istex.fr"
- * make run-debug
- * curl -v --proxy "" -H "X-Forwarded-Host: aa-bb-1.data.istex.fr"
- * ++ -H "X-Forwarded-Server: data.istex.fr" http://127.0.0.1:35267/
- * curl -v --proxy "" -H "Host: aa-bb-1.data.istex.fr" http://127.0.0.1:35267/
- *
- */
+/*
+  Example with curl to test the reverse proxy:
+  export EZMASTER_PUBLIC_DOMAIN="data.istex.fr"
+  make run-debug
+  curl -v --proxy "" -H "X-Forwarded-Host: aa-bb-1.data.istex.fr"
+  ++ -H "X-Forwarded-Server: data.istex.fr" http://127.0.0.1:35267/
+  curl -v --proxy "" -H "Host: aa-bb-1.data.istex.fr" http://127.0.0.1:35267/
+*/
 
 var path      = require('path');
 var basename  = path.basename(__filename, '.js');
 var debug     = require('debug')('ezmaster:' + basename);
-
 var httpProxy = require('http-proxy');
 var instances = require('../helpers/instances');
 
 
 module.exports = function(options, core) {
 
-  var proxy = httpProxy.createProxyServer({})
-    , publicDomain = core.config.get('publicDomain');
+  var proxy = httpProxy.createProxyServer({});
+  var publicDomain = core.config.get('publicDomain');
 
-  debug('Loading reverseproxy middleware: '
-    + (publicDomain ? 'enabled [' + publicDomain + ']' : 'disabled'));
+  debug('Loading reverseproxy middleware: ' + (publicDomain ? 'enabled [' + publicDomain + ']' : 'disabled'));
 
   return function(req, res, next) {
 
     // false for instancesChangesBool because when this code is executed
-    //the cache is already present in getInstances().
+    // the cache is already present in getInstances().
     instances.getInstances(false, function (err, instances) {
       if (err) { return new Error(err); }
 
       var host         = req.headers['host']
         , reqServer    = req.headers['x-forwarded-server']
         , reqHost      = req.headers['x-forwarded-host']
-        , reqSubdomain = reqHost ? reqHost.split('.') : false;
+        , reqSubdomain = reqHost ? reqHost.split('.') : false
+        ;
 
-      debug('reverseproxy#1', host, ' ', reqSubdomain,
-        ' && (', reqServer, ' === ', publicDomain, ')');
+      debug('reverseproxy#1', host, ' ', reqSubdomain, ' && (', reqServer, ' === ', publicDomain, ')');
 
       // Two way to activate the RP:
       // with an explicit "Host" header
       // with the special X-Forwarded-* headers
       var isRpEnabled = {};
-      isRpEnabled.byHost       = publicDomain ?
-        (host.slice(-publicDomain.length) === publicDomain) : false;
+      isRpEnabled.byHost = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
       debug(isRpEnabled);  // TODO : rendra capable le RP de gérer le header "Host"
 
       if (reqSubdomain && (reqServer === publicDomain) && instances !== undefined) {
-
 
         debug('reverseproxy#1.1');
 
@@ -98,14 +92,17 @@ module.exports = function(options, core) {
             next(new Error('Bad gateway'));
           });
           return;
-        } else {
+        }
+        else {
           debug('reverseproxy#1.2');
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
-      } else {
+      }
+      else {
         debug('reverseproxy#1.0');
         return next();
       }
+
     });
   };
 };
