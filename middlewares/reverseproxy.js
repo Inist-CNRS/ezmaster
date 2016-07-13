@@ -103,6 +103,8 @@ module.exports = function(options, core) {
       }
       else if (isRpEnabled.byHost) {
         console.log("########## BY HOST ##########");
+        var url = 'http://'+host+':'+ '3000';
+          proxy.web(req, res, { target: url });
       }
       else {
         console.log("########## BY ELSE ##########");
