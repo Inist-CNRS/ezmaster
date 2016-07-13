@@ -52,16 +52,12 @@ describe('Create fakeapp', function () {
   });
 });
 
-describe('Found fakeapp', function () {
+/*describe('Found fakeapp', function () {
 
   it('Found fakeapp', function (done) {
 
     this.timeout(60000);
 
-
-    setTimeout(function() {
-
-    }, 5000);
 
     request.get('/-/v1/instances/').expect(function (res) {
         if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
@@ -69,7 +65,7 @@ describe('Found fakeapp', function () {
       .end(done);
 
   });
-});
+});*/
 
 describe('Delete fakeapp', function () {
 
