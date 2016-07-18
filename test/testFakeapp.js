@@ -12,7 +12,7 @@ var execSync = require('child_process').exec
 //Build the fakeapp image
 // Create the container and the manifest file
 //Before all the test
-before(function() {
+/*before(function() {
 
   var cmd = path.join('docker build -t fakeapp --build-arg https_proxy --build-arg http_proxy '
             , __dirname, '/datasets/fakeapp/');
@@ -54,8 +54,6 @@ describe('Create fakeapp', function () {
 
 describe('Found fakeapp', function () {
 
-  this.timeout(60000);
-
   it('Found fakeapp', function (done) {
     request.get('/-/v1/instances/').expect(function (res) {
       if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
@@ -79,4 +77,4 @@ describe('Delete fakeapp', function () {
 
 
   });
-});
+});*/
