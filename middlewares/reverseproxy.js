@@ -38,7 +38,10 @@ module.exports = function(options, core) {
       // with the special X-Forwarded-* headers
       // Makes the reverse proxy able to manage the HOST header.
       var isRpEnabled = {};
-      isRpEnabled.byHost = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
+      isRpEnabled.byHost =
+        publicDomain ?
+        (host.slice(-publicDomain.length) === publicDomain) :
+        false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
 
       // If Host header is used, we have to redefine reqSubdomain, reqHost and reqServer.
@@ -46,7 +49,7 @@ module.exports = function(options, core) {
 
         reqSubdomain = host.split('.');
         reqHost = host;
-        reqServer = host.split('.')[1] + "." + host.split('.')[2] + "." + host.split('.')[3];
+        reqServer = host.split('.')[1] + '.' + host.split('.')[2] + '.' + host.split('.')[3];
 
       }
 
