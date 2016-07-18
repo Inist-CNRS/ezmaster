@@ -54,11 +54,8 @@ describe('Create fakeapp', function () {
 
 describe('Found fakeapp', function () {
 
-  this.timeout(60000);
-
   it('Found fakeapp', function (done) {
     request.get('/-/v1/instances/').expect(function (res) {
-      console.log("Found "+res);
       if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
     })
     .end(done);
@@ -68,14 +65,11 @@ describe('Found fakeapp', function () {
 
 describe('Delete fakeapp', function () {
 
-  this.timeout(60000);
-
   it('Delete fakeapp', function (done) {
 
     request
     .delete('/-/v1/instances/test-fakeapp')
     .expect(200, function (err) {
-      console.log("Delete "+err);
       done(err);
     });
 
