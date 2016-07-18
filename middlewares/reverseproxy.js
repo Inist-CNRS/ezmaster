@@ -121,6 +121,10 @@ module.exports = function(options, core) {
         console.log("########## BY HOST ##########");
         console.log("########## HOST : " + host + " ##########");
 
+        reqSubdomain = host.split('.');
+        reqHost = host;
+        reqServer = host.split('.')[1] + "." + host.split('.')[2] + "." + host.split('.')[3];
+
         var search = reqSubdomain[0].split('-');
         console.log("########## SEARCH : " + search + " ##########");
 
