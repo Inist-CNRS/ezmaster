@@ -95,11 +95,11 @@ RUN sudo ln -s /root/data /opt/ezmaster/data
 
 ## Diagrams
 
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/d97293f5cf1d3395e924ada68364792781231d38/doc/ezmaster_Architecture_Diagram.png)
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Technical_Environment.jpg)
 
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/ae41d8589512a38801e916fa8c90989adc930093/doc/Ezmaster_Main_Interactions_Version3.png)
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Architecture.jpg)
 
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Socket_Emit_VS_Broadcast.jpg)
 
-
-
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
 
