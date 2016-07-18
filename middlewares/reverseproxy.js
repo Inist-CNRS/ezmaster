@@ -37,6 +37,11 @@ module.exports = function(options, core) {
       var reqHost      = req.headers['x-forwarded-host'];
       var reqSubdomain = reqHost ? reqHost.split('.') : false;
 
+      console.log("########## host : " + host + " ##########");
+      console.log("########## reqServer : " + reqServer + " ##########");
+      console.log("########## reqHost : " + reqHost + " ##########");
+      console.log("########## reqSubdomain : " + reqSubdomain + " ##########");
+
       debug('reverseproxy#1', host, ' ', reqSubdomain, ' && (', reqServer, ' === ', publicDomain, ')');
 
       // Two way to activate the RP:
@@ -106,14 +111,15 @@ module.exports = function(options, core) {
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
       }
+
+
+
+
+
       else if (isRpEnabled.byHost && instances !== undefined) {
 
         console.log("########## BY HOST ##########");
         console.log("########## HOST : " + host + " ##########");
-
-
-
-
 
         var search = reqSubdomain[0].split('-');
         console.log("########## SEARCH : " + search + " ##########");
@@ -165,10 +171,6 @@ module.exports = function(options, core) {
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
 
-
-
-
-
 /*
 
           var url = 'http://'+host.split('.')[0]+':'+ '3000';
@@ -177,11 +179,18 @@ module.exports = function(options, core) {
 */
 
       }
+
+
+
       else {
         console.log("########## BY ELSE ##########");
         debug('reverseproxy#1.0');
         return next();
       }
+
+
+
+
     });
   };
 };
