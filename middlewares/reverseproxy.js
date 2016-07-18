@@ -41,6 +41,7 @@ module.exports = function(options, core) {
       isRpEnabled.byHost = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
 
+      // If Host header is used, we have to redefine reqSubdomain, reqHost and reqServer.
       if (isRpEnabled.byHost) {
 
         reqSubdomain = host.split('.');
@@ -49,10 +50,12 @@ module.exports = function(options, core) {
 
       }
 
+      // If isRpEnabled.
       if ((isRpEnabled.byXForwarded || isRpEnabled.byHost) && instances !== undefined) {
 
         var search = reqSubdomain[0].split('-');
 
+        // Search the instance the user asked for.
         var found = Object.keys(instances)
           .map(function(z) {
             instances[z].current = instances[z].technicalName.split('-');
@@ -83,11 +86,15 @@ module.exports = function(options, core) {
             return;
           }, undefined);
 
+        // We feed the variable used to create the final URL.
+        // This variable takes a different value if the Host header is used.
         var finalUrlLeftPart = found;
         if (isRpEnabled.byHost) {
           finalUrlLeftPart = host.split('.')[0];
         }
 
+        // If the asked instance has been found.
+        // We create the final URL and we go to it.
         if (found !== undefined) {
           var url = 'http://'+finalUrlLeftPart+':'+ '3000';
           proxy.web(req, res, { target: url });
@@ -97,11 +104,12 @@ module.exports = function(options, core) {
           });
           return;
         }
+        // If the asked instance has not been found.
         else {
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
       }
-
+      // If not isRpEnabled.
       else {
         return next();
       }
