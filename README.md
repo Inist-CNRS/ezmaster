@@ -56,23 +56,25 @@ make run-debug
 ```
 
 ## Ezmasterizing an application
-### Dockerfile Modifications :
+### Dockerfile modifications.
 ```shell
 FROM ubuntu or node or ...
 
-# 3000 is the default port
+# 3000 is the default port.
 EXPOSE 3000
 
 RUN sudo mkdir -p /opt/ezmaster/config/
 RUN sudo ln -s ###path to your config file### /opt/ezmaster/config/config.json
 RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
 ```
+### Create symbolic links for configuration and data files.
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Volume_Mounting.jpg)
 
-Example: (The EZVis Dockerfile)
+Example: The ezvis Dockerfile
 ```shell
 FROM ubuntu:14.04
 
-# The next line is useful only if you are behind a proxy
+# The next line is useful only if you are behind a proxy.
 # ENV http_proxy=http://proxyout.domain.com:8080 https_proxy=http://proxyout.domain.com:8080
 
 RUN apt-get update -y
@@ -92,7 +94,6 @@ RUN sudo ln -s /root/data.json /opt/ezmaster/config/config.json
 RUN sudo ln -s /root/data /opt/ezmaster/data
 ```
 
-
 ## Diagrams
 
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Technical_Environment.jpg)
@@ -103,3 +104,4 @@ RUN sudo ln -s /root/data /opt/ezmaster/data
 
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
 
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
