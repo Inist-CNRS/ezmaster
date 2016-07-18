@@ -58,6 +58,7 @@ describe('Found fakeapp', function () {
 
   it('Found fakeapp', function (done) {
     request.get('/-/v1/instances/').expect(function (res) {
+      console.log("Found "+res);
       if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
     })
     .end(done);
@@ -74,6 +75,7 @@ describe('Delete fakeapp', function () {
     request
     .delete('/-/v1/instances/test-fakeapp')
     .expect(200, function (err) {
+      console.log("Delete "+err);
       done(err);
     });
 
