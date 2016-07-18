@@ -2,13 +2,13 @@
 'use strict';
 
 /*
-  Example with curl to test the reverse proxy:
-  export EZMASTER_PUBLIC_DOMAIN="data.istex.fr"
-  make run-debug
-  curl -v --proxy "" -H "X-Forwarded-Host: aa-bb-1.data.istex.fr"
-  ++ -H "X-Forwarded-Server: data.istex.fr" http://127.0.0.1:35267/
-  curl -v --proxy "" -H "Host: aa-bb-1.data.istex.fr" http://127.0.0.1:35267/
- */
+  Test the reverse proxy with curl:
+
+  curl --proxy "" -H "X-Forwarded-Host: a-a.lod-test.istex.fr"
+    -H "X-Forwarded-Server: lod-test.istex.fr" http://192.168.31.146:35267/index.html
+
+  curl --proxy "" -H "Host: a-a.lod-test.istex.fr" http://192.168.31.146:35267/index.html
+*/
 
 var path      = require('path');
 var basename  = path.basename(__filename, '.js');
@@ -47,14 +47,37 @@ module.exports = function(options, core) {
       // Two way to activate the RP:
       // with an explicit "Host" header
       // with the special X-Forwarded-* headers
+      // Makes the reverse proxy able to manage the HOST header.
       var isRpEnabled = {};
       isRpEnabled.byHost = publicDomain ? (host.slice(-publicDomain.length) === publicDomain) : false;
       isRpEnabled.byXForwarded = reqSubdomain && (reqServer === publicDomain);
 
-      // TODO : rendra capable le RP de gérer le header "Host"
+
       console.log("########## isRpEnabled : " + isRpEnabled + " ##########");
 
-      if (isRpEnabled.byXForwarded && instances !== undefined) {
+
+
+      if (isRpEnabled.byHost) {
+
+        reqSubdomain = host.split('.');
+        reqHost = host;
+        reqServer = host.split('.')[1] + "." + host.split('.')[2] + "." + host.split('.')[3];
+
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+      if ((isRpEnabled.byXForwarded || isRpEnabled.byHost) && instances !== undefined) {
 
         debug('reverseproxy#1.1');
         console.log("########## BY X FORWARDED ##########");
@@ -95,8 +118,13 @@ module.exports = function(options, core) {
 
         console.log("########## FOUND : " + found + " ##########");
 
+        var finalUrlLeftPart = found;
+        if (isRpEnabled.byHost) {
+          finalUrlLeftPart = host.split('.')[0];
+        }
+
         if (found !== undefined) {
-          var url = 'http://'+found+':'+ '3000';
+          var url = 'http://'+finalUrlLeftPart+':'+ '3000';
           debug('reverseproxy#1.1.1', url);
           console.log("########## URL : " + url + " ##########");
           proxy.web(req, res, { target: url });
@@ -114,7 +142,7 @@ module.exports = function(options, core) {
 
 
 
-
+/*
 
       else if (isRpEnabled.byHost && instances !== undefined) {
 
@@ -175,16 +203,16 @@ module.exports = function(options, core) {
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
 
-/*
 
-          var url = 'http://'+host.split('.')[0]+':'+ '3000';
-          console.log("########## URL : " + url + " ##########");
-          proxy.web(req, res, { target: url });
-*/
+
+          //var url = 'http://'+host.split('.')[0]+':'+ '3000';
+          //console.log("########## URL : " + url + " ##########");
+          //proxy.web(req, res, { target: url });
+
 
       }
 
-
+*/
 
       else {
         console.log("########## BY ELSE ##########");
