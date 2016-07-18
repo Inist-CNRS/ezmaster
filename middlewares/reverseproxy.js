@@ -49,7 +49,7 @@ module.exports = function(options, core) {
       // TODO : rendra capable le RP de gérer le header "Host"
       console.log("########## isRpEnabled : " + isRpEnabled + " ##########");
 
-      if (reqSubdomain && (reqServer === publicDomain) && instances !== undefined) {
+      if (isRpEnabled.byXForwarded && instances !== undefined) {
 
         debug('reverseproxy#1.1');
         console.log("########## BY X FORWARDED ##########");
@@ -106,12 +106,15 @@ module.exports = function(options, core) {
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
       }
-      else if (isRpEnabled.byHost) {
+      else if (isRpEnabled.byHost && instances !== undefined) {
 
         console.log("########## BY HOST ##########");
         console.log("########## HOST : " + host + " ##########");
 
-      /*
+
+
+
+
         var search = reqSubdomain[0].split('-');
         console.log("########## SEARCH : " + search + " ##########");
 
@@ -148,7 +151,7 @@ module.exports = function(options, core) {
         console.log("########## FOUND : " + found + " ##########");
 
         if (found !== undefined) {
-          var url = 'http://'+found+':'+ '3000';
+          var url = 'http://'+host.split('.')[0]+':'+ '3000';
           console.log("########## URL : " + url + " ##########");
           proxy.web(req, res, { target: url });
           proxy.on('error', function(e) {
@@ -161,12 +164,17 @@ module.exports = function(options, core) {
           debug('reverseproxy#1.2');
           res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
         }
-      */
+
+
+
+
+
+/*
 
           var url = 'http://'+host.split('.')[0]+':'+ '3000';
           console.log("########## URL : " + url + " ##########");
           proxy.web(req, res, { target: url });
-
+*/
 
       }
       else {
