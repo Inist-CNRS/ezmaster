@@ -2,7 +2,7 @@
 'use strict';
 
 // Travis run this file while building.
-var execSync = require('child_process').execSync
+var execSync = require('child_process').exec
   , path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
