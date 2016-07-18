@@ -67,7 +67,9 @@ RUN sudo mkdir -p /opt/ezmaster/config/
 RUN sudo ln -s ###path to your config file### /opt/ezmaster/config/config.json
 RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
 ```
+
 ### Create symbolic links for configuration and data files.
+### Refer to the schema below.
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Volume_Mounting.jpg)
 
 Example: The ezvis Dockerfile
@@ -99,8 +101,6 @@ RUN sudo ln -s /root/data /opt/ezmaster/data
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Technical_Environment.jpg)
 
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Architecture.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Socket_Emit_VS_Broadcast.jpg)
 
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
 
