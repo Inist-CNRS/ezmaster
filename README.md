@@ -72,29 +72,12 @@ RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
 ### Refer to the schema below.
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Volume_Mounting.jpg)
 
-Example: The ezvis Dockerfile
-```shell
-FROM ubuntu:14.04
+Example:
+EZVIS Dockerfile:
+<https://github.com/madec-project/ezvis/blob/master/Docker/Dockerfile>
 
-# The next line is useful only if you are behind a proxy.
-# ENV http_proxy=http://proxyout.domain.com:8080 https_proxy=http://proxyout.domain.com:8080
-
-RUN apt-get update -y
-RUN apt-get install nodejs -y
-RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN apt-get install npm -y
-RUN npm install --production ezvis -g
-
-ADD startup.sh /
-
-EXPOSE 3000
-
-CMD bash /startup.sh
-
-RUN sudo mkdir -p /opt/ezmaster/config/
-RUN sudo ln -s /root/data.json /opt/ezmaster/config/config.json
-RUN sudo ln -s /root/data /opt/ezmaster/data
-```
+EZARK Dockerfile:
+<https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile>
 
 ## Diagrams
 
