@@ -1,4 +1,4 @@
-# ezmaster docker-compose.yml dedicated to production 
+# ezmaster docker-compose.yml dedicated to production
 version: '2'
 
 services:
@@ -9,7 +9,7 @@ services:
   # https://hub.docker.com/r/inistcnrs/ezmaster/
   ezmaster:
     container_name: ezmaster
-    image: inistcnrs/ezmaster:2.1.4
+    image: inistcnrs/ezmaster:2.2.0
     links:
       - ezmaster_db
     volumes:
@@ -31,7 +31,7 @@ services:
     # restart this container if the host server restarts
     # or if ezmaster nodejs process crashes :
     # - it needs time for mongodb initialize the first time, so a retry is necessary
-    # - usually a nodejs application need forever, pm2 or equivalent 
+    # - usually a nodejs application need forever, pm2 or equivalent
     restart: always
 
   # Mongodb used by ezmaster to store parameters, metadata etc...
