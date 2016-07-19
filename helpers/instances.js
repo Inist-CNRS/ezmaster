@@ -13,7 +13,6 @@ var path = require('path')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
   , sortBy = require('sort-by')
   , _ = require('lodash')
-  , instances = require('./instances')
   ;
 
 
@@ -198,7 +197,7 @@ module.exports.refreshInstances = function (core) {
 
   // true for instancesChangesBool because we need to update the cache and
   // get the new instances list.
-  instances.getInstances(true, function(err, instancesList) {
+  module.exports.getInstances(true, function(err, instancesList) {
 
     if (err) { return new Error(err); }
 
