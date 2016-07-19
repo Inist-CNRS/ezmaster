@@ -101,6 +101,18 @@ var vm = new Vue({
     urlPreview : '',
     messageErrorPull : '',
     codeErrorPull : ''
+  },
+  computed: { // Here we manage fields built from other ones.
+
+    urlPreview: function () {
+
+      // By return we update what is present in the urlPreview field.
+      // So, the content of the urlPreview field will be :
+      // 'http://'+this.technicalName+'.'+publicDomain
+      return 'http://'+this.technicalName+'.'+publicDomain;
+
+    }
+
   }
 
 });
@@ -109,16 +121,18 @@ var vm = new Vue({
 module.exports = vm;
 
 
-// The 3 first vm.$watch manage field color changes in the addInstance form.
-
 vm.$watch('longName', function(longName) {
 
   // The longName parameter contains the longName field value.
 
-  if (longName == '')
+  if (longName == '') {
+    // Red background.
     document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
-  else
+  }
+  else {
+    // Green background.
     document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
+  }
 
 });
 
@@ -127,22 +141,22 @@ vm.$watch('study', function(study) {
 
   // The study parameter contains the study field value.
 
-  if (/^[a-z0-9]+$/.test(study)==false || study == '')
+  this.study = study;
+
+  if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
+  else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
+
+  this.verif(this.technicalName);
+
+
+  if (/^[a-z0-9]+$/.test(study)==false || study == '') {
+    // Red background.
     document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
-  else
+  }
+  else {
+    // Green background.
     document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
-
-});
-
-
-vm.$watch('project', function(project) {
-
-  // The project parameter contains the project field value.
-
-  if (/^[a-z0-9]+$/.test(project)==false || project == '')
-    document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
-  else
-    document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
+  }
 
 });
 
@@ -156,23 +170,17 @@ vm.$watch('project', function(project) {
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
-  this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   this.verif(this.technicalName);
 
-});
 
-
-vm.$watch('study', function (study) {
-
-  // The study parameter contains the study field value.
-
-  this.study = study;
-
-  if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-  else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
-
-  this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
-  this.verif(this.technicalName);
+  if (/^[a-z0-9]+$/.test(project)==false || project == '') {
+    // Red background.
+    document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
+  }
+  else {
+    // Green background.
+    document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
+  }
 
 });
 
@@ -186,7 +194,6 @@ vm.$watch('version', function (version) {
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
-  this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   this.verif(this.technicalName);
 
 });
