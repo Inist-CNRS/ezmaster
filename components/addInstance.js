@@ -83,13 +83,13 @@ var vm = new Vue({
 module.exports = vm;
 
 
-// Manage field color changes in the addInstance form.
+// The 3 first vm.$watch manage field color changes in the addInstance form.
 
-vm.$watch('longName', function(data) {
+vm.$watch('longName', function(longName) {
 
-  var value = document.forms['Form']['inputLongName'].value;
+  // The longName parameter contains the longName field value.
 
-  if (value == '')
+  if (longName == '')
     document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
   else
     document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
@@ -97,11 +97,11 @@ vm.$watch('longName', function(data) {
 });
 
 
-vm.$watch('study', function(data) {
+vm.$watch('study', function(study) {
 
-  var value = document.forms['Form']['inputStudy'].value;
+  // The study parameter contains the study field value.
 
-  if (/^[a-z0-9]+$/.test(value)==false || value == '')
+  if (/^[a-z0-9]+$/.test(study)==false || study == '')
     document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
   else
     document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
@@ -109,11 +109,11 @@ vm.$watch('study', function(data) {
 });
 
 
-vm.$watch('project', function(data) {
+vm.$watch('project', function(project) {
 
-  var value = document.forms['Form']['inputProject'].value;
+  // The project parameter contains the project field value.
 
-  if (/^[a-z0-9]+$/.test(value)==false || value == '')
+  if (/^[a-z0-9]+$/.test(project)==false || project == '')
     document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
   else
     document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
@@ -121,55 +121,73 @@ vm.$watch('project', function(data) {
 });
 
 
-vm.$watch('project', function(data) {
+vm.$watch('project', function(project) {
 
-  this.project = data;
+  // The project parameter contains the project field value.
+
+  this.project = project;
 
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
   this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   verif(this.technicalName);
+
 });
 
 
-vm.$watch('study', function (data) {
-  this.study = data;
+vm.$watch('study', function (study) {
+
+  // The study parameter contains the study field value.
+
+  this.study = study;
 
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
   this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   verif(this.technicalName);
+
 });
 
 
-vm.$watch('version', function (data) {
-  this.version = data;
+vm.$watch('version', function (version) {
+
+  // The version parameter contains the version field value.
+
+  this.version = version;
 
   if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
   this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
   verif(this.technicalName);
+
 });
 
 
 function verif (tn) {
+
   var data = {
     'technicalName' : tn
   };
+
   vm.$http.get('/-/v1/instances/verif', data).then(function (result) {
+
     if (result.status == 200) {
       document.getElementById('technicalNameExists').style.display = 'none';
       document.getElementById('save').style.display = 'block';
       document.getElementById('saveTechnicalExists').style.display = 'none';
     }
+
   }, function (error) {
+
     if (error.status == 409) {
       document.getElementById('technicalNameExists').style.display = 'block';
       document.getElementById('save').style.display = 'none';
       document.getElementById('saveTechnicalExists').style.display = 'block';
     }
+
   });
+
 }
