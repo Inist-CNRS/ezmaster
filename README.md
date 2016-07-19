@@ -84,7 +84,7 @@ EZARK Dockerfile:
 
 EZPAARSE Dockerfile:
 
-Coming soon
+<https://hub.docker.com/r/ezpaarseproject/ezpaarse/~/dockerfile/>
 
 ## Diagrams
 
