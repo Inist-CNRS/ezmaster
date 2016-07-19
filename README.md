@@ -73,11 +73,18 @@ RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Volume_Mounting.jpg)
 
 Example:
+
 EZVIS Dockerfile:
+
 <https://github.com/madec-project/ezvis/blob/master/Docker/Dockerfile>
 
 EZARK Dockerfile:
+
 <https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile>
+
+EZPAARSE Dockerfile:
+
+Coming soon
 
 ## Diagrams
 
