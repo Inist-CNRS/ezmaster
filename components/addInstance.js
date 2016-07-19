@@ -22,6 +22,32 @@ var vm = new Vue({
 
   methods : {
 
+    verif : function (technicalName) {
+
+      var data = {
+        'technicalName' : technicalName
+      };
+
+      vm.$http.get('/-/v1/instances/verif', data).then(function (result) {
+
+        if (result.status == 200) {
+          document.getElementById('technicalNameExists').style.display = 'none';
+          document.getElementById('save').style.display = 'block';
+          document.getElementById('saveTechnicalExists').style.display = 'none';
+        }
+
+      }, function (error) {
+
+        if (error.status == 409) {
+          document.getElementById('technicalNameExists').style.display = 'block';
+          document.getElementById('save').style.display = 'none';
+          document.getElementById('saveTechnicalExists').style.display = 'block';
+        }
+
+      });
+
+    },
+
     displayFormAddInstance : function (event) {
       document.getElementById('modal-add-instance').style.display = 'block';
     },
@@ -131,7 +157,7 @@ vm.$watch('project', function(project) {
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
   this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
-  verif(this.technicalName);
+  this.verif(this.technicalName);
 
 });
 
@@ -146,7 +172,7 @@ vm.$watch('study', function (study) {
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
   this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
-  verif(this.technicalName);
+  this.verif(this.technicalName);
 
 });
 
@@ -161,33 +187,6 @@ vm.$watch('version', function (version) {
   else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
 
   this.urlPreview = 'http://'+this.technicalName+'.'+publicDomain;
-  verif(this.technicalName);
+  this.verif(this.technicalName);
 
 });
-
-
-function verif (tn) {
-
-  var data = {
-    'technicalName' : tn
-  };
-
-  vm.$http.get('/-/v1/instances/verif', data).then(function (result) {
-
-    if (result.status == 200) {
-      document.getElementById('technicalNameExists').style.display = 'none';
-      document.getElementById('save').style.display = 'block';
-      document.getElementById('saveTechnicalExists').style.display = 'none';
-    }
-
-  }, function (error) {
-
-    if (error.status == 409) {
-      document.getElementById('technicalNameExists').style.display = 'block';
-      document.getElementById('save').style.display = 'none';
-      document.getElementById('saveTechnicalExists').style.display = 'block';
-    }
-
-  });
-
-}
