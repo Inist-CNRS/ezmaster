@@ -206,6 +206,7 @@ module.exports.refreshInstances = function (core) {
     //  - update the 'containers' variable
     //  - refresh the table.js component
     // This is the table.js component which receives the emit message.
+    // If the socket variable is defined, we broadcast.
     socket && socket.broadcast.emit('refreshInstances', instancesList);
 
   });
