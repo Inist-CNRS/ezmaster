@@ -25,7 +25,7 @@ before(function() {
 request = request('http://127.0.0.1:35267');
 
 
-describe('Create fakeapp', function () {
+describe('Test Fakeapp', function () {
 
   this.timeout(60000);
 
@@ -50,9 +50,7 @@ describe('Create fakeapp', function () {
 
 
   });
-});
 
-describe('Found fakeapp', function () {
 
   it('Found fakeapp', function (done) {
     request.get('/-/v1/instances/').expect(function (res) {
@@ -61,9 +59,7 @@ describe('Found fakeapp', function () {
     .end(done);
 
   });
-});
 
-describe('Delete fakeapp', function () {
 
   it('Delete fakeapp', function (done) {
 
