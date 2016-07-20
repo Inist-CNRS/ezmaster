@@ -17,6 +17,86 @@ var vm = new Vue({
       self.$set('publicDomain', result.data.publicDomain);
       publicDomain = result.data.publicDomain;
     }, console.error);
+
+
+    this.$watch('longName', function(longName) {
+
+      // The longName parameter contains the longName field value.
+
+      if (longName == '') {
+        // Red background.
+        document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
+      }
+      else {
+        // Green background.
+        document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
+      }
+
+    });
+
+
+    this.$watch('study', function(study) {
+
+      // The study parameter contains the study field value.
+
+      this.study = study;
+
+      if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
+      else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
+
+      this.verif(this.technicalName);
+
+
+      if (/^[a-z0-9]+$/.test(study)==false || study == '') {
+        // Red background.
+        document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
+      }
+      else {
+        // Green background.
+        document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
+      }
+
+    });
+
+
+    this.$watch('project', function(project) {
+
+      // The project parameter contains the project field value.
+
+      this.project = project;
+
+      if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
+      else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
+
+      this.verif(this.technicalName);
+
+
+      if (/^[a-z0-9]+$/.test(project)==false || project == '') {
+        // Red background.
+        document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
+      }
+      else {
+        // Green background.
+        document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
+      }
+
+    });
+
+
+    this.$watch('version', function (version) {
+
+      // The version parameter contains the version field value.
+
+      this.version = version;
+
+      if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
+      else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
+
+      this.verif(this.technicalName);
+
+    });
+
+
   },
 
 
@@ -119,81 +199,3 @@ var vm = new Vue({
 
 
 module.exports = vm;
-
-
-vm.$watch('longName', function(longName) {
-
-  // The longName parameter contains the longName field value.
-
-  if (longName == '') {
-    // Red background.
-    document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
-  }
-  else {
-    // Green background.
-    document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
-  }
-
-});
-
-
-vm.$watch('study', function(study) {
-
-  // The study parameter contains the study field value.
-
-  this.study = study;
-
-  if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-  else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
-
-  this.verif(this.technicalName);
-
-
-  if (/^[a-z0-9]+$/.test(study)==false || study == '') {
-    // Red background.
-    document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
-  }
-  else {
-    // Green background.
-    document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
-  }
-
-});
-
-
-vm.$watch('project', function(project) {
-
-  // The project parameter contains the project field value.
-
-  this.project = project;
-
-  if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-  else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
-
-  this.verif(this.technicalName);
-
-
-  if (/^[a-z0-9]+$/.test(project)==false || project == '') {
-    // Red background.
-    document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
-  }
-  else {
-    // Green background.
-    document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
-  }
-
-});
-
-
-vm.$watch('version', function (version) {
-
-  // The version parameter contains the version field value.
-
-  this.version = version;
-
-  if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-  else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
-
-  this.verif(this.technicalName);
-
-});
