@@ -37,7 +37,7 @@ module.exports = {
 
   routes: [
     'config.js',
-    'route.js',
+    'v1.js',
     'status.js'
   ],
 
