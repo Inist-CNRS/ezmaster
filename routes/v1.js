@@ -17,6 +17,7 @@ var path = require('path')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances')
+  , app = require('../helpers/app')
   , instancesArray
   , containers
   , portMax
@@ -35,6 +36,19 @@ module.exports = function (router, core) {
   router.route('/').get(function (req, res, next) {
 
     return res.render('template.html');
+
+  });
+
+  router.route('/-/v1/app').get(function (req, res, next) {
+
+    app.getApps(function (err, data) {
+
+      if (err) { return next(err); }
+
+      debug(data);
+      return res.status(200).send(data);
+
+    });
 
   });
 

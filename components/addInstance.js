@@ -18,6 +18,10 @@ var vm = new Vue({
       publicDomain = result.data.publicDomain;
     }, console.error);
 
+    self.$http.get('/-/v1/app').then(function (result) {
+      self.$set('apps', result.data);
+    }, console.error);
+
 
     this.$watch('longName', function(longName) {
 
