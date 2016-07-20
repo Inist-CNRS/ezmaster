@@ -4,7 +4,7 @@
 // to the EZMASTER_MONGODB_HOST_PORT environment parameter
 // (docker uses it)
 var mongoHostPort = process.env.EZMASTER_MONGODB_HOST_PORT || 'localhost:27017';
-var publicDomain  = process.env.EZMASTER_PUBLIC_DOMAIN || '127.0.0.1';
+var publicDomain  = process.env.EZMASTER_PUBLIC_DOMAIN || '';
 var publicIP      = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1';
 var baseURL       = process.env.EZMASTER_PUBLIC_DOMAIN || 'http://' + publicIP + ':35267';
 
