@@ -33,6 +33,10 @@ module.exports = {
     , 'heartbeats'
   ],
 
+  browserifyTransformers: [
+    'vueify'
+  ],
+
   rootURL : '/',
 
   routes: [
