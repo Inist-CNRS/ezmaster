@@ -28,6 +28,9 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babelify": "^7.3.0",
     "body-parser": "^1.15.2",
     "castor-core": "^6.0.0",
     "debug": "^2.2.0",
@@ -52,7 +55,12 @@
     "sort-by": "^1.1.1",
     "utile": "^0.3.0",
     "vue": "^1.0.18",
+    "vue-awesome": "^0.3.0",
+    "vue-hot-reload-api": "^2.0.5",
+    "vue-infinite-scroll": "^0.2.3",
     "vue-resource": "^0.7.0",
+    "vue-router": "^0.7.13",
+    "vue-strap": "^1.0.11",
     "vue-validator": "^2.1.3",
     "vueify": "^8.7.0"
   },

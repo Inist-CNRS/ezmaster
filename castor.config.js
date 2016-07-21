@@ -31,6 +31,7 @@ module.exports = {
     , 'components/infosMachineTable'
     , 'vue-validator'
     , 'heartbeats'
+    , 'components/entryPoint'
   ],
 
   browserifyTransformers: [
