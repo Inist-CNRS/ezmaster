@@ -15,6 +15,7 @@ Vue.filter('uri', function (input) {
 
 
 Vue.use(require('vue-resource'));
+Vue.use(require('vue-router'));
 Vue.use(require('vue-infinite-scroll'));
 
 

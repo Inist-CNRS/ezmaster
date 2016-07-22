@@ -18,3 +18,4 @@ Vue.validator('lowercaseAndDigits', function (val) {
 require('components/addInstance');
 var vmTableInstances = require('components/table');
 var vmTableInfosMachine = require('components/infosMachineTable');
+require('components/entryPoint');

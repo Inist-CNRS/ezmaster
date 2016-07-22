@@ -32,6 +32,7 @@ module.exports = {
     , 'vue-validator'
     , 'heartbeats'
     , 'components/entryPoint'
+    , 'assets/js/main'
   ],
 
   browserifyTransformers: [

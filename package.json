@@ -62,7 +62,8 @@
     "vue-router": "^0.7.13",
     "vue-strap": "^1.0.11",
     "vue-validator": "^2.1.3",
-    "vueify": "^8.7.0"
+    "vueify": "^8.7.0",
+    "vuex": "^1.0.0-rc.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
