@@ -24,7 +24,7 @@
               <ul class="bread" style="margin-bottom:0px">
                 <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
                 <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
-                <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
+                <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
                 <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config </button></li>
                 <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>Access</a></li>
                 <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='http://[[ item.target ]].[[ publicDomain ]]'>Public Access </a></li>
@@ -41,13 +41,13 @@
                       </div>
                       <div class="panel-body">
                         <p>
-                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ technicalNameToDelete ]]</span> ?</span><br /><br />
-                          <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
+                          <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ technicalNameToDelete ]]</span> instance.</span><br /><br />
+                          <span class="deleteSizeFolder">It represents <span class="text-warning">[[ sizeToDelete ]]</span> of data.</span>
                         </p><br />
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-default" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
-                        <a style='float:right' class="btn btn-warning" v-on:click="deleteInstance">Delete</a>
+                        <a class="btn btn-default" v-on:click='cancelDeleteInstance' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' class="btn btn-warning" v-on:click="confirmDeleteInstance">Delete</a>
                       </div>
                     </div>
                   </div>
@@ -86,7 +86,7 @@
               <ul class="bread" style="margin-bottom:0px">
                 <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
                 <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
-                <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="confirmationDelete">Delete</button></li>
+                <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
                 <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
                 <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Access</button></li>
                 <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Public Access</button></li>
@@ -102,13 +102,13 @@
                       </div>
                       <div class="panel-body">
                         <p>
-                          <span class="deleteConfirmationMessage">Are you sure to delete the instance called <span class="text-warning">[[ technicalNameToDelete ]]</span> ?</span><br /><br />
-                          <span class="deleteSizeFolder">You will remove <span class="text-warning">[[ sizeToDelete ]]</span> of datas.</span>
+                          <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ technicalNameToDelete ]]</span> instance.</span><br /><br />
+                          <span class="deleteSizeFolder">It represents <span class="text-warning">[[ sizeToDelete ]]</span> of data.</span>
                         </p><br />
                       </div>
                       <div class="panel-footer">
-                        <a class="btn btn-default" v-on:click='cancelDelete' data-dismiss="modal">Cancel</a>
-                        <a style='float:right' class="btn btn-warning" v-on:click="deleteInstance">Delete</a>
+                        <a class="btn btn-default" v-on:click='cancelDeleteInstance' data-dismiss="modal">Cancel</a>
+                        <a style='float:right' class="btn btn-warning" v-on:click="confirmDeleteInstance">Delete</a>
                       </div>
                     </div>
                   </div>
@@ -219,23 +219,25 @@
                     }, console.error);
                   },
 
-                  confirmationDelete : function (event) {
+                  deleteInstance : function (event) {
                     var data = {
                       action : 'info'
                     };
                     idToDelete = event.path[4].id;
                     this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
+
                       this.technicalNameToDelete = result.data.technicalName;
                       this.sizeToDelete = result.data.size;
                       document.getElementById('modal-delete-instance').style.display = 'block';
+
                     }, console.error);
                   },
 
-                  cancelDelete : function (event) {
+                  cancelDeleteInstance : function (event) {
                     document.getElementById('modal-delete-instance').style.display = 'none';
                   },
 
-                  deleteInstance : function (event) {
+                  confirmDeleteInstance : function (event) {
                     this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
                       document.getElementById('modal-delete-instance').style.display = 'none';
                       this.refresh();
