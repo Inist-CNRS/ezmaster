@@ -11,12 +11,12 @@
 
 <template>
 
-  <div class="red">
+    <div class="red">
 
-    <h1>{{ message }}</h1>
-    <h1>Hello !</h1>
+        <h1>[[ message ]]</h1>
+        <h1>Hello !</h1>
 
-  </div>
+    </div>
 
 </template>
 
@@ -25,31 +25,31 @@
 <script>
 
 
+    module.exports = {
 
-module.exports = {
+        data : function() {
 
-    data : function() {
+            return {
+                message : 'Hello from Factice.vue !'
+            }
 
-        return {
-            message : 'Hello from Factice.vue !'
         }
 
     }
 
-}
 
 
-export default {
-  data () {
-    return {
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
-      message: 'Hello World!'
+    export default {
+      data () {
+        return {
+          // note: changing this line won't causes changes
+          // with hot-reload because the reloaded component
+          // preserves its current state and we are modifying
+          // its initial state.
+          message: 'Hello World!'
+        }
+      }
     }
-  }
-}
 
 
 </script>

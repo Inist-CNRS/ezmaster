@@ -421,13 +421,6 @@ img.github {
     margin-top: 5%;
 }
 
-#infosMachineTable {
-    width: 95%;
-    margin: auto;
-    margin-bottom: 2%;
-    margin-top: 2%;
-}
-
 .bread {
   list-style: none;
   padding-left: 0px;
@@ -478,11 +471,7 @@ img.github {
   margin-top:               2%;
 }
 
-.infosMachine {
-    width:                  300px;
-    font-size:              10px;
-    background-color:       #0277BD;
-}
+
 
 #save, #saveTechnicalExists {
     background-color:#0277BD;
@@ -492,16 +481,4 @@ img.github {
     color:white;
 }
 
-#infosMachineTable th, #infosMachineTable td {
-    text-align: center;
-}
 
-.infosMachine {
-    color:white;
-    text-decoration:none;
-}
-
-.infosMachine:hover, .infosMachine:visited, .infosMachine:active {
-    color:white;
-    text-decoration:none;
-}

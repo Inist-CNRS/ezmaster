@@ -8,6 +8,7 @@ Vue.config.delimiters = ['[[', ']]'];
 Vue.use(require('vue-validator'));
 Vue.use(require('vue-resource'));
 
+
 Vue.validator('numeric', function (val) {
   return /^[0-9]+$/.test(val);
 });
@@ -17,5 +18,6 @@ Vue.validator('lowercaseAndDigits', function (val) {
 
 require('components/addInstance');
 var vmTableInstances = require('components/table');
-var vmTableInfosMachine = require('components/infosMachineTable');
+//var vmTableInfosMachine = require('components/infosMachineTable');
+
 require('components/entryPoint');

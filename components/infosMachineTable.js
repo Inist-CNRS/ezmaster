@@ -1,4 +1,7 @@
 /*global Vue, global io*/
+
+/*
+
 'use strict';
 
 // Socket connection.
@@ -11,15 +14,15 @@ var vmTableInfosMachine = new Vue({
 
   ready : function () {   // When the table is ready...
 
-    /* // After tests I notice that it is useless to initialize here
+    // After tests I notice that it is useless to initialize here
     //the infosMachine variable used in template.html.
-        var self = this;
-        var infosMachine = {};
+        //var self = this;
+        //var infosMachine = {};
 
         // Give the just created infosMachine object to the infosMachine variable
         //used in template.html.
-        self.$set('infosMachine', infosMachine);
-    */
+        //self.$set('infosMachine', infosMachine);
+
 
     // Listen incoming messages typed as 'refreshInfosMachine' from the server.
     // Here the message comes from eventRefreshInfosMachine.js.
@@ -58,3 +61,5 @@ var vmTableInfosMachine = new Vue({
 
 
 module.exports = vmTableInfosMachine;
+
+*/
