@@ -5,113 +5,14 @@
 <!-- Extension of bloc body from layout.html. -->
 {% block body %}
 
-
-
-
     <instancestable></instancestable>
 
+    <addinstance></addinstance>
 
 
 
 
 
-
-
-    <div id='addInstance' v-on:keyup.esc="cancelAddInstance">
-      <button id="add_instance" class="btn btn-raised btn-primary" v-on:click="displayFormAddInstance" >Add an instance</button>
-
-      <div class="modal" id="modal-add-instance">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <validator name="validation1">
-              <form novalidate id="add-instance-form" name="Form" class="form-horizontal">
-                <fieldset>
-                  <div class="modal-header" style="background-color: #0277BD; border:solid white 5px;">
-                    <legend>
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelAddInstance">×</button>
-                      <span class="titleFormAddInstance">Add an instance</span>
-                    </legend>
-                  </div>
-                  <br />
-                  <div class="modal-body">
-                    <div class="form-group">
-                      <label for="app" class="col-md-3 control-label">App</label>
-
-                      <div class="col-md-9">
-                        <select id="app" class="form-control">
-                            <option v-for="app in apps" value='[[ app ]]'>[[ app ]]</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label for="inputLongName" class="col-md-3 control-label">Long name</label>
-                      <div class="col-md-9">
-                        <input class="form-control" id="inputLongName" name="inputLongName" placeholder=" Ex : Title, Comment, Note, etc" type="text" value='[[ longName ]]' v-model="longName" v-validate:longName="{ required: true }">
-                      </div>
-                    </div>
-
-                    <div class="form-group">
-                      <label class="col-md-3 control-label">Technical name</label>
-
-                      <div class="col-md-9">
-                        <div class="block-input">
-                          <input class="form-control sizeInput" id="inputProject" name="inputProject" placeholder=" Ex : Project name" type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
-                          <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" placeholder=" Ex : Study name" type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
-                          <input class="form-control sizeInput" id="inputVersion" placeholder=" Version" value="[[  version ]]" type="number" min='0' v-model="version">
-                        </div>
-                        <div v-if='$validation1.project.dirty'>
-                          <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
-                          <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits for the first part.</span>
-                        </div>
-                        <div v-if='$validation1.study.dirty'>
-                          <span class="help-block text-danger" v-if="$validation1.study.required">Fill the second part of the technical name.</span>
-                          <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
-                        </div>
-                        <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "[[ technicalName ]]" already exists</span>
-                      </div>
-                    </div>
-
-                    <div class="form-group" v-if="[[ publicDomain ]] != ''">
-                      <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
-                      <div class="col-md-9">
-                        <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='[[ urlPreview ]]' v-model='urlPreview' disabled>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="panel-footer">
-                    <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
-                    <button v-if="$validation1.valid" type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Create</button>
-                    <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Create</button>
-                    <button type="button" style='float:right; display: none' id='saveTechnicalExists' class="btn btn-primary" disabled>Create</button>
-                    <div id='loader' style='display:none; text-align: center;'>
-                      <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
-                      <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
-                    </div>
-                    <div id='errorLoader' style='display:none; text-align: center;'>
-                      <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
-                      <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
-                    </div>
-                  </div>
-                </fieldset>
-              </form>
-            </validator>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-    <!-- Test - Factice.vue component. -->
-      <div id="app">
-
-        <app></app>
-        <!-- built files will be auto injected -->
-
-      </div>
 
 
 

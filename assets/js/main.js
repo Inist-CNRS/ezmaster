@@ -16,8 +16,8 @@ Vue.validator('lowercaseAndDigits', function (val) {
   return /^[a-z0-9]+$/.test(val);
 });
 
-require('components/addInstance');
-var vmTableInstances = require('components/table');
+//require('components/addInstance');
+//var vmTableInstances = require('components/table');
 //var vmTableInfosMachine = require('components/infosMachineTable');
 
 require('components/entryPoint');
