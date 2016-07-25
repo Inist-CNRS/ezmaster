@@ -26,9 +26,6 @@ module.exports = {
   browserifyModules : [
     'vue'
     , 'vue-resource'
-    , 'components/addInstance'
-    , 'components/table'
-    , 'components/infosMachineTable'
     , 'vue-validator'
     , 'heartbeats'
     , 'components/entryPoint'
