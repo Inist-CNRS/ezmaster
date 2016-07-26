@@ -42,7 +42,7 @@
                         <div class="block-input">
                           <input class="form-control sizeInput" id="inputProject" name="inputProject" placeholder=" Ex : Project name" type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
                           <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" placeholder=" Ex : Study name" type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
-                          <input class="form-control sizeInput" id="inputVersion" placeholder=" Version" value="[[ version ]]" type="number" min='0' v-model="version">
+                          <input class="form-control sizeInput" id="inputVersion" placeholder=" Version" value="[[ version ]]" type="text" min='0' v-model="version">
                         </div>
                         <div v-if='$validation1.project.dirty'>
                           <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
@@ -273,16 +273,16 @@
                       data() {
 
                         return {
-                        longName : '',
-                        project: '',
-                        version : '',
-                        study : '',
-                        technicalName : '',
-                        urlPreview : '',
-                        messageErrorPull : '',
-                        publicDomain : '',
-                        apps : '',
-                        codeErrorPull : ''
+                          longName : '',
+                          project: '',
+                          version : '',
+                          study : '',
+                          technicalName : '',
+                          urlPreview : '',
+                          messageErrorPull : '',
+                          publicDomain : '',
+                          apps : '',
+                          codeErrorPull : ''
                         }
                       },
                       computed: { // Here we manage fields built from other ones.
