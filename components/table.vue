@@ -53,6 +53,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="modal" id="modal-update-config">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -76,6 +77,7 @@
               </div>
             </td>
           </tr>
+
           <tr v-else class="danger" id="[[ item.containerId ]]">
             <td>[[ item.longName ]]</td>
             <td>[[ item.technicalName ]]</td>
@@ -114,6 +116,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="modal" id="modal-update-config">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -135,6 +138,7 @@
                   </div>
                 </div>
               </div>
+
             </td>
           </tr>
         </template>
@@ -160,13 +164,15 @@
 
 
 
+
         export default {
 
-                ready : function () {   // When the table is ready...
+                ready () {   // When the table is ready...
+
+                  let self = this;
 
                   // ... call the route /-/v1/instances with a get wich get the instances list.
                   // Store the instances list into the variable containers used into the HTML with v-for.
-                  var self = this;
                   self.$http.get('/-/v1/instances').then(function (result) {
                     self.$set('containers', result.data);
                   }, console.error);
@@ -311,6 +317,34 @@
 
 <style>
 
+  #instances-table {
+      width: 95%;
+      margin: auto;
+      margin-bottom: 2%;
+      margin-top: 5%;
+  }
 
+  .bread {
+    list-style: none;
+    padding-left: 0px;
+  }
+
+  .bread > li {
+    display: inline-block;
+    margin-right: 3%;
+  }
+
+  .actions {
+    padding: 6px !important;
+  }
+
+  .button {
+    margin: 0 !important;
+  }
+
+  #jsoneditor {
+    width: 100%;
+    height: 450px;
+  }
 
 </style>

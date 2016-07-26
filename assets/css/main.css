@@ -167,64 +167,7 @@ img.github {
     color: #9D9D9D;
 }
 
-/*#checkbox .sample1 label {*/
-    /*font-weight: bold;*/
-/*}*/
 
-/*#checkbox .hint {*/
-    /*padding-left: 45px;*/
-    /*padding-top: 20px;*/
-    /*font-weight: 400;*/
-/*}*/
-
-/*#checkbox .sample1 {*/
-    /*padding-bottom: 20px;*/
-/*}*/
-
-/*#checkbox h2 {*/
-    /*font-size: 18.7199993133545px;*/
-    /*font-weight: bold;*/
-    /*margin-bottom: 30px;*/
-/*}*/
-
-/*#checkbox .sample2 {*/
-    /*width: 300px;*/
-    /*clear: both;*/
-    /*font-weight: 400;*/
-/*}*/
-
-/*#checkbox .sample2 {*/
-    /*padding: 10px 0;*/
-/*}*/
-
-/*#checkbox .sample2 .text {*/
-    /*display: inline-block;*/
-/*}*/
-
-/*#checkbox .sample2 .checkbox {*/
-    /*float: right;*/
-    /*margin: 0;*/
-/*}*/
-
-/*#progress-bar h2 {*/
-    /*font-size: 18.7199993133545px;*/
-    /*font-weight: bold;*/
-    /*margin-bottom: 30px;*/
-/*}*/
-
-/*#dialog h2 {*/
-    /*padding: 14px;*/
-    /*margin: 0;*/
-    /*font-size: 16px;*/
-    /*font-weight: 400;*/
-/*}*/
-
-/*#shadow h2 {*/
-/*padding: 14px;*/
-/*margin: 0;*/
-/*font-size: 16px;*/
-/*font-weight: 400;*/
-/*}*/
 
 #shadow .sample {
     width: 100px;
@@ -247,6 +190,11 @@ img.github {
 
 }
 
+
+
+
+/* Unused */
+
 #shadow-sample3 {
     display: inline-block;
     width: 100px;
@@ -260,225 +208,21 @@ img.github {
     user-select: none;
 }
 
-/*#radio-button h2 {*/
-    /*font-size: 18.7199993133545px;*/
-    /*font-weight: bold;*/
-    /*margin-bottom: 30px;*/
-    /*margin-top: 50px;*/
-/*}*/
-
-/*#radio-button .radio {*/
-    /*margin: 20px 10px;*/
-/*}*/
-
-/*#input h2 {*/
-/*padding: 14px;*/
-/*font-size: 16px;*/
-/*font-weight: 400;*/
-/*}*/
-
 #input .inputs {
     width: 80%;
 }
-
-/*#input .form-group {*/
-    /*margin: 30px 0;*/
-/*}*/
-
-/*#slider .sample1, #slider .sample2 {*/
-    /*padding: 20px 0;*/
-    /*background-color: #f0f0f0;*/
-    /*margin-bottom: 20px;*/
-/*}*/
 
 #slider .sample2 {
     height: 150px;
 }
 
-/*#slider .sample2 .slider {*/
-    /*margin: 0 40px;*/
-/*}*/
 
-/*#slider h2 {*/
-/*padding: 14px;*/
-/*margin: 0;*/
-/*font-size: 16px;*/
-/*font-weight: 400;*/
-/*}*/
 
-/*#slider .slider {*/
-    /*margin: 15px;*/
-/*}*/
 
-/*#button h2 {*/
-/*padding: 14px;*/
-/*margin: 0;*/
-/*font-size: 16px;*/
-/*font-weight: 400;*/
-/*}*/
 
-/*#floating-action-button .btn {*/
-    /*margin: 20px;*/
-/*}*/
-
-/*#floating-action-button h2 {*/
-/*padding: 14px;*/
-/*margin: 0;*/
-/*font-size: 16px;*/
-/*font-weight: 400;*/
-/*}*/
-
-/*#dropdown h2 {*/
-/*padding: 14px;*/
-/*margin: 0;*/
-/*font-size: 16px;*/
-/*font-weight: 400;*/
-/*}*/
-
-/*#dropdown .dropdown {*/
-    /*font-size: 30px;*/
-    /*padding: 20px;*/
-/*}*/
-
-/*#dropdown-menu h2 {*/
-/*padding: 14px;*/
-/*margin: 0;*/
-/*font-size: 16px;*/
-/*font-weight: 400;*/
-/*}*/
-
-/*#dropdown-menu .sample {*/
-    /*width: 200px;*/
-/*}*/
-
-/*#dropdown-menu .form-group {*/
-    /*margin: 30px 0;*/
-/*}*/
-
-/*#toggle-button h2 {*/
-    /*font-size: 18.7199993133545px;*/
-    /*font-weight: bold;*/
-    /*margin-bottom: 30px;*/
-    /*margin-top: 50px;*/
-/*}*/
-
-/*#toggle-button .togglebutton label {*/
-    /*margin: 20px 10px;*/
-    /*width: 200px;*/
-/*}*/
-
-/*#toggle-button .togglebutton .toggle {*/
-    /*float: right;*/
-/*}*/
-
-#add_instance {
-  margin-left: 2.5%;
-  background-color:#0277BD;
-}
-
-#menu {
-  padding-left: 2%;
-}
-
-#menu > li {
-  margin-right: 3%;
-}
-
-#menu > li > a > h3 {
-  font-size: 22px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-#menu > li > a > h3:hover {
-  font-style: italic;
-}
+/* layout.html */
 
 .active {
   background-color : #26A69A;
   box-shadow : 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
-
-.ul-menu {
-	z-index: 5;
-	list-style: none;
-  margin-top: 1%;
-}
-
-.li-menu {
-	display: inline-block;
-}
-
-.li-menu > a:hover {
-  text-decoration: underline;
-  text-decoration-color : white;
-}
-
-#instances-table {
-	width: 95%;
-	margin: auto;
-	margin-bottom: 2%;
-    margin-top: 5%;
-}
-
-.bread {
-  list-style: none;
-  padding-left: 0px;
-}
-
-.bread > li {
-  display: inline-block;
-  margin-right: 3%;
-}
-
-.actions {
-  padding: 6px !important;
-}
-
-.button {
-  margin: 0 !important;
-}
-
-#jsoneditor {
-  width: 100%;
-  height: 450px;
-}
-
-.scroll {
-  max-height: 600px;
-  overflow-y : scroll;
-}
-
-.sizeInput {
-  width : 32%;
-  display: inline-block;
-}
-
-.block-input {
-  display: block;
-}
-
-#inputLongName, #inputProject, #inputStudy {
-   background-color:        #FFCDD2;
-}
-
-#urlPreview{
-    background-color:       #CFD8DC;
-}
-
-#messages_box {
-  margin-left:              2.5%;
-  margin-top:               2%;
-}
-
-
-
-#save, #saveTechnicalExists {
-    background-color:#0277BD;
-}
-
-.titleFormAddInstance {
-    color:white;
-}
-
-
