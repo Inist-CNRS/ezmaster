@@ -28,7 +28,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "babel-plugin-transform-runtime": "^6.9.0",
     "body-parser": "^1.15.2",
     "castor-core": "^6.0.0",
     "debug": "^2.2.0",
