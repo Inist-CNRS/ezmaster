@@ -206,7 +206,7 @@
                             'technicalName' : technicalName
                           };
 
-                          vm.$http.get('/-/v1/instances/verif', data).then(function (result) {
+                          this.$http.get('/-/v1/instances/verif', data).then(function (result) {
 
                             if (result.status == 200) {
                               document.getElementById('technicalNameExists').style.display = 'none';

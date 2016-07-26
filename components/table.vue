@@ -36,7 +36,7 @@
                   <div class="modal-content">
                      <div class="panel panel-warning">
                       <div class="panel-heading">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDelete">×</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDeleteInstance">×</button>
                         <h3 class="panel-title">Delete an instance</h3>
                       </div>
                       <div class="panel-body">
@@ -97,7 +97,7 @@
                   <div class="modal-content">
                      <div class="panel panel-warning">
                       <div class="panel-heading">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDelete">×</button>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDeleteInstance">×</button>
                         <h3 class="panel-title">Delete an instance</h3>
                       </div>
                       <div class="panel-body">
@@ -295,10 +295,13 @@
 
                 },
 
-                data : {
-                  sizeToDelete : '',
-                  technicalNameToDelete : '',
-                  containers : []
+                data () {
+                  return {
+                    sizeToDelete : '',
+                    technicalNameToDelete : '',
+                    containers : [],
+                    publicDomain : ''
+                  }
                 }
         }
 

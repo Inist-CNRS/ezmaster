@@ -23,7 +23,7 @@
                   <tbody>
                     <tr>
                       <td>
-                        <div class="btn-group btn-group-xs" role="group" aria-label="...">
+                        <div class="btn-group btn-group-xs" role="group" aria-label="..." v-if="[[ boolInfosFeed ]] == 'true'">
                           <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Load Average over 1 minute">
                             <span class="infosMachine">[[ (infosMachine.loadAverage)[0] ]]</span>
                           </button>
@@ -82,13 +82,17 @@
                   // This will automatically refresh the infosMachineTable component.
 
                   self.$set('infosMachine', infosMachineSocket);
+                  self.$set('boolInfosFeed', true);
 
                 });
 
               },
               data () {
 
-                return { infosMachine: {} }
+                return {
+                  infosMachine: {},
+                  boolInfosFeed: false
+                }
 
               },
         }
