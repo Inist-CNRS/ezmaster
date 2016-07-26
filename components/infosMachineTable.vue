@@ -77,13 +77,20 @@
 
                 // Listen incoming messages typed as 'refreshInfosMachine' from the server.
                 // Here the message comes from eventRefreshInfosMachine.js.
-                socket.on('refreshInfosMachine', function(infosMachine) {
+                socket.on('refreshInfosMachine', function(infosMachineSocket) {
                   // Update variable 'infosMachine'.
                   // This will automatically refresh the infosMachineTable component.
-                  self.$set('infosMachine', infosMachine);
+
+                  self.$set('infosMachine', infosMachineSocket);
+
                 });
 
-              }
+              },
+              data () {
+
+                return { infosMachine: {} }
+
+              },
         }
 
 </script>

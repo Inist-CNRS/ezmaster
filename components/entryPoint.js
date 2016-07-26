@@ -1,5 +1,5 @@
 
-new Vue({
+module.exports = new Vue({
 
   el: 'body',
 
@@ -13,4 +13,4 @@ new Vue({
 
   }
 
-}).mount();
+});
