@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -61,18 +62,8 @@
           <li></li>
         </ul>
 
-
-
-
-
-
+        <!-- A component will be inserted here. -->
         <infosmachine></infosmachine>
-
-
-
-
-
-
 
       </div>
     </nav>
@@ -80,13 +71,13 @@
 
     {% block body %}{% endblock %}
 
+
     <!--
       Get the socket.io.js script.
       It is automatically provided by the nodeJS server thanks to the socket.io module.
       It allows to manage communication with the server from client side.
     -->
     <script src="../socket.io/socket.io.js"></script>
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
@@ -97,17 +88,23 @@
     <script src="/libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap-material-design/dist/js/ripples.min.js"></script>
     <script src="/libs/bootstrap-material-design/dist/js/material.min.js"></script>
+
     <script>
+
       $(document).ready(function() {
+
         // This command is used to initialize some elements and make them work properly
         $.material.init();
+
       });
+
     </script>
+
     <script src="/assets/js/main.js"></script>
 
 
-
     {% block scripts %}{% endblock %}
+
 
   </body>
 

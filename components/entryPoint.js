@@ -1,7 +1,9 @@
+
+// The entryPoint calls the project components.
+
 /* global Vue */
 
 'use strict';
-
 
 module.exports = new Vue({
 

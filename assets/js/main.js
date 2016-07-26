@@ -17,4 +17,5 @@ Vue.validator('lowercaseAndDigits', function (val) {
   return /^[a-z0-9]+$/.test(val);
 });
 
+// The entryPoint calls the project components.
 require('components/entryPoint');
