@@ -171,7 +171,7 @@
 
   export default {
 
-    ready () {   // When the table is ready...
+    ready () {
 
       let self = this;
 
