@@ -169,8 +169,8 @@
     , idToConfig = null
     ;
 
-  //module.exports = {
-  export default {
+  module.exports = {
+  //export default {
 
     ready () {
 
