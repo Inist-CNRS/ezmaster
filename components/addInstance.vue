@@ -9,7 +9,7 @@
 <template>
 
   <div id='addInstance' v-on:keyup.esc="cancelAddInstance">
-    <button id="add_instance" class="btn btn-raised btn-primary" v-on:click="displayFormAddInstance" >Add an instance</button>
+    <button id="add_instance" class="btn btn-raised btn-primary" v-on:click="displayFormAddInstance" >Add Instance</button>
 
     <div class="modal" id="modal-add-instance">
       <div class="modal-dialog">
@@ -20,13 +20,13 @@
                 <div class="modal-header" style="background-color: #0277BD; border:solid white 5px;">
                   <legend>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelAddInstance">×</button>
-                    <span class="titleFormAddInstance">Add an instance</span>
+                    <span class="titleFormAddInstance">Add Instance</span>
                   </legend>
                 </div>
                 <br />
                 <div class="modal-body">
                   <div class="form-group">
-                    <label for="app" class="col-md-3 control-label">App</label>
+                    <label for="app" class="col-md-3 control-label">Application</label>
 
                     <div class="col-md-9">
                       <select id="app" class="form-control">
@@ -36,14 +36,14 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="inputLongName" class="col-md-3 control-label">Long name</label>
+                    <label for="inputLongName" class="col-md-3 control-label">Long Name</label>
                     <div class="col-md-9">
                       <input class="form-control" id="inputLongName" name="inputLongName" placeholder=" Ex : Title, Comment, Note, etc" type="text" value='[[ longName ]]' v-model="longName" v-validate:longName="{ required: true }">
                     </div>
                   </div>
 
                   <div class="form-group">
-                    <label class="col-md-3 control-label">Technical name</label>
+                    <label class="col-md-3 control-label">Technical Name</label>
 
                     <div class="col-md-9">
                       <div class="block-input">
