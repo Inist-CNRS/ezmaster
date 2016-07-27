@@ -79,7 +79,8 @@
   var socket = io();
 
 
-  module.exports = {
+  //module.exports = {
+  export default {
 
     ready () {
 

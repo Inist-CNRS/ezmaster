@@ -106,7 +106,8 @@
   var publicDomain;
 
 
-  module.exports = {
+  //module.exports = {
+  export default {
 
     ready () {
 
