@@ -72,55 +72,78 @@
 
 
 <script>
+
   /*global Vue, global io*/
+
   // Socket connection.
   var socket = io();
-  module.exports = {
+
+
+  export default {
+
     ready () {
+
       let self = this;
+
       // Listen incoming messages typed as 'refreshInfosMachine' from the server.
       // Here the message comes from eventRefreshInfosMachine.js.
       socket.on('refreshInfosMachine', function(infosMachineSocket) {
+
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
         self.$set('infosMachine', infosMachineSocket);
+
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
         self.$set('boolInfosFeed', true);
+
       });
+
     },
+
+
     data () {
+
       return {
         infosMachine: {},
         boolInfosFeed: false
       }
+
     }
+
   }
+
 </script>
 
 
 
 <style>
+
   #infosMachineTable {
       width: 95%;
       margin: auto;
       margin-bottom: 2%;
       margin-top: 2%;
   }
+
   #infosMachineTable th, #infosMachineTable td {
       text-align: center;
   }
+
   .infosMachine {
       color:white;
       text-decoration:none;
   }
+
   .infosMachine:hover, .infosMachine:visited, .infosMachine:active {
       color:white;
       text-decoration:none;
   }
+
   .infosMachine {
       width:                  300px;
       font-size:              10px;
       background-color:       #0277BD;
   }
+
 </style>
