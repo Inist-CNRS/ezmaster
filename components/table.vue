@@ -169,7 +169,7 @@
     , idToConfig = null
     ;
 
-  export default {
+  module.exports = {
 
     ready () {
 
