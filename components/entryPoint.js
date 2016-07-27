@@ -5,6 +5,10 @@
 
 'use strict';
 
+var vueInfosMachineTable = require('./infosMachineTable.vue');
+var vueTable = require('./table.vue');
+var vueAddInstance = require('./addInstance.vue');
+
 module.exports = new Vue({
 
   el: 'body',
@@ -14,9 +18,9 @@ module.exports = new Vue({
     // The left key corresponds to the html tag where the component is included.
     // For exemple, we put the table.vue component
     // into <instancestable></instancestable> in template.html.
-    infosmachine : require('./infosMachineTable.vue'),
-    instancestable : require('./table.vue'),
-    addinstance : require('./addInstance.vue')
+    infosmachine : vueInfosMachineTable,
+    instancestable : vueTable,
+    addinstance : vueAddInstance
 
   }
 
