@@ -82,7 +82,6 @@
   export default {
 
     ready () {
-
       let self = this;
 
       // Listen incoming messages typed as 'refreshInfosMachine' from the server.
