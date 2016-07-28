@@ -192,6 +192,8 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
 // The component table.js is listening to messages coming from here.
 module.exports.refreshInstances = function (core) {
 
+  console.log("########## REFRESH INSTANCES ##########");
+
   // Get the socket object stored in core.socket.
   var socket = core.socket;
 
@@ -207,6 +209,9 @@ module.exports.refreshInstances = function (core) {
     // This is the table.js component which receives the emit message.
     // If the socket variable is defined, we broadcast.
     socket && socket.broadcast.emit('refreshInstances', instancesList);
+
+    // For Local Tests.
+    socket && socket.emit('refreshInstances', instancesList);
 
   });
 

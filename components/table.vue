@@ -35,7 +35,6 @@
               <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config </button></li>
               <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>Access</a></li>
               <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='http://[[ item.target ]].[[ publicDomain ]]'>Public Access </a></li>
-
             </ul>
 
             <div class="modal" id="modal-delete-instance">
@@ -44,7 +43,7 @@
                    <div class="panel panel-warning">
                     <div class="panel-heading">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDeleteInstance">×</button>
-                      <h3 class="panel-title">Delete an instance</h3>
+                      <h3 class="panel-title">Delete Instance</h3>
                     </div>
                     <div class="panel-body">
                       <p>
@@ -67,7 +66,7 @@
                    <div class="panel panel-info">
                     <div class="panel-heading">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">×</button>
-                      <h3 class="panel-title">Update instance configuration</h3>
+                      <h3 class="panel-title">Configuration Update</h3>
                     </div>
                     <div class="panel-body">
                       <div id="jsoneditor"></div>
@@ -107,7 +106,7 @@
                    <div class="panel panel-warning">
                     <div class="panel-heading">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDeleteInstance">×</button>
-                      <h3 class="panel-title">Delete an instance</h3>
+                      <h3 class="panel-title">Delete Instance</h3>
                     </div>
                     <div class="panel-body">
                       <p>
@@ -130,7 +129,7 @@
                   <div class="panel panel-info">
                     <div class="panel-heading">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">×</button>
-                      <h3 class="panel-title">Update instance configuration</h3>
+                      <h3 class="panel-title">Configuration Update</h3>
                     </div>
                     <div class="panel-body">
                       <div id="jsoneditor"></div>
@@ -192,6 +191,13 @@
         // Update variable 'containers' which will automatically
         // refresh the instances-table component.
         self.$set('containers', beatInstances);
+
+
+        console.log("########## SOCKET ##########");
+
+        console.log(beatInstances);
+
+
       });
 
     },
@@ -209,6 +215,8 @@
         var data = {
           action : 'start'
         };
+
+        console.debug("########## TABLE.VUE START ##########");
 
         this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
           this.refresh();
