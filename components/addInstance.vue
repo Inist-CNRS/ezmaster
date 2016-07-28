@@ -113,8 +113,9 @@
       var self = this;
 
       self.$http.get('/-/v3/config.js').then(function (result) {
-        self.$set('publicDomain', result.data.publicDomain);
-        publicDomain = result.data.publicDomain;
+        var config = JSON.parse(result.data);
+        self.$set('publicDomain', config.publicDomain);
+        publicDomain = config.publicDomain;
       }, console.error);
 
       self.$http.get('/-/v1/app').then(function (result) {
@@ -212,7 +213,10 @@
 
         this.$http.get('/-/v1/instances/verif', data).then(function (result) {
 
-          if (result.status == 200) {
+          var verif = JSON.parse(result.status);
+          console.log(verif);
+
+          if (verif == 200) {
             document.getElementById('technicalNameExists').style.display = 'none';
             document.getElementById('save').style.display = 'block';
             document.getElementById('saveTechnicalExists').style.display = 'none';
@@ -220,7 +224,7 @@
 
         }, function (error) {
 
-          if (error.status == 409) {
+          if (verif == 409) {
             document.getElementById('technicalNameExists').style.display = 'block';
             document.getElementById('save').style.display = 'none';
             document.getElementById('saveTechnicalExists').style.display = 'block';

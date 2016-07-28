@@ -182,7 +182,8 @@
       }, console.error);
 
       self.$http.get('/-/v3/config.js').then(function (result) {
-        self.$set('publicDomain', result.data.publicDomain);
+        var config = JSON.parse(result.data);
+        self.$set('publicDomain', config.publicDomain);
       }, console.error);
 
       // Listen incoming messages typed as 'refreshInstances' from the server.
