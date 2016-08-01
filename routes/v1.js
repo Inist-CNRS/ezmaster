@@ -144,20 +144,97 @@ module.exports = function (router, core) {
 
 
 
-  router.route('/-/v1/instances/:containerId').get(bodyParser(), function (req, res, next) {
+
+
+
+
+
+
+
+
+
+
+// TEST TEST TEST TEST TEST
+  router.route('/-/v1/instances/:containerId/getInfosDelete').get(bodyParser(), function (req, res, next) {
+
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
+
       if (err) { return next(err); }
 
       var splittedName = data.Name.split('/');
 
+      var directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
+        , result = {};
+
+      getSize(directoryDatas, function (err, size) {
+        if (err) { return next(err); }
+
+        result['technicalName'] = splittedName[1];
+        result['size'] = filesize(size);
+
+        return res.status(200).send(result);
+      });
+
+    });
+  });
+/////////////////////////////////
+
+// TEST TEST TEST TEST TEST TEST
+  router.route('/-/v1/instances/:containerId/getInfosConfig').get(bodyParser(), function (req, res, next) {
+
+    var container = docker.getContainer(req.params.containerId);
+
+    container.inspect(function (err, data) {
+
+      if (err) { return next(err); }
+
+      var splittedName = data.Name.split('/');
+
+      jsonfile.readFile(
+      path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
+      function (err, obj) {
+
+        if (err) { return next(err); }
+
+        return res.status(200).send(obj);
+
+      });
+
+    });
+  });
+/////////////////////////////////////////////////////////
+
+
+// TODO : ORIGINAL - LES DEUX DU DESSUS CONDENSES - A SUPPRIMER ?
+  router.route('/-/v1/instances/:containerId').get(bodyParser(), function (req, res, next) {
+    var container = docker.getContainer(req.params.containerId);
+
+    console.log("########## PASSAGE V1 ##########");
+
+    container.inspect(function (err, data) {
+      if (err) { return next(err); console.log("########## ERROR ##########");}
+
+      var splittedName = data.Name.split('/');
+
+      console.log("########## DATA : " + data + " ##########");
+      console.log(data);
+
+
+      console.log("########## REQ : " + req.query + " ##########");
+      console.log(req.query);
+
+
       if (req.query.action == 'info') {
+
+        console.log("########## INFO ##########");
+
         var directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
           , result = {};
 
         getSize(directoryDatas, function (err, size) {
-          if (err) { return next(err); }
+          if (err) { return next(err); console.log("########## ERROR ##########");}
 
           result['technicalName'] = splittedName[1];
           result['size'] = filesize(size);
@@ -177,6 +254,25 @@ module.exports = function (router, core) {
       }
     });
   });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -388,6 +484,64 @@ module.exports = function (router, core) {
     }
 
   }); // End of the route.
+
+
+
+
+
+
+
+// APPLICATION MANAGEMENT
+
+
+ router.route('/-/v1/app').post(function (req, res, next) {
+
+   var image = req.body.imageName;
+
+   docker.pull(image, function (err, data) {
+
+     console.log(data);
+
+     if (err) { return res.status(400).send(err); }
+
+     return res.status(200).send(data);
+
+   });
+
+ });
+
+ router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
+
+   var container = docker.getImage(req.params.imageId);
+
+   container.inspect(function (err, data) {
+
+   var result = {};
+
+   result['imageName'] = data.RepoTags;
+
+   return res.status(200).send(result);
+
+ });
+
+ });
+
+ router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
+
+   var image = docker.getImage(req.params.imageId);
+
+   image.remove(function (err, datas, cont) {
+     if (err) { return next(err); }
+   });
+ });
+
+
+
+
+
+
+
+
 
 
 

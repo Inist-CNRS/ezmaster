@@ -156,16 +156,21 @@
 
 
 <script>
+
   /* global Vue, global document, global JSONEditor, global io*/
   // Socket connection.
+
   var socket = io();
   var optsEditor = {}
     , editor = new JSONEditor()
     , idToDelete = null
     , idToConfig = null
     ;
+
   export default {
+
     ready () {
+
       let self = this;
       // ... call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
@@ -184,12 +189,15 @@
         self.$set('containers', beatInstances);
       });
     },
+
     methods: {
+
       refresh : function () {
         this.$http.get('/-/v1/instances').then(function (result) {
           this.$set('containers', result.data);
         }, console.error);
       },
+
       startInstance : function (event) {
         var data = {
           action : 'start'
@@ -202,46 +210,68 @@
         // Here, the instance id.
         // button start > li > ul > td > tr > id="[[ item.description.Id ]]"
       },
+
       stopInstance : function (event) {
+
         var data = {
           action : 'stop'
         };
+
         this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
           this.refresh();
         }, console.error);
+
       },
+
       deleteInstance : function (event) {
+
         var data = {
           action : 'info'
         };
+
         idToDelete = event.path[4].id;
-        this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-          var res = JSON.parse(result.data);
-          this.technicalNameToDelete = res.technicalName;
-          this.sizeToDelete = res.size;
+
+        console.log("########## ID TO DELETE : " + idToDelete + " ##########");
+
+        this.$http.get('/-/v1/instances/'+event.path[4].id+'/getInfosDelete').then(function (result) {
+
+
+
+          console.log("########## V1 DONE ##########");
+
+          console.log("########## RESULT : " + result.data.size + " ##########");
+          console.log(result.data.size);
+
+
+          //var res = JSON.parse(result.data);
+          //this.technicalNameToDelete = res.technicalName;
+          //this.sizeToDelete = res.size;
+          this.technicalNameToDelete = result.data.technicalName;
+          this.sizeToDelete = result.data.size;
+
           document.getElementById('modal-delete-instance').style.display = 'block';
         }, console.error);
       },
+
       cancelDeleteInstance : function (event) {
         document.getElementById('modal-delete-instance').style.display = 'none';
       },
+
       confirmDeleteInstance : function (event) {
         this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
           document.getElementById('modal-delete-instance').style.display = 'none';
           this.refresh();
         }, console.error);
       },
-      cancelConfig : function (event) {
-        document.getElementById('modal-update-config').style.display = 'none';
-      },
+
       displayConfig : function (event) {
-        var data = {
-          action : 'config'
-        };
 
         document.getElementById('jsoneditor').innerHTML = '';
+
+        // TODO : A SUPPRIMER ?
         idToConfig = event.path[4].id;
-        this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
+
+        this.$http.get('/-/v1/instances/'+event.path[4].id+'/getInfosConfig').then(function (result) {
           document.getElementById('modal-update-config').style.display = 'block';
           optsEditor = {
             mode: 'code',
@@ -264,6 +294,11 @@
           editor.set(result.data);
         });
       },
+
+      cancelConfig : function (event) {
+        document.getElementById('modal-update-config').style.display = 'none';
+      },
+
       updateConfig : function (event) {
         var newConfig = editor.get();
         var data = {
@@ -275,7 +310,9 @@
           document.getElementById('modal-update-config').style.display = 'none';
         });
       }
+
     },
+
     data () {
       return {
         sizeToDelete : '',
@@ -285,11 +322,13 @@
       }
     }
   }
+
 </script>
 
 
 
 <style>
+
   #instances-table {
       width: 95%;
       margin: auto;
@@ -314,4 +353,5 @@
     width: 100%;
     height: 450px;
   }
+
 </style>
