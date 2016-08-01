@@ -211,13 +211,9 @@
           'technicalName' : technicalName
         };
 
-        console.log("AAAAAAAAAAAAAAa "+technicalName);
-
-
         this.$http.get('/-/v1/instances/verif', data).then(function (result) {
 
           var verif = JSON.parse(result.status);
-          console.log(verif);
 
           if (verif == 200) {
             document.getElementById('technicalNameExists').style.display = 'none';
