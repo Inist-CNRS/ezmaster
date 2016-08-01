@@ -23,11 +23,11 @@ module.exports.getApps = function (cb) {
     images.forEach(function (image) {
 
       var app = {};
-
       var nameImage = image.RepoTags[0].split('/')[0];
 
       if ( nameImage === 'inistcnrs' &&
        image.RepoTags[0].split('/')[1].split(':')[0] != 'ezmaster' || nameImage === 'matthd' ) {
+        app.imageId = image.Id.split(':')[1];
         app.imageName = image.RepoTags[0];
         app.creationDate = moment.unix(image.Created).format('YYYY/MM/DD HH:mm:ss');
         apps.push(app);
