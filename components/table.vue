@@ -156,69 +156,44 @@
 
 
 <script>
-
   /* global Vue, global document, global JSONEditor, global io*/
-
   // Socket connection.
   var socket = io();
-
   var optsEditor = {}
     , editor = new JSONEditor()
     , idToDelete = null
     , idToConfig = null
     ;
-
-
   export default {
-
     ready () {
-
       let self = this;
-
       // ... call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/instances').then(function (result) {
         self.$set('containers', result.data);
       }, console.error);
-
       self.$http.get('/-/v3/config.js').then(function (result) {
         var config = JSON.parse(result.data);
         self.$set('publicDomain', config.publicDomain);
       }, console.error);
-
       // Listen incoming messages typed as 'refreshInstances' from the server.
       // Here the message comes from eventRefreshInstances.js.
       socket.on('refreshInstances', function(beatInstances) {
         // Update variable 'containers' which will automatically
         // refresh the instances-table component.
         self.$set('containers', beatInstances);
-
-
-        console.log("########## SOCKET ##########");
-
-        console.log(beatInstances);
-
-
       });
-
     },
-
-
     methods: {
-
       refresh : function () {
         this.$http.get('/-/v1/instances').then(function (result) {
           this.$set('containers', result.data);
         }, console.error);
       },
-
       startInstance : function (event) {
         var data = {
           action : 'start'
         };
-
-        console.debug("########## TABLE.VUE START ##########");
-
         this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
           this.refresh();
         }, console.error);
@@ -226,53 +201,43 @@
         // Here, the instance id.
         // button start > li > ul > td > tr > id="[[ item.description.Id ]]"
       },
-
       stopInstance : function (event) {
         var data = {
           action : 'stop'
         };
-
         this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
           this.refresh();
         }, console.error);
       },
-
       deleteInstance : function (event) {
         var data = {
           action : 'info'
         };
         idToDelete = event.path[4].id;
         this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-
-          this.technicalNameToDelete = result.data.technicalName;
-          this.sizeToDelete = result.data.size;
+          var res = JSON.parse(result.data);
+          this.technicalNameToDelete = res.technicalName;
+          this.sizeToDelete = res.size;
           document.getElementById('modal-delete-instance').style.display = 'block';
-
         }, console.error);
       },
-
       cancelDeleteInstance : function (event) {
         document.getElementById('modal-delete-instance').style.display = 'none';
       },
-
       confirmDeleteInstance : function (event) {
         this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
           document.getElementById('modal-delete-instance').style.display = 'none';
           this.refresh();
         }, console.error);
       },
-
       cancelConfig : function (event) {
         document.getElementById('modal-update-config').style.display = 'none';
       },
-
       displayConfig : function (event) {
         var data = {
           action : 'config'
         };
-
         document.getElementById('jsoneditor').innerHTML = '';
-
         idToConfig = event.path[4].id;
         this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
           document.getElementById('modal-update-config').style.display = 'block';
@@ -297,10 +262,8 @@
           editor.set(result.data);
         });
       },
-
       updateConfig : function (event) {
         var newConfig = editor.get();
-
         var data = {
           action : 'updateConfig'
           , newConfig : newConfig
@@ -310,10 +273,7 @@
           document.getElementById('modal-update-config').style.display = 'none';
         });
       }
-
     },
-
-
     data () {
       return {
         sizeToDelete : '',
@@ -322,43 +282,34 @@
         publicDomain : ''
       }
     }
-
   }
-
 </script>
 
 
 
 <style>
-
   #instances-table {
       width: 95%;
       margin: auto;
       margin-bottom: 2%;
       margin-top: 5%;
   }
-
   .bread {
     list-style: none;
     padding-left: 0px;
   }
-
   .bread > li {
     display: inline-block;
     margin-right: 3%;
   }
-
   .actions {
     padding: 6px !important;
   }
-
   .button {
     margin: 0 !important;
   }
-
   #jsoneditor {
     width: 100%;
     height: 450px;
   }
-
 </style>
