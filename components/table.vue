@@ -194,11 +194,6 @@
         self.$set('containers', beatInstances);
 
 
-        console.log("########## SOCKET ##########");
-
-        console.log(beatInstances);
-
-
       });
 
     },
@@ -217,7 +212,6 @@
           action : 'start'
         };
 
-        console.debug("########## TABLE.VUE START ##########");
 
         this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
           this.refresh();
@@ -276,7 +270,7 @@
         document.getElementById('jsoneditor').innerHTML = '';
 
         idToConfig = event.path[4].id;
-        this.$http.get('/-/v1/instances/'+event.path[4].id).then(function (result) {
+        this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
           document.getElementById('modal-update-config').style.display = 'block';
           optsEditor = {
             mode: 'code',

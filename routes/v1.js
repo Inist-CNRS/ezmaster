@@ -140,7 +140,6 @@ module.exports = function (router, core) {
 
     if (fileExists(path.join(__dirname, '../manifests/'
       +req.query.technicalName+'.json')) == false) {
-      console.log("AAAAAAAAB "+util.inspect(req));
       res.status(200).send('Technical name does not exists');
     }
     else {

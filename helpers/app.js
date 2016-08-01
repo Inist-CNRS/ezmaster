@@ -26,8 +26,6 @@ module.exports.getApps = function (cb) {
 
       var nameImage = image.RepoTags[0].split('/')[0];
 
-      console.log("qafEFQZZEFQZ"+ util.inspect(image));
-
       if ( nameImage === 'inistcnrs' &&
        image.RepoTags[0].split('/')[1].split(':')[0] != 'ezmaster' || nameImage === 'matthd' ) {
         instance.imageName = image.RepoTags[0];
