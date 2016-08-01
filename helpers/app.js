@@ -22,15 +22,15 @@ module.exports.getApps = function (cb) {
 
     images.forEach(function (image) {
 
-      var instance = {};
+      var app = {};
 
       var nameImage = image.RepoTags[0].split('/')[0];
 
       if ( nameImage === 'inistcnrs' &&
        image.RepoTags[0].split('/')[1].split(':')[0] != 'ezmaster' || nameImage === 'matthd' ) {
-        instance.imageName = image.RepoTags[0];
-        instance.creationDate = moment.unix(image.Created).format('YYYY/MM/DD HH:mm:ss');
-        apps.push(instance);
+        app.imageName = image.RepoTags[0];
+        app.creationDate = moment.unix(image.Created).format('YYYY/MM/DD HH:mm:ss');
+        apps.push(app);
       }
 
     });

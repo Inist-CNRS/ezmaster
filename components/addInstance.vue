@@ -30,7 +30,7 @@
 
                     <div class="col-md-9">
                       <select id="app" class="form-control">
-                          <option v-for="app in apps" value='[[ app ]]'>[[ app ]]</option>
+                          <option v-for="app in apps" value='[[ app.imageName ]]'>[[ app.imageName ]]</option>
                       </select>
                     </div>
                   </div>

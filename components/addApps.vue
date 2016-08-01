@@ -25,51 +25,13 @@
                 </div>
                 <br />
                 <div class="modal-body">
-                  <div class="form-group">
-                    <label for="app" class="col-md-3 control-label">Application</label>
-
-                    <div class="col-md-9">
-                      <select id="app" class="form-control">
-                          <option v-for="app in apps" value='[[ app ]]'>[[ app ]]</option>
-                      </select>
-                    </div>
-                  </div>
 
                   <div class="form-group">
-                    <label for="inputLongName" class="col-md-3 control-label">Long Name</label>
+                    <label for="inputLongName" class="col-md-3 control-label">Application Name</label>
                     <div class="col-md-9">
                       <input class="form-control" id="inputLongName" name="inputLongName" placeholder=" Ex : Title - Comment - Note" type="text" value='[[ longName ]]' v-model="longName" v-validate:longName="{ required: true }">
                     </div>
                   </div>
-
-                  <div class="form-group">
-                    <label class="col-md-3 control-label">Technical Name</label>
-
-                    <div class="col-md-9">
-                      <div class="block-input">
-                        <input class="form-control sizeInput" id="inputProject" name="inputProject" placeholder=" Ex : Project Name" type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
-                        <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" placeholder=" Ex : Study Name" type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
-                        <input class="form-control sizeInput" id="inputVersion" placeholder=" Version" value="[[ version ]]" type="text" min='0' v-model="version">
-                      </div>
-                      <div v-if='$validation1.project.dirty'>
-                        <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
-                        <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits for the first part.</span>
-                      </div>
-                      <div v-if='$validation1.study.dirty'>
-                        <span class="help-block text-danger" v-if="$validation1.study.required">Fill the second part of the technical name.</span>
-                        <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
-                      </div>
-                      <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "[[ technicalName ]]" already exists</span>
-                    </div>
-                  </div>
-
-                  <div class="form-group" v-if="[[ publicDomain ]] != ''">
-                    <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
-                    <div class="col-md-9">
-                      <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='[[ urlPreview ]]' v-model='urlPreview' disabled>
-                    </div>
-                  </div>
-                </div>
 
                 <div class="panel-footer">
                   <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
@@ -139,54 +101,6 @@
       });
 
 
-      this.$watch('study', function(study) {
-
-        // The study parameter contains the study field value.
-
-        this.study = study;
-
-        if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-        else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
-
-        this.verif(this.technicalName);
-
-
-        if (/^[a-z0-9]+$/.test(study)==false || study == '') {
-          // Red background.
-          document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
-        }
-        else {
-          // Green background.
-          document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
-        }
-
-      });
-
-
-      this.$watch('project', function(project) {
-
-        // The project parameter contains the project field value.
-
-        this.project = project;
-
-        if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-        else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
-
-        this.verif(this.technicalName);
-
-
-        if (/^[a-z0-9]+$/.test(project)==false || project == '') {
-          // Red background.
-          document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
-        }
-        else {
-          // Green background.
-          document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
-        }
-
-      });
-
-
       this.$watch('version', function (version) {
 
         // The version parameter contains the version field value.
@@ -205,37 +119,6 @@
 
     methods : {
 
-      verif : function (technicalName) {
-
-        var data = {
-          'technicalName' : technicalName
-        };
-
-        console.log("AAAAAAAAAAAAAAa "+technicalName);
-
-
-        this.$http.get('/-/v1/instances/verif', data).then(function (result) {
-
-          var verif = JSON.parse(result.status);
-          console.log(verif);
-
-          if (verif == 200) {
-            document.getElementById('technicalNameExists').style.display = 'none';
-            document.getElementById('save').style.display = 'block';
-            document.getElementById('saveTechnicalExists').style.display = 'none';
-          }
-
-        }, function (error) {
-
-          if (verif == 409) {
-            document.getElementById('technicalNameExists').style.display = 'block';
-            document.getElementById('save').style.display = 'none';
-            document.getElementById('saveTechnicalExists').style.display = 'block';
-          }
-
-        });
-
-      },
 
       displayFormAddInstance : function (event) {
         document.getElementById('modal-add-instance').style.display = 'block';
@@ -288,14 +171,9 @@
 
       return {
         longName : '',
-        project: '',
-        version : '',
         study : '',
-        technicalName : '',
-        urlPreview : '',
         messageErrorPull : '',
         publicDomain : '',
-        apps : '',
         codeErrorPull : ''
       }
 
