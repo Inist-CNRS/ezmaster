@@ -107,10 +107,8 @@ module.exports = function(options, core) {
           });
           return;
         }
-        // If the asked instance has not been found.
-        else {
-          res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
-        }
+        // Else if the asked instance has not been found.
+        res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
       }
       // If not isRpEnabled.
       else {
