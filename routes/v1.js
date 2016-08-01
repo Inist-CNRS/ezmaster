@@ -18,6 +18,7 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances')
   , app = require('../helpers/app')
+  , util = require('utile')
   , instancesArray
   , containers
   , portMax
@@ -78,14 +79,9 @@ module.exports = function (router, core) {
     container.inspect(function (err, data) {
       if (err) { return next(err); }
 
-      console.log("########## PASSAGE ##########");
-      console.log("########## STATE RUNNING = " + data.State.Running + " ##########");
-
       if (req.body.action == 'start' && data.State.Running == false) {
         container.start(function (err, datas, container) {
           if (err) { return next(err); }
-
-          console.log("########## START ##########");
 
           // When an instance is started, we call refreshInstances() to update
           // the instances list cache and socket emit the updated list to all users.
@@ -99,8 +95,6 @@ module.exports = function (router, core) {
         container.stop(function (err, datas, container) {
           if (err) { return next(err); }
 
-          console.log("########## STOP ##########");
-
           // When an instance is stopped, we call refreshInstances() to update the
           // instances list cache and socket emit the updated list to all users.
           // The 'core' parameter allows to get the socket object inside refreshInstances().
@@ -111,8 +105,6 @@ module.exports = function (router, core) {
       }
       else if (req.body.action == 'updateConfig') {
         var splittedName = data.Name.split('/');
-
-        console.log("########## UPDATE CONFIG ##########");
 
         jsonfile.writeFile(
           path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
@@ -137,7 +129,6 @@ module.exports = function (router, core) {
         instances.refreshInstances(core);
       }
       else {
-        console.log("########## NOTHING TO DO ##########");
       }
 
     });
@@ -146,8 +137,10 @@ module.exports = function (router, core) {
 
 
   router.route('/-/v1/instances/verif').get(bodyParser(), function (req, res, next) {
+
     if (fileExists(path.join(__dirname, '../manifests/'
       +req.query.technicalName+'.json')) == false) {
+      console.log("AAAAAAAAB "+util.inspect(req));
       res.status(200).send('Technical name does not exists');
     }
     else {
@@ -361,30 +354,11 @@ module.exports = function (router, core) {
         };
 
 
-
-console.log("########## TECHNAME : "+technicalName+" ##########");
-console.log("########## NEWLONGNAME : "+newlongName.longName+" ##########");
-
-
-
-console.log("########## DIRNAME : "+__dirname+" ##########");
-
-
-
         jsonfile.writeFile(
           path.join(__dirname, '../manifests/'+technicalName+'.json')
           , newlongName, function (err) {
             if (err) {
-
-
-
-              console.log("########## ERROR ERROR ##########");
-
               return next(err);
-
-
-
-
             }
           });
 

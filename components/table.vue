@@ -243,9 +243,9 @@
         };
         idToDelete = event.path[4].id;
         this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-
-          this.technicalNameToDelete = result.data.technicalName;
-          this.sizeToDelete = result.data.size;
+          var res = JSON.parse(result.data);
+          this.technicalNameToDelete = res.technicalName;
+          this.sizeToDelete = res.size;
           document.getElementById('modal-delete-instance').style.display = 'block';
 
         }, console.error);
@@ -271,10 +271,12 @@
           action : 'config'
         };
 
+
+
         document.getElementById('jsoneditor').innerHTML = '';
 
         idToConfig = event.path[4].id;
-        this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
+        this.$http.get('/-/v1/instances/'+event.path[4].id).then(function (result) {
           document.getElementById('modal-update-config').style.display = 'block';
           optsEditor = {
             mode: 'code',
