@@ -4,22 +4,20 @@
       <tr>
         <th>Image</th>
         <th>Creation Date</th>
-        <th>Status</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <template v-for="item in containers">
-        <tr class="success" id="[[ item.containerId ]]">
+        <tr class="success" id="[[ item.imageId ]]">
           <td>[[ item.imageName ]]</td>
           <td>[[ item.creationDate ]]</td>
-          <td> <span>Started</span> </td>
           <td class="actions">
             <ul class="bread" style="margin-bottom:0px">
               <li class="delete" title="Delete the application"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteapplication">Delete</button></li>
             </ul>
 
-            <div class="modal" id="modal-delete-application">
+            <div class="modal" id="modal-delete-image">
               <div class="modal-dialog">
                 <div class="modal-content">
                    <div class="panel panel-warning">
@@ -30,7 +28,6 @@
                     <div class="panel-body">
                       <p>
                         <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ technicalNameToDelete ]]</span> application.</span><br /><br />
-                        <span class="deleteSizeFolder">It represents <span class="text-warning">[[ sizeToDelete ]]</span> of data.</span>
                       </p><br />
                     </div>
                     <div class="panel-footer">
@@ -56,9 +53,7 @@
   var socket = io();
 
   var optsEditor = {}
-    , editor = new JSONEditor()
     , idToDelete = null
-    , idToConfig = null
     ;
 
 
@@ -85,8 +80,6 @@
       });
 
     },
-
-
     methods: {
 
       refresh : function () {
@@ -96,95 +89,39 @@
       },
 
 
-      deleteInstance : function (event) {
-        var data = {
-          action : 'info'
-        };
+      deleteapplication : function (event) {
         idToDelete = event.path[4].id;
-        this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-          var res = JSON.parse(result.data);
-          this.technicalNameToDelete = res.technicalName;
-          this.sizeToDelete = res.size;
-          document.getElementById('modal-delete-instance').style.display = 'block';
+        this.$http.get('/-/v1/app/'+idToDelete+'/delete').then(function (result) {
+          this.imageNameToDelete = result.data.imageName;
+          document.getElementById('modal-delete-image').style.display = 'block';
 
         }, console.error);
       },
 
-      cancelDeleteInstance : function (event) {
-        document.getElementById('modal-delete-instance').style.display = 'none';
+      cancelDeleteapplication : function (event) {
+        document.getElementById('modal-delete-image').style.display = 'none';
       },
 
-      confirmDeleteInstance : function (event) {
-        this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
-          document.getElementById('modal-delete-instance').style.display = 'none';
+      confirmDeleteapplication : function (event) {
+        this.$http.delete('/-/v1/app/'+idToDelete).then(function (result) {
+          document.getElementById('modal-delete-image').style.display = 'none';
           this.refresh();
         }, console.error);
       },
 
-      cancelConfig : function (event) {
-        document.getElementById('modal-update-config').style.display = 'none';
-      },
-
-      displayConfig : function (event) {
-        var data = {
-          action : 'config'
-        };
-
-
-
-        document.getElementById('jsoneditor').innerHTML = '';
-
-        idToConfig = event.path[4].id;
-        this.$http.get('/-/v1/instances/'+event.path[4].id).then(function (result) {
-          document.getElementById('modal-update-config').style.display = 'block';
-          optsEditor = {
-            mode: 'code',
-            onChange : function() {
-              try {
-                editor.get();
-                document.getElementById('spanConfigError').style.display = 'none';
-                document.getElementById('buttonUpdateDisable').style.display = 'none';
-                document.getElementById('buttonUpdate').style.display = 'block';
-              }
-              catch (e) {
-                document.getElementById('spanConfigError').innerHTML = e;
-                document.getElementById('buttonUpdate').style.display = 'none';
-                document.getElementById('buttonUpdateDisable').style.display = 'block';
-                document.getElementById('spanConfigError').style.display = 'block';
-              }
-            }
-          };
-          editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
-          editor.set(result.data);
-        });
-      },
-
-      updateConfig : function (event) {
-        var newConfig = editor.get();
-
-        var data = {
-          action : 'updateConfig'
-          , newConfig : newConfig
-          , newTitle : newConfig.title
-        };
-        this.$http.put('/-/v1/instances/'+idToConfig, data).then(function (result) {
-          document.getElementById('modal-update-config').style.display = 'none';
-        });
-      }
-
-    },
-
-
     data () {
       return {
         sizeToDelete : '',
-        technicalNameToDelete : '',
+        imageNameToDelete : '',
         containers : [],
         publicDomain : ''
       }
     }
 
   }
+}
+
+
 </script>
 
 <style>
