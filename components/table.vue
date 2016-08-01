@@ -182,6 +182,11 @@
         // Update variable 'containers' which will automatically
         // refresh the instances-table component.
         self.$set('containers', beatInstances);
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 43cc3be3a4626086068eebc17262c67509e3f3f2
       });
     },
     methods: {
@@ -194,6 +199,11 @@
         var data = {
           action : 'start'
         };
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 43cc3be3a4626086068eebc17262c67509e3f3f2
         this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
           this.refresh();
         }, console.error);
@@ -237,6 +247,12 @@
         var data = {
           action : 'config'
         };
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 43cc3be3a4626086068eebc17262c67509e3f3f2
         document.getElementById('jsoneditor').innerHTML = '';
         idToConfig = event.path[4].id;
         this.$http.get('/-/v1/instances/'+event.path[4].id, data).then(function (result) {

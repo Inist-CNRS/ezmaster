@@ -8,6 +8,8 @@
 var vueInfosMachineTable = require('./infosMachineTable.vue');
 var vueTable = require('./table.vue');
 var vueAddInstance = require('./addInstance.vue');
+var vueaddApps = require('./addApps.vue');
+var vueApps = require('./apps.vue');
 
 module.exports = new Vue({
 
@@ -20,7 +22,9 @@ module.exports = new Vue({
     // into <instancestable></instancestable> in template.html.
     infosmachine : vueInfosMachineTable,
     instancestable : vueTable,
-    addinstance : vueAddInstance
+    addinstance : vueAddInstance,
+    apps : vueApps,
+    addapps : vueaddApps
 
   }
 
