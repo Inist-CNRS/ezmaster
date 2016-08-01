@@ -6,8 +6,23 @@ Administration of docker applications without any IT skills.
 
 ## Requirements
 
-- docker version >= 1.10
-- docker-compose version >= 1.7
+    - Git
+        https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+
+    - Docker (Version >= 1.10)
+        https://docs.docker.com/engine/installation/
+
+    - Docker-Compose (Version >= 1.7)
+        https://docs.docker.com/compose/install/
+
+    - NodeJS
+        https://nodejs.org/en/
+        OR
+        https://nodejs.org/en/download/package-manager/
+
+    - MongoDB
+        https://docs.mongodb.com/manual/installation/
+
 
 #### Environment variables
 
