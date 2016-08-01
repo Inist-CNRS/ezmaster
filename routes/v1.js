@@ -18,7 +18,7 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances')
   , app = require('../helpers/app')
-  , util = require('utile')
+  //, util = require('utile')
   , instancesArray
   , containers
   , portMax
@@ -46,7 +46,6 @@ module.exports = function (router, core) {
 
       if (err) { return next(err); }
 
-      debug(data);
       return res.status(200).send(data);
 
     });
@@ -61,7 +60,6 @@ module.exports = function (router, core) {
 
       if (err) { return next(err); }
 
-      debug(data);
       return res.status(200).send(data);
 
     });
@@ -127,8 +125,6 @@ module.exports = function (router, core) {
         // instances list cache and socket emit the updated list to all users.
         // The 'core' parameter allows to get the socket object inside refreshInstances().
         instances.refreshInstances(core);
-      }
-      else {
       }
 
     });
@@ -334,7 +330,6 @@ module.exports = function (router, core) {
         container.inspect(checkPort);
       }
       else {
-        debug(portMax);
         if (!Number.isInteger(portMax) || portMax == 0) {
           portMax = freePortSplitted[0];
         }
