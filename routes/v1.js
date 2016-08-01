@@ -45,7 +45,6 @@ module.exports = function (router, core) {
     app.getApps(function (err, data) {
 
       if (err) { return next(err); }
-
       return res.status(200).send(data);
 
     });
@@ -193,6 +192,7 @@ module.exports = function (router, core) {
 
           container.remove(function (err, datas, cont) {
             if (err) { return next(err); }
+
           });
         });
       }
