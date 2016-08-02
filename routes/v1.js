@@ -440,6 +440,8 @@ module.exports = function (router, core) {
 
     docker.pull(image, function(err, stream) {
 
+      if (err) { return next(err); }
+
       docker.modem.followProgress(stream, onFinished, onProgress);
 
       function onFinished(err, output) {
@@ -463,6 +465,8 @@ module.exports = function (router, core) {
     var container = docker.getImage(req.params.imageId);
 
     container.inspect(function (err, data) {
+
+      if (err) { return next(err); }
 
       var result = {};
 
