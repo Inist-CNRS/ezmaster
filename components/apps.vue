@@ -138,7 +138,7 @@
 </script>
 
 <style>
-#instances-table {
+#applications-table {
       width: 95%;
       margin: auto;
       margin-bottom: 2%;
@@ -163,8 +163,4 @@
     margin: 0 !important;
   }
 
-  #jsoneditor {
-    width: 100%;
-    height: 450px;
-  }
 </style>

@@ -6,16 +6,29 @@
 <!-- Extension of bloc body from layout.html. -->
 {% block body %}
 
-  <!-- A component will be inserted here. -->
-  <instancestable></instancestable>
+<ul class="nav nav-tabs" style="background-color:#eee" style="color:#616161">
+  <li class="active" style="color:#616161"><a data-toggle="tab" href="#instancestable">Instances</a></li>
+  <li style="color:#616161"><a data-toggle="tab" href="#apps">Applications</a></li>
+</ul>
 
-  <!-- A component will be inserted here. -->
-  <addinstance></addinstance>
+<div class="tab-content">
 
-  <apps></apps>
 
-  <addapps></addapps/
+  <div id="instancestable" class="tab-pane fade in active">
 
+    <instancestable></instancestable>
+    <addinstance ></addinstance>
+
+  </div>
+
+  <div id="apps" class="tab-pane fade">
+
+    <apps></apps>
+    <addapps></addapps>
+
+  </div>
+
+</div>
 
 <!-- End of extension of bloc body from layout.html. -->
 {% endblock %}
