@@ -192,11 +192,8 @@
     methods: {
 
       startInstance : function (event) {
-        var data = {
-          action : 'start'
-        };
 
-        this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
+        this.$http.put('/-/v1/instances/start/'+event.path[4].id).then(function (result) {
         }, console.error);
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
@@ -205,11 +202,7 @@
 
       stopInstance : function (event) {
 
-        var data = {
-          action : 'stop'
-        };
-
-        this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
+        this.$http.put('/-/v1/instances/stop/'+event.path[4].id).then(function (result) {
         }, console.error);
 
       },
@@ -282,11 +275,10 @@
       updateConfig : function (event) {
         var newConfig = editor.get();
         var data = {
-          action : 'updateConfig'
-          , newConfig : newConfig
-          , newTitle : newConfig.title
+          newConfig : newConfig,
+          newTitle : newConfig.title
         };
-        this.$http.put('/-/v1/instances/'+instanceId, data).then(function (result) {
+        this.$http.put('/-/v1/instances/config/'+instanceId, data).then(function (result) {
           document.getElementById('modal-update-config').style.display = 'none';
         });
       }
