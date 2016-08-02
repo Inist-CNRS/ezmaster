@@ -29,12 +29,13 @@
           <td> <span>Started</span> </td>
           <td class="actions">
             <ul class="bread" style="margin-bottom:0px">
-              <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
-              <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
-              <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
-              <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config </button></li>
-              <li class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>Access</a></li>
-              <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance"><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='http://[[ item.target ]].[[ publicDomain ]]'>Public Access </a></li>
+              <li class="start" title="Start the instance."><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
+              <li class="stop" title="Stop the instance."><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
+              <li class="delete" title="Delete the instance."><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
+              <li class="updateConfig" title="Update the instance configuration."><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config </button></li>
+              <li class="updateData" title="Upload data for the instance."><button type='button' id='btn_data' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload">Data</button></li>
+              <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>Access</a></li>
+              <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='http://[[ item.target ]].[[ publicDomain ]]'>Public Access </a></li>
             </ul>
 
             <div class="modal" id="modal-delete-instance">
@@ -81,6 +82,101 @@
                 </div>
               </div>
             </div>
+
+
+
+
+
+
+
+            <!-- A DUPLIQUER DANS LE ELSE VUEJS-->
+
+            <div class="modal" id="modal-upload-data">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelUpload">×</button>
+                      <h3 class="panel-title">Data Upload</h3>
+                    </div>
+                    <div class="panel-body">
+
+                      <!-- CODE HERE -->
+
+
+
+
+                      <form method="POST" action="/upload" enctype="multipart/form-data" class="form-inline">
+                          <fieldset>
+                              <legend>Select the instance</legend>
+                              <label>Castor:
+                                  <select name="instance" id="instance">
+                                      <% for(var i in config.instances) { %>
+                                      <% var inst = config.instances[i] %>
+                                      <option value="<%= inst.id%>"
+                                              <% if(inst.id == instance) { %> selected<% } %>
+                                              ><%= inst.title %></option>
+                                      <% } %>
+                                  </select>
+                              </label>
+                          </fieldset>
+                          <fieldset>
+                              <legend>Upload</legend>
+                              <label>Data file:
+                                  <input type="file" name="notices" id="notices" required multiple class="input-large">
+                              </label>
+                              <input type="submit" value="Upload" class="btn btn-primary">
+                              <span class="help-block">
+
+                                Chose a data file to upload.
+
+                              </span>
+                              <span class="help-block">
+
+                                  <% if (instance !== undefined && config.instances[instance].url_root) { %>
+                                  <a href="<%=
+                                      config.instances[instance].url_root %>">See the data</a>
+                                  <% } %>
+                              </span>
+                          </fieldset>
+
+                          <div class="clear"></div>
+
+                          <% for (var type in status) { %>
+                          <div class="alert alert-<%= type %>">
+                              <button class="close" type="button" data-dismiss="alert">&times;</button>
+                              <%- status[type] %>
+                          </div>
+                          <% } %>
+
+                      </form>
+
+
+
+
+
+
+                      <span id='spanUploadError' class='text-danger'></span>
+
+                    </div>
+                    <div class="panel-footer">
+                      <a class="btn btn-default" v-on:click='cancelUpload' data-dismiss="modal">Cancel</a>
+                      <a style='float:right' id='buttonUpload' class="btn btn-info" v-on:click="uploadData">Upload</a>
+                      <a style='float:right; display:none' id='buttonUploadDisable' class="btn btn-info" disabled>Upload</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
           </td>
         </tr>
 
@@ -96,6 +192,7 @@
               <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
               <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
               <li class="updateConfig" title="Updating configuration of the instance"><button type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
+              <li class="updateData" title="Upload data for the instance."><button type='button' id='btn_data' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload">Data</button></li>
               <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Access</button></li>
               <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Public Access</button></li>
             </ul>
@@ -281,7 +378,38 @@
         this.$http.put('/-/v1/instances/config/'+instanceId, data).then(function (result) {
           document.getElementById('modal-update-config').style.display = 'none';
         });
-      }
+      },
+
+
+
+
+
+
+
+      displayFormUpload : function (event) {
+
+        document.getElementById('modal-upload-data').style.display = 'block';
+
+      },
+
+      cancelUpload : function (event) {
+
+        document.getElementById('modal-upload-data').style.display = 'none';
+
+      },
+
+      uploadData : function (event) {
+
+
+
+      },
+
+
+
+
+
+
+
 
     },
 
