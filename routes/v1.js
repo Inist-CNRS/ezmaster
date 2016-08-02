@@ -34,11 +34,15 @@ jsonfile.spaces = 2;
 
 module.exports = function (router, core) {
 
+
+
   router.route('/').get(function (req, res, next) {
 
     return res.render('template.html');
 
   });
+
+
 
   router.route('/-/v1/app').get(function (req, res, next) {
 
@@ -70,61 +74,86 @@ module.exports = function (router, core) {
 
 
 
-  router.route('/-/v1/instances/:containerId').put(bodyParser(), function (req, res, next) {
+  router.route('/-/v1/instances/start/:containerId').put(bodyParser(), function (req, res, next) {
+
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
+
       if (err) { return next(err); }
 
-      if (req.body.action == 'start' && data.State.Running == false) {
-        container.start(function (err, datas, container) {
-          if (err) { return next(err); }
+      container.start(function (err, datas, container) {
+        if (err) { return next(err); }
 
-          // When an instance is started, we call refreshInstances() to update
-          // the instances list cache and socket emit the updated list to all users.
-          // The 'core' parameter allows to get the socket object inside refreshInstances().
-          instances.refreshInstances(core);
+        // When an instance is started, we call refreshInstances() to update
+        // the instances list cache and socket emit the updated list to all users.
+        // The 'core' parameter allows to get the socket object inside refreshInstances().
+        instances.refreshInstances(core);
 
-          res.status(200).send('Starting done');
-        });
-      }
-      else if (req.body.action == 'stop' && data.State.Running == true) {
-        container.stop(function (err, datas, container) {
-          if (err) { return next(err); }
+        res.status(200).send('Starting done');
 
-          // When an instance is stopped, we call refreshInstances() to update the
-          // instances list cache and socket emit the updated list to all users.
-          // The 'core' parameter allows to get the socket object inside refreshInstances().
-          instances.refreshInstances(core);
+      });
 
-          res.status(200).send('Stoping done');
-        });
-      }
-      else if (req.body.action == 'updateConfig') {
-        var splittedName = data.Name.split('/');
+    });
+  });
 
-        jsonfile.writeFile(
-          path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
-          req.body.newConfig, function (err) {
 
-            if (err) { return next(err); }
 
-            if (data.State.Running == true) {
-              container.restart(function (err) {
-                if (err) { return next(err); }
-                res.status(200).send('Update done');
-              });
-            }
-            else {
-              res.status(200).send('Update done');
-            }
-          });
+  router.route('/-/v1/instances/stop/:containerId').put(bodyParser(), function (req, res, next) {
 
-        // When a new config is given to an instance, we call refreshInstances() to update the
+    var container = docker.getContainer(req.params.containerId);
+
+    container.inspect(function (err, data) {
+
+      if (err) { return next(err); }
+
+      container.stop(function (err, datas, container) {
+        if (err) { return next(err); }
+
+        // When an instance is stopped, we call refreshInstances() to update the
         // instances list cache and socket emit the updated list to all users.
         // The 'core' parameter allows to get the socket object inside refreshInstances().
         instances.refreshInstances(core);
-      }
+
+        res.status(200).send('Stoping done');
+      });
+
+    });
+  });
+
+
+
+  router.route('/-/v1/instances/config/:containerId').put(bodyParser(), function (req, res, next) {
+
+    var container = docker.getContainer(req.params.containerId);
+
+    container.inspect(function (err, data) {
+
+      if (err) { return next(err); }
+
+      var splittedName = data.Name.split('/');
+
+      jsonfile.writeFile(
+        path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
+        req.body.newConfig, function (err) {
+
+          if (err) { return next(err); }
+
+          if (data.State.Running == true) {
+            container.restart(function (err) {
+              if (err) { return next(err); }
+              res.status(200).send('Update done');
+            });
+          }
+          else {
+            res.status(200).send('Update done');
+          }
+        });
+
+      // When a new config is given to an instance, we call refreshInstances() to update the
+      // instances list cache and socket emit the updated list to all users.
+      // The 'core' parameter allows to get the socket object inside refreshInstances().
+      instances.refreshInstances(core);
 
     });
   });
@@ -133,7 +162,8 @@ module.exports = function (router, core) {
 
   router.route('/-/v1/instances/verif/:technicalName').get(bodyParser(), function (req, res, next) {
 
-    if (fileExists(path.join(__dirname, '../manifests/'+req.params.technicalName+'.json')) == false) {
+    if (fileExists(path.join(__dirname, '../manifests/'+req.params.technicalName+'.json'))
+    ==false) {
       res.status(200).send('OK');
     }
     else {
@@ -154,7 +184,7 @@ module.exports = function (router, core) {
 
       var splittedName = data.Name.split('/');
 
-      // Delete information.
+      // Get Delete Information.
       var directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
         , result = {};
 
@@ -165,7 +195,7 @@ module.exports = function (router, core) {
         result.technicalName = splittedName[1];
         result.size = filesize(size);
 
-        // Configuration information.
+        // Get Configuration Information.
         jsonfile.readFile(
         path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
         function (err, obj) {
@@ -404,25 +434,19 @@ module.exports = function (router, core) {
 // APPLICATION MANAGEMENT
 
 
- router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
+ router.route('/-/v1/app').post(function (req, res, next) {
 
    var image = req.body.imageName;
 
+   docker.pull(image, function (err, data) {
 
-     docker.pull(image, function(err, stream) {
+     console.log(data);
 
-  docker.modem.followProgress(stream, onFinished, onProgress);
+     if (err) { return res.status(400).send(err); }
 
-  function onFinished(err, output) {
-    if (err) { return res.status(400).send(err); }
+     return res.status(200).send(data);
 
-     return res.status(200);
-  }
-  function onProgress(event) {
-    //...
-  }
-});
-
+   });
 
  });
 
@@ -447,7 +471,7 @@ module.exports = function (router, core) {
    var image = docker.getImage(req.params.imageId);
 
    image.remove(function (err, datas, cont) {
-     if (err.statusCode == '409') { return next(err); }
+     if (err) { return next(err); }
    });
  });
 
