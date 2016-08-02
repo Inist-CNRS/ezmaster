@@ -15,6 +15,8 @@ Administration of docker applications without any IT skills.
     - Docker-Compose (Version >= 1.7)
         https://docs.docker.com/compose/install/
 
+    - Make
+
 
 #### Environment variables
 
