@@ -33,19 +33,22 @@
                     </div>
                   </div>
 
+
+
                 <div class="panel-footer">
-                  <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddImage' data-dismiss="modal">Cancel</button>
+                  <button type="button" id="close_modal_image" class="btn btn-default" v-on:click='cancelAddImage' data-dismiss="modal">Cancel</button>
                   <button v-if="$validation1.valid" type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addImage'>Create</button>
                   <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Create</button>
                   <button type="button" style='float:right; display: none' id='saveTechnicalExists' class="btn btn-primary" disabled>Create</button>
-                  <div id='loader' style='display:none; text-align: center;'>
+                  <div id='loaderImage' style='display:none; text-align: center;'>
                     <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                   </div>
-                  <div id='errorLoader' style='display:none; text-align: center;'>
-                    <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
+                   <div id='errorLoaderImage' style='display:none; text-align: center;'>
+                    <span class="text-danger" id="errorLoaderAddImage">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
                     <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                   </div>
+
                 </div>
               </fieldset>
             </form>
@@ -82,9 +85,8 @@
       addImage : function (event) {
         this.imageName = document.getElementById('inputImageName').value;
 
-        document.getElementById('save').style.display = 'none';
-        document.getElementById('close_modal').style.display = 'none';
-        document.getElementById('loader').style.display = 'block';
+        document.getElementById('close_modal_image').style.display = 'none';
+        document.getElementById('loaderImage').style.display = 'block';
 
         var data = {
           'imageName' : this.imageName
@@ -93,11 +95,12 @@
         this.$http.post('/-/v1/app', data).then(function (result) {
           if (result.status == 200) { location.reload(); }
         }, function (error) {
+
           if (error.status == 400) {
-            this.codeErrorPull = error.status;
-            this.messageErrorPull = error.data;
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('errorLoader').style.display = 'block';
+            this.$set('codeErrorPull', error.status);
+            this.$set('messageErrorPull', 'This image does not exist');
+            document.getElementById('loaderImage').style.display = 'none';
+            document.getElementById('errorLoaderImage').style.display = 'block';
           }
         });
       },

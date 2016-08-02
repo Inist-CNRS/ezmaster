@@ -404,19 +404,25 @@ module.exports = function (router, core) {
 // APPLICATION MANAGEMENT
 
 
- router.route('/-/v1/app').post(function (req, res, next) {
+ router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
    var image = req.body.imageName;
 
-   docker.pull(image, function (err, data) {
 
-     console.log(data);
+     docker.pull(image, function(err, stream) {
 
-     if (err) { return res.status(400).send(err); }
+  docker.modem.followProgress(stream, onFinished, onProgress);
 
-     return res.status(200).send(data);
+  function onFinished(err, output) {
+    if (err) { return res.status(400).send(err); }
 
-   });
+     return res.status(200);
+  }
+  function onProgress(event) {
+    //...
+  }
+});
+
 
  });
 
@@ -441,7 +447,7 @@ module.exports = function (router, core) {
    var image = docker.getImage(req.params.imageId);
 
    image.remove(function (err, datas, cont) {
-     if (err) { return next(err); }
+     if (err.statusCode == '409') { return next(err); }
    });
  });
 

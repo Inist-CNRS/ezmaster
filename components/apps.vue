@@ -27,13 +27,17 @@
                     </div>
                     <div class="panel-body">
                       <p>
-                        <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ technicalNameToDelete ]]</span> application.</span><br /><br />
+                        <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ imageNameToDelete ]]</span> application.</span><br /><br />
                       </p><br />
+                      <div id='errorLoaderImage' style='display:none; text-align: center;'>
+                    <span class="text-danger" id="errorLoaderAddInstance">An error was received : [[ messageErrorPull ]].</span><br />
+                  </div>
                     </div>
                     <div class="panel-footer">
                       <a class="btn btn-default" v-on:click='cancelDeleteapplication' data-dismiss="modal">Cancel</a>
                       <a style='float:right' class="btn btn-warning" v-on:click="confirmDeleteapplication">Delete</a>
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -92,7 +96,7 @@
       deleteapplication : function (event) {
         idToDelete = event.path[4].id;
         this.$http.get('/-/v1/app/'+idToDelete+'/delete').then(function (result) {
-          this.imageNameToDelete = result.data.imageName;
+          this.$set('imageNameToDelete', result.data.imageName);
           document.getElementById('modal-delete-image').style.display = 'block';
 
         }, console.error);
@@ -106,14 +110,23 @@
         this.$http.delete('/-/v1/app/'+idToDelete).then(function (result) {
           document.getElementById('modal-delete-image').style.display = 'none';
           this.refresh();
-        }, console.error);
+          console.log(result);
+        }, function (error) {
+            console.log(error);
+            this.$set('messageErrorPull', 'This image is being used by one or many instance(s), please delete them first');
+            console.log(error.data);
+            document.getElementById('errorLoaderImage').style.display = 'block';
+        });
+
       },
+
 
     data () {
       return {
         sizeToDelete : '',
         imageNameToDelete : '',
         containers : [],
+        messageErrorPull : '',
         publicDomain : ''
       }
     }
