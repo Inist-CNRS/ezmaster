@@ -15,14 +15,6 @@ Administration of docker applications without any IT skills.
     - Docker-Compose (Version >= 1.7)
         https://docs.docker.com/compose/install/
 
-    - NodeJS
-        https://nodejs.org/en/
-        OR
-        https://nodejs.org/en/download/package-manager/
-
-    - MongoDB
-        https://docs.mongodb.com/manual/installation/
-
 
 #### Environment variables
 
