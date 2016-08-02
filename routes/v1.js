@@ -434,58 +434,59 @@ module.exports = function (router, core) {
 // APPLICATION MANAGEMENT
 
 
- router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
+  router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
-   var image = req.body.imageName;
+    var image = req.body.imageName;
 
+    docker.pull(image, function(err, stream) {
 
-     docker.pull(image, function(err, stream) {
+      docker.modem.followProgress(stream, onFinished, onProgress);
 
-  docker.modem.followProgress(stream, onFinished, onProgress);
+      function onFinished(err, output) {
+        if (err) { return res.status(400).send(err); }
 
-  function onFinished(err, output) {
-    if (err) { return res.status(400).send(err); }
+        return res.status(200);
+      }
 
-     return res.status(200);
-  }
-  function onProgress(event) {
-    //...
-  }
-});
+      function onProgress(event) {
+        //...
+      }
 
+    });
 
- });
-
- router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
-
-   var container = docker.getImage(req.params.imageId);
-
-   container.inspect(function (err, data) {
-
-   var result = {};
-
-   result['imageName'] = data.RepoTags;
-
-   return res.status(200).send(result);
-
- });
-
- });
-
- router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
-
-   var image = docker.getImage(req.params.imageId);
-
-   image.remove(function (err, datas, cont) {
-     if (err.statusCode == '409') { return next(err); }
-   });
- });
+  });
 
 
 
+  router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
+
+    var container = docker.getImage(req.params.imageId);
+
+    container.inspect(function (err, data) {
+
+      var result = {};
+
+      result['imageName'] = data.RepoTags;
+
+      return res.status(200).send(result);
+
+    });
+
+  });
 
 
 
+  router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
+
+    var image = docker.getImage(req.params.imageId);
+
+    image.remove(function (err, datas, cont) {
+
+      if (err.statusCode == '409') { return next(err); }
+
+    });
+
+  });
 
 
 
