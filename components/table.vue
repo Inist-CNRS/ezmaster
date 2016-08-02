@@ -191,19 +191,12 @@
 
     methods: {
 
-      refresh : function () {
-        this.$http.get('/-/v1/instances').then(function (result) {
-          this.$set('containers', result.data);
-        }, console.error);
-      },
-
       startInstance : function (event) {
         var data = {
           action : 'start'
         };
 
         this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-          this.refresh();
         }, console.error);
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
@@ -217,7 +210,6 @@
         };
 
         this.$http.put('/-/v1/instances/'+event.path[4].id, data).then(function (result) {
-          this.refresh();
         }, console.error);
 
       },
@@ -244,7 +236,6 @@
       confirmDeleteInstance : function (event) {
         this.$http.delete('/-/v1/instances/'+instanceId).then(function (result) {
           document.getElementById('modal-delete-instance').style.display = 'none';
-          this.refresh();
         }, console.error);
       },
 
