@@ -163,8 +163,7 @@
   var socket = io();
   var optsEditor = {}
     , editor = new JSONEditor()
-    , idToDelete = null
-    , idToConfig = null
+    , instanceId = null
     ;
 
   export default {
@@ -225,32 +224,17 @@
 
       deleteInstance : function (event) {
 
-        var data = {
-          action : 'info'
-        };
+        instanceId = event.path[4].id;
 
-        idToDelete = event.path[4].id;
+        this.$http.get('/-/v1/instances/'+instanceId).then(function (result) {
 
-        console.log("########## ID TO DELETE : " + idToDelete + " ##########");
-
-        this.$http.get('/-/v1/instances/'+event.path[4].id+'/getInfosDelete').then(function (result) {
-
-
-
-          console.log("########## V1 DONE ##########");
-
-          console.log("########## RESULT : " + result.data.size + " ##########");
-          console.log(result.data.size);
-
-
-          //var res = JSON.parse(result.data);
-          //this.technicalNameToDelete = res.technicalName;
-          //this.sizeToDelete = res.size;
           this.technicalNameToDelete = result.data.technicalName;
           this.sizeToDelete = result.data.size;
 
           document.getElementById('modal-delete-instance').style.display = 'block';
+
         }, console.error);
+
       },
 
       cancelDeleteInstance : function (event) {
@@ -258,7 +242,7 @@
       },
 
       confirmDeleteInstance : function (event) {
-        this.$http.delete('/-/v1/instances/'+idToDelete).then(function (result) {
+        this.$http.delete('/-/v1/instances/'+instanceId).then(function (result) {
           document.getElementById('modal-delete-instance').style.display = 'none';
           this.refresh();
         }, console.error);
@@ -268,12 +252,14 @@
 
         document.getElementById('jsoneditor').innerHTML = '';
 
-        // TODO : A SUPPRIMER ?
-        idToConfig = event.path[4].id;
+        instanceId = event.path[4].id;
 
-        this.$http.get('/-/v1/instances/'+event.path[4].id+'/getInfosConfig').then(function (result) {
+        this.$http.get('/-/v1/instances/'+instanceId).then(function (result) {
+
           document.getElementById('modal-update-config').style.display = 'block';
+
           optsEditor = {
+
             mode: 'code',
             onChange : function() {
               try {
@@ -289,9 +275,12 @@
                 document.getElementById('spanConfigError').style.display = 'block';
               }
             }
+
           };
+
           editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
-          editor.set(result.data);
+          editor.set(result.data.config);
+
         });
       },
 
@@ -306,7 +295,7 @@
           , newConfig : newConfig
           , newTitle : newConfig.title
         };
-        this.$http.put('/-/v1/instances/'+idToConfig, data).then(function (result) {
+        this.$http.put('/-/v1/instances/'+instanceId, data).then(function (result) {
           document.getElementById('modal-update-config').style.display = 'none';
         });
       }

@@ -207,23 +207,14 @@
 
       verif : function (technicalName) {
 
-        var data = {
-          'technicalName' : technicalName
-        };
+        this.$http.get('/-/v1/instances/verif/'+technicalName).then(function (result) {
 
-        this.$http.get('/-/v1/instances/verif', data).then(function (result) {
-
-          var verif = JSON.parse(result.status);
-
-          if (verif == 200) {
+          if (result.data === 'OK') {
             document.getElementById('technicalNameExists').style.display = 'none';
             document.getElementById('save').style.display = 'block';
             document.getElementById('saveTechnicalExists').style.display = 'none';
           }
-
-        }, function (error) {
-
-          if (verif == 409) {
+          else {
             document.getElementById('technicalNameExists').style.display = 'block';
             document.getElementById('save').style.display = 'none';
             document.getElementById('saveTechnicalExists').style.display = 'block';

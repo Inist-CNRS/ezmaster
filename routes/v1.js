@@ -131,31 +131,20 @@ module.exports = function (router, core) {
 
 
 
-  router.route('/-/v1/instances/verif').get(bodyParser(), function (req, res, next) {
+  router.route('/-/v1/instances/verif/:technicalName').get(bodyParser(), function (req, res, next) {
 
-    if (fileExists(path.join(__dirname, '../manifests/'
-      +req.query.technicalName+'.json')) == false) {
-      res.status(200).send('Technical name does not exists');
+    if (fileExists(path.join(__dirname, '../manifests/'+req.params.technicalName+'.json')) == false) {
+      res.status(200).send('OK');
     }
     else {
-      res.status(409).send('Technical name '+req.query.technicalName+' already exists');
+      res.status(200).send('KO');
     }
+
   });
 
 
 
-
-
-
-
-
-
-
-
-
-
-// TEST TEST TEST TEST TEST
-  router.route('/-/v1/instances/:containerId/getInfosDelete').get(bodyParser(), function (req, res, next) {
+  router.route('/-/v1/instances/:containerId').get(bodyParser(), function (req, res, next) {
 
     var container = docker.getContainer(req.params.containerId);
 
@@ -165,114 +154,35 @@ module.exports = function (router, core) {
 
       var splittedName = data.Name.split('/');
 
+      // Delete information.
       var directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
         , result = {};
 
       getSize(directoryDatas, function (err, size) {
-        if (err) { return next(err); }
-
-        result['technicalName'] = splittedName[1];
-        result['size'] = filesize(size);
-
-        return res.status(200).send(result);
-      });
-
-    });
-  });
-/////////////////////////////////
-
-// TEST TEST TEST TEST TEST TEST
-  router.route('/-/v1/instances/:containerId/getInfosConfig').get(bodyParser(), function (req, res, next) {
-
-    var container = docker.getContainer(req.params.containerId);
-
-    container.inspect(function (err, data) {
-
-      if (err) { return next(err); }
-
-      var splittedName = data.Name.split('/');
-
-      jsonfile.readFile(
-      path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
-      function (err, obj) {
 
         if (err) { return next(err); }
 
-        return res.status(200).send(obj);
+        result.technicalName = splittedName[1];
+        result.size = filesize(size);
 
-      });
-
-    });
-  });
-/////////////////////////////////////////////////////////
-
-
-// TODO : ORIGINAL - LES DEUX DU DESSUS CONDENSES - A SUPPRIMER ?
-  router.route('/-/v1/instances/:containerId').get(bodyParser(), function (req, res, next) {
-    var container = docker.getContainer(req.params.containerId);
-
-    console.log("########## PASSAGE V1 ##########");
-
-    container.inspect(function (err, data) {
-      if (err) { return next(err); console.log("########## ERROR ##########");}
-
-      var splittedName = data.Name.split('/');
-
-      console.log("########## DATA : " + data + " ##########");
-      console.log(data);
-
-
-      console.log("########## REQ : " + req.query + " ##########");
-      console.log(req.query);
-
-
-      if (req.query.action == 'info') {
-
-        console.log("########## INFO ##########");
-
-        var directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
-          , result = {};
-
-        getSize(directoryDatas, function (err, size) {
-          if (err) { return next(err); console.log("########## ERROR ##########");}
-
-          result['technicalName'] = splittedName[1];
-          result['size'] = filesize(size);
-
-          return res.status(200).send(result);
-        });
-      }
-      else if (req.query.action == 'config') {
+        // Configuration information.
         jsonfile.readFile(
         path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
         function (err, obj) {
 
           if (err) { return next(err); }
 
-          return res.status(200).send(obj);
+          result.config = obj;
+
+          return res.status(200).send(result);
+
         });
-      }
+
+      });
+
     });
+
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
