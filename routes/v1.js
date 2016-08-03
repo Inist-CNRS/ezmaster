@@ -429,6 +429,17 @@ module.exports = function (router, core) {
 
 
 
+  router.route('/-/v1/instances/upload').post(bodyParser(), function (req, res, next) {
+
+    console.log("########## PASSAGE ##########");
+
+    //var file = req.body.btnFile;
+
+    //console.log("########## FILE : "+file+" ##########");
+
+  });
+
+
 
 
 
@@ -438,29 +449,43 @@ module.exports = function (router, core) {
 // APPLICATION MANAGEMENT
 
 
-  router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
+router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
-    var image = req.body.imageName;
+   var image = req.body.imageName;
 
-    docker.pull(image, function(err, stream) {
+   var data = {
+     'imageName' : image
+   };
 
-      if (err) { return next(err); }
+   docker.pull(image, function(err, stream) {
 
-      docker.modem.followProgress(stream, onFinished, onProgress);
+     if (err) { return next(err); }
 
-      function onFinished(err, output) {
-        if (err) { return res.status(400).send(err); }
+     docker.modem.followProgress(stream, onFinished, onProgress);
 
-        return res.status(200);
-      }
+     function onFinished(err, output) {
+       if (err) { return res.status(400).send(err); }
 
-      function onProgress(event) {
-        //...
-      }
+       fs.appendFile(
+       path.join(
+         __dirname, '../applications/apps.json'
+       )
+       , data
+       , function (err) {
+         if (err) { return next(err); }
+       }
+     );
 
-    });
+       return res.status(200);
+     }
 
-  });
+     function onProgress(event) {
+
+     }
+
+   });
+
+ });
 
 
 
