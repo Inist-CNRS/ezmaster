@@ -7,9 +7,9 @@ var path = require('path')
   , debug = require('debug')('ezmaster:' + basename)
   , util = require('utile')
   , fs = require('fs')
-  , glob = require('glob')
   , Docker = require('dockerode')
   , moment = require('moment')
+  , _ = require('lodash')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'});
 
 
@@ -18,37 +18,38 @@ var path = require('path')
 module.exports.getApps = function (cb) {
 
 
-    util.async.parallel([
+  util.async.parallel([
 
-      // Retrieves all instances manifests from the files.
-      function (handleManifests) {
+    // Retrieves all instances manifests from the files.
+    function (handleManifests) {
 
-        // Read the content of manifests folders in order to
-        // extract the instances technicalName and some metadata.
-        var manifestPath = path.join(__dirname, '../applications/apps.json').toString();
+      // Read the content of manifests folders in order to
+      // extract the instances technicalName and some metadata.
+      var manifestPath = path.join(__dirname, '../applications/apps.json').toString();
 
-          var manifests = [];
-
-
-          fs.readFile(manifestPath, 'utf8', function (err, manifestContent) {
-            if (err) {
-              debug('cannot read the file, something goes wrong with the file', err);
-              return handleManifests(err);
-            }
-
-            manifests.push(manifestContent);
-
-            console.error(manifestContent);
-
-            return handleManifests(null, manifests);
-          });
-      },
+      var manifests = [];
 
 
-      function (handleApplications) {
+      fs.readFile(manifestPath, 'utf8', function (err, manifestContent) {
+        if (err) {
+          debug('cannot read the file, something goes wrong with the file', err);
+          return handleManifests(err);
+        }
+
+        manifests.push(manifestContent);
+
+        console.error(manifestContent);
+
+        return handleManifests(null, manifests);
+
+      });
+    },
 
 
-        docker.listImages({ all : true }, function (err, images) {
+    function (handleApplications) {
+
+
+      docker.listImages({ all : true }, function (err, images) {
 
         if (err) { return new handleApplications(err); }
 
@@ -71,27 +72,25 @@ module.exports.getApps = function (cb) {
         });
         return handleApplications(null, apps);
 
-        });
+      });
     }
 
 
-    ], function (err, results) {
+  ], function (err, results) {
 
 
-      if (err) { return cb(err); }
+    if (err) { return cb(err); }
 
-      var ezmasterApplications = {};
-      results[1].forEach(function (dockerApplication) {
-        results[0].forEach(function (manifest) {
-          console.log(manifest);
-          console.log(dockerApplication.imageName);
-          if (manifest.imageName === dockerApplication.imageName) {
-            ezmasterApplications[manifest.imageName] = _.assign(dockerApplication, manifest);
-          }
-        });
+    var ezmasterApplications = {};
+    results[1].forEach(function (dockerApplication) {
+      results[0].forEach(function (manifest) {
+        if (manifest.imageName === dockerApplication.imageName) {
+          ezmasterApplications[manifest.imageName] = _.assign(dockerApplication, manifest);
+        }
       });
-
-      // Return the just get instances list.
-      return cb(null, ezmasterApplications);
     });
-}
+
+    // Return the just get instances list.
+    return cb(null, ezmasterApplications);
+  });
+};
