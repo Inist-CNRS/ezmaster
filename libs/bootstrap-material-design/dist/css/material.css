@@ -7174,7 +7174,7 @@ fieldset[disabled] .navbar .btn-link:focus {
 .nav-tabs > li > a:focus {
   background-color: transparent !important;
   border: 0 !important;
-  color: #FFFFFF !important;
+  color: #616161 !important;
   font-weight: 500;
 }
 .nav-tabs > li.disabled > a,

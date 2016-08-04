@@ -10,6 +10,7 @@ var path = require('path')
   , Docker = require('dockerode')
   , moment = require('moment')
   , _ = require('lodash')
+  , glob = require('glob')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'});
 
 
@@ -25,24 +26,40 @@ module.exports.getApps = function (cb) {
 
       // Read the content of manifests folders in order to
       // extract the instances technicalName and some metadata.
-      var manifestPath = path.join(__dirname, '../applications/apps.json').toString();
+      var manifestPath = path.join(__dirname, '../applications/*.json').toString();
+        glob(manifestPath, function (err, files) {
+
+          if (err) {
+            debug('cannot read the folder, something goes wrong with glob', err);
+            return handleManifests(err);
+          }
+
+          // If no files then return an empty array.
+          if (files.length === 0) {
+            return handleManifests(null, []);
+          }
 
       var manifests = [];
+      files.forEach(function (file) {
+
+        var manifest = {};
 
 
-      fs.readFile(manifestPath, 'utf8', function (err, manifestContent) {
+      fs.readFile(file, 'utf8', function (err, manifestContent) {
         if (err) {
           debug('cannot read the file, something goes wrong with the file', err);
           return handleManifests(err);
         }
 
-        manifests.push(manifestContent);
+        var manifest = JSON.parse(manifestContent);
+        manifests.push(manifest);
 
-        console.error(manifestContent);
 
-        return handleManifests(null, manifests);
 
       });
+    });
+      return handleManifests(null, manifests);
+    });
     },
 
 
@@ -61,13 +78,11 @@ module.exports.getApps = function (cb) {
           var app = {};
           var nameImage = image.RepoTags[0].split('/')[0];
 
-          if (nameImage === 'inistcnrs' &&
-           image.RepoTags[0].split('/')[1].split(':')[0] != 'ezmaster' || nameImage === 'matthd') {
             app.imageId = image.Id.split(':')[1];
             app.imageName = image.RepoTags[0];
             app.creationDate = moment.unix(image.Created).format('YYYY/MM/DD HH:mm:ss');
             apps.push(app);
-          }
+
 
         });
         return handleApplications(null, apps);
@@ -84,7 +99,10 @@ module.exports.getApps = function (cb) {
     var ezmasterApplications = {};
     results[1].forEach(function (dockerApplication) {
       results[0].forEach(function (manifest) {
+        console.log(manifest.imageName);
+        console.log(dockerApplication.imageName);
         if (manifest.imageName === dockerApplication.imageName) {
+
           ezmasterApplications[manifest.imageName] = _.assign(dockerApplication, manifest);
         }
       });

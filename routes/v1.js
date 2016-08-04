@@ -18,7 +18,7 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances')
   , app = require('../helpers/app')
-  //, util = require('utile')
+  , util = require('utile')
   , instancesArray
   , containers
   , portMax
@@ -429,15 +429,69 @@ module.exports = function (router, core) {
 
 
 
-  router.route('/-/v1/instances/upload').post(bodyParser(), function (req, res, next) {
+router.route('/upload/:instanceId').post(bodyParser(), function (req, res, next) {
 
-    console.log("########## PASSAGE ##########");
+   console.log("########## PASSAGE ##########");
 
-    //var file = req.body.btnFile;
+   var body = req.body;
+   var file = req.body.file;
+   var files = req.files;
 
-    //console.log("########## FILE : "+file+" ##########");
+   console.log("########## REQ : "+req+" ##########");
+   console.log(req);
+   console.log("########## BODY : "+body+" ##########");
+   console.log(body);
+   console.log("########## FILE : "+file+" ##########");
+   console.log(file);
+   console.log("########## FILES : "+files+" ##########");
+   console.log(files);
 
-  });
+   console.log("########## INSTANCE ID : "+req.params.instanceId+" ##########");
+
+
+
+
+   var container = docker.getContainer(req.params.instanceId);
+
+   container.inspect(function (err, data) {
+
+     if (err) { return next(err); }
+
+     var splittedName = data.Name.split('/');
+
+
+
+     var multer  =   require('multer');
+     var storage =   multer.diskStorage({
+       destination: function (req, file, callback) {
+         console.log(file);
+         callback(null, './instances/'+splittedName[1]+'/data');
+       },
+       filename: function (req, file, callback) {
+
+         console.log(file);
+
+         // We upload the file with its original name.
+         callback(null, file.originalname);
+
+       }
+     });
+     var upload = multer({ storage : storage}).single('btnFile');
+
+
+     upload(req,res,function(err) {
+         if(err) {
+             return res.end("Error uploading file.");
+         }
+         res.end("File is uploaded");
+     });
+
+
+   });
+
+
+
+ });
 
 
 
@@ -449,33 +503,37 @@ router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
    var image = req.body.imageName;
 
-   var data = {
+   var imageId;
+
+   var imageName = {
      'imageName' : image
    };
 
    docker.pull(image, function(err, stream) {
+
+    jsonfile.writeFile(
+      path.join(__dirname, '../applications/ssvsdv.json')
+      , imageName, function (err) {
+      if (err) {
+        return next(err);
+      }
+    });
 
      if (err) { return next(err); }
 
      docker.modem.followProgress(stream, onFinished, onProgress);
 
      function onFinished(err, output) {
+
+
        if (err) { return res.status(400).send(err); }
 
-       fs.appendFile(
-       path.join(
-         __dirname, '../applications/apps.json'
-       )
-       , data
-       , function (err) {
-         if (err) { return next(err); }
-       }
-     );
-
-       return res.status(200);
+       return res.status(200).send(output);
      }
 
      function onProgress(event) {
+
+      stream.pipe(process.stdout);
 
      }
 
@@ -490,6 +548,8 @@ router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
     var container = docker.getImage(req.params.imageId);
 
     container.inspect(function (err, data) {
+
+      console.error(data);
 
       if (err) { return next(err); }
 

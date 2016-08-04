@@ -93,7 +93,7 @@
         };
 
         this.$http.post('/-/v1/app', data).then(function (result) {
-          if (result.status == 200) { location.reload(); }
+          if (result.status == 200) { console.log(result.status); location.reload(); }
         }, function (error) {
 
           if (error.status == 400) {

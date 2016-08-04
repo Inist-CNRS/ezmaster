@@ -2,6 +2,7 @@
   "ignore": [
     "instances/*",
     "manifests/*",
+    "applications/*",
     "README.md",
     "LICENSE",
     "Makefile",
