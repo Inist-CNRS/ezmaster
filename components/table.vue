@@ -101,53 +101,20 @@
                     </div>
                     <div class="panel-body">
 
-                      <!-- CODE HERE -->
 
 
 
 
-                      <form method="POST" action="/upload" enctype="multipart/form-data" class="form-inline">
+
+                      <form method="POST" action="/upload/[[ instanceId ]]" enctype="multipart/form-data" class="form-inline">
+
                           <fieldset>
-                              <legend>Select the instance</legend>
-                              <label>Castor:
-                                  <select name="instance" id="instance">
-                                      <% for(var i in config.instances) { %>
-                                      <% var inst = config.instances[i] %>
-                                      <option value="<%= inst.id%>"
-                                              <% if(inst.id == instance) { %> selected<% } %>
-                                              ><%= inst.title %></option>
-                                      <% } %>
-                                  </select>
-                              </label>
+
+                              <input type="file" name="btnFile" id="btnFile" required multiple class="input-large">
+
+                              <input type="submit" value="Upload" class="btn btn-info">
+
                           </fieldset>
-                          <fieldset>
-                              <legend>Upload</legend>
-                              <label>Data file:
-                                  <input type="file" name="notices" id="notices" required multiple class="input-large">
-                              </label>
-                              <input type="submit" value="Upload" class="btn btn-primary">
-                              <span class="help-block">
-
-                                Chose a data file to upload.
-
-                              </span>
-                              <span class="help-block">
-
-                                  <% if (instance !== undefined && config.instances[instance].url_root) { %>
-                                  <a href="<%=
-                                      config.instances[instance].url_root %>">See the data</a>
-                                  <% } %>
-                              </span>
-                          </fieldset>
-
-                          <div class="clear"></div>
-
-                          <% for (var type in status) { %>
-                          <div class="alert alert-<%= type %>">
-                              <button class="close" type="button" data-dismiss="alert">&times;</button>
-                              <%- status[type] %>
-                          </div>
-                          <% } %>
 
                       </form>
 
@@ -156,14 +123,27 @@
 
 
 
-                      <span id='spanUploadError' class='text-danger'></span>
+
+
 
                     </div>
+
                     <div class="panel-footer">
-                      <a class="btn btn-default" v-on:click='cancelUpload' data-dismiss="modal">Cancel</a>
+
+                      <a class="btn btn-default" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal">Cancel</a>
                       <a style='float:right' id='buttonUpload' class="btn btn-info" v-on:click="uploadData">Upload</a>
                       <a style='float:right; display:none' id='buttonUploadDisable' class="btn btn-info" disabled>Upload</a>
+
+                      <div id='loaderUpload' style='display:none; text-align: center;'>
+                        <img style="" id="loaderUploadData" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
+                        <span class="text-primary" id="messageLoaderUpload">Uploading ...</span>
+                      </div>
+                      <div id='errorLoaderUpload' style='display:none; text-align: center;'>
+                        <span class="text-danger" id="errorLoaderUpload">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
+                      </div>
+
                     </div>
+
                   </div>
                 </div>
               </div>
@@ -260,7 +240,6 @@
   var socket = io();
   var optsEditor = {}
     , editor = new JSONEditor()
-    , instanceId = null
     ;
 
   export default {
@@ -306,9 +285,9 @@
 
       deleteInstance : function (event) {
 
-        instanceId = event.path[4].id;
+        this.instanceId = event.path[4].id;
 
-        this.$http.get('/-/v1/instances/'+instanceId).then(function (result) {
+        this.$http.get('/-/v1/instances/'+this.instanceId).then(function (result) {
 
           this.technicalNameToDelete = result.data.technicalName;
           this.sizeToDelete = result.data.size;
@@ -324,7 +303,7 @@
       },
 
       confirmDeleteInstance : function (event) {
-        this.$http.delete('/-/v1/instances/'+instanceId).then(function (result) {
+        this.$http.delete('/-/v1/instances/'+this.instanceId).then(function (result) {
           document.getElementById('modal-delete-instance').style.display = 'none';
         }, console.error);
       },
@@ -333,9 +312,9 @@
 
         document.getElementById('jsoneditor').innerHTML = '';
 
-        instanceId = event.path[4].id;
+        this.instanceId = event.path[4].id;
 
-        this.$http.get('/-/v1/instances/'+instanceId).then(function (result) {
+        this.$http.get('/-/v1/instances/'+this.instanceId).then(function (result) {
 
           document.getElementById('modal-update-config').style.display = 'block';
 
@@ -375,7 +354,7 @@
           newConfig : newConfig,
           newTitle : newConfig.title
         };
-        this.$http.put('/-/v1/instances/config/'+instanceId, data).then(function (result) {
+        this.$http.put('/-/v1/instances/config/'+this.instanceId, data).then(function (result) {
           document.getElementById('modal-update-config').style.display = 'none';
         });
       },
@@ -389,6 +368,8 @@
       displayFormUpload : function (event) {
 
         document.getElementById('modal-upload-data').style.display = 'block';
+
+        this.instanceId = event.path[4].id;
 
       },
 
@@ -418,7 +399,8 @@
         sizeToDelete : '',
         technicalNameToDelete : '',
         containers : [],
-        publicDomain : ''
+        publicDomain : '',
+        instanceId : ''
       }
     }
   }

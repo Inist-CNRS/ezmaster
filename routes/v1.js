@@ -429,69 +429,66 @@ module.exports = function (router, core) {
 
 
 
-router.route('/upload/:instanceId').post(bodyParser(), function (req, res, next) {
+  router.route('/upload/:instanceId').post(bodyParser(), function (req, res, next) {
 
-   console.log("########## PASSAGE ##########");
+    console.log("########## PASSAGE ##########");
 
-   var body = req.body;
-   var file = req.body.file;
-   var files = req.files;
+    var body = req.body;
+    var file = req.body.file;
+    var files = req.files;
 
-   console.log("########## REQ : "+req+" ##########");
-   console.log(req);
-   console.log("########## BODY : "+body+" ##########");
-   console.log(body);
-   console.log("########## FILE : "+file+" ##########");
-   console.log(file);
-   console.log("########## FILES : "+files+" ##########");
-   console.log(files);
+    console.log("########## REQ : "+req+" ##########");
+    console.log(req);
+    console.log("########## BODY : "+body+" ##########");
+    console.log(body);
+    console.log("########## FILE : "+file+" ##########");
+    console.log(file);
+    console.log("########## FILES : "+files+" ##########");
+    console.log(files);
 
-   console.log("########## INSTANCE ID : "+req.params.instanceId+" ##########");
-
-
-
-
-   var container = docker.getContainer(req.params.instanceId);
-
-   container.inspect(function (err, data) {
-
-     if (err) { return next(err); }
-
-     var splittedName = data.Name.split('/');
+    console.log("########## INSTANCE ID : "+req.params.instanceId+" ##########");
 
 
 
-     var multer  =   require('multer');
-     var storage =   multer.diskStorage({
-       destination: function (req, file, callback) {
-         console.log(file);
-         callback(null, './instances/'+splittedName[1]+'/data');
-       },
-       filename: function (req, file, callback) {
 
-         console.log(file);
+    var container = docker.getContainer(req.params.instanceId);
 
-         // We upload the file with its original name.
-         callback(null, file.originalname);
+    container.inspect(function (err, data) {
 
-       }
-     });
-     var upload = multer({ storage : storage}).single('btnFile');
+      if (err) { return next(err); }
 
-
-     upload(req,res,function(err) {
-         if(err) {
-             return res.end("Error uploading file.");
-         }
-         res.end("File is uploaded");
-     });
-
-
-   });
+      var splittedName = data.Name.split('/');
 
 
 
- });
+      var multer = require('multer');
+      var storage = multer.diskStorage({
+        destination: function (req, file, callback) {
+          console.log(file);
+          callback(null, './instances/'+splittedName[1]+'/data');
+        },
+        filename: function (req, file, callback) {
+
+          console.log(file);
+
+          // We upload the file with its original name.
+          callback(null, file.originalname);
+
+        }
+      });
+      var upload = multer({ storage : storage}).single('btnFile');
+
+
+      upload(req,res,function(err) {
+          if(err) {
+            return res.end("Error uploading file.");
+          }
+          res.end("File is uploaded");
+      });
+
+    });
+
+  });
 
 
 
