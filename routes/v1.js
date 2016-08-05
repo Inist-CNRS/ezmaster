@@ -431,12 +431,10 @@ module.exports = function (router, core) {
 
   router.route('/upload/:instanceId').post(bodyParser(), function (req, res, next) {
 
-    console.log("########## PASSAGE ##########");
-
     var body = req.body;
     var file = req.body.file;
     var files = req.files;
-
+    console.log("########## PASSAGE ##########");
     console.log("########## REQ : "+req+" ##########");
     console.log(req);
     console.log("########## BODY : "+body+" ##########");
@@ -445,11 +443,7 @@ module.exports = function (router, core) {
     console.log(file);
     console.log("########## FILES : "+files+" ##########");
     console.log(files);
-
     console.log("########## INSTANCE ID : "+req.params.instanceId+" ##########");
-
-
-
 
     var container = docker.getContainer(req.params.instanceId);
 
@@ -458,8 +452,6 @@ module.exports = function (router, core) {
       if (err) { return next(err); }
 
       var splittedName = data.Name.split('/');
-
-
 
       var multer = require('multer');
       var storage = multer.diskStorage({
@@ -476,14 +468,17 @@ module.exports = function (router, core) {
 
         }
       });
-      var upload = multer({ storage : storage}).single('btnFile');
 
+      var upload = multer({ storage : storage}).single('btnFile');
 
       upload(req,res,function(err) {
           if(err) {
             return res.end("Error uploading file.");
           }
-          res.end("File is uploaded");
+          //res.end("File is uploaded");
+
+
+
       });
 
     });

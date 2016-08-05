@@ -89,7 +89,7 @@
 
 
 
-            <!-- A DUPLIQUER DANS LE ELSE VUEJS-->
+            <!-- A DUPLIQUER DANS LE ELSE VUEJS -->
 
             <div class="modal" id="modal-upload-data">
               <div class="modal-dialog">
@@ -110,9 +110,17 @@
 
                           <fieldset>
 
-                              <input type="file" name="btnFile" id="btnFile" required multiple class="input-large">
+                              <label class="btn btn-success btn-file">
+                                  Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
+                              </label>
 
-                              <input type="submit" value="Upload" class="btn btn-info">
+                              <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
+
+                              <input type="submit" value="Upload" class="btn btn-info" v-on:click="uploadData">
+
+                              <div><span id="spanFileName"></span></div>
+                              <div><span id="spanFileSize"></span></div>
+                              <div><span id="spanFileType"></span></div>
 
                           </fieldset>
 
@@ -130,17 +138,9 @@
 
                     <div class="panel-footer">
 
-                      <a class="btn btn-default" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal">Cancel</a>
-                      <a style='float:right' id='buttonUpload' class="btn btn-info" v-on:click="uploadData">Upload</a>
-                      <a style='float:right; display:none' id='buttonUploadDisable' class="btn btn-info" disabled>Upload</a>
+                        <!-- METTRE LA LISTE DES UPLOAD PRECEDENTS ICI -->
 
-                      <div id='loaderUpload' style='display:none; text-align: center;'>
-                        <img style="" id="loaderUploadData" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
-                        <span class="text-primary" id="messageLoaderUpload">Uploading ...</span>
-                      </div>
-                      <div id='errorLoaderUpload' style='display:none; text-align: center;'>
-                        <span class="text-danger" id="errorLoaderUpload">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
-                      </div>
+                        <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal">Cancel</a>
 
                     </div>
 
@@ -368,6 +368,9 @@
       displayFormUpload : function (event) {
 
         document.getElementById('modal-upload-data').style.display = 'block';
+        document.getElementById('spanFileName').innerHTML = "";
+        document.getElementById('spanFileSize').innerHTML = "";
+        document.getElementById('spanFileType').innerHTML = "";
 
         this.instanceId = event.path[4].id;
 
@@ -376,14 +379,52 @@
       cancelUpload : function (event) {
 
         document.getElementById('modal-upload-data').style.display = 'none';
+        document.getElementById('btnFile').value = "";
+
+      },
+
+      onChangeInputFile : function (event) {
+
+        var btn = document.getElementById('btnFile').value;
+        var file = btn.split('\\')[2];
+
+        //document.getElementById('spanUpload').innerHTML = file;
+
+        var file = document.getElementById('btnFile').files[0];
+        if (file) {
+          var fileSize = 0;
+          if (file.size > 1024 * 1024)
+            fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+          else
+            fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+
+          document.getElementById('spanFileName').style.color = "black";
+          document.getElementById('spanFileName').innerHTML = 'Name: ' + file.name;
+          document.getElementById('spanFileSize').innerHTML = 'Size: ' + fileSize;
+          document.getElementById('spanFileType').innerHTML = 'Type: ' + file.type;
+        }
 
       },
 
       uploadData : function (event) {
 
+        var btn = document.getElementById('btnFile').value;
+        var file = btn.split('\\')[2];
 
+        if(btn != "") {
+          document.getElementById('spanFileName').innerHTML = file + " --> Uploaded";
+          document.getElementById('spanFileName').style.color = "green";
+        }
+        else {
+          document.getElementById('spanFileName').innerHTML = "No file selected.";
+          document.getElementById('spanFileName').style.color = "red";
+        }
 
       },
+
+
+
+
 
 
 
@@ -434,6 +475,26 @@
   #jsoneditor {
     width: 100%;
     height: 450px;
+  }
+
+  #progress p
+  {
+    display: block;
+    width: 240px;
+    padding: 2px 5px;
+    margin: 2px 0;
+    border: 1px inset #446;
+    border-radius: 5px;
+  }
+
+  #progress p.success
+  {
+    background: #0c0 none 0 0 no-repeat;
+  }
+
+  #progress p.failed
+  {
+    background: #c00 none 0 0 no-repeat;
   }
 
 </style>
