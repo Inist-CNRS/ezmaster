@@ -89,6 +89,12 @@
 
 
 
+
+
+
+
+
+
             <!-- A DUPLIQUER DANS LE ELSE VUEJS -->
 
             <div class="modal" id="modal-upload-data">
@@ -101,46 +107,61 @@
                     </div>
                     <div class="panel-body">
 
+                      <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
 
+                        <fieldset>
 
+                          <label class="btn btn-success btn-file">
+                              Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
+                          </label>
 
+                          <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
 
+                          <input type="submit" value="Upload" class="btn btn-info" v-on:click="uploadData">
 
-                      <form method="POST" action="/upload/[[ instanceId ]]" enctype="multipart/form-data" class="form-inline">
+                          <div><span id="spanFileName"></span></div>
+                          <div><span id="spanFileSize"></span></div>
+                          <div><span id="spanFileType"></span></div>
 
-                          <fieldset>
-
-                              <label class="btn btn-success btn-file">
-                                  Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
-                              </label>
-
-                              <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
-
-                              <input type="submit" value="Upload" class="btn btn-info" v-on:click="uploadData">
-
-                              <div><span id="spanFileName"></span></div>
-                              <div><span id="spanFileSize"></span></div>
-                              <div><span id="spanFileType"></span></div>
-
-                          </fieldset>
+                        </fieldset>
 
                       </form>
-
-
-
-
-
-
-
-
 
                     </div>
 
                     <div class="panel-footer">
 
-                        <!-- METTRE LA LISTE DES UPLOAD PRECEDENTS ICI -->
+                      <h3>Files Already Uploaded</h3>
 
-                        <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal">Cancel</a>
+
+
+
+
+
+                      <template v-for="file in files">
+
+                        <div class="row">
+                          <div class="col-sm-6 col-md-4">
+                            <div class="thumbnail">
+                              <div class="caption">
+                                <h3>[[ file.name ]]</h3>
+                                <p>[[ file.size ]]</p>
+                                <p>[[ file.type ]]</p>
+                                <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile([[ file.name ]])">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </template>
+
+
+
+
+
+
+
+                      <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal">Exit</a>
 
                     </div>
 
@@ -148,6 +169,12 @@
                 </div>
               </div>
             </div>
+
+
+
+
+
+
 
 
 
@@ -374,6 +401,28 @@
 
         this.instanceId = event.path[4].id;
 
+
+
+
+
+
+
+        // Get formerly uploaded files.
+        this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
+
+          this.files = result.data; // ou result.data.truc
+
+          console.log("########## RESULT : "+result.data+" ##########");
+          console.log(result.data);
+
+        }, console.error);
+
+
+
+
+
+
+
       },
 
       cancelUpload : function (event) {
@@ -422,6 +471,12 @@
 
       },
 
+      deleteUploadedFile : function (event) {
+
+
+
+      }
+
 
 
 
@@ -441,7 +496,8 @@
         technicalNameToDelete : '',
         containers : [],
         publicDomain : '',
-        instanceId : ''
+        instanceId : '',
+        files : []
       }
     }
   }

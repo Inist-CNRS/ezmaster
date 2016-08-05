@@ -427,10 +427,9 @@ module.exports = function (router, core) {
 
 
 
+  router.route('/-/v1/instances/:instanceId/data').post(bodyParser(), function (req, res, next) {
 
-
-  router.route('/upload/:instanceId').post(bodyParser(), function (req, res, next) {
-
+    /*
     var body = req.body;
     var file = req.body.file;
     var files = req.files;
@@ -444,6 +443,7 @@ module.exports = function (router, core) {
     console.log("########## FILES : "+files+" ##########");
     console.log(files);
     console.log("########## INSTANCE ID : "+req.params.instanceId+" ##########");
+    */
 
     var container = docker.getContainer(req.params.instanceId);
 
@@ -477,13 +477,65 @@ module.exports = function (router, core) {
           }
           //res.end("File is uploaded");
 
+      });
 
+    });
+
+  });
+
+
+
+  router.route('/-/v1/instances/:instanceId/data').get(function (req, res, next) {
+
+    console.log("########## INSTANCE ID : "+req.params.instanceId+" ##########");
+
+    var container = docker.getContainer(req.params.instanceId);
+
+    container.inspect(function (err, data) {
+
+      if (err) { return next(err); }
+
+      var splittedName = data.Name.split('/');
+
+      var dir = './instances/'+splittedName[1]+'/data';
+
+      var results = [];
+
+      var nbFiles = fs.readdirSync(dir).length;
+      console.log("########## DIR LEN : "+fs.readdirSync(dir).length+" ##########");
+
+      fs.readdirSync(dir).forEach(function(file) {
+
+          nbFiles--;
+
+          var result = [];
+          result.name = file;
+          file = dir+'/'+file;
+
+          fs.stat(file, function(err, stat) {
+
+            if(err) { return next(err); }
+
+            result.size = stat.size;
+            console.log("########## FILE SIZE : "+stat.size+" ##########");
+
+            results.push(result);
+
+            console.log(results);
+
+          });
 
       });
 
     });
 
   });
+
+
+
+
+
+
 
 
 
@@ -493,47 +545,78 @@ module.exports = function (router, core) {
 
 router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
-   var image = req.body.imageName;
-   var tag = req.body.versionImage;
+  var image = req.body.imageName;
+  var tag = req.body.versionImage;
 
-   console.log(req.body);
-
-   var imageId;
-
-   var imageName = {
-     'imageName' : image+':'+tag
-   };
-
-   docker.pull(image, function(err, stream) {
+  var imageId;
 
 
+
+  docker.pull(image, function(err, stream) {
+
+
+
+    if (err) { return next(err); }
+
+    docker.modem.followProgress(stream, onFinished, onProgress);
+
+    function onFinished(err, output) {
+
+
+      if (err) { return res.status(500).send(err); }
+
+       var container = docker.getImage(image);
+
+   container.inspect(function (err, data) {
+
+     if (err) { return next(err); }
+     console.log(util.inspect(data));
+     var imageName = {
+       'imageName' : image+':'+tag,
+       'imageId' : data.Id.split(':')[1],
+       'creationDate' :  moment.unix(data.Created).format('YYYY/MM/DD hh:mm:ss')
+     };
+
+     jsonfile.writeFile(
+       path.join(__dirname, '../applications/'+data.Id.split(':')[1]+'.json')
+       , imageName, function (err) {
+         if (err) {
+           return res.status(500).send(err);
+         }else{
+           return res.status(200).send(output);
+         }
+       });
+   });
+
+
+     }
+
+    function onProgress(event) {
+
+     stream.pipe(process.stdout);
+
+    }
+
+  });
+
+});
+
+
+
+
+ router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
+
+   var container = docker.getImage(req.params.imageId);
+
+   container.inspect(function (err, data) {
 
      if (err) { return next(err); }
 
-     docker.modem.followProgress(stream, onFinished, onProgress);
+     var result = {};
 
-     function onFinished(err, output) {
+     result['imageName'] = data.RepoTags;
 
-
-       if (err) { return res.status(500).send(err); }
-
-       jsonfile.writeFile(
-      path.join(__dirname, '../applications/ssvsdv.json')
-      , imageName, function (err) {
-      if (err) {
-        return res.status(500).send(err);
-      }else{
-        return res.status(200).send(output);
-      }
-      });
-
-     }
-
-     function onProgress(event) {
-
-      stream.pipe(process.stdout);
-
-     }
+     return res.status(200).send(result);
 
    });
 
@@ -541,40 +624,23 @@ router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
 
 
+ router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
 
-  router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
+   var image = docker.getImage(req.params.imageId);
 
-    var container = docker.getImage(req.params.imageId);
+   image.remove(function (err, datas, cont) {
 
-    container.inspect(function (err, data) {
+     if (err) { res.status(409); }
 
-      console.error(data);
+     rimraf(path.join(__dirname, '../applications/', req.params.imageId.split(':')[1] + '.json'), function (err) {
+         if (err) { return next(err); }
 
-      if (err) { return next(err); }
+         res.status(200).send('Removing done');
+       });
 
-      var result = {};
+   });
 
-      result['imageName'] = data.RepoTags;
-
-      return res.status(200).send(result);
-
-    });
-
-  });
-
-
-
-  router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
-
-    var image = docker.getImage(req.params.imageId);
-
-    image.remove(function (err, datas, cont) {
-
-      if (err.statusCode == '409') { return next(err); }
-
-    });
-
-  });
+ });
 
 
 
