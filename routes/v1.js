@@ -23,6 +23,7 @@ var path = require('path')
   , containers
   , portMax
   , freePortSplitted
+  , moment = require('moment')
   ;
 
 // The bool to check if the instances cache is up to date.
