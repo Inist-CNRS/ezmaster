@@ -73,16 +73,6 @@
         self.$set('containers', result.data);
       }, console.error);
 
-      // Listen incoming messages typed as 'refreshInstances' from the server.
-      // Here the message comes from eventRefreshInstances.js.
-      socket.on('refreshInstances', function(beatInstances) {
-        // Update variable 'containers' which will automatically
-        // refresh the instances-table component.
-        self.$set('containers', beatInstances);
-
-
-      });
-
     },
     methods: {
 

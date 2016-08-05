@@ -494,22 +494,19 @@ module.exports = function (router, core) {
 router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
    var image = req.body.imageName;
+   var tag = req.body.versionImage;
+
+   console.log(req.body);
 
    var imageId;
 
    var imageName = {
-     'imageName' : image
+     'imageName' : image+':'+tag
    };
 
    docker.pull(image, function(err, stream) {
 
-    jsonfile.writeFile(
-      path.join(__dirname, '../applications/ssvsdv.json')
-      , imageName, function (err) {
-      if (err) {
-        return next(err);
-      }
-    });
+
 
      if (err) { return next(err); }
 
@@ -518,9 +515,18 @@ router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
      function onFinished(err, output) {
 
 
-       if (err) { return res.status(400).send(err); }
+       if (err) { return res.status(500).send(err); }
 
-       return res.status(200).send(output);
+       jsonfile.writeFile(
+      path.join(__dirname, '../applications/ssvsdv.json')
+      , imageName, function (err) {
+      if (err) {
+        return res.status(500).send(err);
+      }else{
+        return res.status(200).send(output);
+      }
+      });
+
      }
 
      function onProgress(event) {
@@ -532,6 +538,7 @@ router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
    });
 
  });
+
 
 
 

@@ -30,7 +30,10 @@
                     <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
                     <div class="col-md-9">
                       <input class="form-control" id="inputImageName" name="inputImageName" placeholder=" Ex : Title - Comment - Note" type="text" value='[[ imageName ]]' v-model="imageName" v-validate:imageName="{ required: true }">
+                      <input class="form-control sizeInput" id="inputVersionImage" placeholder=" Version" value="[[ versionImage ]]" type="text" min='0' v-model="version" v-validate:project="{ required: true}">
                     </div>
+
+
                   </div>
 
 
@@ -84,12 +87,14 @@
 
       addImage : function (event) {
         this.imageName = document.getElementById('inputImageName').value;
+        this.versionImage = document.getElementById('inputVersionImage').value;
 
         document.getElementById('close_modal_image').style.display = 'none';
         document.getElementById('loaderImage').style.display = 'block';
 
         var data = {
-          'imageName' : this.imageName
+          'imageName' : this.imageName,
+          'versionImage' : this.versionImage
         };
 
         this.$http.post('/-/v1/app', data).then(function (result) {
@@ -116,6 +121,7 @@
 
       return {
         imageName : '',
+        versionImage : '',
         messageErrorPull : '',
         codeErrorPull : ''
       }
