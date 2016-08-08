@@ -591,7 +591,7 @@ router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
      var imageName = {
        'imageName' : image+':'+tag,
        'imageId' : data.Id.split(':')[1],
-       'creationDate' :  moment.unix(data.Created).format('YYYY/MM/DD hh:mm:ss')
+       'creationDate' :  moment(data.Created, moment.ISO_8601).format('YYYY/MM/DD hh:mm:ss')
      };
 
      jsonfile.writeFile(
