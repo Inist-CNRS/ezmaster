@@ -24,6 +24,8 @@ var path = require('path')
   , portMax
   , freePortSplitted
   , moment = require('moment')
+  , mmm = require('mmmagic')
+  , Magic = mmm.Magic;
   ;
 
 // The bool to check if the instances cache is up to date.
@@ -500,48 +502,61 @@ module.exports = function (router, core) {
 
       var dir = './instances/'+splittedName[1]+'/data';
 
-      var results = [];
+      var results = {};
 
       var nbFiles = fs.readdirSync(dir).length;
       console.log("########## DIR LEN : "+fs.readdirSync(dir).length+" ##########");
 
       fs.readdirSync(dir).forEach(function(file) {
 
-          nbFiles--;
+        fs.stat(dir+'/'+file, function(err, stat) {
 
-          var result = [];
-          result.name = file;
-          file = dir+'/'+file;
+          if(err) { return next(err); }
 
+          var magic = new Magic(mmm.MAGIC_MIME_TYPE);
+          magic.detectFile(dir+'/'+file, function(err, resu) {
 
+              if (err) throw err;
 
+              nbFiles--;
 
-          results.push(result);
-          console.log(results);
+              var result = {};
+              result.name = file;
+              result.size = filesize(stat.size);
+              result.mimeType = resu;
+              results[result.name] = result;
 
-          if(nbFiles == 0) {
-            console.log("RETURN !");
-            console.log(results);
-          }
-
-/*
-          fs.stat(file, function(err, stat) {
-
-            if(err) { return next(err); }
-
-            result.size = stat.size;
-            console.log("########## FILE SIZE : "+stat.size+" ##########");
-
-            results.push(result);
-
-            console.log(results);
+              if(nbFiles == 0) {
+                console.log("RETURN !");
+                console.log(results);
+                return res.status(200).send(results);
+              }
 
           });
-*/
+
+        });
+
+      });
+
+    });
+
+  });
 
 
 
+  router.route('/-/v1/instances/:containerId/:fileName').delete(function (req, res, next) {
 
+    var container = docker.getContainer(req.params.containerId);
+
+    container.inspect(function (err, data) {
+      if (err) { return next(err); }
+
+      var splittedName = data.Name.split('/');
+
+      rimraf(path.join(__dirname, '../instances/'+splittedName[1]+'/data', req.params.fileName), function (err) {
+        if (err) { return next(err); }
+
+        res.status(200).send('Data File Deleted.');
       });
 
     });

@@ -138,22 +138,28 @@
 
 
 
-                      <template v-for="file in files">
-
-                        <div class="row">
-                          <div class="col-sm-6 col-md-4">
-                            <div class="thumbnail">
-                              <div class="caption">
-                                <h3>[[ file.name ]]</h3>
-                                <p>[[ file.size ]]</p>
-                                <p>[[ file.type ]]</p>
-                                <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile([[ file.name ]])">
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                      </template>
+                      <table id="data-files-table" class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>File Name</th>
+                              <th>File Size</th>
+                              <th>Mime Type</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <template v-for="file in files">
+                              <tr id="[[ file.name ]]">
+                                <td>[[ file.name ]]</td>
+                                <td>[[ file.size ]]</td>
+                                <td>[[ file.mimeType ]]</td>
+                                <td>
+                                  <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
+                                </td>
+                              </tr>
+                            </template>
+                          </tbody>
+                      </table>
 
 
 
@@ -392,6 +398,13 @@
 
 
 
+
+
+
+
+
+
+
       displayFormUpload : function (event) {
 
         document.getElementById('modal-upload-data').style.display = 'block';
@@ -401,27 +414,15 @@
 
         this.instanceId = event.path[4].id;
 
-
-
-
-
-
-
         // Get formerly uploaded files.
         this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
-
-          this.files = result.data; // ou result.data.truc
 
           console.log("########## RESULT : "+result.data+" ##########");
           console.log(result.data);
 
+          this.files = result.data; // ou result.data.truc
+
         }, console.error);
-
-
-
-
-
-
 
       },
 
@@ -471,9 +472,19 @@
 
       },
 
-      deleteUploadedFile : function (event) {
+      deleteUploadedFile : function () {
 
+        console.log("########## DELETE ##########");
 
+        var fileName = event.path[2].id;
+
+        console.log("########## FILE NAME : "+fileName+" ##########");
+
+        this.$http.delete('/-/v1/instances/'+this.instanceId+'/'+fileName).then(function (result) {
+
+          document.getElementById(fileName).style.display = 'none';
+
+        }, console.error);
 
       }
 
@@ -497,7 +508,7 @@
         containers : [],
         publicDomain : '',
         instanceId : '',
-        files : []
+        files : [],
       }
     }
   }
