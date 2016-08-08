@@ -28,7 +28,7 @@
           <td>[[ item.app ]]</td>
           <td> <span>Started</span> </td>
           <td class="actions">
-            <ul class="bread" style="margin-bottom:0px">
+            <ul class="bread" style="margin-bottom:0px" id="[[ item.technicalName ]]">
               <li class="start" title="Start the instance."><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
               <li class="stop" title="Stop the instance."><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
               <li class="delete" title="Delete the instance."><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
@@ -95,15 +95,16 @@
 
 
 
-            <!-- A DUPLIQUER DANS LE ELSE VUEJS -->
 
+
+            <!-- Modal Show Upload Data Files -->
             <div class="modal" id="modal-upload-data">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="panel panel-info">
                     <div class="panel-heading">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelUpload">×</button>
-                      <h3 class="panel-title">Data Upload</h3>
+                      <h3 class="panel-title">Data Upload - Instance [[ instanceName ]]</h3>
                     </div>
                     <div class="panel-body">
 
@@ -131,12 +132,30 @@
 
                     <div class="panel-footer">
 
-                      <h3>Files Already Uploaded</h3>
+                      <input type="button" value="Show Data Files" class="btn btn-info" v-on:click="showDataFiles">
+
+                      <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal" style="float:right;">Exit</a>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
 
 
+            <!-- Modal Show Data Files -->
+            <div class="modal" id="modal-data-files">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDataFiles">×</button>
+                      <h3 class="panel-title">Data Files - Instance [[ instanceName ]]</h3>
+                    </div>
+                    <div class="panel-body">
 
-
-
+                      <h4>[[ nbDataFiles ]] Data File(s)</h4>
 
                       <table id="data-files-table" class="table table-striped">
                           <thead>
@@ -161,13 +180,7 @@
                           </tbody>
                       </table>
 
-
-
-
-
-
-
-                      <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal">Exit</a>
+                      <a class="btn btn-danger" id="cancelDataFiles" v-on:click='cancelDataFiles' data-dismiss="modal" style="float:right;">Exit</a>
 
                     </div>
 
@@ -250,6 +263,98 @@
                       <a style='float:right' id='buttonUpdate' class="btn btn-info" v-on:click="updateConfig">Update</a>
                       <a style='float:right; display:none' id='buttonUpdateDisable' class="btn btn-info" disabled>Update</a>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Show Upload Data Files -->
+            <div class="modal" id="modal-upload-data">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelUpload">×</button>
+                      <h3 class="panel-title">Data Upload - Instance [[ instanceName ]]</h3>
+                    </div>
+                    <div class="panel-body">
+
+                      <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
+
+                        <fieldset>
+
+                          <label class="btn btn-success btn-file">
+                              Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
+                          </label>
+
+                          <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
+
+                          <input type="submit" value="Upload" class="btn btn-info" v-on:click="uploadData">
+
+                          <div><span id="spanFileName"></span></div>
+                          <div><span id="spanFileSize"></span></div>
+                          <div><span id="spanFileType"></span></div>
+
+                        </fieldset>
+
+                      </form>
+
+                    </div>
+
+                    <div class="panel-footer">
+
+                      <input type="button" value="Show Data Files" class="btn btn-info" v-on:click="showDataFiles">
+
+                      <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal" style="float:right;">Exit</a>
+
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Modal Show Data Files -->
+            <div class="modal" id="modal-data-files">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="panel panel-info">
+                    <div class="panel-heading">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDataFiles">×</button>
+                      <h3 class="panel-title">Data Files - Instance [[ instanceName ]]</h3>
+                    </div>
+                    <div class="panel-body">
+
+                      <h4>[[ nbDataFiles ]] Data File(s)</h4>
+
+                      <table id="data-files-table" class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>File Name</th>
+                              <th>File Size</th>
+                              <th>Mime Type</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <template v-for="file in files">
+                              <tr id="[[ file.name ]]">
+                                <td>[[ file.name ]]</td>
+                                <td>[[ file.size ]]</td>
+                                <td>[[ file.mimeType ]]</td>
+                                <td>
+                                  <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
+                                </td>
+                              </tr>
+                            </template>
+                          </tbody>
+                      </table>
+
+                      <a class="btn btn-danger" id="cancelDataFiles" v-on:click='cancelDataFiles' data-dismiss="modal" style="float:right;">Exit</a>
+
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -413,6 +518,7 @@
         document.getElementById('spanFileType').innerHTML = "";
 
         this.instanceId = event.path[4].id;
+        this.instanceName = event.path[2].id;
 
         // Get formerly uploaded files.
         this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
@@ -420,9 +526,13 @@
           console.log("########## RESULT : "+result.data+" ##########");
           console.log(result.data);
 
-          this.files = result.data; // ou result.data.truc
+          this.files = result.data;
+
+          this.nbDataFiles = Object.keys(this.files).length;
 
         }, console.error);
+
+
 
       },
 
@@ -470,6 +580,7 @@
           document.getElementById('spanFileName').style.color = "red";
         }
 
+
       },
 
       deleteUploadedFile : function () {
@@ -486,7 +597,33 @@
 
         }, console.error);
 
-      }
+        this.nbDataFiles -= 1;
+
+      },
+
+      cancelDataFiles : function (event) {
+
+        document.getElementById('modal-data-files').style.display = 'none';
+
+      },
+
+      showDataFiles : function (event) {
+
+        // Get formerly uploaded files.
+        this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
+
+          console.log("########## RESULT : "+result.data+" ##########");
+          console.log(result.data);
+
+          this.files = result.data;
+
+          this.nbDataFiles = Object.keys(this.files).length;
+
+          document.getElementById('modal-data-files').style.display = 'block';
+
+        }, console.error);
+
+      },
 
 
 
@@ -508,7 +645,9 @@
         containers : [],
         publicDomain : '',
         instanceId : '',
-        files : [],
+        files : {},
+        nbDataFiles : 0,
+        instanceName : ""
       }
     }
   }
@@ -562,6 +701,10 @@
   #progress p.failed
   {
     background: #c00 none 0 0 no-repeat;
+  }
+
+  #modal-data-files{
+    height:100%;
   }
 
 </style>

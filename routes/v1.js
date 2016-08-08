@@ -505,6 +505,11 @@ module.exports = function (router, core) {
       var results = {};
 
       var nbFiles = fs.readdirSync(dir).length;
+
+      if(nbFiles == 0) {
+        return res.status(200).send(results);
+      }
+
       console.log("########## DIR LEN : "+fs.readdirSync(dir).length+" ##########");
 
       fs.readdirSync(dir).forEach(function(file) {
