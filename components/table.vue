@@ -38,6 +38,7 @@
               <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='http://[[ item.target ]].[[ publicDomain ]]'>Public Access </a></li>
             </ul>
 
+
             <div class="modal" id="modal-delete-instance">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -61,6 +62,7 @@
               </div>
             </div>
 
+
             <div class="modal" id="modal-update-config">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -82,19 +84,6 @@
                 </div>
               </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
             <!-- Modal Show Upload Data Files -->
@@ -189,20 +178,6 @@
               </div>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
           </td>
         </tr>
 
@@ -222,6 +197,7 @@
               <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Access</button></li>
               <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Public Access</button></li>
             </ul>
+
 
             <div class="modal" id="modal-delete-instance">
               <div class="modal-dialog">
@@ -246,6 +222,7 @@
               </div>
             </div>
 
+
             <div class="modal" id="modal-update-config">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -267,6 +244,7 @@
                 </div>
               </div>
             </div>
+
 
             <!-- Modal Show Upload Data Files -->
             <div class="modal" id="modal-upload-data">
@@ -497,19 +475,6 @@
         });
       },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
       displayFormUpload : function (event) {
 
         document.getElementById('modal-upload-data').style.display = 'block';
@@ -523,16 +488,11 @@
         // Get formerly uploaded files.
         this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
 
-          console.log("########## RESULT : "+result.data+" ##########");
-          console.log(result.data);
-
           this.files = result.data;
 
           this.nbDataFiles = Object.keys(this.files).length;
 
         }, console.error);
-
-
 
       },
 
@@ -546,12 +506,10 @@
       onChangeInputFile : function (event) {
 
         var btn = document.getElementById('btnFile').value;
-        var file = btn.split('\\')[2];
-
-        //document.getElementById('spanUpload').innerHTML = file;
-
         var file = document.getElementById('btnFile').files[0];
+
         if (file) {
+
           var fileSize = 0;
           if (file.size > 1024 * 1024)
             fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
@@ -562,6 +520,7 @@
           document.getElementById('spanFileName').innerHTML = 'Name: ' + file.name;
           document.getElementById('spanFileSize').innerHTML = 'Size: ' + fileSize;
           document.getElementById('spanFileType').innerHTML = 'Type: ' + file.type;
+
         }
 
       },
@@ -580,16 +539,11 @@
           document.getElementById('spanFileName').style.color = "red";
         }
 
-
       },
 
       deleteUploadedFile : function () {
 
-        console.log("########## DELETE ##########");
-
         var fileName = event.path[2].id;
-
-        console.log("########## FILE NAME : "+fileName+" ##########");
 
         this.$http.delete('/-/v1/instances/'+this.instanceId+'/'+fileName).then(function (result) {
 
@@ -612,9 +566,6 @@
         // Get formerly uploaded files.
         this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
 
-          console.log("########## RESULT : "+result.data+" ##########");
-          console.log(result.data);
-
           this.files = result.data;
 
           this.nbDataFiles = Object.keys(this.files).length;
@@ -627,16 +578,8 @@
 
 
 
+    }, // End of Methods
 
-
-
-
-
-
-
-
-
-    },
 
     data () {
       return {

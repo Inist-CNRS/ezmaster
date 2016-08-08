@@ -432,22 +432,6 @@ module.exports = function (router, core) {
 
   router.route('/-/v1/instances/:instanceId/data').post(bodyParser(), function (req, res, next) {
 
-    /*
-    var body = req.body;
-    var file = req.body.file;
-    var files = req.files;
-    console.log("########## PASSAGE ##########");
-    console.log("########## REQ : "+req+" ##########");
-    console.log(req);
-    console.log("########## BODY : "+body+" ##########");
-    console.log(body);
-    console.log("########## FILE : "+file+" ##########");
-    console.log(file);
-    console.log("########## FILES : "+files+" ##########");
-    console.log(files);
-    console.log("########## INSTANCE ID : "+req.params.instanceId+" ##########");
-    */
-
     var container = docker.getContainer(req.params.instanceId);
 
     container.inspect(function (err, data) {
@@ -459,12 +443,11 @@ module.exports = function (router, core) {
       var multer = require('multer');
       var storage = multer.diskStorage({
         destination: function (req, file, callback) {
-          console.log(file);
+
           callback(null, './instances/'+splittedName[1]+'/data');
+
         },
         filename: function (req, file, callback) {
-
-          console.log(file);
 
           // We upload the file with its original name.
           callback(null, file.originalname);
@@ -475,10 +458,9 @@ module.exports = function (router, core) {
       var upload = multer({ storage : storage}).single('btnFile');
 
       upload(req,res,function(err) {
-          if(err) {
-            return res.end("Error uploading file.");
-          }
-          //res.end("File is uploaded");
+
+        if(err) {return res.end("Error uploading file.");}
+        //res.end("File is uploaded");
 
       });
 
@@ -489,8 +471,6 @@ module.exports = function (router, core) {
 
 
   router.route('/-/v1/instances/:instanceId/data').get(function (req, res, next) {
-
-    console.log("########## INSTANCE ID : "+req.params.instanceId+" ##########");
 
     var container = docker.getContainer(req.params.instanceId);
 
@@ -509,8 +489,6 @@ module.exports = function (router, core) {
       if(nbFiles == 0) {
         return res.status(200).send(results);
       }
-
-      console.log("########## DIR LEN : "+fs.readdirSync(dir).length+" ##########");
 
       fs.readdirSync(dir).forEach(function(file) {
 
@@ -532,8 +510,6 @@ module.exports = function (router, core) {
               results[result.name] = result;
 
               if(nbFiles == 0) {
-                console.log("RETURN !");
-                console.log(results);
                 return res.status(200).send(results);
               }
 
@@ -554,14 +530,17 @@ module.exports = function (router, core) {
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
+
       if (err) { return next(err); }
 
       var splittedName = data.Name.split('/');
 
       rimraf(path.join(__dirname, '../instances/'+splittedName[1]+'/data', req.params.fileName), function (err) {
+
         if (err) { return next(err); }
 
         res.status(200).send('Data File Deleted.');
+
       });
 
     });
