@@ -513,6 +513,18 @@ module.exports = function (router, core) {
           result.name = file;
           file = dir+'/'+file;
 
+
+
+
+          results.push(result);
+          console.log(results);
+
+          if(nbFiles == 0) {
+            console.log("RETURN !");
+            console.log(results);
+          }
+
+/*
           fs.stat(file, function(err, stat) {
 
             if(err) { return next(err); }
@@ -525,6 +537,10 @@ module.exports = function (router, core) {
             console.log(results);
 
           });
+*/
+
+
+
 
       });
 
