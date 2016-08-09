@@ -598,6 +598,11 @@
 
           document.getElementById('modal-data-files').style.display = 'block';
 
+          // This style is already present in the CSS section but,
+          // if we don't repeat it here, one file miss in the list.
+          // So, we do that just to force the modal to display all the data files.
+          document.getElementById('modal-data-files').style.height = '100%';
+
         }, console.error);
 
       },

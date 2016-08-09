@@ -18,7 +18,7 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances')
   , app = require('../helpers/app')
-  , util = require('utile')
+  //, util = require('utile')
   , instancesArray
   , containers
   , portMax
@@ -444,7 +444,7 @@ module.exports = function (router, core) {
       var splittedName = data.Name.split('/');
 
       // We use multer to pass data from the input type file to this route file.
-      // We are forced to use multer coupled with bodyparser because bodyparser can't manage input type file alone anymore.
+      // Multer is coupled with bodyparser because it can't manage input type file alone anymore.
       var storage = multer.diskStorage({
 
         destination: function (req, file, callback) {
@@ -468,12 +468,12 @@ module.exports = function (router, core) {
       var upload = multer({ storage : storage}).single('btnFile');
 
       // The upload.
-      upload(req,res,function(err) {
+      upload(req, res, function(err) {
 
-        if(err) {
+        if (err) {
 
           // A problem occured while uploading.
-          return res.end("Error uploading file.");
+          return res.end('Error uploading file.');
 
         }
         // Else, the upload went well.
@@ -492,7 +492,12 @@ module.exports = function (router, core) {
 
     var container = docker.getContainer(req.params.instanceId);
 
-    container.inspect(function (err, data) {
+    container.inspect(goOn);
+
+
+
+
+    function goOn(err, data) {
 
       if (err) { return next(err); }
 
@@ -510,7 +515,7 @@ module.exports = function (router, core) {
       var nbFiles = fs.readdirSync(dir).length;
 
       // If there are no files in the data folder, we just return results as an empty object.
-      if(nbFiles == 0) {
+      if (nbFiles == 0) {
         return res.status(200).send(results);
       }
 
@@ -524,25 +529,25 @@ module.exports = function (router, core) {
         // fs.stat to get some information on the file.
         fs.stat(dir+'/'+file, function(err, stat) {
 
-          if(err) { return next(err); }
+          if (err) { return next(err); }
 
           // The Magic module allows to get the file Mime type.
           var magic = new Magic(mmm.MAGIC_MIME_TYPE);
           magic.detectFile(dir+'/'+file, function(err, resu) {
 
-              if (err) throw err;
+            if (err) throw err;
 
-              nbFiles--;
+            nbFiles--;
 
-              var result = {};
-              result.name = file;
-              result.size = filesize(stat.size);
-              result.mimeType = resu;
-              results[result.name] = result;
+            var result = {};
+            result.name = file;
+            result.size = filesize(stat.size);
+            result.mimeType = resu;
+            results[result.name] = result;
 
-              if(nbFiles == 0) {
-                return res.status(200).send(results);
-              }
+            if (nbFiles == 0) {
+              return res.status(200).send(results);
+            }
 
           });
 
@@ -550,7 +555,7 @@ module.exports = function (router, core) {
 
       });
 
-    });
+    }
 
   });
 
@@ -570,7 +575,10 @@ module.exports = function (router, core) {
 
       // Delete the file.
       // splittedName[1] is the instance technical name.
-      rimraf(path.join(__dirname, '../instances/'+splittedName[1]+'/data', req.params.fileName), function (err) {
+      rimraf(
+      path.join(__dirname, '../instances/'+splittedName[1]+'/data'
+      , req.params.fileName)
+      , function (err) {
 
         if (err) { return next(err); }
 
@@ -587,109 +595,101 @@ module.exports = function (router, core) {
 
 
 
-// APPLICATION MANAGEMENT
+  // APPLICATION MANAGEMENT
 
+  router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
-router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
+    var image = req.body.imageName;
+    var tag = req.body.versionImage;
 
-  var image = req.body.imageName;
-  var tag = req.body.versionImage;
+    docker.pull(image, function(err, stream) {
 
-  var imageId;
+      if (err) { return next(err); }
 
+      docker.modem.followProgress(stream, onFinished, onProgress);
 
+      function onFinished(err, output) {
 
-  docker.pull(image, function(err, stream) {
+        if (err) { return res.status(500).send(err); }
 
+        var container = docker.getImage(image);
 
+        container.inspect(function (err, data) {
 
-    if (err) { return next(err); }
+          if (err) { return next(err); }
 
-    docker.modem.followProgress(stream, onFinished, onProgress);
+          var imageName = {
+            'imageName' : image+':'+tag,
+            'imageId' : data.Id.split(':')[1],
+            'creationDate' :  moment(data.Created, moment.ISO_8601).format('YYYY/MM/DD hh:mm:ss')
+          };
 
-    function onFinished(err, output) {
+          jsonfile.writeFile(
+          path.join(__dirname, '../applications/'+data.Id.split(':')[1]+'.json')
+          , imageName, function (err) {
+            if (err) {
+              return res.status(500).send(err);
+            }
+            return res.status(200).send(output);
+          });
+        });
 
+      }
 
-      if (err) { return res.status(500).send(err); }
+      function onProgress(event) {
 
-       var container = docker.getImage(image);
+        stream.pipe(process.stdout);
 
-   container.inspect(function (err, data) {
+      }
 
-     if (err) { return next(err); }
-     console.log(util.inspect(data));
-     var imageName = {
-       'imageName' : image+':'+tag,
-       'imageId' : data.Id.split(':')[1],
-       'creationDate' :  moment(data.Created, moment.ISO_8601).format('YYYY/MM/DD hh:mm:ss')
-     };
-
-     jsonfile.writeFile(
-       path.join(__dirname, '../applications/'+data.Id.split(':')[1]+'.json')
-       , imageName, function (err) {
-         if (err) {
-           return res.status(500).send(err);
-         }else{
-           return res.status(200).send(output);
-         }
-       });
-   });
-
-
-     }
-
-    function onProgress(event) {
-
-     stream.pipe(process.stdout);
-
-    }
+    });
 
   });
 
-});
+
+
+  router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
+
+    var container = docker.getImage(req.params.imageId);
+
+    container.inspect(function (err, data) {
+
+      if (err) { return next(err); }
+
+      var result = {};
+
+      result['imageName'] = data.RepoTags;
+
+      return res.status(200).send(result);
+
+    });
+
+  });
 
 
 
+  router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
 
- router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
+    var image = docker.getImage(req.params.imageId);
 
-   var container = docker.getImage(req.params.imageId);
+    image.remove(function (err, datas, cont) {
 
-   container.inspect(function (err, data) {
+      if (err) { res.status(409); }
 
-     if (err) { return next(err); }
+      rimraf(
+      path.join(__dirname, '../applications/'
+      , req.params.imageId.split(':')[1] + '.json')
+      , function (err) {
 
-     var result = {};
+        if (err) { return next(err); }
 
-     result['imageName'] = data.RepoTags;
+        res.status(200).send('Removing done');
 
-     return res.status(200).send(result);
+      });
 
-   });
+    });
 
- });
-
-
-
- router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
-
-   var image = docker.getImage(req.params.imageId);
-
-   image.remove(function (err, datas, cont) {
-
-     if (err) { res.status(409); }
-
-     rimraf(path.join(__dirname, '../applications/', req.params.imageId.split(':')[1] + '.json'), function (err) {
-         if (err) { return next(err); }
-
-         res.status(200).send('Removing done');
-       });
-
-   });
-
- });
-
-
+  });
 
 
 
