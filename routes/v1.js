@@ -494,9 +494,6 @@ module.exports = function (router, core) {
 
     container.inspect(goOn);
 
-
-
-
     function goOn(err, data) {
 
       if (err) { return next(err); }

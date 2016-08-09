@@ -19,8 +19,11 @@
         <th>Actions</th>
       </tr>
     </thead>
+
     <tbody>
+
       <template v-for="item in containers">
+
         <tr v-if="[[ item.running ]] == 'true'" class="success" id="[[ item.containerId ]]">
           <td>[[ item.longName ]]</td>
           <td>[[ item.technicalName ]]</td>
@@ -37,148 +40,6 @@
               <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>Access</a></li>
               <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='http://[[ item.target ]].[[ publicDomain ]]'>Public Access </a></li>
             </ul>
-
-
-            <div class="modal" id="modal-delete-instance">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                   <div class="panel panel-warning">
-                    <div class="panel-heading">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDeleteInstance">×</button>
-                      <h3 class="panel-title">Delete Instance</h3>
-                    </div>
-                    <div class="panel-body">
-                      <p>
-                        <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ technicalNameToDelete ]]</span> instance.</span><br /><br />
-                        <span class="deleteSizeFolder">It represents <span class="text-warning">[[ sizeToDelete ]]</span> of data.</span>
-                      </p><br />
-                    </div>
-                    <div class="panel-footer">
-                      <a class="btn btn-default" v-on:click='cancelDeleteInstance' data-dismiss="modal">Cancel</a>
-                      <a style='float:right' class="btn btn-warning" v-on:click="confirmDeleteInstance">Delete</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <div class="modal" id="modal-update-config">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                   <div class="panel panel-info">
-                    <div class="panel-heading">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">×</button>
-                      <h3 class="panel-title">Configuration Update</h3>
-                    </div>
-                    <div class="panel-body">
-                      <div id="jsoneditor"></div>
-                      <span id='spanConfigError' class='text-danger'></span>
-                    </div>
-                    <div class="panel-footer">
-                      <a class="btn btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
-                      <a style='float:right' id='buttonUpdate' class="btn btn-info" v-on:click="updateConfig">Update</a>
-                      <a style='float:right; display:none' id='buttonUpdateDisable' class="btn btn-info" disabled>Update</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <!-- Modal Show Upload Data Files -->
-            <div class="modal" id="modal-upload-data">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="panel panel-info">
-                    <div class="panel-heading">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelUpload">×</button>
-                      <h3 class="panel-title">Data Upload - Instance [[ instanceName ]]</h3>
-                    </div>
-                    <div class="panel-body">
-
-                    <!-- The form calls directly a route to perform the upload. -->
-                      <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
-
-                        <fieldset>
-
-                          <label class="btn btn-success btn-file">
-                              Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
-                          </label>
-
-                          <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
-
-                          <input type="submit" value="Upload" class="btn btn-info" v-on:click="uploadData">
-
-                          <div><span id="spanFileName"></span></div>
-                          <div><span id="spanFileSize"></span></div>
-                          <div><span id="spanFileType"></span></div>
-
-                        </fieldset>
-
-                      </form>
-
-                    </div>
-
-                    <div class="panel-footer">
-
-                      <input type="button" value="Show Data Files" class="btn btn-info" v-on:click="showDataFiles">
-
-                      <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal" style="float:right;">Exit</a>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <!-- Modal Show Data Files -->
-            <div class="modal" id="modal-data-files">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="panel panel-info">
-                    <div class="panel-heading">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDataFiles">×</button>
-                      <h3 class="panel-title">Data Files - Instance [[ instanceName ]]</h3>
-                    </div>
-                    <div class="panel-body">
-
-                      <h4>[[ nbDataFiles ]] Data File(s)</h4>
-
-                      <table id="data-files-table" class="table table-striped">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Size</th>
-                              <th>Type</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <template v-for="file in files">
-                              <tr id="[[ file.name ]]">
-                                <td>[[ file.name ]]</td>
-                                <td>[[ file.size ]]</td>
-                                <td>[[ file.mimeType ]]</td>
-                                <td>
-                                  <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
-                                </td>
-                              </tr>
-                            </template>
-                          </tbody>
-                      </table>
-
-                      <a class="btn btn-danger" id="cancelDataFiles" v-on:click='cancelDataFiles' data-dismiss="modal" style="float:right;">Exit</a>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </td>
         </tr>
 
@@ -198,153 +59,154 @@
               <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Access</button></li>
               <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Public Access</button></li>
             </ul>
-
-
-            <div class="modal" id="modal-delete-instance">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                   <div class="panel panel-warning">
-                    <div class="panel-heading">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDeleteInstance">×</button>
-                      <h3 class="panel-title">Delete Instance</h3>
-                    </div>
-                    <div class="panel-body">
-                      <p>
-                        <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ technicalNameToDelete ]]</span> instance.</span><br /><br />
-                        <span class="deleteSizeFolder">It represents <span class="text-warning">[[ sizeToDelete ]]</span> of data.</span>
-                      </p><br />
-                    </div>
-                    <div class="panel-footer">
-                      <a class="btn btn-default" v-on:click='cancelDeleteInstance' data-dismiss="modal">Cancel</a>
-                      <a style='float:right' class="btn btn-warning" v-on:click="confirmDeleteInstance">Delete</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <div class="modal" id="modal-update-config">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="panel panel-info">
-                    <div class="panel-heading">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">×</button>
-                      <h3 class="panel-title">Configuration Update</h3>
-                    </div>
-                    <div class="panel-body">
-                      <div id="jsoneditor"></div>
-                      <span id='spanConfigError' class='text-danger'></span>
-                    </div>
-                    <div class="panel-footer">
-                      <a class="btn btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
-                      <a style='float:right' id='buttonUpdate' class="btn btn-info" v-on:click="updateConfig">Update</a>
-                      <a style='float:right; display:none' id='buttonUpdateDisable' class="btn btn-info" disabled>Update</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <!-- Modal Show Upload Data Files -->
-            <div class="modal" id="modal-upload-data">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="panel panel-info">
-                    <div class="panel-heading">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelUpload">×</button>
-                      <h3 class="panel-title">Data Upload - Instance [[ instanceName ]]</h3>
-                    </div>
-                    <div class="panel-body">
-
-                      <!-- The form calls directly a route to perform the upload. -->
-                      <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
-
-                        <fieldset>
-
-                          <label class="btn btn-success btn-file">
-                              Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
-                          </label>
-
-                          <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
-
-                          <input type="submit" value="Upload" class="btn btn-info" v-on:click="uploadData">
-
-                          <div><span id="spanFileName"></span></div>
-                          <div><span id="spanFileSize"></span></div>
-                          <div><span id="spanFileType"></span></div>
-
-                        </fieldset>
-
-                      </form>
-
-                    </div>
-
-                    <div class="panel-footer">
-
-                      <input type="button" value="Show Data Files" class="btn btn-info" v-on:click="showDataFiles">
-
-                      <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal" style="float:right;">Exit</a>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <!-- Modal Show Data Files -->
-            <div class="modal" id="modal-data-files">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="panel panel-info">
-                    <div class="panel-heading">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDataFiles">×</button>
-                      <h3 class="panel-title">Data Files - Instance [[ instanceName ]]</h3>
-                    </div>
-                    <div class="panel-body">
-
-                      <h4>[[ nbDataFiles ]] Data File(s)</h4>
-
-                      <table id="data-files-table" class="table table-striped">
-                          <thead>
-                            <tr>
-                              <th>Name</th>
-                              <th>Size</th>
-                              <th>Type</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <template v-for="file in files">
-                              <tr id="[[ file.name ]]">
-                                <td>[[ file.name ]]</td>
-                                <td>[[ file.size ]]</td>
-                                <td>[[ file.mimeType ]]</td>
-                                <td>
-                                  <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
-                                </td>
-                              </tr>
-                            </template>
-                          </tbody>
-                      </table>
-
-                      <a class="btn btn-danger" id="cancelDataFiles" v-on:click='cancelDataFiles' data-dismiss="modal" style="float:right;">Exit</a>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </td>
         </tr>
+
       </template>
+
     </tbody>
+
   </table>
+
+  <div class="modal" id="modal-delete-instance">
+    <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="panel panel-warning">
+          <div class="panel-heading">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDeleteInstance">×</button>
+            <h3 class="panel-title">Delete Instance</h3>
+          </div>
+          <div class="panel-body">
+            <p>
+              <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ technicalNameToDelete ]]</span> instance.</span><br /><br />
+              <span class="deleteSizeFolder">It represents <span class="text-warning">[[ sizeToDelete ]]</span> of data.</span>
+            </p><br />
+          </div>
+          <div class="panel-footer">
+            <a class="btn btn-default" v-on:click='cancelDeleteInstance' data-dismiss="modal">Cancel</a>
+            <a style='float:right' class="btn btn-warning" v-on:click="confirmDeleteInstance">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal" id="modal-update-config">
+    <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="panel panel-info">
+          <div class="panel-heading">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">×</button>
+            <h3 class="panel-title">Configuration Update</h3>
+          </div>
+          <div class="panel-body">
+            <div id="jsoneditor"></div>
+            <span id='spanConfigError' class='text-danger'></span>
+          </div>
+          <div class="panel-footer">
+            <a class="btn btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
+            <a style='float:right' id='buttonUpdate' class="btn btn-info" v-on:click="updateConfig">Update</a>
+            <a style='float:right; display:none' id='buttonUpdateDisable' class="btn btn-info" disabled>Update</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Show Upload Data Files -->
+  <div class="modal" id="modal-upload-data">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelUpload">×</button>
+            <h3 class="panel-title">Data Upload - Instance [[ instanceName ]]</h3>
+          </div>
+          <div class="panel-body">
+
+          <!-- The form calls directly a route to perform the upload. -->
+            <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
+
+              <fieldset>
+
+                <label class="btn btn-success btn-file">
+                    Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
+                </label>
+
+                <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
+
+                <input type="submit" value="Upload" class="btn btn-info" v-on:click="uploadData">
+
+                <div><span id="spanFileName"></span></div>
+                <div><span id="spanFileSize"></span></div>
+                <div><span id="spanFileType"></span></div>
+
+              </fieldset>
+
+            </form>
+
+          </div>
+
+          <div class="panel-footer">
+
+            <input type="button" value="Show Data Files" class="btn btn-info" v-on:click="showDataFiles">
+
+            <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal" style="float:right;">Exit</a>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Show Data Files -->
+  <div class="modal" id="modal-data-files">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDataFiles">×</button>
+            <h3 class="panel-title">Data Files - Instance [[ instanceName ]]</h3>
+          </div>
+          <div class="panel-body">
+
+            <h4>[[ nbDataFiles ]] Data File(s)</h4>
+
+            <table id="data-files-table" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Type</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template v-for="file in files">
+                    <tr id="[[ file.name ]]">
+                      <td>[[ file.name ]]</td>
+                      <td>[[ file.size ]]</td>
+                      <td>[[ file.mimeType ]]</td>
+                      <td>
+                        <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
+                      </td>
+                    </tr>
+                  </template>
+                </tbody>
+            </table>
+
+            <a class="btn btn-danger" id="cancelDataFiles" v-on:click='cancelDataFiles' data-dismiss="modal" style="float:right;">Exit</a>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
 
 </template>
 
@@ -598,10 +460,13 @@
 
           document.getElementById('modal-data-files').style.display = 'block';
 
+/*
           // This style is already present in the CSS section but,
           // if we don't repeat it here, one file miss in the list.
           // So, we do that just to force the modal to display all the data files.
           document.getElementById('modal-data-files').style.height = '100%';
+*/
+
 
         }, console.error);
 
