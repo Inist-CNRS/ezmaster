@@ -47,7 +47,7 @@
                     <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                   </div>
-                   <div id='errorLoaderImage' style='display:none; text-align: center;'>
+                   <div id='errorLoaderImages' style='display:none; text-align: center;'>
                     <span class="text-danger" id="errorLoaderAddImage">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
                     <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                   </div>
@@ -101,11 +101,11 @@
           if (result.status == 200) { console.log(result.status); location.reload(); }
         }, function (error) {
 
-          if (error.status == 400) {
+          if (error) {
             this.$set('codeErrorPull', error.status);
-            this.$set('messageErrorPull', 'This image does not exist');
+            this.$set('messageErrorPull', error.data);
             document.getElementById('loaderImage').style.display = 'none';
-            document.getElementById('errorLoaderImage').style.display = 'block';
+            document.getElementById('errorLoaderImages').style.display = 'block';
           }
         });
       },
