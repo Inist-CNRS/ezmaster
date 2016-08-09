@@ -41,7 +41,6 @@ describe('Test Image', function () {
 
   it('Found fakeapp', function (done) {
     request.get('/-/v1/app/').expect(function (res) {
-      console.log(res.body);
       if (!res.body['hello-world:latest']) { throw new Error('Image not found!'); }
     })
     .end(done);
