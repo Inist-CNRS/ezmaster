@@ -25,7 +25,8 @@ var path = require('path')
   , freePortSplitted
   , moment = require('moment')
   , mmm = require('mmmagic')
-  , Magic = mmm.Magic;
+  , Magic = mmm.Magic
+  , multer = require('multer')
   ;
 
 // The bool to check if the instances cache is up to date.
@@ -430,6 +431,7 @@ module.exports = function (router, core) {
 
 
 
+  // Route to upload a file directly from the html upload form.
   router.route('/-/v1/instances/:instanceId/data').post(bodyParser(), function (req, res, next) {
 
     var container = docker.getContainer(req.params.instanceId);
@@ -438,28 +440,43 @@ module.exports = function (router, core) {
 
       if (err) { return next(err); }
 
+      // Split the instance name.
       var splittedName = data.Name.split('/');
 
-      var multer = require('multer');
+      // We use multer to pass data from the input type file to this route file.
+      // We are forced to use multer coupled with bodyparser because bodyparser can't manage input type file alone anymore.
       var storage = multer.diskStorage({
+
         destination: function (req, file, callback) {
 
+          // We save the file in the correct folder.
+          // splittedName[1] is the instance technical name.
           callback(null, './instances/'+splittedName[1]+'/data');
 
         },
+
         filename: function (req, file, callback) {
 
           // We upload the file with its original name.
           callback(null, file.originalname);
 
         }
+
       });
 
+      // The upload concerns the button which id is btnFile.
       var upload = multer({ storage : storage}).single('btnFile');
 
+      // The upload.
       upload(req,res,function(err) {
 
-        if(err) {return res.end("Error uploading file.");}
+        if(err) {
+
+          // A problem occured while uploading.
+          return res.end("Error uploading file.");
+
+        }
+        // Else, the upload went well.
         //res.end("File is uploaded");
 
       });
@@ -470,6 +487,7 @@ module.exports = function (router, core) {
 
 
 
+  // Route to get information on the data files from a specific instance.
   router.route('/-/v1/instances/:instanceId/data').get(function (req, res, next) {
 
     var container = docker.getContainer(req.params.instanceId);
@@ -478,24 +496,37 @@ module.exports = function (router, core) {
 
       if (err) { return next(err); }
 
+      // Split the instance name.
       var splittedName = data.Name.split('/');
 
+      // The path to the data folder.
+      // splittedName[1] is the instance technical name.
       var dir = './instances/'+splittedName[1]+'/data';
 
+      // The object we will return which contains the information.
       var results = {};
 
+      // Get the number of files in the data folder of the instance.
       var nbFiles = fs.readdirSync(dir).length;
 
+      // If there are no files in the data folder, we just return results as an empty object.
       if(nbFiles == 0) {
         return res.status(200).send(results);
       }
 
+      // For each file in the data folder :
+      // - We get information on it.
+      // - We store them into result.
+      // - We eventually store result into results.
+      // - We return results.
       fs.readdirSync(dir).forEach(function(file) {
 
+        // fs.stat to get some information on the file.
         fs.stat(dir+'/'+file, function(err, stat) {
 
           if(err) { return next(err); }
 
+          // The Magic module allows to get the file Mime type.
           var magic = new Magic(mmm.MAGIC_MIME_TYPE);
           magic.detectFile(dir+'/'+file, function(err, resu) {
 
@@ -525,6 +556,7 @@ module.exports = function (router, core) {
 
 
 
+  // Route to delete a specific data file from a specific instance data folder.
   router.route('/-/v1/instances/:containerId/:fileName').delete(function (req, res, next) {
 
     var container = docker.getContainer(req.params.containerId);
@@ -533,8 +565,11 @@ module.exports = function (router, core) {
 
       if (err) { return next(err); }
 
+      // Split the instance name.
       var splittedName = data.Name.split('/');
 
+      // Delete the file.
+      // splittedName[1] is the instance technical name.
       rimraf(path.join(__dirname, '../instances/'+splittedName[1]+'/data', req.params.fileName), function (err) {
 
         if (err) { return next(err); }
@@ -546,10 +581,6 @@ module.exports = function (router, core) {
     });
 
   });
-
-
-
-
 
 
 

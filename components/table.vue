@@ -97,6 +97,7 @@
                     </div>
                     <div class="panel-body">
 
+                    <!-- The form calls directly a route to perform the upload. -->
                       <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
 
                         <fieldset>
@@ -149,9 +150,9 @@
                       <table id="data-files-table" class="table table-striped">
                           <thead>
                             <tr>
-                              <th>File Name</th>
-                              <th>File Size</th>
-                              <th>Mime Type</th>
+                              <th>Name</th>
+                              <th>Size</th>
+                              <th>Type</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -188,7 +189,7 @@
           <td>[[ item.app ]]</td>
           <td><span v-else>Stopped</span></td>
           <td class="actions">
-            <ul class="bread" style="margin-bottom:0px">
+            <ul class="bread" style="margin-bottom:0px" id="[[ item.technicalName ]]">
               <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
               <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
               <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
@@ -257,6 +258,7 @@
                     </div>
                     <div class="panel-body">
 
+                      <!-- The form calls directly a route to perform the upload. -->
                       <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
 
                         <fieldset>
@@ -309,9 +311,9 @@
                       <table id="data-files-table" class="table table-striped">
                           <thead>
                             <tr>
-                              <th>File Name</th>
-                              <th>File Size</th>
-                              <th>Mime Type</th>
+                              <th>Name</th>
+                              <th>Size</th>
+                              <th>Type</th>
                               <th>Action</th>
                             </tr>
                           </thead>
@@ -363,7 +365,7 @@
     ready () {
 
       let self = this;
-      // ... call the route /-/v1/instances with a get wich get the instances list.
+      // Call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/instances').then(function (result) {
         self.$set('containers', result.data);
@@ -385,11 +387,12 @@
 
       startInstance : function (event) {
 
-        this.$http.put('/-/v1/instances/start/'+event.path[4].id).then(function (result) {
-        }, console.error);
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
         // button start > li > ul > td > tr > id="[[ item.description.Id ]]"
+        this.$http.put('/-/v1/instances/start/'+event.path[4].id).then(function (result) {
+        }, console.error);
+
       },
 
       stopInstance : function (event) {
@@ -401,6 +404,7 @@
 
       deleteInstance : function (event) {
 
+        // Update the data variable instanceId which will automatically update the HTML with this new value.
         this.instanceId = event.path[4].id;
 
         this.$http.get('/-/v1/instances/'+this.instanceId).then(function (result) {
@@ -428,6 +432,7 @@
 
         document.getElementById('jsoneditor').innerHTML = '';
 
+        // Update the data variable instanceId which will automatically update the HTML with this new value.
         this.instanceId = event.path[4].id;
 
         this.$http.get('/-/v1/instances/'+this.instanceId).then(function (result) {
@@ -477,19 +482,25 @@
 
       displayFormUpload : function (event) {
 
+        // Shows the modal upload and reset the inputs.
         document.getElementById('modal-upload-data').style.display = 'block';
         document.getElementById('spanFileName').innerHTML = "";
         document.getElementById('spanFileSize').innerHTML = "";
         document.getElementById('spanFileType').innerHTML = "";
 
+        // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
+        // Update the data variable instanceId which will automatically update the HTML with this new value.
         this.instanceId = event.path[4].id;
+        // Update the data variable instanceName which will automatically update the HTML with this new value.
         this.instanceName = event.path[2].id;
 
-        // Get formerly uploaded files.
+        // Get information on formerly uploaded files for the concerned instance.
         this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
 
+          // Update the data variable files which will automatically update the data files list on the modal.
           this.files = result.data;
 
+          // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
           this.nbDataFiles = Object.keys(this.files).length;
 
         }, console.error);
@@ -505,17 +516,23 @@
 
       onChangeInputFile : function (event) {
 
+        // When the user choose a file.
+
         var btn = document.getElementById('btnFile').value;
+
+        // Get the selected file.
         var file = document.getElementById('btnFile').files[0];
 
         if (file) {
 
+          // Set the selected file size.
           var fileSize = 0;
           if (file.size > 1024 * 1024)
             fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
           else
             fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
 
+          // Display information on the selected file.
           document.getElementById('spanFileName').style.color = "black";
           document.getElementById('spanFileName').innerHTML = 'Name: ' + file.name;
           document.getElementById('spanFileSize').innerHTML = 'Size: ' + fileSize;
@@ -527,9 +544,12 @@
 
       uploadData : function (event) {
 
+        // When the user click on the upload button.
+
         var btn = document.getElementById('btnFile').value;
         var file = btn.split('\\')[2];
 
+        // Check if a file has been selected or not and give a feedback to the user.
         if(btn != "") {
           document.getElementById('spanFileName').innerHTML = file + " --> Uploaded";
           document.getElementById('spanFileName').style.color = "green";
@@ -543,14 +563,18 @@
 
       deleteUploadedFile : function () {
 
+        // event.path[2].id go up 2 times in the HTML tree to get the id of the reached element.
+        // Here the file name.
         var fileName = event.path[2].id;
 
+        // Delete the file.
         this.$http.delete('/-/v1/instances/'+this.instanceId+'/'+fileName).then(function (result) {
 
           document.getElementById(fileName).style.display = 'none';
 
         }, console.error);
 
+        // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
         this.nbDataFiles -= 1;
 
       },
@@ -563,11 +587,13 @@
 
       showDataFiles : function (event) {
 
-        // Get formerly uploaded files.
+        // Get information on formerly uploaded files for the concerned instance.
         this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
 
+          // Update the data variable files which will automatically update the data files list on the modal.
           this.files = result.data;
 
+          // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
           this.nbDataFiles = Object.keys(this.files).length;
 
           document.getElementById('modal-data-files').style.display = 'block';
