@@ -1,9 +1,8 @@
-/* global describe, it, before*/
+/* global describe, it*/
 'use strict';
 
 // Travis run this file while building.
-var execSync = require('child_process').exec
-  , path = require('path')
+var path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
   , request = require('supertest');
@@ -23,9 +22,9 @@ describe('Test Image', function () {
   it('Create image', function (done) {
 
     var data = {
-          'imageName' : 'hello-world',
-          'versionImage' : 'latest'
-        };
+      'imageName' : 'hello-world',
+      'versionImage' : 'latest'
+    };
 
     request
     .post('/-/v1/app')
