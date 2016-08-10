@@ -77,7 +77,7 @@
     methods: {
 
       refresh : function () {
-        this.$http.get('/-/v1/apps').then(function (result) {
+        this.$http.get('/-/v1/app').then(function (result) {
           this.$set('containers', result.data);
         }, console.error);
       },
@@ -100,7 +100,6 @@
         this.$http.delete('/-/v1/app/'+idToDelete).then(function (result) {
           document.getElementById('modal-delete-image').style.display = 'none';
           this.refresh();
-          console.log(result);
         }, function (error) {
             console.log(error);
             this.$set('messageErrorPull', 'This image is being used by one or many instance(s), please delete them first');

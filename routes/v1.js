@@ -675,14 +675,12 @@ module.exports = function (router, core) {
 
       rimraf(
       path.join(__dirname, '../applications/'
-      , req.params.imageId.split(':')[1] + '.json')
+      , req.params.imageId + '.json')
       , function (err) {
-
         if (err) { return next(err); }
-
-        res.status(200).send('Removing done');
-
       });
+
+      res.status(200).send('Removing done');
 
     });
 
