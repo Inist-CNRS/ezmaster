@@ -382,6 +382,15 @@
 
         var btn = document.getElementById('btnFile').value;
 
+
+
+        console.log("########## INPUT FILE VALUE : "+btn+" ##########");
+
+
+
+
+
+
         // Get the selected file.
         var file = document.getElementById('btnFile').files[0];
 
@@ -432,12 +441,26 @@
         // Delete the file.
         this.$http.delete('/-/v1/instances/'+this.instanceId+'/'+fileName).then(function (result) {
 
-          document.getElementById(fileName).style.display = 'none';
+          // Get information on formerly uploaded files for the concerned instance.
+          this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
 
-        }, console.error);
+            // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
+            this.nbDataFiles = Object.keys(this.files).length;
 
-        // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
-        this.nbDataFiles -= 1;
+            // Update the data variable files which will automatically update the data files list on the modal.
+            this.files = result.data;
+
+            // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
+            this.nbDataFiles -= 1;
+
+            if(this.nbDataFiles == 0)
+              document.getElementById('modal-data-files').style.display = 'none';
+            else
+              document.getElementById(fileName).style.display = 'none';
+
+          }, console.error);
+
+        });
 
       },
 
@@ -459,14 +482,6 @@
           this.nbDataFiles = Object.keys(this.files).length;
 
           document.getElementById('modal-data-files').style.display = 'block';
-
-/*
-          // This style is already present in the CSS section but,
-          // if we don't repeat it here, one file miss in the list.
-          // So, we do that just to force the modal to display all the data files.
-          document.getElementById('modal-data-files').style.height = '100%';
-*/
-
 
         }, console.error);
 

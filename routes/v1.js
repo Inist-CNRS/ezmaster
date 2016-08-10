@@ -465,7 +465,7 @@ module.exports = function (router, core) {
       });
 
       // The upload concerns the button which id is btnFile.
-      var upload = multer({ storage : storage}).single('btnFile');
+      var upload = multer({ storage : storage}).single('btnFile');      /////////    SINGLE ? <<<<<<<<<<<<<<<<<<<<<<<<<
 
       // The upload.
       upload(req, res, function(err) {
