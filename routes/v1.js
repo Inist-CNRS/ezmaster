@@ -465,7 +465,8 @@ module.exports = function (router, core) {
       });
 
       // The upload concerns the button which id is btnFile.
-      var upload = multer({ storage : storage}).single('btnFile');      /////////    SINGLE ? <<<<<<<<<<<<<<<<<<<<<<<<<
+      // The Multer .any() method allows to select multiple files.
+      var upload = multer({ storage : storage}).any('btnFile');
 
       // The upload.
       upload(req, res, function(err) {

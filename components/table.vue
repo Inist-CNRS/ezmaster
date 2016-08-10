@@ -382,15 +382,6 @@
 
         var btn = document.getElementById('btnFile').value;
 
-
-
-        console.log("########## INPUT FILE VALUE : "+btn+" ##########");
-
-
-
-
-
-
         // Get the selected file.
         var file = document.getElementById('btnFile').files[0];
 
