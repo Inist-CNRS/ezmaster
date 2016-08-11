@@ -25,12 +25,9 @@
     "**/shLegacy.js",
     "**/modernizr.custom.?(*).js",
     "**/knockout-*.*.*.debug.js",
-
     "bower_components/**",
     "libs/**",
-    "**/ie10-viewport-bug-workaround.js",
-    "**/ie-emulation-modes-warning.js",
-    "**/ie8-responsive-file-warning.js"
+
   ],
   "test": [
     "**/test/**",
