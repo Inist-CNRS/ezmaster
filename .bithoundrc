@@ -3,8 +3,7 @@
     "**/deps/**",
     "**/node_modules/**",
 
-    "**/**jquery.?(ui|effects)-*.*.?(*).?(cs|j)s",
-    "**/**jquery-*.*.?(*).?(cs|j)s",
+
 
     "bower_components/**",
     "libs/**",
