@@ -2,6 +2,8 @@
   "ignore": [
     "**/node_modules/**",
     "libs/**",
+    "**/**jquery.?(ui|effects)-*.*.?(*).?(cs|j)s",
+    "**/**jquery-*.*.?(*).?(cs|j)s",
   ],
   "test": [
     "**/test/**",
