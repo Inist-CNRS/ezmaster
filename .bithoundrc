@@ -15,6 +15,7 @@
     "**/mootools*.*.*.js",
     "**/dojo.js",
     "**/MochiKit.js",
+    "**/yahoo-*.js",
     "**/yui*.js",
     "**/ckeditor*.js",
     "**/tiny_mce*.js",
@@ -49,6 +50,9 @@
   ],
   "test": [
     "**/test/**",
+    "**/tests/**",
+    "**/spec/**",
+    "**/specs/**"
   ],
   "dependencies": {
     "unused-ignores": [
@@ -63,6 +67,8 @@
         "babel-runtime",
         "babelify",
         "body-parser",
+        "castor-core",
+        "debug",
         "diskusage",
         "dockerode",
         "file-exists",
