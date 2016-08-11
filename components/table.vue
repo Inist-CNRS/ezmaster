@@ -126,80 +126,71 @@
           </div>
           <div class="panel-body">
 
-          <!-- The form calls directly a route to perform the upload. -->
+            <!-- The form calls directly a route to perform the upload. -->
             <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
 
               <fieldset>
 
-                <label class="btn btn-success btn-file">
+                <label class="btn btn-success btn-file" style="float:left;margin-right:20px;">
                     Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
                 </label>
 
                 <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
 
-                <input type="submit" value="Upload" class="btn btn-info" v-on:click="uploadData">
+                <div style="float:left;margin-right:20px;">
+                  <div><span id="spanFileName"></span></div>
+                  <div><span id="spanFileSize"></span></div>
+                  <div><span id="spanFileType"></span></div>
+                </div>
 
-                <div><span id="spanFileName"></span></div>
-                <div><span id="spanFileSize"></span></div>
-                <div><span id="spanFileType"></span></div>
+                <div>
+                  <input type="submit" id="submitUpload" value="Upload" class="btn btn-info" v-on:click="uploadData">
+                </div>
 
               </fieldset>
 
             </form>
 
+            <br />
+
+            <div style="float:left;">
+              <h4>[[ nbDataFiles ]] Data File(s)</h4>
+            </div>
+
+            <div style="float:right;">
+              <input type="button" value="Refresh List" class="btn btn-info" v-on:click="refreshDataFilesList">
+            </div>
+
+            <div id="filesList">
+              <table id="data-files-table" class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Size</th>
+                      <th>Type</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template v-for="file in files">
+                      <tr id="[[ file.name ]]">
+                        <td>[[ file.name ]]</td>
+                        <td>[[ file.size ]]</td>
+                        <td>[[ file.mimeType ]]</td>
+                        <td>
+                          <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+              </table>
+            </div>
+
           </div>
 
           <div class="panel-footer">
 
-            <input type="button" value="Show Data Files" class="btn btn-info" v-on:click="showDataFiles">
-
-            <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal" style="float:right;">Exit</a>
-
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Modal Show Data Files -->
-  <div class="modal" id="modal-data-files">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDataFiles">×</button>
-            <h3 class="panel-title">Data Files - Instance [[ instanceName ]]</h3>
-          </div>
-          <div class="panel-body">
-
-            <h4>[[ nbDataFiles ]] Data File(s)</h4>
-
-            <table id="data-files-table" class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Size</th>
-                    <th>Type</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <template v-for="file in files">
-                    <tr id="[[ file.name ]]">
-                      <td>[[ file.name ]]</td>
-                      <td>[[ file.size ]]</td>
-                      <td>[[ file.mimeType ]]</td>
-                      <td>
-                        <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
-                      </td>
-                    </tr>
-                  </template>
-                </tbody>
-            </table>
-
-            <a class="btn btn-danger" id="cancelDataFiles" v-on:click='cancelDataFiles' data-dismiss="modal" style="float:right;">Exit</a>
+            <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal">Exit</a>
 
           </div>
 
@@ -342,13 +333,35 @@
         });
       },
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////// HERE ///////////////////////////
+
+
+
       displayFormUpload : function (event) {
 
         // Shows the modal upload and reset the inputs.
         document.getElementById('modal-upload-data').style.display = 'block';
+        document.getElementById('submitUpload').style.display = 'none';
         document.getElementById('spanFileName').innerHTML = "";
         document.getElementById('spanFileSize').innerHTML = "";
         document.getElementById('spanFileType').innerHTML = "";
+
 
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Update the data variable instanceId which will automatically update the HTML with this new value.
@@ -365,6 +378,11 @@
           // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
           this.nbDataFiles = Object.keys(this.files).length;
 
+          if(this.nbDataFiles > 0)
+            document.getElementById('filesList').style.display = 'block';
+          else
+            document.getElementById('filesList').style.display = 'none';
+
         }, console.error);
 
       },
@@ -379,6 +397,8 @@
       onChangeInputFile : function (event) {
 
         // When the user choose a file.
+
+        document.getElementById('submitUpload').style.display = 'block';
 
         var btn = document.getElementById('btnFile').value;
 
@@ -396,9 +416,9 @@
 
           // Display information on the selected file.
           document.getElementById('spanFileName').style.color = "black";
-          document.getElementById('spanFileName').innerHTML = 'Name: ' + file.name;
-          document.getElementById('spanFileSize').innerHTML = 'Size: ' + fileSize;
-          document.getElementById('spanFileType').innerHTML = 'Type: ' + file.type;
+          document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name;
+          document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize;
+          document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type;
 
         }
 
@@ -413,41 +433,76 @@
 
         // Check if a file has been selected or not and give a feedback to the user.
         if(btn != "") {
+
           document.getElementById('spanFileName').innerHTML = file + " --> Uploaded";
           document.getElementById('spanFileName').style.color = "green";
+
+/*
+          this.nbDataFiles += 1;
+
+/*
+          var fileSize = document.getElementById('spanFileSize').innerHTML.split(' ')[2];
+          var fileType = document.getElementById('spanFileType').innerHTML.split(' ')[2];
+
+          var liste = document.getElementById('filesList');
+          var tr = document.createElement("tr");
+          var td1 = document.createElement("td");
+          var td2 = document.createElement("td");
+          var td3 = document.createElement("td");
+          var td4 = document.createElement("td");
+
+          tr.id = file;
+          td1.appendChild(document.createTextNode(file));
+          td2.appendChild(document.createTextNode(fileSize));
+          td3.appendChild(document.createTextNode(fileType));
+          td4.innerHTML = '<input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">';
+
+          tr.appendChild(td1);
+          tr.appendChild(td2);
+          tr.appendChild(td3);
+          tr.appendChild(td4);
+          liste.appendChild(tr);
+*/
+
         }
         else {
+
           document.getElementById('spanFileName').innerHTML = "No file selected.";
           document.getElementById('spanFileName').style.color = "red";
+
         }
 
       },
 
       deleteUploadedFile : function () {
 
+        console.log("########## DELETE ##########");
+
         // event.path[2].id go up 2 times in the HTML tree to get the id of the reached element.
         // Here the file name.
         var fileName = event.path[2].id;
 
         // Delete the file.
-        this.$http.delete('/-/v1/instances/'+this.instanceId+'/'+fileName).then(function (result) {
+        this.$http.delete('/-/v1/instances/'+this.instanceId+'/'+fileName).then(function (resultDelete) {
 
           // Get information on formerly uploaded files for the concerned instance.
-          this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
+          this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (resultGet) {
 
             // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
             this.nbDataFiles = Object.keys(this.files).length;
 
             // Update the data variable files which will automatically update the data files list on the modal.
-            this.files = result.data;
+            this.files = resultGet.data;
 
             // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
             this.nbDataFiles -= 1;
 
-            if(this.nbDataFiles == 0)
-              document.getElementById('modal-data-files').style.display = 'none';
+            if(this.nbDataFiles > 0)
+              document.getElementById('filesList').style.display = 'block';
             else
-              document.getElementById(fileName).style.display = 'none';
+              document.getElementById('filesList').style.display = 'none';
+
+            document.getElementById(fileName).style.display = 'none';
 
           }, console.error);
 
@@ -455,13 +510,7 @@
 
       },
 
-      cancelDataFiles : function (event) {
-
-        document.getElementById('modal-data-files').style.display = 'none';
-
-      },
-
-      showDataFiles : function (event) {
+      refreshDataFilesList : function (event) {
 
         // Get information on formerly uploaded files for the concerned instance.
         this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
@@ -472,11 +521,18 @@
           // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
           this.nbDataFiles = Object.keys(this.files).length;
 
-          document.getElementById('modal-data-files').style.display = 'block';
+          if(this.nbDataFiles > 0)
+            document.getElementById('filesList').style.display = 'block';
+          else
+            document.getElementById('filesList').style.display = 'none';
 
         }, console.error);
 
       },
+
+
+
+
 
 
 
