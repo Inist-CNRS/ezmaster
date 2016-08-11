@@ -9,8 +9,8 @@
   "test": [
     "**/test/**",
     "**/tests/**",
-    "**/spec/**",
 
+    "**/specs/**"
   ],
   "dependencies": {
     "unused-ignores": [
