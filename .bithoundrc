@@ -15,7 +15,7 @@
     "**/mootools*.*.*.js",
     "**/dojo.js",
     "**/MochiKit.js",
-    "**/yahoo-*.js",
+
     "**/yui*.js",
     "**/ckeditor*.js",
     "**/tiny_mce*.js",
