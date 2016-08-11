@@ -1,7 +1,5 @@
 {
   "ignore": [
-
-
     "**/node_modules/**",
     "libs/**",
     "**/ie10-viewport-bug-workaround.js",
@@ -12,7 +10,7 @@
     "**/test/**",
     "**/tests/**",
     "**/spec/**",
-    "**/specs/**"
+
   ],
   "dependencies": {
     "unused-ignores": [
