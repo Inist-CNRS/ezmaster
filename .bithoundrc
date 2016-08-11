@@ -1,11 +1,9 @@
 {
   "ignore": [
-    "**/deps/**",
+
+
     "**/node_modules/**",
-
-
     "libs/**",
-
     "**/ie10-viewport-bug-workaround.js",
     "**/ie-emulation-modes-warning.js",
     "**/ie8-responsive-file-warning.js"
