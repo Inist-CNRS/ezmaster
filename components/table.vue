@@ -607,4 +607,14 @@
     word-wrap: break-word;
   }
 
+  .modal-dialog{
+      overflow-y: initial !important
+  }
+
+  #filesList{
+      width:100%;
+      height: 250px;
+      overflow-y: auto;
+  }
+
 </style>
