@@ -10,7 +10,7 @@
 
   <!-- The navbar part displaying machine information. -->
 
-  <div class="navbar-text navbar-right infoMachineGroup">
+  <div class="nav navbar-text navbar-right infoMachineGroup">
 
     <!-- LoadAverage -->  
     <div class="glyphicon1 glyphicon glyphicon-tasks" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average\n[[ infosMachine.nbCPUs ]] CPUs"></div>
