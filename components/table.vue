@@ -127,7 +127,7 @@
           <div class="panel-body">
 
             <!-- The form calls directly a route to perform the upload. -->
-            <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data" enctype="multipart/form-data" class="form-inline">
+            <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data/[[ filesSize ]]" enctype="multipart/form-data" class="form-inline">
 
               <fieldset>
 
@@ -174,7 +174,7 @@
                   <tbody>
                     <template v-for="file in files">
                       <tr id="[[ file.name ]]">
-                        <td>[[ file.name ]]</td>
+                        <td style="width:10%">[[ file.name ]]</td>
                         <td>[[ file.size ]]</td>
                         <td>[[ file.mimeType ]]</td>
                         <td>
@@ -402,23 +402,43 @@
 
         var btn = document.getElementById('btnFile').value;
 
-        // Get the selected file.
+
+        // We calculate the total size of selected files.
+        var files = document.getElementById('btnFile').files;
+        var nbFiles = 0
+
+        this.filesSize = 0;
+
+        for(var i = 0 ; i < files.length ; i++) {
+          nbFiles += 1;
+          this.filesSize += files[i].size;
+        }
+
+        // Get the first file to check if it exists.
         var file = document.getElementById('btnFile').files[0];
 
+        // If the file exists.
         if (file) {
 
-          // Set the selected file size.
           var fileSize = 0;
-          if (file.size > 1024 * 1024)
-            fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+          if (this.filesSize > 1024 * 1024 * 1024)
+            fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024 * 1024)) / 100).toString() + 'GB';
+          else if (this.filesSize > 1024 * 1024)
+            fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024)) / 100).toString() + 'MB';
           else
-            fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+            fileSize = (Math.round(this.filesSize * 100 / 1024) / 100).toString() + 'KB';
 
           // Display information on the selected file.
           document.getElementById('spanFileName').style.color = "black";
-          document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name;
+          if(nbFiles == 1) {
+            document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name;
+            document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type;
+          }
+          else {
+            document.getElementById('spanFileName').innerHTML = 'Name : Multi Files';
+            document.getElementById('spanFileType').innerHTML = 'Type : Multi Types';
+          }
           document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize;
-          document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type;
 
         }
 
@@ -429,40 +449,13 @@
         // When the user click on the upload button.
 
         var btn = document.getElementById('btnFile').value;
-        var file = btn.split('\\')[2];
+        //var file = btn.split('\\')[2];
 
         // Check if a file has been selected or not and give a feedback to the user.
         if(btn != "") {
 
-          document.getElementById('spanFileName').innerHTML = file + " --> Uploaded";
+          document.getElementById('spanFileName').innerHTML = "Uploaded";
           document.getElementById('spanFileName').style.color = "green";
-
-/*
-          this.nbDataFiles += 1;
-
-/*
-          var fileSize = document.getElementById('spanFileSize').innerHTML.split(' ')[2];
-          var fileType = document.getElementById('spanFileType').innerHTML.split(' ')[2];
-
-          var liste = document.getElementById('filesList');
-          var tr = document.createElement("tr");
-          var td1 = document.createElement("td");
-          var td2 = document.createElement("td");
-          var td3 = document.createElement("td");
-          var td4 = document.createElement("td");
-
-          tr.id = file;
-          td1.appendChild(document.createTextNode(file));
-          td2.appendChild(document.createTextNode(fileSize));
-          td3.appendChild(document.createTextNode(fileType));
-          td4.innerHTML = '<input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">';
-
-          tr.appendChild(td1);
-          tr.appendChild(td2);
-          tr.appendChild(td3);
-          tr.appendChild(td4);
-          liste.appendChild(tr);
-*/
 
         }
         else {
@@ -548,7 +541,8 @@
         instanceId : '',
         files : {},
         nbDataFiles : 0,
-        instanceName : ""
+        instanceName : "",
+        filesSize : 0
       }
     }
   }
@@ -606,6 +600,11 @@
 
   #modal-data-files{
     height:100%;
+  }
+
+  #data-files-table{
+    table-layout: fixed;
+    word-wrap: break-word;
   }
 
 </style>

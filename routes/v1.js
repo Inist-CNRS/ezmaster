@@ -27,6 +27,7 @@ var path = require('path')
   , mmm = require('mmmagic')
   , Magic = mmm.Magic
   , multer = require('multer')
+  , disk = require('diskusage');
   ;
 
 // The bool to check if the instances cache is up to date.
@@ -432,55 +433,80 @@ module.exports = function (router, core) {
 
 
   // Route to upload a file directly from the html upload form.
-  router.route('/-/v1/instances/:instanceId/data').post(bodyParser(), function (req, res, next) {
+  router.route('/-/v1/instances/:instanceId/data/:filesSize').post(bodyParser(), function (req, res, next) {
 
-    var container = docker.getContainer(req.params.instanceId);
+    // Get freeDisk space and total files size.
+    disk.check('/', function(err, info) {
 
-    container.inspect(function (err, data) {
+      if (err) { return new Error(err); }
 
-      if (err) { return next(err); }
+      var freeDisk = info.free;
+      var filesSize = req.params.filesSize;
 
-      // Split the instance name.
-      var splittedName = data.Name.split('/');
 
-      // We use multer to pass data from the input type file to this route file.
-      // Multer is coupled with bodyparser because it can't manage input type file alone anymore.
-      var storage = multer.diskStorage({
+      console.log("########## FREE DISK : "+freeDisk+" ##########");
+      console.log("########## FILE SIZE : "+filesSize+" ##########");
 
-        destination: function (req, file, callback) {
 
-          // We save the file in the correct folder.
-          // splittedName[1] is the instance technical name.
-          callback(null, './instances/'+splittedName[1]+'/data');
+      // Checking if total file size is/is not above free disk space.
+      if(filesSize >= freeDisk) {
 
-        },
+        return res.end('Error. The total size of what you want to upload ('+filesize(filesSize)+') is too huge (only '+filesize(freeDisk)+' left).');
 
-        filename: function (req, file, callback) {
+      }
+      else {
 
-          // We upload the file with its original name.
-          callback(null, file.originalname);
+        var container = docker.getContainer(req.params.instanceId);
 
-        }
+        container.inspect(function (err, data) {
 
-      });
+          if (err) { return next(err); }
 
-      // The upload concerns the button which id is btnFile.
-      // The Multer .any() method allows to select multiple files.
-      var upload = multer({ storage : storage}).any('btnFile');
+          // Split the instance name.
+          var splittedName = data.Name.split('/');
 
-      // The upload.
-      upload(req, res, function(err) {
+          // We use multer to pass data from the input type file to this route file.
+          // Multer is coupled with bodyparser because it can't manage input type file alone anymore.
+          var storage = multer.diskStorage({
 
-        if (err) {
+            destination: function (req, file, callback) {
 
-          // A problem occured while uploading.
-          return res.end('Error uploading file.');
+              // We save the file in the correct folder.
+              // splittedName[1] is the instance technical name.
+              callback(null, './instances/'+splittedName[1]+'/data');
 
-        }
-        // Else, the upload went well.
-        //res.end("File is uploaded");
+            },
 
-      });
+            filename: function (req, file, callback) {
+
+              // We upload the file with its original name.
+              callback(null, file.originalname);
+
+            }
+
+          });
+
+          // The upload concerns the button which id is btnFile.
+          // The Multer .any() method allows to select multiple files.
+          var upload = multer({ storage : storage}).any('btnFile');
+
+          // The upload.
+          upload(req, res, function(err) {
+
+            if (err) {
+
+              // A problem occured while uploading.
+              return res.end('Error uploading file.');
+
+            }
+            // Else, the upload went well.
+            //res.end("File is uploaded");
+
+          });
+
+        });
+
+      }
 
     });
 
