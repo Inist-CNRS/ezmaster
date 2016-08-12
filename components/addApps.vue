@@ -29,12 +29,27 @@
                   <div class="form-group">
                     <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
                     <div class="col-md-9">
-                      <input class="form-control" id="inputImageName" name="inputImageName" placeholder=" Ex : Title - Comment - Note" type="text" value='[[ imageName ]]' v-model="imageName" v-validate:imageName="{ required: true }">
+                      <input class="form-control sizeInput" id="inputImageName" name="inputImageName" placeholder=" Ex : Hello-world" type="text" value='[[ imageName ]]' v-model="imageName" v-validate:imageName="{ required: true }">
                       <input class="form-control sizeInput" id="inputVersionImage" placeholder=" Version" value="[[ versionImage ]]" type="text" min='0' v-model="version" v-validate:project="{ required: true}">
                     </div>
 
+                    <button type="button" class="btn btn-default btn-md" v-on:click='showSettings'>
+                      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings
+                    </button>
+
+
+                    <div class="form-group" id='settings' v-show="show">
+                      <label for="inputImageHub" class="col-md-3 control-label">Docker Registery</label>
+                      <div class="col-md-9">
+                        <input class="form-control sizeInput" id="inputImageHub" name="inputImageHub" placeholder=" Ex : DockerHub" type="text" value='[[ imageHub ]]' v-model="imageHub">
+                      </div>
+                    </div>
+
+
+
 
                   </div>
+
 
 
 
@@ -94,11 +109,13 @@
 
         var data = {
           'imageName' : this.imageName,
-          'versionImage' : this.versionImage
+          'versionImage' : this.versionImage,
+          'imageHub' : this.imageHub
         };
 
         this.$http.post('/-/v1/app', data).then(function (result) {
-          if (result.status == 200) { console.log(result.status); location.reload(); }
+          if (result.status == 200) { location.reload(); }
+          if (result.status == 100) { console.log(result.status); location.reload(); }
         }, function (error) {
 
           if (error) {
@@ -112,6 +129,16 @@
 
       tryAgain : function (event) {
         location.reload();
+      },
+
+      showSettings : function (event) {
+
+        if(this.show == false){
+          this.$set('show', true);
+        }else{
+          this.$set('show', false);
+        }
+
       }
 
     },
@@ -123,6 +150,8 @@
         imageName : '',
         versionImage : '',
         messageErrorPull : '',
+        imageHub : '',
+        show : false,
         codeErrorPull : ''
       }
 
