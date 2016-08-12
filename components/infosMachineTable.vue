@@ -46,6 +46,9 @@
 
       let self = this;
 
+      // enables the bootstrap component for tooltips
+      $('.infoMachineGroup [data-toggle="tooltip"]').tooltip();
+
       // Listen incoming messages typed as 'refreshInfosMachine' from the server.
       // Here the message comes from eventRefreshInfosMachine.js.
       socket.on('refreshInfosMachine', function(infosMachineSocket) {
@@ -73,11 +76,6 @@
     }
 
   }
-
-  // enables the bootstrap component for tooltips
-  $(function () {
-    $('.infoMachineGroup [data-toggle="tooltip"]').tooltip()
-  })
 
 </script>
 
