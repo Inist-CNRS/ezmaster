@@ -13,10 +13,10 @@
   <div class="navbar-text navbar-right infoMachineGroup">
 
     <!-- LoadAverage -->  
-    <div class="glyphicon1 glyphicon glyphicon-tasks" data-toggle="tooltip" data-placement="bottom" data-original-title="Load Averages\n[[ infosMachine.nbCPUs ]] CPUs"></div>
-    <span class="badge1-1 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load Average over 1 minutes">[[ (infosMachine.loadAverage)[0] ]]</span>
-    <span class="badge1-2 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load Average over 5 minutes">[[ (infosMachine.loadAverage)[1] ]]</span>
-    <span class="badge1-3 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load Average over 15 minutes">[[ (infosMachine.loadAverage)[2] ]]</span>
+    <div class="glyphicon1 glyphicon glyphicon-tasks" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average\n[[ infosMachine.nbCPUs ]] CPUs"></div>
+    <span class="badge1-1 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 1 minutes">[[ (infosMachine.loadAverage)[0] ]]</span>
+    <span class="badge1-2 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 5 minutes">[[ (infosMachine.loadAverage)[1] ]]</span>
+    <span class="badge1-3 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 15 minutes">[[ (infosMachine.loadAverage)[2] ]]</span>
 
     <!-- RAM -->
     <div class="glyphicon2 glyphicon glyphicon-oil" data-toggle="tooltip" data-placement="bottom" data-original-title="RAM usage"></div>
