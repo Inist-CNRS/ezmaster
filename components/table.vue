@@ -333,26 +333,6 @@
         });
       },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///////////// HERE ///////////////////////////
-
-
-
       displayFormUpload : function (event) {
 
         // Shows the modal upload and reset the inputs.
@@ -378,6 +358,7 @@
           // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
           this.nbDataFiles = Object.keys(this.files).length;
 
+          // If there are no files already uploaded we don't show the files list.
           if(this.nbDataFiles > 0)
             document.getElementById('filesList').style.display = 'block';
           else
@@ -402,8 +383,8 @@
 
         var btn = document.getElementById('btnFile').value;
 
-
         // We calculate the total size of selected files.
+
         var files = document.getElementById('btnFile').files;
         var nbFiles = 0
 
@@ -469,8 +450,6 @@
 
       deleteUploadedFile : function () {
 
-        console.log("########## DELETE ##########");
-
         // event.path[2].id go up 2 times in the HTML tree to get the id of the reached element.
         // Here the file name.
         var fileName = event.path[2].id;
@@ -490,6 +469,7 @@
             // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
             this.nbDataFiles -= 1;
 
+            // If there are no files already uploaded we don't show the files list.
             if(this.nbDataFiles > 0)
               document.getElementById('filesList').style.display = 'block';
             else
@@ -514,6 +494,7 @@
           // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
           this.nbDataFiles = Object.keys(this.files).length;
 
+          // If there are no files already uploaded we don't show the files list.
           if(this.nbDataFiles > 0)
             document.getElementById('filesList').style.display = 'block';
           else

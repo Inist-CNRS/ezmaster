@@ -445,6 +445,7 @@ module.exports = function (router, core) {
           ' Total size allowed : '+filesize(core.config.get('maxSizeUpload'))+'.');
       }
 
+      // Examining the container.
       var container = docker.getContainer(req.params.instanceId);
 
       container.inspect(function (err, data) {
@@ -504,6 +505,7 @@ module.exports = function (router, core) {
   // Route to get information on the data files from a specific instance.
   router.route('/-/v1/instances/:instanceId/data').get(function (req, res, next) {
 
+    // Examining the container.
     var container = docker.getContainer(req.params.instanceId);
 
     container.inspect(goOn);
@@ -575,6 +577,7 @@ module.exports = function (router, core) {
   // Route to delete a specific data file from a specific instance data folder.
   router.route('/-/v1/instances/:containerId/:fileName').delete(function (req, res, next) {
 
+    // Examining the container.
     var container = docker.getContainer(req.params.containerId);
 
     container.inspect(function (err, data) {
