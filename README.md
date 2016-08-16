@@ -41,6 +41,10 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # Tech. name is the prefix used and concatenated to the public domain
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 
+# Environment variable specifying the maximum total size allowed for each files upload.
+# Default value is approximately 10Go.
+export EZMASTER_MAX_SIZE_UPLOAD=1000000000
+
 ```
 
 

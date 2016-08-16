@@ -429,13 +429,20 @@ module.exports = function (router, core) {
       var freeDisk = info.free;
       var filesSize = req.params.filesSize;
 
-      // Checking if total file size is/is not above free disk space.
+      // Checking if total file size is (or not) above free disk space.
       if (filesSize >= freeDisk) {
 
         return res.end('Error.' +
           ' Total size upload : '+filesize(filesSize)+'.' +
           ' Free space : '+filesize(freeDisk)+'.');
 
+      }
+
+      // Checking if total file size is (or not) above allowed total size.
+      if (filesSize > core.config.get('maxSizeUpload')) {
+        return res.end('Error.' +
+          ' Total size upload : '+filesize(filesSize)+'.' +
+          ' Total size allowed : '+filesize(core.config.get('maxSizeUpload'))+'.');
       }
 
       var container = docker.getContainer(req.params.instanceId);
