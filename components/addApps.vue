@@ -17,7 +17,7 @@
           <validator name="validation1">
             <form novalidate id="add-image-form" name="Form" class="form-horizontal">
               <fieldset>
-                <div class="modal-header" style="background-color: #0277BD; border:solid white 5px;">
+                <div class="modal-header modal-addapp">
                   <legend>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelAddImage">×</button>
                     <span class="titleFormAddInstance">Add Application</span>
@@ -67,14 +67,14 @@
 
                 <div class="panel-footer">
                   <button type="button" id="close_modal_image" class="btn btn-default" v-on:click='cancelAddImage' data-dismiss="modal">Cancel</button>
-                  <button v-if="$validation1.valid" type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addImage'>Create</button>
-                  <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Create</button>
-                  <button type="button" style='float:right; display: none' id='saveTechnicalExists' class="btn btn-primary" disabled>Create</button>
-                  <div id='loaderImage' style='display:none; text-align: center;'>
-                    <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
+                  <button v-if="$validation1.valid" type="button" id='save' class="btn btn-primary button-create" v-on:click='addImage'>Create</button>
+                  <button v-else type="button" id='save' class="btn btn-primary button-create-disabled" disabled>Create</button>
+                  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled-none" disabled>Create</button>
+                  <div id='loaderImage' class="loader">
+                    <img id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                   </div>
-                   <div id='errorLoaderImages' style='display:none; text-align: center;'>
+                   <div id='errorLoaderImages' class="loader">
                     <span class="text-danger" id="errorLoaderAddImage">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
                     <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                   </div>
@@ -211,6 +211,29 @@
 
   .titleFormAddInstance {
       color:white;
+  }
+
+  .modal-addapp{
+    background-color: #0277BD;
+    border:solid white 5px;
+  }
+
+  .button-create{
+    float:right;
+  }
+
+  .button-create-disabled{
+    float:right;
+  }
+
+  .button-create-disabled-none{
+    float:right;
+    display: none;
+  }
+
+  .loader{
+    display:none;
+    text-align: center;
   }
 
 </style>
