@@ -296,23 +296,8 @@ module.exports = function (router, core) {
     }
     else {
 
-      docker.pull(image, follow);
-
-    }
-
-
-    function follow(err, stream) {
-      if (err) { return res.status(400).send(err); }
-
-      docker.modem.followProgress(stream, onFinished);
-
-    }
-
-
-    function onFinished(err, output) {
-      if (err) { return res.status(400).send(err); }
-
       mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), makeDataDirectory);
+
     }
 
 
