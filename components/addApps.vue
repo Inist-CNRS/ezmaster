@@ -41,13 +41,25 @@
                     <div class="form-group" id='settings' v-show="show">
                       <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
                       <div class="col-md-9">
-                        <input class="form-control sizeInput" id="inputImageHub" name="inputImageHub" placeholder=" Ex : DockerHub" type="text" value='[[ imageHub ]]' v-model="imageHub">
+                        <input class="form-control sizeInput" id="inputImageHub" name="inputImageHub" placeholder=" Ex : https://vsregistry:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
                       </div>
+
+                      <label for="inputUserName" class="col-md-3 control-label">UserName</label>
+                      <div class="col-md-9">
+                        <input class="form-control sizeInput" id="inputUserName" name="inputUserName" placeholder=" Ex : username" type="text" value='[[ username ]]' v-model="username">
+                      </div>
+
+                      <label for="inputImageHub" class="col-md-3 control-label">Password</label>
+                      <div class="col-md-9">
+                        <input class="form-control sizeInput" id="inputPassword" name="inputPassword" placeholder=" Ex : password" type="password" value='[[ password ]]' v-model="password">
+                      </div>
+
+                      <label for="inputEmail" class="col-md-3 control-label">Email</label>
+                      <div class="col-md-9">
+                        <input class="form-control sizeInput" id="inputEmail" name="inputEmail" placeholder=" Ex : test@email.com" type="text" value='[[ email ]]' v-model="email">
+                      </div>
+
                     </div>
-
-
-
-
                   </div>
 
 
@@ -110,7 +122,10 @@
         var data = {
           'imageName' : this.imageName,
           'versionImage' : this.versionImage,
-          'imageHub' : this.imageHub
+          'imageHub' : this.imageHub,
+          'username' : this.username,
+          'password' : this.password,
+          'email' : this.email
         };
 
         this.$http.post('/-/v1/app', data).then(function (result) {
@@ -151,6 +166,9 @@
         versionImage : '',
         messageErrorPull : '',
         imageHub : '',
+        email: '',
+        password: '',
+        username: '',
         show : false,
         codeErrorPull : ''
       }

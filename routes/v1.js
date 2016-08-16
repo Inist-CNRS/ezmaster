@@ -620,14 +620,17 @@ module.exports = function (router, core) {
     var image = req.body.imageName;
     var tag = req.body.versionImage;
     var registery = req.body.imageHub;
+    var username = req.body.imageHub;
+    var password = req.body.imageHub;
+    var email = req.body.imageHub;
 
     if (registery != '') {
       var auth = {
-        username: 'ezmaster',
-        password: 'clar1sse',
+        username: username,
+        password: password,
         auth: '',
-        email: '',
-        serveraddress: 'https://vsregistry:5000'
+        email: email,
+        registery: registery
       };
     }
 
