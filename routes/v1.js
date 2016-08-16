@@ -616,8 +616,19 @@ module.exports = function (router, core) {
 
     var image = req.body.imageName;
     var tag = req.body.versionImage;
+    var registery = req.body.imageHub;
 
-    docker.pull(image, function(err, stream) {
+    if (registery != '') {
+      var auth = {
+        username: 'ezmaster',
+        password: 'clar1sse',
+        auth: '',
+        email: '',
+        serveraddress: 'https://vsregistry:5000'
+      };
+    }
+
+    docker.pull(image, auth, function(err, stream) {
 
       if (err) { return next(err); }
 
