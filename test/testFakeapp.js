@@ -37,7 +37,7 @@ describe('Test Fakeapp', function () {
       'version' : '',
       'study': 'fakeapp',
       'technicalName' :  'test-fakeapp',
-      'app' : 'inistcnrs/ezvis'
+      'app' : 'fakeapp:latest'
     };
 
     request
