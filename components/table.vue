@@ -31,7 +31,7 @@
           <td>[[ item.app ]]</td>
           <td> <span>Started</span> </td>
           <td class="actions">
-            <ul class="bread" style="margin-bottom:0px" id="[[ item.technicalName ]]">
+            <ul class="bread" id="[[ item.technicalName ]]">
               <li class="start" title="Start the instance."><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
               <li class="stop" title="Stop the instance."><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
               <li class="delete" title="Delete the instance."><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
@@ -50,7 +50,7 @@
           <td>[[ item.app ]]</td>
           <td><span v-else>Stopped</span></td>
           <td class="actions">
-            <ul class="bread" style="margin-bottom:0px" id="[[ item.technicalName ]]">
+            <ul class="bread" id="[[ item.technicalName ]]">
               <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
               <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
               <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
@@ -84,7 +84,7 @@
           </div>
           <div class="panel-footer">
             <a class="btn btn-default" v-on:click='cancelDeleteInstance' data-dismiss="modal">Cancel</a>
-            <a style='float:right' class="btn btn-warning" v-on:click="confirmDeleteInstance">Delete</a>
+            <a class="btn btn-warning button-right" v-on:click="confirmDeleteInstance">Delete</a>
           </div>
         </div>
       </div>
@@ -106,8 +106,8 @@
           </div>
           <div class="panel-footer">
             <a class="btn btn-default" v-on:click='cancelConfig' data-dismiss="modal">Cancel</a>
-            <a style='float:right' id='buttonUpdate' class="btn btn-info" v-on:click="updateConfig">Update</a>
-            <a style='float:right; display:none' id='buttonUpdateDisable' class="btn btn-info" disabled>Update</a>
+            <a id='buttonUpdate' class="btn btn-info button-right" v-on:click="updateConfig">Update</a>
+            <a id='buttonUpdateDisable' class="btn btn-info button-update" disabled>Update</a>
           </div>
         </div>
       </div>
@@ -132,12 +132,12 @@
               <fieldset>
 
                 <label class="btn btn-success btn-file" style="float:left;margin-right:20px;">
-                    Add File <input type="file" name="btnFile" id="btnFile" required multiple style="display: none; float:right;" @change="onChangeInputFile">
+                    Add File <input type="file" name="btnFile" id="btnFile" style="display: none; float: right;" required multiple @change="onChangeInputFile">
                 </label>
 
                 <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
 
-                <div style="float:left;margin-right:20px;">
+                <div class="list-infos-file">
                   <div><span id="spanFileName"></span></div>
                   <div><span id="spanFileSize"></span></div>
                   <div><span id="spanFileType"></span></div>
@@ -153,11 +153,11 @@
 
             <br />
 
-            <div style="float:left;">
+            <div class="nb-files">
               <h4>[[ nbDataFiles ]] Data File(s)</h4>
             </div>
 
-            <div style="float:right;">
+            <div class="button-refresh">
               <input type="button" value="Refresh List" class="btn btn-info" v-on:click="refreshDataFilesList">
             </div>
 
@@ -174,7 +174,7 @@
                   <tbody>
                     <template v-for="file in files">
                       <tr id="[[ file.name ]]">
-                        <td style="width:10%">[[ file.name ]]</td>
+                        <td class="files-list-name-column">[[ file.name ]]</td>
                         <td>[[ file.size ]]</td>
                         <td>[[ file.mimeType ]]</td>
                         <td>
@@ -543,6 +543,7 @@
   .bread {
     list-style: none;
     padding-left: 0px;
+    margin-bottom:0px;
   }
   .bread > li {
     display: inline-block;
@@ -596,6 +597,32 @@
       width:100%;
       height: 250px;
       overflow-y: auto;
+  }
+
+  .button-right{
+      float:right;
+  }
+
+  .button-update{
+    float:right;
+    display:none;
+  }
+
+  .list-infos-file{
+    float:left;
+    margin-right:20px;
+  }
+
+  .nb-files{
+    float:left;
+  }
+
+  .button-refresh{
+    float:right;
+  }
+
+  .files-list-name-column{
+    width:10%;
   }
 
 </style>

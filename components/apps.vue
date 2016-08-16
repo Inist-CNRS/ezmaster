@@ -13,7 +13,7 @@
           <td>[[ item.imageName ]]</td>
           <td>[[ item.creationDate ]]</td>
           <td class="actions">
-            <ul class="bread" style="margin-bottom:0px">
+            <ul class="bread">
               <li class="delete" title="Delete the application"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteapplication">Delete</button></li>
             </ul>
 
@@ -29,13 +29,13 @@
                       <p>
                         <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ imageNameToDelete ]]</span> application.</span><br /><br />
                       </p><br />
-                      <div id='errorLoaderImage' style='display:none; text-align: center;'>
+                      <div id='errorLoaderImage' class="error-loader">
                     <span class="text-danger" id="errorLoaderAddInstance">An error was received : [[ messageErrorPull ]].</span><br />
                   </div>
                     </div>
                     <div class="panel-footer">
                       <a class="btn btn-default" v-on:click='cancelDeleteapplication' data-dismiss="modal">Cancel</a>
-                      <a style='float:right' class="btn btn-warning" v-on:click="confirmDeleteapplication">Delete</a>
+                      <a class="btn btn-warning button-delete" v-on:click="confirmDeleteapplication">Delete</a>
                     </div>
 
                   </div>
@@ -137,6 +137,7 @@
   .bread {
     list-style: none;
     padding-left: 0px;
+    margin-bottom:0px;
   }
 
   .bread > li {
@@ -150,6 +151,15 @@
 
   .button {
     margin: 0 !important;
+  }
+
+  .error-loader{
+    display: none;
+    text-align: center;
+  }
+
+  .button-delete{
+    float:right;
   }
 
 </style>

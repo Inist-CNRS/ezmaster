@@ -17,7 +17,7 @@
           <validator name="validation1">
             <form novalidate id="add-instance-form" name="Form" class="form-horizontal">
               <fieldset>
-                <div class="modal-header" style="background-color: #0277BD; border:solid white 5px;">
+                <div class="modal-header modal-add-instance">
                   <legend>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelAddInstance">×</button>
                     <span class="titleFormAddInstance">Add Instance</span>
@@ -59,7 +59,7 @@
                         <span class="help-block text-danger" v-if="$validation1.study.required">Fill the second part of the technical name.</span>
                         <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
                       </div>
-                      <span style='display: none' id='technicalNameExists' class="help-block text-danger">Technical name "[[ technicalName ]]" already exists</span>
+                      <span id='technicalNameExists' class="help-block text-danger span-exists">Technical name "[[ technicalName ]]" already exists</span>
                     </div>
                   </div>
 
@@ -73,14 +73,14 @@
 
                 <div class="panel-footer">
                   <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
-                  <button v-if="$validation1.valid" type="button" style='float:right' id='save' class="btn btn-primary" v-on:click='addInstance'>Create</button>
-                  <button v-else type="button" style='float:right' id='save' class="btn btn-primary" disabled>Create</button>
-                  <button type="button" style='float:right; display: none' id='saveTechnicalExists' class="btn btn-primary" disabled>Create</button>
-                  <div id='loader' style='display:none; text-align: center;'>
-                    <img style="" id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
+                  <button v-if="$validation1.valid" type="button" id='save' class="btn btn-primary button-create" v-on:click='addInstance'>Create</button>
+                  <button v-else type="button" id='save' class="btn btn-primary button-create" disabled>Create</button>
+                  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled" disabled>Create</button>
+                  <div id='loader' class="loader">
+                    <img id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                   </div>
-                  <div id='errorLoader' style='display:none; text-align: center;'>
+                  <div id='errorLoader' class="loader">
                     <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
                     <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                   </div>
@@ -336,8 +336,31 @@
       background-color:#0277BD;
   }
 
+  .button-create{
+    float:right;
+  }
+
   .titleFormAddInstance {
       color:white;
+  }
+
+  .modal-add-instance{
+    background-color: #0277BD;
+    border:solid white 5px;
+  }
+
+  .span-exists{
+    display: none;
+  }
+
+  .button-create-disabled{
+    float:right;
+    display: none;
+  }
+
+  .loader{
+    display: none;
+    text-align: center;
   }
 
 </style>
