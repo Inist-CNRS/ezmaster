@@ -385,6 +385,9 @@
 
           document.getElementById('submitUpload').style.display = 'block';
 
+          document.getElementById('spanFileSize').style.color = "black";
+          document.getElementById('spanFileType').style.color = "black";
+
           var btn = document.getElementById('btnFile').value;
 
           // We calculate the total size of selected files.
@@ -434,6 +437,8 @@
             document.getElementById('spanFileSize').innerHTML = 'Total size upload : '+filesize(this.filesSize);
             document.getElementById('spanFileType').innerHTML = 'Free space : '+filesize(result.data.freeDiskSpace);
             document.getElementById('spanFileName').style.color = "red";
+            document.getElementById('spanFileSize').style.color = "red";
+            document.getElementById('spanFileType').style.color = "red";
             document.getElementById('submitUpload').style.display = 'none';
 
           }
@@ -445,6 +450,8 @@
             document.getElementById('spanFileSize').innerHTML = 'Total size upload : '+filesize(this.filesSize);
             document.getElementById('spanFileType').innerHTML = 'Total size allowed : '+filesize(result.data.sizeAllowed);
             document.getElementById('spanFileName').style.color = "red";
+            document.getElementById('spanFileSize').style.color = "red";
+            document.getElementById('spanFileType').style.color = "red";
             document.getElementById('submitUpload').style.display = 'none';
 
           }

@@ -421,52 +421,72 @@ module.exports = function (router, core) {
   router.route('/-/v1/instances/:instanceId/data/')
   .post(bodyParser(), function (req, res, next) {
 
-    // Examining the container.
-    var container = docker.getContainer(req.params.instanceId);
+    // Get freeDisk space.
+    disk.check('/', function(err, info) {
 
-    container.inspect(function (err, data) {
+      if (err) { return new Error(err); }
 
-      if (err) { return next(err); }
+      var freeDisk = info.free;
 
-      // Split the instance name.
-      var splittedName = data.Name.split('/');
+      // Examining the container.
+      var container = docker.getContainer(req.params.instanceId);
 
-      // We use multer to pass data from the input type file to this route file.
-      // Multer is coupled with bodyparser because it can't manage input type file alone anymore.
-      var storage = multer.diskStorage({
+      container.inspect(function (err, data) {
 
-        destination: function (req, file, callback) {
+        if (err) { return next(err); }
 
-          // We save the file in the correct folder.
-          // splittedName[1] is the instance technical name.
-          callback(null, './instances/'+splittedName[1]+'/data');
+        // Split the instance name.
+        var splittedName = data.Name.split('/');
 
-        },
+        // We use multer to pass data from the input type file to this route file.
+        // Multer is coupled with bodyparser because it can't manage input type file alone anymore.
+        var storage = multer.diskStorage({
 
-        filename: function (req, file, callback) {
+          destination: function (req, file, callback) {
 
-          // We upload the file with its original name.
-          callback(null, file.originalname);
+            // We save the file in the correct folder.
+            // splittedName[1] is the instance technical name.
+            callback(null, './instances/'+splittedName[1]+'/data');
 
-        }
+          },
 
-      });
+          filename: function (req, file, callback) {
 
-      // The upload concerns the button which id is btnFile.
-      // The Multer .any() method allows to select multiple files.
-      var upload = multer({ storage : storage}).any('btnFile');
+            // We upload the file with its original name.
+            callback(null, file.originalname);
 
-      // The upload.
-      upload(req, res, function(err) {
+          }
 
-        if (err) {
+        });
 
-          // A problem occured while uploading.
-          return res.end('Error uploading file.');
+        // We get the smallest size between freeDisk and maxSizeUpload.
+        // We use it to cap the upload size with multer.
+        var capSize;
+        if (freeDisk > core.config.get('maxSizeUpload'))
+          capSize = core.config.get('maxSizeUpload');
+        else if (freeDisk < core.config.get('maxSizeUpload'))
+          capSize = freeDisk;
+        else // equality case
+          capSize = freeDisk; // or core.config.get('maxSizeUpload')
 
-        }
-        // Else, the upload went well.
-        //res.end("File is uploaded");
+        // The upload concerns the button which id is btnFile.
+        // The Multer .any() method allows to select multiple files.
+        // limits : the user can't upload a file which size is greater than capSize.
+        var upload = multer({ storage : storage, limits: { fileSize: capSize }}).any('btnFile');
+
+        // The upload.
+        upload(req, res, function(err) {
+
+          if (err) {
+
+            // A problem occured while uploading.
+            return res.end('Error uploading file.');
+
+          }
+          // Else, the upload went well.
+          //res.end("File is uploaded");
+
+        });
 
       });
 
