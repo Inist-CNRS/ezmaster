@@ -418,81 +418,55 @@ module.exports = function (router, core) {
 
 
   // Route to upload a file directly from the html upload form.
-  router.route('/-/v1/instances/:instanceId/data/:filesSize')
+  router.route('/-/v1/instances/:instanceId/data/')
   .post(bodyParser(), function (req, res, next) {
 
-    // Get freeDisk space and total files size.
-    disk.check('/', function(err, info) {
+    // Examining the container.
+    var container = docker.getContainer(req.params.instanceId);
 
-      if (err) { return new Error(err); }
+    container.inspect(function (err, data) {
 
-      var freeDisk = info.free;
-      var filesSize = req.params.filesSize;
+      if (err) { return next(err); }
 
-      // Checking if total file size is (or not) above free disk space.
-      if (filesSize >= freeDisk) {
+      // Split the instance name.
+      var splittedName = data.Name.split('/');
 
-        return res.end('Error.' +
-          ' Total size upload : '+filesize(filesSize)+'.' +
-          ' Free space : '+filesize(freeDisk)+'.');
+      // We use multer to pass data from the input type file to this route file.
+      // Multer is coupled with bodyparser because it can't manage input type file alone anymore.
+      var storage = multer.diskStorage({
 
-      }
+        destination: function (req, file, callback) {
 
-      // Checking if total file size is (or not) above allowed total size.
-      if (filesSize > core.config.get('maxSizeUpload')) {
-        return res.end('Error.' +
-          ' Total size upload : '+filesize(filesSize)+'.' +
-          ' Total size allowed : '+filesize(core.config.get('maxSizeUpload'))+'.');
-      }
+          // We save the file in the correct folder.
+          // splittedName[1] is the instance technical name.
+          callback(null, './instances/'+splittedName[1]+'/data');
 
-      // Examining the container.
-      var container = docker.getContainer(req.params.instanceId);
+        },
 
-      container.inspect(function (err, data) {
+        filename: function (req, file, callback) {
 
-        if (err) { return next(err); }
+          // We upload the file with its original name.
+          callback(null, file.originalname);
 
-        // Split the instance name.
-        var splittedName = data.Name.split('/');
+        }
 
-        // We use multer to pass data from the input type file to this route file.
-        // Multer is coupled with bodyparser because it can't manage input type file alone anymore.
-        var storage = multer.diskStorage({
+      });
 
-          destination: function (req, file, callback) {
+      // The upload concerns the button which id is btnFile.
+      // The Multer .any() method allows to select multiple files.
+      var upload = multer({ storage : storage}).any('btnFile');
 
-            // We save the file in the correct folder.
-            // splittedName[1] is the instance technical name.
-            callback(null, './instances/'+splittedName[1]+'/data');
+      // The upload.
+      upload(req, res, function(err) {
 
-          },
+        if (err) {
 
-          filename: function (req, file, callback) {
+          // A problem occured while uploading.
+          return res.end('Error uploading file.');
 
-            // We upload the file with its original name.
-            callback(null, file.originalname);
-
-          }
-
-        });
-
-        // The upload concerns the button which id is btnFile.
-        // The Multer .any() method allows to select multiple files.
-        var upload = multer({ storage : storage}).any('btnFile');
-
-        // The upload.
-        upload(req, res, function(err) {
-
-          if (err) {
-
-            // A problem occured while uploading.
-            return res.end('Error uploading file.');
-
-          }
-          // Else, the upload went well.
-          //res.end("File is uploaded");
-
-        });
+        }
+        // Else, the upload went well.
+        //res.end("File is uploaded");
 
       });
 
@@ -606,7 +580,26 @@ module.exports = function (router, core) {
 
 
 
+  // Route to get information on total size allowed and free disk space.
+  router.route('/-/v1').get(function (req, res, next) {
 
+    disk.check('/', function(err, info) {
+
+      if (err) { return new Error(err); }
+
+      var result = {};
+
+      // Get the max upload size allowed from the castor.config variable.
+      result.sizeAllowed = core.config.get('maxSizeUpload');
+
+      // Get the free disk space.
+      result.freeDiskSpace = info.free;
+
+      return res.status(200).send(result);
+
+    });
+
+  });
 
 
 
