@@ -127,7 +127,7 @@
           <div class="panel-body">
 
             <!-- The form calls directly a route to perform the upload. -->
-            <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data/[[ filesSize ]]" enctype="multipart/form-data" class="form-inline">
+            <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data/" enctype="multipart/form-data" class="form-inline">
 
               <fieldset>
 
@@ -209,9 +209,9 @@
   // Socket connection.
 
   var socket = io();
-  var optsEditor = {}
-    , editor = new JSONEditor()
-    ;
+  var optsEditor = {};
+  var editor = new JSONEditor();
+  var filesize = require('filesize');
 
   export default {
 
@@ -379,49 +379,77 @@
 
         // When the user choose a file.
 
-        document.getElementById('submitUpload').style.display = 'block';
+        // Get information on total size allowed and free disk space.
+        // Warn the user if a problem appears.
+        this.$http.get('/-/v1').then(function (result) {
 
-        var btn = document.getElementById('btnFile').value;
+          document.getElementById('submitUpload').style.display = 'block';
 
-        // We calculate the total size of selected files.
+          var btn = document.getElementById('btnFile').value;
 
-        var files = document.getElementById('btnFile').files;
-        var nbFiles = 0
+          // We calculate the total size of selected files.
 
-        this.filesSize = 0;
+          var files = document.getElementById('btnFile').files;
+          var nbFiles = 0
 
-        for(var i = 0 ; i < files.length ; i++) {
-          nbFiles += 1;
-          this.filesSize += files[i].size;
-        }
+          this.filesSize = 0;
 
-        // Get the first file to check if it exists.
-        var file = document.getElementById('btnFile').files[0];
-
-        // If the file exists.
-        if (file) {
-
-          var fileSize = 0;
-          if (this.filesSize > 1024 * 1024 * 1024)
-            fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024 * 1024)) / 100).toString() + 'GB';
-          else if (this.filesSize > 1024 * 1024)
-            fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-          else
-            fileSize = (Math.round(this.filesSize * 100 / 1024) / 100).toString() + 'KB';
-
-          // Display information on the selected file.
-          document.getElementById('spanFileName').style.color = "black";
-          if(nbFiles == 1) {
-            document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name;
-            document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type;
+          for(var i = 0 ; i < files.length ; i++) {
+            nbFiles += 1;
+            this.filesSize += files[i].size;
           }
-          else {
-            document.getElementById('spanFileName').innerHTML = 'Name : Multi Files';
-            document.getElementById('spanFileType').innerHTML = 'Type : Multi Types';
-          }
-          document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize;
 
-        }
+          // Get the first file to check if it exists.
+          var file = document.getElementById('btnFile').files[0];
+
+          // If the file exists.
+          if (file) {
+
+            var fileSize = 0;
+            if (this.filesSize > 1024 * 1024 * 1024)
+              fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024 * 1024)) / 100).toString() + 'GB';
+            else if (this.filesSize > 1024 * 1024)
+              fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+            else
+              fileSize = (Math.round(this.filesSize * 100 / 1024) / 100).toString() + 'KB';
+
+            // Display information on the selected file.
+            document.getElementById('spanFileName').style.color = "black";
+            if(nbFiles == 1) {
+              document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name;
+              document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type;
+            }
+            else {
+              document.getElementById('spanFileName').innerHTML = 'Name : Multi Files';
+              document.getElementById('spanFileType').innerHTML = 'Type : Multi Types';
+            }
+            document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize;
+
+          }
+
+          // Checking if total file size is (or not) above free disk space.
+          if (this.filesSize >= result.data.freeDiskSpace) {
+
+            document.getElementById('spanFileName').innerHTML = 'ERROR';
+            document.getElementById('spanFileSize').innerHTML = 'Total size upload : '+filesize(this.filesSize);
+            document.getElementById('spanFileType').innerHTML = 'Free space : '+filesize(result.data.freeDiskSpace);
+            document.getElementById('spanFileName').style.color = "red";
+            document.getElementById('submitUpload').style.display = 'none';
+
+          }
+
+          // Checking if total file size is (or not) above allowed total size.
+          if (this.filesSize > result.data.sizeAllowed) {
+
+            document.getElementById('spanFileName').innerHTML = 'ERROR';
+            document.getElementById('spanFileSize').innerHTML = 'Total size upload : '+filesize(this.filesSize);
+            document.getElementById('spanFileType').innerHTML = 'Total size allowed : '+filesize(result.data.sizeAllowed);
+            document.getElementById('spanFileName').style.color = "red";
+            document.getElementById('submitUpload').style.display = 'none';
+
+          }
+
+        });
 
       },
 
