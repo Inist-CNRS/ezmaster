@@ -11,33 +11,35 @@ Administration of docker applications without any IT skills.
 - [Docker Compose](https://docs.docker.com/compose/install/) (Version >= 1.7)
 - Make
 
-#### Environment variables
+## Environment variables
+
+To configure ezmaster, setup these environment variables before running ezmaster:
 
 ```shell
-# Environment variable the IP ezmaster instances will use to be joinable from outside.
+# The IP ezmaster instances will use to be joinable from outside.
 # Default is "127.0.0.1"
 export EZMASTER_PUBLIC_IP="Your IP"
 
 
-# Environment variable the ports ezmaster is allowed to use for instances.
+# The ports range ezmaster is allowed to use to expose instances internal web address
+# (revelant when reverse proxy is disabled)
 # Default is "49152-60000".
 # Notice : 49152 is recommended as the minimal port.
 # 	See http://www.tcpipguide.com/free/t_TCPIPApplicationAssignmentsandServerPortNumberRang-2.htm
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 
-# Environment variable specifying the instances public domain.
-#
-# Default is empty and it means the reverse proxy feature will not be enabled
+# The instances public domain used by the ezmaster's reverse proxy feature.
+# (it allows to access instances through a wildcard public domain)
+## Default is empty and it means the reverse proxy feature is disabled
 #
 # On the following example, if we have a "abc-def-4" (tech name) instance, then
 # it will be joinable at this URL: http://abc-def-4.lod-test.istex.fr
 # Tech. name is the prefix used and concatenated to the public domain
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 
-# Environment variable specifying the maximum total size allowed for each files upload.
+# The maximum total size allowed for files upload through the "DATA instances feature".
 # Default value is approximately 10Go.
 export EZMASTER_MAX_SIZE_UPLOAD=1000000000
-
 ```
 
 
