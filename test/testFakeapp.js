@@ -2,7 +2,7 @@
 'use strict';
 
 // Travis run this file while building.
-var execSync = require('child_process').exec
+var execSync = require('child_process').execSync
   , path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
@@ -13,6 +13,8 @@ var execSync = require('child_process').exec
 // Create the container and the manifest file
 //Before all the test
 before(function() {
+
+  this.timeout(60000);
 
   var cmd = path.join('docker build -t fakeapp --build-arg https_proxy --build-arg http_proxy '
             , __dirname, '/datasets/fakeapp/');
@@ -37,7 +39,7 @@ describe('Test Fakeapp', function () {
       'version' : '',
       'study': 'fakeapp',
       'technicalName' :  'test-fakeapp',
-      'app' : 'fakeapp:latest'
+      'app' : 'fakeapp'
     };
 
     request

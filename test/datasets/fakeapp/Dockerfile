@@ -1,2 +1,2 @@
-FROM node:4.4.0
+FROM tatsushid/tinycore:7.0-x86_64
 RUN echo "Hello Docker!"
