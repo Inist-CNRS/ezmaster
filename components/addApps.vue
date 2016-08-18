@@ -72,7 +72,7 @@
                   <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled-none" disabled>Create</button>
                   <div id='loaderImage' class="loader">
                     <img id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
-                    <span class="text-primary" id="messageLoaderAddInstance">[[ progressPull ]]</span>
+                    <span class="text-primary" id="messageLoaderAddInstance">[[ statusPull ]][[ progressPull ]]</span>
                   </div>
                    <div id='errorLoaderImages' class="loader">
                     <span class="text-danger" id="errorLoaderAddImage">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
@@ -103,16 +103,20 @@
 
   export default {
 
+
+
     ready() {
+      var self = this;
 
+      socket.on('progressBar', function(infoPull) {
 
-          socket.on('progressBar', function(infoPull) {
+        self.$set('progressPull', infoPull);
 
-            console.log(infoPull);
+      });
 
-        // Update variable 'infosMachine'.
-        // This will automatically refresh the infosMachineTable component.
-        this.$set('progressPull', infoPull);
+      socket.on('statusPull', function(infoPull) {
+
+        self.$set('statusPull', infoPull);
 
       });
 
@@ -190,6 +194,7 @@
         username: '',
         show : false,
         progressPull : '',
+        statusPull : '',
         codeErrorPull : ''
       }
 

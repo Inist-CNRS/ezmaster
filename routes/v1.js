@@ -28,6 +28,7 @@ var path = require('path')
   , Magic = mmm.Magic
   , multer = require('multer')
   , disk = require('diskusage')
+  , oboe = require('oboe')
   ;
 
 // The bool to check if the instances cache is up to date.
@@ -689,23 +690,25 @@ module.exports = function (router, core) {
           socket = core.socket;
 
           if (!socket) {
-            // console.log('########## NO SOCKET ##########');
             return;
           }
         }
 
 
-        /*setTimeout( function() {
-              if (stream.pipe(process.stdout.status) != undefined) {
-               socket.emit('progressBar', stream.pipe(process.stdout.status));
-             }
-            }, 1000 );*/
+        oboe(stream)
+        .node('*', function (item) {
+          if (item['status'] != null
+            &&  item.progress.split(']')[1] != 'error during stream parsing') {
 
+            socket.broadcast.emit('progressBar', item.progress.split(']')[1]);
+            socket.emit('progressBar', item.progress.split(']')[1]);
 
-        stream.on('data', function(chunck) {
-          var data = JSON.parse(chunck);
-          socket.broadcast.emit('progressBar', data.status);
-          socket.emit('progressBar', data.status);
+            socket.broadcast.emit('statusPull', item.status+':');
+            socket.emit('statusPull', item.status);
+          }
+        })
+        .on('fail', function () {
+          return res.status(500).send('error during stream parsing');
         });
 
       }
