@@ -17,7 +17,7 @@ request = request('http://127.0.0.1:35267');
 
 describe('Test Image', function () {
 
-  this.timeout(60000);
+  this.timeout(90000);
 
   it('Create image', function (done) {
 
