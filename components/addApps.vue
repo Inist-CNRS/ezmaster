@@ -98,6 +98,8 @@
 
   'use strict';
 
+  var socket = io();
+
 
   export default {
 
@@ -106,7 +108,7 @@
 
           socket.on('progressBar', function(infoPull) {
 
-            console.log("aaaa"+infoPull);
+            console.log(infoPull);
 
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.

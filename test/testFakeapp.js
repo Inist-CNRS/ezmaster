@@ -1,4 +1,4 @@
-/* global describe, it, before, stupid: true*/
+/* global describe, it, before*/
 'use strict';
 
 // Travis run this file while building.

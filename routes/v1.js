@@ -702,11 +702,10 @@ module.exports = function (router, core) {
             }, 1000 );*/
 
 
-        stream.on('data',function(chunck){
+        stream.on('data', function(chunck) {
           var data = JSON.parse(chunck);
-          socket.broadcast.emit('progressBar', 'data.status');
-          console.log(socket.broadcast.emit('progressBar', 'data.status'));
-          socket.emit('progressBar', 'data.status');
+          socket.broadcast.emit('progressBar', data.status);
+          socket.emit('progressBar', data.status);
         });
 
       }
