@@ -683,7 +683,31 @@ module.exports = function (router, core) {
 
       function onProgress(event) {
 
-        stream.pipe(process.stdout);
+        var socket;
+
+        if (!socket) {
+          socket = core.socket;
+
+          if (!socket) {
+            // console.log('########## NO SOCKET ##########');
+            return;
+          }
+        }
+
+
+        /*setTimeout( function() {
+              if (stream.pipe(process.stdout.status) != undefined) {
+               socket.emit('progressBar', stream.pipe(process.stdout.status));
+             }
+            }, 1000 );*/
+
+
+        stream.on('data',function(chunck){
+          var data = JSON.parse(chunck);
+          socket.broadcast.emit('progressBar', 'data.status');
+          console.log(socket.broadcast.emit('progressBar', 'data.status'));
+          socket.emit('progressBar', 'data.status');
+        });
 
       }
 
@@ -695,9 +719,10 @@ module.exports = function (router, core) {
 
   router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
 
-    var container = docker.getImage(req.params.imageId);
+    // Examining the container.
+    var image = docker.getImage(req.params.imageId);
 
-    container.inspect(function (err, data) {
+    image.inspect(function (err, data) {
 
       if (err) { return next(err); }
 
