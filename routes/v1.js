@@ -648,7 +648,9 @@ module.exports = function (router, core) {
       };
     }
 
-    docker.pull(image, auth, function(err, stream) {
+    var imageToPull = image+':'+tag;
+
+    docker.pull(imageToPull, auth, function(err, stream) {
 
       if (err) { return next(err); }
 
@@ -658,7 +660,7 @@ module.exports = function (router, core) {
 
         if (err) { return res.status(500).send(err); }
 
-        var container = docker.getImage(image);
+        var container = docker.getImage(image+':'+tag);
 
         container.inspect(function (err, data) {
 
@@ -708,7 +710,7 @@ module.exports = function (router, core) {
           }
         })
         .on('fail', function () {
-          return res.status(500).send('error during stream parsing');
+          console.log('error during stream parsing');
         });
 
       }

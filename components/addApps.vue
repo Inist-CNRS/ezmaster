@@ -30,7 +30,7 @@
                     <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
                     <div class="col-md-9">
                       <input class="form-control sizeInput" id="inputImageName" name="inputImageName" placeholder=" Ex : inistcnrs/ezark" type="text" value='[[ imageName ]]' v-model="imageName" v-validate:imageName="{ required: true }">
-                      <input class="form-control sizeInput" id="inputVersionImage" placeholder="Tag (ex: 2.1.0)" value="[[ versionImage ]]" type="text" min='0' v-model="version" v-validate:project="{ required: true}">
+                      <input class="form-control sizeInput" id="inputVersionImage" placeholder="Tag (ex: 2.1.0)" value="[[ versionImage ]]" type="text" min='0' v-model="versionImage" v-validate:project="{ required: true}">
                     </div>
 
                     <button type="button" class="btn btn-default btn-md" v-on:click='showSettings'>
