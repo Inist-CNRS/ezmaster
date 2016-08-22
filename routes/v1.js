@@ -637,6 +637,7 @@ module.exports = function (router, core) {
     var username = req.body.username;
     var password = req.body.password;
     var email = req.body.email;
+    var imageToPull = image+':'+tag;
 
     if (registery != '') {
       var auth = {
@@ -645,10 +646,12 @@ module.exports = function (router, core) {
         //auth: '',
         //email: email,
         //serveraddress: registery
+
       };
+      imageToPull = registery+'/'+image+':'+tag;
     }
 
-    var imageToPull = registery+'/'+image+':'+tag;
+
 
     //console.log(auth, imageToPull);
 
@@ -662,14 +665,14 @@ module.exports = function (router, core) {
 
         if (err) { return res.status(500).send(err); }
 
-        var container = docker.getImage(image+':'+tag);
+        var container = docker.getImage(imageToPull);
 
         container.inspect(function (err, data) {
 
           if (err) { return next(err); }
 
           var imageName = {
-            'imageName' : image+':'+tag,
+            'imageName' : imageToPull,
             'imageId' : data.Id.split(':')[1],
             'creationDate' :  moment(data.Created, moment.ISO_8601).format('YYYY/MM/DD hh:mm:ss')
           };
