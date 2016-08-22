@@ -103,3 +103,12 @@ EZPAARSE Dockerfile:
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
 
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
+
+## How to for developers
+
+### How to upgrade the internal docker client version inside the ezmaster's docker image ?
+
+- Edit the [Dockerfile](https://github.com/Inist-CNRS/ezmaster/blob/master/Dockerfile)
+- Change the DOCKER_VERSION parameter
+- Browse to https://hub.docker.com/_/docker/ to get the correct DOCKER_SHA256 value and change it in the Dockerfile
+- Test that everything works well after a : ``make build``
