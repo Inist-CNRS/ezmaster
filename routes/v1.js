@@ -634,23 +634,25 @@ module.exports = function (router, core) {
     var image = req.body.imageName;
     var tag = req.body.versionImage;
     var registery = req.body.imageHub;
-    var username = req.body.imageHub;
-    var password = req.body.imageHub;
-    var email = req.body.imageHub;
+    var username = req.body.username;
+    var password = req.body.password;
+    var email = req.body.email;
 
     if (registery != '') {
       var auth = {
         username: username,
         password: password,
-        auth: '',
-        email: email,
-        registery: registery
+        //auth: '',
+        //email: email,
+        //serveraddress: registery
       };
     }
 
-    var imageToPull = image+':'+tag;
+    var imageToPull = registery+'/'+image+':'+tag;
 
-    docker.pull(imageToPull, auth, function(err, stream) {
+    //console.log(auth, imageToPull);
+
+    docker.pull(imageToPull, {'authconfig': auth}, function(err, stream) {
 
       if (err) { return next(err); }
 

@@ -39,7 +39,7 @@
     "castor-core": "^6.0.0",
     "debug": "^2.2.0",
     "diskusage": "^0.1.5",
-    "dockerode": "^2.2.10",
+    "dockerode": "^2.3.0",
     "file-exists": "^1.0.0",
     "filesize": "^3.3.0",
     "get-folder-size": "^1.0.0",

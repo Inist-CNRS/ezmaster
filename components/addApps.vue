@@ -9,7 +9,7 @@
 <template>
 
   <div id='addImage' v-on:keyup.esc="cancelAddImage">
-    <button id="add_image" class="btn btn-raised btn-primary" v-on:click="displayFormAddImage" >Add Application</button>
+    <button id="add_image" class="btn btn-raised btn-primary" v-show="showAddbutton" v-on:click="displayFormAddImage" >Add Application</button>
 
     <div class="modal" id="modal-add-image">
       <div class="modal-dialog">
@@ -41,7 +41,7 @@
                     <div class="form-group" id='settings' v-show="show">
                       <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
                       <div class="col-md-9">
-                        <input class="form-control sizeInput" id="inputImageHub" name="inputImageHub" placeholder=" Ex : https://vsregistry:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
+                        <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder=" Ex : https://vsregistry.intra.inist.fr:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
                       </div>
 
                       <label for="inputUserName" class="col-md-3 control-label">UserName</label>
@@ -91,7 +91,6 @@
 </template>
 
 
-
 <script>
 
   /* global Vue, global document, global location*/
@@ -119,6 +118,26 @@
         self.$set('statusPull', infoPull);
 
       });
+
+      self.$http.get('/-/v3/config.js').then(function (result) {
+        var config = JSON.parse(result.data);
+        self.$set('freeSpaceDisk', config.freeSpaceDisk);
+
+      }, console.error);
+
+      socket.on('refreshInfosMachine', function(infosMachineSocket) {
+
+        // Update variable 'infosMachine'.
+        // This will automatically refresh the infosMachineTable component.
+        self.$set('infosMachine', infosMachineSocket);
+
+        // Put this bool to true in order to avoid console error on infosMachine component launch.
+        // This bool is used on the HTML code just above.
+        self.$set('boolInfosFeed', true);
+
+      });
+
+
 
 
 
@@ -195,7 +214,11 @@
         show : false,
         progressPull : '',
         statusPull : '',
-        codeErrorPull : ''
+        codeErrorPull : '',
+        infosMachine: {},
+        freeSpaceDisk: '',
+        showAddbutton: true,
+        boolInfosFeed: false
       }
 
     },
