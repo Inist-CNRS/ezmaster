@@ -2,6 +2,7 @@ assets/bundle.js
 .DS_Store
 config.local.js
 node_modules
+applications
 coverage/
 tmp/
 
