@@ -57,6 +57,7 @@
                       <label for="inputEmail" class="col-md-3 control-label">Email</label>
                       <div class="col-md-9">
                         <input class="form-control sizeInput" id="inputEmail" name="inputEmail" placeholder=" Ex : test@email.com" type="text" value='[[ email ]]' v-model="email">
+
                       </div>
 
                     </div>
@@ -106,6 +107,7 @@
 
     ready() {
       var self = this;
+      var fullFsPercent;
 
       socket.on('progressBar', function(infoPull) {
 
@@ -121,7 +123,8 @@
 
       self.$http.get('/-/v3/config.js').then(function (result) {
         var config = JSON.parse(result.data);
-        self.$set('freeSpaceDisk', config.freeSpaceDisk);
+        self.$set('fullFsPercent', config.fullFsPercent);
+        fullFsPercent = config.fullFsPercent;
 
       }, console.error);
 
@@ -134,6 +137,8 @@
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
         self.$set('boolInfosFeed', true);
+
+        self.$set('showAddbutton', fullFsPercent>infosMachineSocket.useDiskPercentage);
 
       });
 
@@ -216,7 +221,7 @@
         statusPull : '',
         codeErrorPull : '',
         infosMachine: {},
-        freeSpaceDisk: '',
+        fullFsPercent: '',
         showAddbutton: true,
         boolInfosFeed: false
       }
