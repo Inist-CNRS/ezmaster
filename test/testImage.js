@@ -23,7 +23,8 @@ describe('Test Image', function () {
 
     var data = {
       'imageName' : 'hello-world',
-      'versionImage' : 'latest'
+      'versionImage' : 'latest',
+      'imageHub' : ''
     };
 
     request
@@ -50,7 +51,7 @@ describe('Test Image', function () {
   it('Delete Image', function (done) {
 
     request
-    .delete('/-/v1/app/hello-world')
+    .delete('/-/v1/app/c54a2cc56cbb2f04003c1cd4507e118af7c0d340fe7e2720f70976c4b75237dc')
     .expect(200, function (err) {
       done(err);
     });

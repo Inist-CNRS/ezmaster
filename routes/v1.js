@@ -715,7 +715,6 @@ module.exports = function (router, core) {
           }
         })
         .on('fail', function () {
-          console.log('error during stream parsing');
         });
 
       }
