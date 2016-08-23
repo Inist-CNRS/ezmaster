@@ -38,6 +38,7 @@ RUN npm config set strict-ssl false \
 # data files (ex: CSV)
 VOLUME /app/instances
 VOLUME /app/manifests
+VOLUME /app/applications
 
 # run the application
 CMD ["npm", "start"]
