@@ -677,8 +677,10 @@ module.exports = function (router, core) {
             'creationDate' :  moment(data.Created, moment.ISO_8601).format('YYYY/MM/DD hh:mm:ss')
           };
 
+          var nameManifest = new Buffer(imageToPull).toString('base64');
+
           jsonfile.writeFile(
-          path.join(__dirname, '../applications/'+data.Id.split(':')[1]+'.json')
+          path.join(__dirname, '../applications/'+nameManifest+'.json')
           , imageName, function (err) {
             if (err) {
               return res.status(500).send(err);
@@ -754,9 +756,11 @@ module.exports = function (router, core) {
 
       if (err) { res.status(409); }
 
+      var nameManifest = new Buffer(image.name).toString('base64');
+
       rimraf(
       path.join(__dirname, '../applications/'
-      , req.params.imageId + '.json')
+      , nameManifest + '.json')
       , function (err) {
         if (err) { return next(err); }
       });

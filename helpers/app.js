@@ -78,6 +78,7 @@ module.exports.getApps = function (cb) {
           app.imageName = image.RepoTags[0];
           app.creationDate = moment.unix(image.Created).format('YYYY/MM/DD HH:mm:ss');
           apps.push(app);
+
         });
 
         return handleApplications(null, apps);

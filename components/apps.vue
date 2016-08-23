@@ -58,6 +58,7 @@
 
   var optsEditor = {}
     , idToDelete = null
+    ,nameTodelete
     ;
 
 
@@ -87,6 +88,7 @@
         idToDelete = event.path[4].id;
         this.$http.get('/-/v1/app/'+idToDelete+'/delete').then(function (result) {
           this.$set('imageNameToDelete', result.data.imageName);
+          nameTodelete = result.data.imageName;
           document.getElementById('modal-delete-image').style.display = 'block';
 
         }, console.error);
@@ -97,7 +99,7 @@
       },
 
       confirmDeleteapplication : function (event) {
-        this.$http.delete('/-/v1/app/'+idToDelete).then(function (result) {
+        this.$http.delete('/-/v1/app/'+nameTodelete).then(function (result) {
           document.getElementById('modal-delete-image').style.display = 'none';
           this.refresh();
         }, function (error) {
