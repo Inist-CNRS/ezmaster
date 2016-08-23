@@ -713,7 +713,7 @@ module.exports = function (router, core) {
             socket.emit('progressBar', item.progress.split(']')[1]);
 
             socket.broadcast.emit('statusPull', item.status+':');
-            socket.emit('statusPull', item.status);
+            socket.emit('statusPull', item.status+':');
           }
         })
         .on('fail', function () {
