@@ -28,9 +28,10 @@ services:
       - 35267:35267
     depends_on:
       - ezmaster_db
-    # restart this container if the host server restarts
-    # or if ezmaster nodejs process crashes :
-    # - it needs time for mongodb initialize the first time, so a retry is necessary
+    # Restart this container if the host server restarts
+    # or if ezmaster nodejs process crashes.
+    # It appends at first startup because it needs time for mongodb
+    # to initialize.
     # - usually a nodejs application need forever, pm2 or equivalent
     restart: always
 
@@ -40,5 +41,6 @@ services:
     container_name: ezmaster_db
     image: mongo:3.0.7
     command: --smallfiles
-    # restart this container if the host server restarts
+    # Restart this container if the host server restarts 
+    # or if mongodb crashes
     restart: always
