@@ -8,7 +8,7 @@ var publicDomain  = process.env.EZMASTER_PUBLIC_DOMAIN || '';
 var publicIP      = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1';
 var baseURL       = process.env.EZMASTER_PUBLIC_DOMAIN || 'http://' + publicIP + ':35267';
 var maxSizeUpload = process.env.EZMASTER_MAX_SIZE_UPLOAD || 10000000000;
-var fullFsPercent = process.env.EZMASTER_FULL_FS_PERCENT || 90;
+var fullFsPercent = process.env.EZMASTER_FULL_FS_PERCENT || 80;
 
 
 module.exports = {
