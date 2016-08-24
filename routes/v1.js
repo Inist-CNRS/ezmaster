@@ -636,24 +636,17 @@ module.exports = function (router, core) {
     var registery = req.body.imageHub;
     var username = req.body.username;
     var password = req.body.password;
-    var email = req.body.email;
     var imageToPull = image+':'+tag;
 
     if (registery != '') {
       var auth = {
         username: username,
-        password: password,
-        //auth: '',
-        //email: email,
-        //serveraddress: registery
-
+        password: password
       };
+
       imageToPull = registery+'/'+image+':'+tag;
     }
 
-
-
-    //console.log(auth, imageToPull);
 
     docker.pull(imageToPull, {'authconfig': auth}, function(err, stream) {
 
@@ -707,13 +700,15 @@ module.exports = function (router, core) {
         oboe(stream)
         .node('*', function (item) {
           if (item['status'] != null
-            &&  item.progress.split(']')[1] != 'error during stream parsing') {
+          &&  item.progress.split(']')[1] != 'error during stream parsing') {
 
-            socket.broadcast.emit('progressBar', item.progress.split(']')[1]);
-            socket.emit('progressBar', item.progress.split(']')[1]);
+            setTimeout(function() {
+              socket.broadcast.emit('progressBar', item.progress.split(']')[1]);
+              socket.emit('progressBar', item.progress.split(']')[1]);
 
-            socket.broadcast.emit('statusPull', item.status+':');
-            socket.emit('statusPull', item.status+':');
+              socket.broadcast.emit('statusPull', item.status+':');
+              socket.emit('statusPull', item.status+':');
+            }, 2000);
           }
         })
         .on('fail', function () {

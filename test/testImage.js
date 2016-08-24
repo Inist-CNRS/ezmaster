@@ -41,12 +41,11 @@ describe('Test Image', function () {
 
   it('Found Image', function (done) {
     request.get('/-/v1/app/').expect(function (res) {
-      setTimeout(function(){
-           if (!res.body['hello-world:latest']) { throw new Error('Image not found!'); }
-
-       }, 3000);
-
-    }).end(done);
+      setTimeout(function() {
+        if (!res.body['hello-world:latest']) { throw new Error('Image not found!'); }
+      }, 3000);
+    })
+    .end(done);
 
   });
 

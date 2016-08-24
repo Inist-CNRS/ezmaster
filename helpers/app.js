@@ -5,11 +5,9 @@
 var path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
-  , util = require('utile')
+  //, util = require('utile')
   , fs = require('fs')
   , Docker = require('dockerode')
-  , moment = require('moment')
-  , _ = require('lodash')
   , glob = require('glob')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'});
 
@@ -48,7 +46,7 @@ module.exports.getApps = function (cb) {
 
         var image =docker.getImage(manifest.imageName);
 
-        if(image !== undefined){
+        if (image !== undefined) {
           manifests.push(manifest);
           if (manifests.length === files.length) {
             return cb(null, manifests);
