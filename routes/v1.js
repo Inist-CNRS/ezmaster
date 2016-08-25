@@ -18,7 +18,7 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances')
   , app = require('../helpers/app')
-  , util = require('utile')
+  //, util = require('utile')
   , instancesArray
   , containers
   , portMax
@@ -28,7 +28,6 @@ var path = require('path')
   , Magic = mmm.Magic
   , multer = require('multer')
   , disk = require('diskusage')
-  , oboe = require('oboe')
   ;
 
 // The bool to check if the instances cache is up to date.

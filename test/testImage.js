@@ -52,7 +52,7 @@ describe('Test Image', function () {
 
   it('Delete Image', function (done) {
 
-    var nameToDelete = new Buffer("hello-world:latest").toString('base64');
+    var nameToDelete = new Buffer('hello-world:latest').toString('base64');
 
     request
     .delete('/-/v1/app/'+nameToDelete)
