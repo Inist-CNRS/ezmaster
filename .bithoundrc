@@ -39,6 +39,7 @@
         "rimraf",
         "socket.io",
         "sort-by",
+        "storage",
         "underscore",
         "utile",
         "vue",
