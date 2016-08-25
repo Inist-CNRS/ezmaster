@@ -18,7 +18,7 @@ var path = require('path')
   , fileExists = require('file-exists')
   , instances = require('../helpers/instances')
   , app = require('../helpers/app')
-  //, util = require('utile')
+  , util = require('utile')
   , instancesArray
   , containers
   , portMax
@@ -378,9 +378,7 @@ module.exports = function (router, core) {
         jsonfile.writeFile(
           path.join(__dirname, '../manifests/'+technicalName+'.json')
           , newlongName, function (err) {
-            if (err) {
-              return next(err);
-            }
+            if (err) { return next(err); }
           });
 
         exec(cmd, refreshAndReturn);
@@ -696,23 +694,25 @@ module.exports = function (router, core) {
           }
         }
 
+        console.log(event);
 
-        oboe(stream)
-        .node('*', function (item) {
-          if (item['status'] != null
-          &&  item.progress.split(']')[1] != 'error during stream parsing') {
+          //oboe(stream)
+          //.node('*', function (item) {
+            //stream.setMaxListeners(9999);
+            if (event['status'] != null && event.progress != null
+            &&  event.progress.split(']')[1] != 'error during stream parsing') {
 
-            setTimeout(function() {
-              socket.broadcast.emit('progressBar', item.progress.split(']')[1]);
-              socket.emit('progressBar', item.progress.split(']')[1]);
+                socket.broadcast.emit('progressBar', event.progress.split(']')[1]);
+                socket.emit('progressBar', event.progress.split(']')[1]);
 
-              socket.broadcast.emit('statusPull', item.status+':');
-              socket.emit('statusPull', item.status+':');
-            }, 2000);
-          }
-        })
-        .on('fail', function () {
-        });
+                socket.broadcast.emit('statusPull', event.status+':');
+                socket.emit('statusPull', event.status+':');
+
+            }
+          //})
+          //.on('fail', function () {
+          //})
+
 
       }
 
@@ -722,36 +722,24 @@ module.exports = function (router, core) {
 
 
 
-  router.route('/-/v1/app/:imageId/delete').get(function (req, res, next) {
-
-    // Examining the container.
-    var image = docker.getImage(req.params.imageId);
-
-    image.inspect(function (err, data) {
-
-      if (err) { return next(err); }
-
-      var result = {};
-
-      result['imageName'] = data.RepoTags;
-
-      return res.status(200).send(result);
-
-    });
-
-  });
-
-
-
   router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
 
+    var name = new Buffer(req.params.imageId).toString();
+
+    console.log(name,req.params.imageId)
+
     var image = docker.getImage(req.params.imageId);
+
 
     image.remove(function (err, datas, cont) {
 
+      console.log(image);
+
       if (err) { res.status(409); }
 
-      var nameManifest = new Buffer(image.name).toString('base64');
+      var nameManifest = req.params.imageId;
+
+      console.log(nameManifest);
 
       rimraf(
       path.join(__dirname, '../applications/'

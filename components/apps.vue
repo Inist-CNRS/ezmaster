@@ -9,7 +9,7 @@
     </thead>
     <tbody>
       <template v-for="item in containers">
-        <tr class="success" id="[[ item.imageId ]]">
+        <tr class="success" id="[[ item.imageName ]]">
           <td>[[ item.imageName ]]</td>
           <td>[[ item.creationDate ]]</td>
           <td class="actions">
@@ -85,13 +85,11 @@
 
 
       deleteapplication : function (event) {
-        idToDelete = event.path[4].id;
-        this.$http.get('/-/v1/app/'+idToDelete+'/delete').then(function (result) {
-          this.$set('imageNameToDelete', result.data.imageName);
-          nameTodelete = result.data.imageName;
-          document.getElementById('modal-delete-image').style.display = 'block';
 
-        }, console.error);
+        this.$set('imageNameToDelete', event.path[4].id);
+        nameTodelete = event.path[4].id;
+        document.getElementById('modal-delete-image').style.display = 'block';
+
       },
 
       cancelDeleteapplication : function (event) {
@@ -99,7 +97,9 @@
       },
 
       confirmDeleteapplication : function (event) {
-        this.$http.delete('/-/v1/app/'+nameTodelete).then(function (result) {
+
+        var name = new Buffer(nameTodelete).toString('base64');
+        this.$http.delete('/-/v1/app/'+name).then(function (result) {
           document.getElementById('modal-delete-image').style.display = 'none';
           this.refresh();
         }, function (error) {
