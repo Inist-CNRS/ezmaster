@@ -224,41 +224,38 @@ module.exports = function (router, core) {
   router.route('/-/v1/instances/:containerId').delete(function (req, res, next) {
     var container = docker.getContainer(req.params.containerId);
 
-   removeInstance(container);
+    removeInstance(container);
 
     function removeInstance (container) {
 
       container.inspect(function (err, data) {
-      if (err) { return next(err); }
+        if (err) { return next(err); }
 
-      if (data.State.Running == true) {
-        container.stop(function (err, datas, cont) {
-          if (err) { return next(err); }
-
-          container.remove(function (err, datas, cont) {
+        if (data.State.Running == true) {
+          container.stop(function (err, datas, cont) {
             if (err) { return next(err); }
 
+            container.remove(function (err, datas, cont) {
+              if (err) { return next(err); }
+
+            });
           });
-        });
-      }
-      else if (data.State.Running == false) {
-        container.remove(function (err, datas, cont) {
-          if (err) { return next(err); }
-        });
-      }
+        }
+        else if (data.State.Running == false) {
+          container.remove(function (err, datas, cont) {
+            if (err) { return next(err); }
+          });
+        }
 
-      removeManifest(err, data.Name);
+        removeManifest(err, data.Name);
+      });
+    }
 
+    function removeManifest (err, containerName) {
 
+      if (err) { return res.status(500).send(err); }
 
-
-    });
-
-      function removeManifest (err, containerName) {
-
-        if (err) { return res.status(500).send(err); }
-
-        var splittedName = containerName.split('/');
+      var splittedName = containerName.split('/');
       rimraf(path.join(__dirname, '../instances/', splittedName[1]), function (err) {
         if (err) { return next(err); }
 
@@ -273,14 +270,7 @@ module.exports = function (router, core) {
           res.status(200).send('Removing done');
         });
       });
-      }
-
-
     }
-
-
-
-
   });
 
 
