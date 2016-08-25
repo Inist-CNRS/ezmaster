@@ -52,8 +52,10 @@ describe('Test Image', function () {
 
   it('Delete Image', function (done) {
 
+    var nameToDelete = new Buffer("hello-world:latest").toString('base64');
+
     request
-    .delete('/-/v1/app/hello-world:latest')
+    .delete('/-/v1/app/'+nameToDelete)
     .expect(200, function (err) {
       done(err);
     });

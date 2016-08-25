@@ -81,6 +81,7 @@
         this.$http.get('/-/v1/app').then(function (result) {
           this.$set('containers', result.data);
         }, console.error);
+        this.$set('messageErrorPull', '');
       },
 
 
@@ -94,6 +95,8 @@
 
       cancelDeleteapplication : function (event) {
         document.getElementById('modal-delete-image').style.display = 'none';
+        this.$set('messageErrorPull', '');
+        document.getElementById('errorLoaderImage').style.display = 'none';
       },
 
       confirmDeleteapplication : function (event) {

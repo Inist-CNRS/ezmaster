@@ -694,52 +694,34 @@ module.exports = function (router, core) {
           }
         }
 
-        console.log(event);
 
-          //oboe(stream)
-          //.node('*', function (item) {
-            //stream.setMaxListeners(9999);
-            if (event['status'] != null && event.progress != null
-            &&  event.progress.split(']')[1] != 'error during stream parsing') {
+        if (event['status'] != null && event.progress != null
+        &&  event.progress.split(']')[1] != 'error during stream parsing') {
 
-                socket.broadcast.emit('progressBar', event.progress.split(']')[1]);
-                socket.emit('progressBar', event.progress.split(']')[1]);
+          socket.broadcast.emit('progressBar', event.progress.split(']')[1]);
+          socket.emit('progressBar', event.progress.split(']')[1]);
 
-                socket.broadcast.emit('statusPull', event.status+':');
-                socket.emit('statusPull', event.status+':');
+          socket.broadcast.emit('statusPull', event.status+':');
+          socket.emit('statusPull', event.status+':');
 
-            }
-          //})
-          //.on('fail', function () {
-          //})
-
-
+        }
       }
-
     });
-
   });
 
 
 
   router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
 
-    var name = new Buffer(req.params.imageId).toString();
+    var name = new Buffer(req.params.imageId, 'base64').toString();
 
-    console.log(name,req.params.imageId)
-
-    var image = docker.getImage(req.params.imageId);
-
+    var image = docker.getImage(name);
 
     image.remove(function (err, datas, cont) {
 
-      console.log(image);
-
-      if (err) { res.status(409); }
+      if (err) { return res.status(409).send(err); }
 
       var nameManifest = req.params.imageId;
-
-      console.log(nameManifest);
 
       rimraf(
       path.join(__dirname, '../applications/'
