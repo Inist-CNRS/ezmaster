@@ -110,34 +110,26 @@
       var fullFsPercent;
 
       socket.on('progressBar', function(infoPull) {
-
         self.$set('progressPull', infoPull);
-
       });
 
       socket.on('statusPull', function(infoPull) {
-
         self.$set('statusPull', infoPull);
-
       });
 
       self.$http.get('/-/v3/config.js').then(function (result) {
         var config = JSON.parse(result.data);
         self.$set('fullFsPercent', config.fullFsPercent);
         fullFsPercent = config.fullFsPercent;
-
       }, console.error);
 
       socket.on('refreshInfosMachine', function(infosMachineSocket) {
-
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
         self.$set('infosMachine', infosMachineSocket);
-
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
         self.$set('boolInfosFeed', true);
-
         self.$set('showAddbutton', fullFsPercent>infosMachineSocket.useDiskPercentage);
 
       });

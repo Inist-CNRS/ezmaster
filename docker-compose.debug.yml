@@ -10,6 +10,7 @@ services:
       - ezmaster_db
     volumes:
       - .:/app
+      - ./applications:/app/applications
       - ./instances:/app/instances
       - ./manifests:/app/manifests
       - /var/run/docker.sock:/var/run/docker.sock

@@ -13,6 +13,9 @@ services:
     links:
       - ezmaster_db
     volumes:
+      - ./applications:/app/applications
+      - ./instances:/app/instances
+      - ./manifests:/app/manifests
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       http_proxy:  ${http_proxy}
@@ -24,6 +27,7 @@ services:
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
     working_dir: /app
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
       - 35267:35267
     depends_on:
@@ -41,6 +45,6 @@ services:
     container_name: ezmaster_db
     image: mongo:3.0.7
     command: --smallfiles
-    # Restart this container if the host server restarts 
+    # Restart this container if the host server restarts
     # or if mongodb crashes
     restart: always
