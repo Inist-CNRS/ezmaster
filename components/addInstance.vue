@@ -215,6 +215,8 @@
             document.getElementById('saveTechnicalExists').style.display = 'none';
           }
           else {
+            document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
+             document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
             document.getElementById('technicalNameExists').style.display = 'block';
             document.getElementById('save').style.display = 'none';
             document.getElementById('saveTechnicalExists').style.display = 'block';
