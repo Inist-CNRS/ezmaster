@@ -9,7 +9,7 @@ set -e
 EZMASTER_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 
 if [ "$1" == "" ]; then
-  echo "make-version should be called with a parameter (major, minor, ...)"
+  echo "make version should be called with a parameter (major, minor, ...)"
   exit 1
 fi
 
