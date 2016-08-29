@@ -7,7 +7,7 @@ Administration of docker applications without any IT skills.
 ## Requirements
 
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-- [Docker](https://docs.docker.com/engine/installation/) (Version >= 1.10)
+- [Docker](https://docs.docker.com/engine/installation/) (Version >= 1.12)
 - [Docker Compose](https://docs.docker.com/compose/install/) (Version >= 1.7)
 - Make
 
