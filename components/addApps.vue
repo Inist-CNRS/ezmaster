@@ -41,7 +41,7 @@
                     <div class="form-group" id='settings' v-show="show">
                       <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
                       <div class="col-md-9">
-                        <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder=" Ex : https://vsregistry.intra.inist.fr:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
+                        <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder=" Ex : vsregistry.intra.inist.fr:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
                       </div>
 
                       <label for="inputUserName" class="col-md-3 control-label">UserName</label>

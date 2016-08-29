@@ -46,16 +46,33 @@ export EZMASTER_MAX_SIZE_UPLOAD=1000000000
 export EZMASTER_FULL_FS_PERCENT=80
 ```
 
-
-## Install and run
+## Communication with the Database (Mongo)
 
 ```shell
-git clone https://github.com/Inist-CNRS/ezmaster.git
+# You have to link your database to the ezmaster database. 
+# The configurations of the database are:
+DATABASE_NAME: ezmaster_db
+PORT: 27017
+```
+
+
+## Install and run for production
+
+```shell
+mkdir ./ezmaster
 cd ezmaster
-make install
-make run-prod
-# make stop-prod to stop it
-# ezmaster is listening at http://127.0.0.1:35267/
+mkdir ./applications
+mkdir ./instances
+mkdir ./manifests
+wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/docker-compose.yml
+export EZMASTER_PUBLIC_IP="Your IP"
+export EZMASTER_FREE_PORT_RANGE="49152-60000"
+export EZMASTER_FULL_FS_PERCENT=80
+export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
+docker-compose up -d
+
+# then ezmaster is listening at http://<Your IP>:35267
+# and the instances can be accessed at http://<tech-name>.lod-test.istex.fr
 ```
 
 ## Install and run for developments/debug
