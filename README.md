@@ -160,7 +160,7 @@ EZPAARSE Dockerfile:
 - Then click again on "Access..." to open ezvis application and it should be filled with nice data
 
 Screen example:
-
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/db46dccc532c3567b822f4f934b7cead0f4642f8/doc/ezvis_doc.png)
 
 
 
