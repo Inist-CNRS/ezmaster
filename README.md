@@ -118,7 +118,6 @@ EZPAARSE Dockerfile:
 
 
 ```shell
-#First Step:
 # You have to add your application image
 # Click the "Applications" tab, and "Add Application" button
 # Then you have to write the name of your applications and his tag.
@@ -130,6 +129,17 @@ EZPAARSE Dockerfile:
 # Filled the longName and technicaleName, and click on "Create"
 
 # Now you can access, stop, delete, configurate or add data to your Instance.
+```
+
+## How to save and restore the data and config of the instances ?
+
+```shell
+# If you want to save the config and the data of your instances
+# You have to save the "manifests" and "instances" files.
+# And when you will recreate or add a new EzMaster you will have to:
+
+# Add all the applications (Docker images) of the instances concerned
+# And put what you had saved into the "instances" and "manifests" files of your new EzMaster 
 ```
 
 
