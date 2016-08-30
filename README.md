@@ -46,12 +46,6 @@ export EZMASTER_MAX_SIZE_UPLOAD=1000000000
 export EZMASTER_FULL_FS_PERCENT=80
 ```
 
-## Communication with the Database (Mongo)
-
-```shell
-# You have to link your database to the ezmaster database. 
-# Regarding to this, you have to use the envrionment variable : EZMASTER_MONGODB_HOST_PORT
-```
 
 
 ## Install and run for production
@@ -83,7 +77,13 @@ make run-debug
 ```
 
 ## Ezmasterizing an application
+
 ### Dockerfile modifications.
+
+- Your application must have a web server listening on port 3000 (mandatory).
+- Your application can use a json config and a data folder (optional)
+
+For example your dockerfile could looks like this one:
 ```shell
 FROM ubuntu or node or ...
 
@@ -94,6 +94,13 @@ RUN sudo mkdir -p /opt/ezmaster/config/
 RUN sudo ln -s ###path to your config file### /opt/ezmaster/config/config.json
 RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
 ```
+
+### MongoDB database (optional)
+
+If your application uses a mongodb database, your can use the ezmaster database. 
+Regarding to this, you just have to use the envrionment variable: ``EZMASTER_MONGODB_HOST_PORT``
+This variable contains for example: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017)
+
 
 ### Create symbolic links for configuration and data files.
 ### Refer to the schema below.
@@ -113,36 +120,6 @@ EZPAARSE Dockerfile:
 
 <https://hub.docker.com/r/ezpaarseproject/ezpaarse/~/dockerfile/>
 
-
-## How to test your first ezmaster application ? 
-
-
-```shell
-# You have to add your application image
-# Click the "Applications" tab, and "Add Application" button
-# Then you have to write the name of your applications and his tag.
-# If you applications is not on Docker Hub, click on "settings" and filled the fields.
-# Finnaly click on "Create"
-
-# When the pull is finished you will be reload on the "Instances" tab
-# Then click on "Add Instances" and choose your applications in the dropdown tab
-# Filled the longName and technicaleName, and click on "Create"
-
-# Now you can access, stop, delete, configurate or add data to your Instance.
-```
-
-## How to save and restore the data and config of the instances ?
-
-```shell
-# If you want to save the config and the data of your instances
-# You have to save the "manifests" and "instances" files.
-# And when you will recreate or add a new EzMaster you will have to:
-
-# Add all the applications (Docker images) of the instances concerned
-# And put what you had saved into the "instances" and "manifests" files of your new EzMaster 
-```
-
-
 ## Diagrams
 
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Technical_Environment.jpg)
@@ -161,3 +138,41 @@ EZPAARSE Dockerfile:
 - Change the DOCKER_VERSION parameter
 - Browse to https://hub.docker.com/_/docker/ to get the correct DOCKER_SHA256 value and change it in the Dockerfile
 - Test that everything works well after a : ``make build``
+
+## How to for users
+
+### How to test your first ezmaster application ? 
+
+- Open ezmaster web interface: http://<Your IP>:35267
+- Click the "Applications" tab, and "Add Application" button
+- Then write the name of the application ``inistcnrs/ezvis`` and its version ``6.8.6``
+- And click on "Create" and wait for the pull (it can take several minutes)
+
+- Click on the "Instances" tab
+- Then click on "Add Instances" and choose ``inistcnrs/ezvis:6.8.6`` in the dropdown list
+- Enter "My first app" in the LongName field
+- Enter "myapp" in the first TechnicalName field, and "demo" in the second part
+- And click on "Create"
+
+- Then click on "Access..." to open ezvis application (it's empty but it's normal)
+- Then click on "Config" button and copy/past this file content: https://raw.githubusercontent.com/madec-project/showcase/master/demo_films/repository.json
+- Then click on "DATA" button and upload this file: https://github.com/madec-project/showcase/blob/master/demo_films/repository/films.csv
+- Then click again on "Access..." to open ezvis application and it should be filled with nice data
+
+Screen example:
+
+
+
+
+## How to for production
+
+### How to save and restore the data and config of the instances ?
+
+```shell
+# If you want to save the config and the data of your instances
+# You have to save the "manifests" and "instances" files.
+# And when you will recreate or add a new EzMaster you will have to:
+
+# Add all the applications (Docker images) of the instances concerned
+# And put what you had saved into the "instances" and "manifests" files of your new EzMaster 
+```
