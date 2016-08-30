@@ -50,9 +50,7 @@ export EZMASTER_FULL_FS_PERCENT=80
 
 ```shell
 # You have to link your database to the ezmaster database. 
-# The configurations of the database are:
-DATABASE_NAME: ezmaster_db
-PORT: 27017
+# Regarding to this, you have to use the envrionment variable : EZMASTER_MONGODB_HOST_PORT
 ```
 
 
@@ -114,6 +112,26 @@ EZARK Dockerfile:
 EZPAARSE Dockerfile:
 
 <https://hub.docker.com/r/ezpaarseproject/ezpaarse/~/dockerfile/>
+
+
+## How to test your first ezmaster application ? 
+
+
+```shell
+#First Step:
+# You have to add your application image
+# Click the "Applications" tab, and "Add Application" button
+# Then you have to write the name of your applications and his tag.
+# If you applications is not on Docker Hub, click on "settings" and filled the fields.
+# Finnaly click on "Create"
+
+# When the pull is finished you will be reload on the "Instances" tab
+# Then click on "Add Instances" and choose your applications in the dropdown tab
+# Filled the longName and technicaleName, and click on "Create"
+
+# Now you can access, stop, delete, configurate or add data to your Instance.
+```
+
 
 ## Diagrams
 
