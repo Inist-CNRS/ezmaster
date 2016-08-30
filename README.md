@@ -95,40 +95,19 @@ RUN sudo ln -s ###path to your config file### /opt/ezmaster/config/config.json
 RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
 ```
 
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Volume_Mounting.jpg)
+
 ### MongoDB database (optional)
 
 If your application uses a mongodb database, your can use the ezmaster database. 
 Regarding to this, you just have to use the envrionment variable: ``EZMASTER_MONGODB_HOST_PORT``
 This variable contains for example: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017)
 
+### Dockerfile example of ezmasterized applications
 
-### Create symbolic links for configuration and data files.
-### Refer to the schema below.
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Volume_Mounting.jpg)
-
-Example:
-
-EZVIS Dockerfile:
-
-<https://github.com/madec-project/ezvis/blob/master/Docker/Dockerfile>
-
-EZARK Dockerfile:
-
-<https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile>
-
-EZPAARSE Dockerfile:
-
-<https://hub.docker.com/r/ezpaarseproject/ezpaarse/~/dockerfile/>
-
-## Diagrams
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Technical_Environment.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Architecture.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
+- EZVIS Dockerfile: https://github.com/madec-project/ezvis/blob/master/Docker/Dockerfile
+- EZARK Dockerfile: https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile
+- EZPAARSE Dockerfile: https://github.com/ezpaarse-project/ezpaarse/blob/master/Dockerfile
 
 ## How to for developers
 
@@ -162,8 +141,6 @@ EZPAARSE Dockerfile:
 Screen example:
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/db46dccc532c3567b822f4f934b7cead0f4642f8/doc/ezvis_doc.png)
 
-
-
 ## How to for production
 
 ### How to save the data and config of the instances ?
@@ -171,3 +148,15 @@ Screen example:
 - If you want to save the config and the data of your instances
 - You have to save the "applications, "manifests" and "instances" files.
 - You also have to save the mongodb database on the address : mongodb://ezmaster_db:27017
+
+
+
+## Diagrams
+
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Technical_Environment.jpg)
+
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Architecture.jpg)
+
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
+
+![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
