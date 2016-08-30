@@ -155,11 +155,13 @@ EZPAARSE Dockerfile:
 - And click on "Create"
 
 - Then click on "Access..." to open ezvis application (it's empty but it's normal)
-- Then click on "Config" button and copy/past this file content:
-- Then click on "DATA" button and upload this file:
+- Then click on "Config" button and copy/past this file content: https://raw.githubusercontent.com/madec-project/showcase/master/demo_films/repository.json
+- Then click on "DATA" button and upload this file: https://github.com/madec-project/showcase/blob/master/demo_films/repository/films.csv
 - Then click again on "Access..." to open ezvis application and it should be filled with nice data
 
 Screen example:
+
+
 
 
 ## How to for production
