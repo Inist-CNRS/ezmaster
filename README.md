@@ -166,13 +166,8 @@ Screen example:
 
 ## How to for production
 
-### How to save and restore the data and config of the instances ?
+### How to save the data and config of the instances ?
 
-```shell
-# If you want to save the config and the data of your instances
-# You have to save the "manifests" and "instances" files.
-# And when you will recreate or add a new EzMaster you will have to:
-
-# Add all the applications (Docker images) of the instances concerned
-# And put what you had saved into the "instances" and "manifests" files of your new EzMaster 
-```
+- If you want to save the config and the data of your instances
+- You have to save the "applications, "manifests" and "instances" files.
+- You also have to save the mongodb database on the address : mongodb://ezmaster_db:27017
