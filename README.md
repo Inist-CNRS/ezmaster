@@ -78,7 +78,7 @@ make run-debug
 
 ## Ezmasterizing an application
 
-### Dockerfile modifications.
+### Dockerfile modifications
 
 - Your application must have a web server listening on port 3000 (mandatory).
 - Your application can use a json config and a data folder (optional)
