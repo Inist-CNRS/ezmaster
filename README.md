@@ -46,12 +46,6 @@ export EZMASTER_MAX_SIZE_UPLOAD=1000000000
 export EZMASTER_FULL_FS_PERCENT=80
 ```
 
-## Communication with the Database (Mongo)
-
-```shell
-# You have to link your database to the ezmaster database. 
-# Regarding to this, you have to use the envrionment variable : EZMASTER_MONGODB_HOST_PORT
-```
 
 
 ## Install and run for production
@@ -83,7 +77,13 @@ make run-debug
 ```
 
 ## Ezmasterizing an application
+
 ### Dockerfile modifications.
+
+- Your application must have a web server listening on port 3000 (mandatory).
+- Your application can use a json config and a data folder (optional)
+
+For example your dockerfile could looks like this one:
 ```shell
 FROM ubuntu or node or ...
 
@@ -94,6 +94,13 @@ RUN sudo mkdir -p /opt/ezmaster/config/
 RUN sudo ln -s ###path to your config file### /opt/ezmaster/config/config.json
 RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
 ```
+
+### MongoDB database (optional)
+
+If your application uses a mongodb database, your can use the ezmaster database. 
+Regarding to this, you just have to use the envrionment variable: ``EZMASTER_MONGODB_HOST_PORT``
+This variable contains for example: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017)
+
 
 ### Create symbolic links for configuration and data files.
 ### Refer to the schema below.
