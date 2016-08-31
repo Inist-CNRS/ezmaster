@@ -86,6 +86,8 @@ FROM ubuntu or node or ...
 # 3000 is the default port.
 EXPOSE 3000
 
+# WARNING: put this line AFTER your CMD line
+# Otherwise the links don't work
 RUN sudo mkdir -p /opt/ezmaster/config/
 RUN sudo ln -s ###path to your config file### /opt/ezmaster/config/config.json
 RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
