@@ -37,10 +37,6 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # Tech. name is the prefix used and concatenated to the public domain
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 
-# The maximum total size allowed for files upload through the "DATA instances feature".
-# Default value is approximately 10Go.
-export EZMASTER_MAX_SIZE_UPLOAD=1000000000
-
 # The maximum total free space percent of the disk for avoiding saturation.
 # Default value is 80%.
 export EZMASTER_FULL_FS_PERCENT=80

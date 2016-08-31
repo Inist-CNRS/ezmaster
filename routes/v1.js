@@ -467,19 +467,13 @@ module.exports = function (router, core) {
 
         });
 
-        // We get the smallest size between freeDisk and maxSizeUpload.
         // We use it to cap the upload size with multer.
-        var capSize;
-        if (freeDisk > core.config.get('maxSizeUpload'))
-          capSize = core.config.get('maxSizeUpload');
-        else if (freeDisk < core.config.get('maxSizeUpload'))
-          capSize = freeDisk;
-        else // equality case
-          capSize = freeDisk; // or core.config.get('maxSizeUpload')
+        var capSize = info.total*(core.config.get('fullFsPercent')/100)-(info.total-info.available);
 
         // The upload concerns the button which id is btnFile.
         // The Multer .any() method allows to select multiple files.
         // limits : the user can't upload a file which size is greater than capSize.
+        console.log(capSize)
         var upload = multer({ storage : storage, limits: { fileSize: capSize }}).any('btnFile');
 
         // The upload.
@@ -617,9 +611,6 @@ module.exports = function (router, core) {
 
       var result = {};
 
-      // Get the max upload size allowed from the castor.config variable.
-      result.sizeAllowed = core.config.get('maxSizeUpload');
-
       // Get the free disk space.
       result.freeDiskSpace = info.free;
 
@@ -703,16 +694,33 @@ module.exports = function (router, core) {
           }
         }
 
+        var totalDisk;
+        var availableDisk;
 
-        if (event['status'] != null && event.progress != null
-        &&  event.progress.split(']')[1] != 'error during stream parsing') {
+        disk.check('/', function(err, info) {
 
-          socket.broadcast.emit('progressBar', event.progress.split(']')[1]);
-          socket.emit('progressBar', event.progress.split(']')[1]);
+          if (err) { return new Error(err); }
+          totalDisk = info.total;
+          availableDisk = info.available;
+        });
 
-          socket.broadcast.emit('statusPull', event.status+':');
-          socket.emit('statusPull', event.status+':');
+        // If we have enough space on the disk we can continue the pull of the image
+        if (totalDisk*(core.config.get('fullFsPercent')/100)
+          >= totalDisk*(core.config.get('fullFsPercent')/100)-(totalDisk-availableDisk)) {
 
+          if (event['status'] != null && event.progress != null
+          &&  event.progress.split(']')[1] != 'error during stream parsing') {
+
+            socket.broadcast.emit('progressBar', event.progress.split(']')[1]);
+            socket.emit('progressBar', event.progress.split(']')[1]);
+
+            socket.broadcast.emit('statusPull', event.status+':');
+            socket.emit('statusPull', event.status+':');
+
+          }
+        }else {
+          docker.modem.stop(stream);
+          return res.status(500).end('Not enough space on the disk');
         }
       }
     });
