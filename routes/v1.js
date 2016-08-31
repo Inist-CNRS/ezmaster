@@ -706,7 +706,7 @@ module.exports = function (router, core) {
 
         // If we have enough space on the disk we can continue the pull of the image
         if (totalDisk*(core.config.get('fullFsPercent')/100)
-          <= totalDisk*(core.config.get('fullFsPercent')/100)-(totalDisk-availableDisk)) {
+          >= totalDisk*(core.config.get('fullFsPercent')/100)-(totalDisk-availableDisk)) {
 
           if (event['status'] != null && event.progress != null
           &&  event.progress.split(']')[1] != 'error during stream parsing') {
@@ -719,7 +719,6 @@ module.exports = function (router, core) {
 
           }
         }else {
-          event.stop();
           return res.status(500).end('Not enough space on the disk');
         }
       }
