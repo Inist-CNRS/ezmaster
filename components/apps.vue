@@ -14,7 +14,7 @@
           <td>[[ item.creationDate ]]</td>
           <td class="actions">
             <ul class="bread">
-              <li class="delete" title="Delete the application"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteapplication">Delete</button></li>
+              <li class="delete" title="Delete the application"><button type='button' class="btn btn-raised btn-sm btn-warning button" id="[[ item.imageName ]]" v-on:click="deleteapplication">Delete</button></li>
             </ul>
 
             <div class="modal" id="modal-delete-image">
@@ -87,8 +87,8 @@
 
       deleteapplication : function (event) {
 
-        this.$set('imageNameToDelete', event.path[4].id);
-        nameTodelete = event.path[4].id;
+        this.$set('imageNameToDelete', event.target.id);
+        nameTodelete = event.target.id;
         document.getElementById('modal-delete-image').style.display = 'block';
 
       },
