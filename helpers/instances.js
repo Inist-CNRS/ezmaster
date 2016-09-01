@@ -123,7 +123,10 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
               // [ { PrivatePort: 59599, Type: 'tcp' },
               //   { IP: '0.0.0.0', PrivatePort: 3000, PublicPort: 32769, Type: 'tcp' } ]
               // we have to take the one with PrivatePort = 3000
-              var portToHandle = data.Ports.filter(function (elt) { return elt.PrivatePort == 3000; });
+              var portToHandle = data.Ports.filter(function (elt) {
+                return elt.PrivatePort == 3000;
+              });
+
               if (portToHandle.length > 0 && portToHandle[0].PublicPort) {
                 instance.port = portToHandle[0].PublicPort;
                 instance.publicURL = 'http://'

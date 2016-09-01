@@ -434,8 +434,6 @@ module.exports = function (router, core) {
 
       if (err) { return new Error(err); }
 
-      var freeDisk = info.free;
-
       // Examining the container.
       var container = docker.getContainer(req.params.instanceId);
 
@@ -473,7 +471,6 @@ module.exports = function (router, core) {
         // The upload concerns the button which id is btnFile.
         // The Multer .any() method allows to select multiple files.
         // limits : the user can't upload a file which size is greater than capSize.
-        console.log(capSize)
         var upload = multer({ storage : storage, limits: { fileSize: capSize }}).any('btnFile');
 
         // The upload.
@@ -718,7 +715,7 @@ module.exports = function (router, core) {
             socket.emit('statusPull', event.status+':');
 
           }
-        }else {
+        } else {
           return res.status(500).end('Not enough space on the disk');
         }
       }
