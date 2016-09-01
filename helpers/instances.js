@@ -117,14 +117,24 @@ module.exports.getInstances = function (instancesChangesBool, cb) {
             if (data.State === 'running') {
 
               instance.running = true;
-              instance.port    = data.Ports[0].PublicPort;
 
-              instance.publicURL = 'http://'
-                + process.env.EZMASTER_PUBLIC_IP
-                + ':' + data.Ports[0].PublicPort;
-              if (!process.env.EZMASTER_PUBLIC_IP) {
-                instance.publicURL = 'http://127.0.0.1:' + data.Ports[0].PublicPort;
+              // search the correct port mapped to the 3000 internal
+              // Example of data in data.Ports:
+              // [ { PrivatePort: 59599, Type: 'tcp' },
+              //   { IP: '0.0.0.0', PrivatePort: 3000, PublicPort: 32769, Type: 'tcp' } ]
+              // we have to take the one with PrivatePort = 3000
+              var portToHandle = data.Ports.filter(function (elt) { return elt.PrivatePort == 3000; });
+              if (portToHandle.length > 0 && portToHandle[0].PublicPort) {
+                instance.port = portToHandle[0].PublicPort;
+                instance.publicURL = 'http://'
+                  + process.env.EZMASTER_PUBLIC_IP + ':' + instance.port;
+                if (!process.env.EZMASTER_PUBLIC_IP) {
+                  instance.publicURL = 'http://127.0.0.1:' + instance.port;
+                }
+              } else {
+                instance.publicURL = '';
               }
+
               instance.target = data.Names[0].split('/')[1];
 
             } else if (data.State === 'exited') {
