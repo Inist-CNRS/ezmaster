@@ -10,7 +10,7 @@
   "scripts": {
     "test": "mocha",
     "start": "./ezmaster",
-    "version": "./tools/make-version-tmp",
+    "version": "./tools/make-version",
     "postversion": "git push && git push --tags"
   },
   "keywords": [],
