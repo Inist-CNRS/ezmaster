@@ -37,7 +37,7 @@ services:
     # It appends at first startup because it needs time for mongodb
     # to initialize.
     # - usually a nodejs application need forever, pm2 or equivalent
-    restart: always
+    restart: unless-stopped
 
   # Mongodb used by ezmaster to store parameters, metadata etc...
   # about ezmaster apps and instances
@@ -47,4 +47,4 @@ services:
     command: --smallfiles
     # Restart this container if the host server restarts
     # or if mongodb crashes
-    restart: always
+    restart: unless-stopped
