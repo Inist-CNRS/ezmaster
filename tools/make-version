@@ -1,28 +1,13 @@
 #!/bin/bash
 #
-# Script used to tag a new ezmaster version
-# call it thanks to the make version <patch|minor|major> wrapper
+# Script used to update the ezmaster version in the docker-compose.yml 
+# called from npm version <patch|minor|major> (see package.json)
+# $npm_package_version is filled by "npm version" stuff
+# see https://docs.npmjs.com/misc/scripts
 #
 
 set -e
 
-EZMASTER_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
-
-if [ "$1" == "" ]; then
-  echo "make version should be called with a parameter (major, minor, ...)"
-  exit 1
-fi
-
-echo "---> Creating a new $1 version with npm version"
-npm version $1
-VERSION=$(cat $EZMASTER_PATH/package.json | grep version | cut -d: -f2 | cut -d\" -f2)
-
-
-echo "---> Patching docker-compose.yml (prod file) for using this version"
-sed -i "s#\(image: inistcnrs/ezmaster:\)\([\.a-z0-9]\+\)#\1${VERSION}#g" docker-compose.yml
-git commit docker-compose.yml -m "Release ${VERSION}"
-git tag --force v${VERSION} $(git rev-parse HEAD)
-
-
-echo "---> Now, do not forget to push your tags:"
-echo "     git push && git push --tags"
+echo "---> Patching docker-compose.yml (prod file) for using this version ${npm_package_version}"
+sed -i "s#\(image: inistcnrs/ezmaster:\)\([\.a-z0-9]\+\)#\1${npm_package_version}#g" docker-compose.yml
+git add docker-compose.yml

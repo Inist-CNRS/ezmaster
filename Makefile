@@ -59,7 +59,7 @@ clean: ## remove node_modules and temp files
 
 version: ## creates a new ezmaster version (same way npm version works)
 ifdef COMMAND_ARGS
-	@./tools/make-version $(COMMAND_ARGS)
+	@npm version $(COMMAND_ARGS)
 else
 	@echo "Usage: make version <arg> (same as npm syntax)"
 	@npm version --help
