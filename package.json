@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "start": "./ezmaster"
+    "start": "./ezmaster",
+    "version": "./tools/make-version-tmp"
   },
   "keywords": [],
   "contributors": [
