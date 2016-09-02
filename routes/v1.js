@@ -657,7 +657,9 @@ module.exports = function (router, core) {
 
         container.inspect(function (err, data) {
 
-          if (err) { return next(err); }
+          //If the ocntainer is not found, it's mean the pull has been stop
+          //During the onProgress function, because there is not enough space on the disk
+          if (err) { return res.status(500).send('Not enough space on the disk'); }
 
           var imageName = {
             'imageName' : imageToPull,
@@ -716,7 +718,9 @@ module.exports = function (router, core) {
 
           }
         } else {
-          return res.status(500).end('Not enough space on the disk');
+          //We cut the stream and go to the Onfinished function
+          stream.req.destroy();
+
         }
       }
     });

@@ -135,9 +135,6 @@
       });
 
 
-
-
-
     },
 
     methods : {
@@ -177,6 +174,7 @@
             this.$set('messageErrorPull', error.data);
             document.getElementById('loaderImage').style.display = 'none';
             document.getElementById('errorLoaderImages').style.display = 'block';
+
           }
         });
       },
