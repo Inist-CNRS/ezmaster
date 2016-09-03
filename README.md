@@ -16,9 +16,11 @@ Administration of docker applications without any IT skills.
 To configure ezmaster, setup these environment variables before running ezmaster:
 
 ```shell
-# The IP ezmaster instances will use to be joinable from outside.
+# The server IP where ezmaster is installed
+# it will be used by the "Access" button to join instances on specific ports
+# (one port for one instance, see EZMASTER_FREE_PORT_RANGE)
 # Default is "127.0.0.1"
-export EZMASTER_PUBLIC_IP="Your IP"
+export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 
 
 # The ports range ezmaster is allowed to use to expose instances internal web address
@@ -30,7 +32,7 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 
 # The instances public domain used by the ezmaster's reverse proxy feature.
 # (it allows to access instances through a wildcard public domain)
-## Default is empty and it means the reverse proxy feature is disabled
+# Default is empty and it means the reverse proxy feature is disabled
 #
 # On the following example, if we have a "abc-def-4" (tech name) instance, then
 # it will be joinable at this URL: http://abc-def-4.lod-test.istex.fr
@@ -53,7 +55,7 @@ mkdir ./applications
 mkdir ./instances
 mkdir ./manifests
 wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/docker-compose.yml
-export EZMASTER_PUBLIC_IP="Your IP"
+export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
@@ -120,7 +122,7 @@ This variable contains for example: ``ezmaster_db:27017`` (it means that mongodb
 
 ### How to test your first ezmaster application ? 
 
-- Open ezmaster web interface: http://<Your IP>:35267
+- Open ezmaster web interface: http://<Your ezmaster server IP>:35267
 - Click the "Applications" tab, and "Add Application" button
 - Then write the name of the application ``inistcnrs/ezvis`` and its version ``6.8.6``
 - And click on "Create" and wait for the pull (it can take several minutes)
