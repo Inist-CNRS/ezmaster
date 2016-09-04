@@ -22,8 +22,8 @@ services:
       https_proxy: ${https_proxy}
       NODE_ENV: "production"
       EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017"
-      EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
-      EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
+      EZMASTER_PUBLIC_IP: ${EZMASTER_PUBLIC_IP}
+      EZMASTER_FREE_PORT_RANGE: ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
     working_dir: /app
@@ -32,11 +32,10 @@ services:
       - 35267:35267
     depends_on:
       - ezmaster_db
-    # Restart this container if the host server restarts
-    # or if ezmaster nodejs process crashes.
-    # It appends at first startup because it needs time for mongodb
-    # to initialize.
-    # - usually a nodejs application need forever, pm2 or equivalent
+    # Restarts ezmaster when the host server reboot
+    # or if ezmaster nodejs process crashes. NodeJS crashe
+    # appends at first startup because it needs time for mongodb
+    # to initialize. (this option replaces the usual forever or pm2 stuff)
     restart: unless-stopped
 
   # Mongodb used by ezmaster to store parameters, metadata etc...
@@ -45,6 +44,5 @@ services:
     container_name: ezmaster_db
     image: mongo:3.0.7
     command: --smallfiles
-    # Restart this container if the host server restarts
-    # or if mongodb crashes
+    # Restarts mongodb if the host server reboot
     restart: unless-stopped
