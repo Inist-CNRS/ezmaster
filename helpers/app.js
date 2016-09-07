@@ -9,6 +9,7 @@ var path = require('path')
   , fs = require('fs')
   , Docker = require('dockerode')
   , glob = require('glob')
+  , exec = require('child_process').exec
   , docker = new Docker({ socketPath: '/var/run/docker.sock'});
 
 
@@ -54,5 +55,32 @@ module.exports.getApps = function (cb) {
         }
       });
     });
+  });
+};
+
+/**
+ * Returns the ezmaster configuration from the specified application image
+ * the config path is /etc/ezmaster.json
+ * cb is called with two parameters:
+ * - err:    is null if config is filled
+ *           err.code = 1 if ezmaster.json does not exists
+ *           err.code = 2 if ezmaster.json is not a valid JSON
+ *           err.code = 125 if image is not found
+ * - config: the JSON
+ */
+module.exports.readEzmasterConfig = function (image, cb) {
+  cb = cb || function () {};
+
+  var cmd = 'docker run --rm --entrypoint "" ' + image + ' cat /etc/ezmaster.json';
+  exec(cmd, function (err, stdout, stderr) {
+    if (err) return cb(err);
+    try {
+      stdout = JSON.parse(stdout);
+      return cb(null, stdout);
+    } catch (err2) {
+      err2 = new Error(err2);
+      err2.code = 2;
+      return cb(err2, stdout);
+    }
   });
 };
