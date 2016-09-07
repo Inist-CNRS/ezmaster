@@ -36,5 +36,7 @@ services:
   ezmaster_db:
     container_name: ezmaster_db
     image: mongo:3.0.7
+    ports:
+      - 27017:27017
     command: --smallfiles
 
