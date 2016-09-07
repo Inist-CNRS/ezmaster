@@ -1,2 +1,2 @@
-FROM tatsushid/tinycore:7.0-x86_64
-RUN echo "Hello Docker!"
+FROM alpine:3.4
+CMD echo "Hello Docker!"

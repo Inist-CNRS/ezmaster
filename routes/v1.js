@@ -346,7 +346,7 @@ module.exports = function (router, core) {
       containers = containersList;
 
       portMax = 0;
-      freePortSplitted = process.env.EZMASTER_FREE_PORT_RANGE.split('-');
+      freePortSplitted = core.config.get('freePortRange').split('-');
 
       checkContainer();
     }
