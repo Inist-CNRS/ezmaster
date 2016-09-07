@@ -160,3 +160,8 @@ Screen example:
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
 
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
+
+
+## Next
+
+[All is in our board](https://trello.com/b/GCu64gDf/ezmaster-suivi-du-projet)
