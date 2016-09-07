@@ -7,7 +7,7 @@ COPY ./data/       /fakeapp/data/
 RUN echo '{ \
   "port": 3333, \
   "config": "/fakeapp/config.json", \
-  "data": "/fakeapp/data/", \
+  "data": "/fakeapp/data/" \
 }' > /etc/ezmaster.json
 
 EXPOSE 3333
