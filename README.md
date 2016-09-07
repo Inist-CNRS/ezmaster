@@ -164,4 +164,4 @@ Screen example:
 
 ## Next
 
-[All is in our board](https://trello.com/b/GCu64gDf/ezmaster-suivi-du-projet)
+[All is in our french trello board](https://trello.com/b/GCu64gDf/ezmaster-suivi-du-projet)
