@@ -275,6 +275,9 @@ module.exports = function (router, core) {
 
 
 
+  /**
+   * Route to create a new instance
+   */
   router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
 
     var technicalName = req.body.technicalName
@@ -425,7 +428,9 @@ module.exports = function (router, core) {
 
 
 
-  // Route to upload a file directly from the html upload form.
+  /**
+   * Route to upload a file directly from the html upload form.
+   */
   router.route('/-/v1/instances/:instanceId/data/')
   .post(bodyParser(), function (req, res, next) {
 
@@ -495,7 +500,9 @@ module.exports = function (router, core) {
 
 
 
-  // Route to get information on the data files from a specific instance.
+  /**
+   * Route to get information on the data files from a specific instance.
+   */
   router.route('/-/v1/instances/:instanceId/data').get(function (req, res, next) {
 
     // Examining the container.
