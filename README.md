@@ -139,8 +139,9 @@ This variable contains for example: ``ezmaster_db:27017`` (it means that mongodb
 - Then click on "DATA" button and upload this file: https://github.com/madec-project/showcase/blob/master/demo_films/repository/films.csv
 - Then click again on "Access..." to open ezvis application and it should be filled with nice data
 
-Screen example:
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/db46dccc532c3567b822f4f934b7cead0f4642f8/doc/ezvis_doc.png)
+You finally should have something like this:
+
+<img src="https://github.com/Inist-CNRS/ezmaster/blob/db46dccc532c3567b822f4f934b7cead0f4642f8/doc/ezvis_doc.png" height="250" />
 
 ## How to for production
 
