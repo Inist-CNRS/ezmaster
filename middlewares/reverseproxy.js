@@ -24,7 +24,7 @@ module.exports = function(options, core) {
 
     // false for instancesChangesBool because when this code is executed
     // the cache is already present in getInstances().
-    instances.getInstances(false, function (err, instances) {
+    instances.getInstances(function (err, instances) {
 
       if (err) { return new Error(err); }
 
