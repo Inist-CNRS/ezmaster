@@ -62,7 +62,6 @@
     "socket.io": "^1.4.8",
     "sort-by": "^1.1.1",
     "storage": "^0.2.0",
-    "underscore": "^1.8.3",
     "utile": "^0.3.0",
     "vue": "^1.0.26-csp",
     "vue-awesome": "^0.3.0",
