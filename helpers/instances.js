@@ -236,8 +236,14 @@ module.exports.refreshInstances = function (core) {
 
 };
 
+/**
+ * Returns the internal ip of the wanted instance
+ * (used for unittests)
+ */
 module.exports.getInstanceInternalIp = function (techName, cb) {
-  var cmd = "docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' " + techName;
+  var cmd = 'docker inspect '
+    + '--format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" '
+    + techName;
   exec(cmd, function (err, stdout, stderr) {
     cb(err, ('' + stdout).trim());
   });
