@@ -16,184 +16,188 @@ var path = require('path')
   ;
 
 
-// Cache explanations :
-  // We store the instances cache here.
-  // We create a bool in route.js which take true if the cache is up to date.
-  // When an action is performed in route.js (start, stop, delete, update config, add instance),
-  // we call refreshInstances() which call getInstances(true) with
-  // the bool true as one of its parameters.
-  // getInstances() checks the bool :
-    // If true : get the instances list, updates the cache and returns the list.
-    // If false : returns the cache.
-var cacheInstances = {};
+// Cache explanations:
+// We store the instances in a cache to avoid doing too much slow "docker ps"
+// When an action is performed in route.js (start, stop, delete, update config, add instance),
+// we call refreshInstances() which call getInstances(true)
+var cacheInstances = null;
 
-
-// instancesChangesBool : the bool to check if it is necessary
-// to rebuild the instances list or not.
-// cb : callback function.
-module.exports.getInstances = function (instancesChangesBool, cb) {
+/**
+ * Returns the instances list
+ * return example:
+ *  { 'test-fakeapp': {}
+ *      technicalName: 'test-fakeapp',
+ *      containerId: '5e338b98a6ecd910b20efa282e1ead07f06af5673ddb4b525d4551d699b4be47',
+ *      dataPath: '/home/kerphi/ezmaster/instances/test-fakeapp/data/',
+ *      creationDate: '2016/09/08 14:20:11',
+ *      app: 'fakeapp',
+ *      running: true,
+ *      port: 49152,
+ *      publicURL: 'http://127.0.0.1:49152',
+ *      target: 'test-fakeapp',
+ *      longName: 'fakeapp'
+ *    }
+ *  }
+ */
+module.exports.getInstances = function (cb) {
 
   // If we have to get the list and update the cache.
-  if (instancesChangesBool) {
+  if (cacheInstances) {
+    return cb(null, cacheInstances);
+  }
 
-    util.async.parallel([
+  util.async.parallel([
 
-      // Retrieves all instances manifests from the files.
-      function (handleManifests) {
+    // Retrieves all instances manifests from the files.
+    function (handleManifests) {
 
-        // Read the content of manifests folders in order to
-        // extract the instances technicalName and some metadata.
-        var manifestPath = path.join(__dirname, '../manifests/*.json').toString();
-        glob(manifestPath, function (err, files) {
+      // Read the content of manifests folders in order to
+      // extract the instances technicalName and some metadata.
+      var manifestPath = path.join(__dirname, '../manifests/*.json').toString();
+      glob(manifestPath, function (err, files) {
 
-          if (err) {
-            debug('cannot read the folder, something goes wrong with glob', err);
-            return handleManifests(err);
-          }
+        if (err) {
+          debug('cannot read the folder, something goes wrong with glob', err);
+          return handleManifests(err);
+        }
 
-          // If no files then return an empty array.
-          if (files.length === 0) {
-            return handleManifests(null, []);
-          }
+        // If no files then return an empty array.
+        if (files.length === 0) {
+          return handleManifests(null, []);
+        }
 
-          var manifests = [];
-          files.forEach(function (file) {
+        var manifests = [];
+        files.forEach(function (file) {
 
-            // Extract the technicalName from the filename and read
-            // the manifest content to get other metadata.
-            // NOTA : filename example : 'manifests/myprj-mystudy-5.json'
-            //         then technicalName will be 'myprj-mystudy-5'.
-            var technicalName = _.last(file.split('.')[0].split('/'));
-            fs.readFile(file, 'utf8', function (err, manifestContent) {
-              if (err) {
-                debug('cannot read the file, something goes wrong with the file', err);
-                return handleManifests(err);
-              }
-
-              var manifest = JSON.parse(manifestContent);
-              manifest.technicalName = technicalName;
-              manifests.push(manifest);
-
-              // Return the manifests when the
-              // last file is handled.
-              if (manifests.length == files.length) {
-                return handleManifests(null, manifests);
-              }
-            });
-          });
-        });
-      },
-
-      // Retrieves the instances docker informations.
-      // Ex :
-      // - technicalName: 'article-type-4',
-      // - containerId: '1e254654654465446545465465456465465',
-      // - dataPath: '/applis/lodex/home/instances/article-type-4'
-      // - creationDate: '2016/03/17',
-      // - port: 35284,
-      // - app: 'inistcnrs/lodex:2.0.1',
-      // - running: true
-      function (handleDockerInstances) {
-
-        docker.listContainers({ all : true }, function (err, containers) {
-
-          if (err) {
-            return handleDockerInstances(err);
-          }
-
-          var dockerInstances = [];
-          containers.forEach(function (data) {
-
-            var instance = {};
-
-            // Example of data.Names[0] : /myprj-mystudy-5
-            instance.technicalName = data.Names[0].split('/')[1];
-            instance.containerId   = data.Id;
-            instance.dataPath      = process.env.EZMASTER_PATH+'/instances/'
-              +instance.technicalName+'/data/';
-            instance.creationDate  = moment.unix(data.Created).format('YYYY/MM/DD HH:mm:ss');
-            instance.app           = data.Image;
-
-            if (data.State === 'running') {
-
-              instance.running = true;
-
-              // search the correct port mapped to the 3000 internal
-              // Example of data in data.Ports:
-              // [ { PrivatePort: 59599, Type: 'tcp' },
-              //   { IP: '0.0.0.0', PrivatePort: 3000, PublicPort: 32769, Type: 'tcp' } ]
-              // we have to take the one with PrivatePort = 3000
-              var portToHandle = data.Ports.filter(function (elt) {
-                return elt.PrivatePort == 3000;
-              });
-
-              if (portToHandle.length > 0 && portToHandle[0].PublicPort) {
-                instance.port = portToHandle[0].PublicPort;
-                instance.publicURL = 'http://'
-                  + process.env.EZMASTER_PUBLIC_IP + ':' + instance.port;
-                if (!process.env.EZMASTER_PUBLIC_IP) {
-                  instance.publicURL = 'http://127.0.0.1:' + instance.port;
-                }
-              } else {
-                instance.publicURL = '';
-              }
-
-              instance.target = data.Names[0].split('/')[1];
-
-            } else if (data.State === 'exited') {
-
-              instance.running = false;
-              instance.port    = [];
-              instance.publicURL = '';
-              instance.target  = '';
-
+          // Extract the technicalName from the filename and read
+          // the manifest content to get other metadata.
+          // NOTA : filename example : 'manifests/myprj-mystudy-5.json'
+          //         then technicalName will be 'myprj-mystudy-5'.
+          var technicalName = _.last(file.split('.')[0].split('/'));
+          fs.readFile(file, 'utf8', function (err, manifestContent) {
+            if (err) {
+              debug('cannot read the file, something goes wrong with the file', err);
+              return handleManifests(err);
             }
 
-            dockerInstances.push(instance);
+            var manifest = JSON.parse(manifestContent);
+            manifest.technicalName = technicalName;
+            manifests.push(manifest);
+
+            // Return the manifests when the
+            // last file is handled.
+            if (manifests.length == files.length) {
+              return handleManifests(null, manifests);
+            }
           });
-
-          // Sort dockerInstances by creationDate.
-          // Aim : conserve same order while displaying instances on the client.
-          // The '-' means that we want a reversed order.
-          dockerInstances.sort(sortBy('-creationDate'));
-
-          // Once docker containers are parsed we return the
-          // Ezmaster formated instances list.
-          return handleDockerInstances(null, dockerInstances);
-        });
-      }
-
-
-    ], function (err, results) {
-
-
-      if (err) { return cb(err); }
-      // Retrieves results from the two callbacks (manifests files and docker metadata)
-      // and ignores docker containers not listed in the manifests ("unknown technicalName").
-      // Example: ezmaster itself or ezmaster_db
-      // or any other container currently running on the machine.
-      var ezmasterInstances = {};
-      results[1].forEach(function (dockerInstance) {
-        results[0].forEach(function (manifest) {
-          if (manifest.technicalName === dockerInstance.technicalName) {
-            ezmasterInstances[manifest.technicalName] = _.assign(dockerInstance, manifest);
-          }
         });
       });
+    },
 
-      // cacheInstances update with the just get instances list.
-      cacheInstances = ezmasterInstances;
+    // Retrieves the instances docker informations.
+    // Ex :
+    // - technicalName: 'article-type-4',
+    // - containerId: '1e254654654465446545465465456465465',
+    // - dataPath: '/applis/lodex/home/instances/article-type-4'
+    // - creationDate: '2016/03/17',
+    // - port: 35284,
+    // - app: 'inistcnrs/lodex:2.0.1',
+    // - running: true
+    function (handleDockerInstances) {
 
-      // Return the just get instances list.
-      return cb(null, ezmasterInstances);
+      docker.listContainers({ all : true }, function (err, containers) {
+
+        if (err) {
+          return handleDockerInstances(err);
+        }
+
+        var dockerInstances = [];
+        containers.forEach(function (data) {
+
+          var instance = {};
+
+          // Example of data.Names[0] : /myprj-mystudy-5
+          instance.technicalName = data.Names[0].split('/')[1];
+          instance.containerId   = data.Id;
+          instance.dataPath      = process.env.EZMASTER_PATH+'/instances/'
+            +instance.technicalName+'/data/';
+          instance.creationDate  = moment.unix(data.Created).format('YYYY/MM/DD HH:mm:ss');
+          instance.app           = data.Image;
+
+          if (data.State === 'running') {
+
+            instance.running = true;
+
+            // search the correct port mapped to the 3000 internal
+            // Example of data in data.Ports:
+            // [ { PrivatePort: 59599, Type: 'tcp' },
+            //   { IP: '0.0.0.0', PrivatePort: 3000, PublicPort: 32769, Type: 'tcp' } ]
+            // we have to take the one with PrivatePort = 3000
+            var portToHandle = data.Ports.filter(function (elt) {
+              return elt.PrivatePort == 3000;
+            });
+
+            if (portToHandle.length > 0 && portToHandle[0].PublicPort) {
+              instance.port = portToHandle[0].PublicPort;
+              instance.publicURL = 'http://'
+                + process.env.EZMASTER_PUBLIC_IP + ':' + instance.port;
+              if (!process.env.EZMASTER_PUBLIC_IP) {
+                instance.publicURL = 'http://127.0.0.1:' + instance.port;
+              }
+            } else {
+              instance.publicURL = '';
+            }
+
+            instance.target = data.Names[0].split('/')[1];
+
+          } else if (data.State === 'exited') {
+
+            instance.running = false;
+            instance.port    = [];
+            instance.publicURL = '';
+            instance.target  = '';
+
+          }
+
+          dockerInstances.push(instance);
+        });
+
+        // Sort dockerInstances by creationDate.
+        // Aim : conserve same order while displaying instances on the client.
+        // The '-' means that we want a reversed order.
+        dockerInstances.sort(sortBy('-creationDate'));
+
+        // Once docker containers are parsed we return the
+        // Ezmaster formated instances list.
+        return handleDockerInstances(null, dockerInstances);
+      });
+    }
+
+
+  ], function (err, results) {
+
+
+    if (err) { return cb(err); }
+    // Retrieves results from the two callbacks (manifests files and docker metadata)
+    // and ignores docker containers not listed in the manifests ("unknown technicalName").
+    // Example: ezmaster itself or ezmaster_db
+    // or any other container currently running on the machine.
+    var ezmasterInstances = {};
+    results[1].forEach(function (dockerInstance) {
+      results[0].forEach(function (manifest) {
+        if (manifest.technicalName === dockerInstance.technicalName) {
+          ezmasterInstances[manifest.technicalName] = _.assign(dockerInstance, manifest);
+        }
+      });
     });
-  }
-  // Else, we just have to return the cache.
-  else {
 
-    return cb(null, cacheInstances);
+    // cacheInstances update the instances list.
+    cacheInstances = ezmasterInstances;
 
-  }
+    // Return the just get instances list.
+    return cb(null, ezmasterInstances);
+  });
+
 };
 
 
@@ -208,9 +212,12 @@ module.exports.refreshInstances = function (core) {
   // Get the socket object stored in core.socket.
   var socket = core.socket;
 
+  // clear the cache before geting the new list
+  cacheInstances = null;
+
   // true for instancesChangesBool because we need to update the cache and
   // get the new instances list.
-  module.exports.getInstances(true, function(err, instancesList) {
+  module.exports.getInstances(function (err, instancesList) {
 
     if (err) { return new Error(err); }
 

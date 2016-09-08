@@ -55,7 +55,9 @@ describe('Test Fakeapp', function () {
 
 
   it('Found fakeapp', function (done) {
-    request.get('/-/v1/instances/').expect(function (res) {
+    request
+    .get('/-/v1/instances/')
+    .expect(function (res) {
       if (!res.body['test-fakeapp']) { throw new Error('fakeapp not found!'); }
     })
     .end(done);

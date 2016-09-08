@@ -31,7 +31,7 @@ var path = require('path')
   ;
 
 // The bool to check if the instances cache is up to date.
-var instancesChangesBool = true;
+//var instancesChangesBool = true;
 
 jsonfile.spaces = 2;
 
@@ -62,23 +62,22 @@ module.exports = function (router, core) {
 
 
 
+  /**
+   * Returns the instance list
+   */
   router.route('/-/v1/instances').get(function (req, res, next) {
 
-    instances.getInstances(instancesChangesBool, function (err, data) {
-
+    instances.getInstances(function (err, data) {
       if (err) { return next(err); }
-
       return res.status(200).send(data);
-
     });
-
-    // instancesChangesBool set to false because the cache is up to date.
-    instancesChangesBool = false;
 
   });
 
 
-
+  /**
+   * Start an instance
+   */
   router.route('/-/v1/instances/start/:containerId').put(bodyParser(), function (req, res, next) {
 
     var container = docker.getContainer(req.params.containerId);
@@ -104,6 +103,9 @@ module.exports = function (router, core) {
 
 
 
+  /**
+   * Stop an instance
+   */
   router.route('/-/v1/instances/stop/:containerId').put(bodyParser(), function (req, res, next) {
 
     var container = docker.getContainer(req.params.containerId);
@@ -128,6 +130,9 @@ module.exports = function (router, core) {
 
 
 
+  /**
+   * Update a config.json of a specific instance
+   */
   router.route('/-/v1/instances/config/:containerId').put(bodyParser(), function (req, res, next) {
 
     var container = docker.getContainer(req.params.containerId);

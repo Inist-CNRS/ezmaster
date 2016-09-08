@@ -37,13 +37,7 @@ module.exports = function(options, core) {
         return;
       }
     }
-
-    // false for instancesChangesBool because here, we just need to get the getInstances() cache.
-    instances.getInstances(true, function(err, beatInstances) {
-
-      if (err) { return new Error(err); }
-      socket.broadcast.emit('refreshInstances', beatInstances);
-      socket.emit('refreshInstances', beatInstances);
-    });
+    
+    instances.refreshInstances(core);
   };
 };
