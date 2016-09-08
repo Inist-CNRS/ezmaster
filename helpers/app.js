@@ -66,21 +66,30 @@ module.exports.getApps = function (cb) {
  *           err.code = 1 if ezmaster.json does not exists
  *           err.code = 2 if ezmaster.json is not a valid JSON
  *           err.code = 125 if image is not found
- * - config: the JSON
+ * - config: the JSON (if no /etc/ezmaster.json is found, it 
+ *           returns the symlink old convention)
  */
-module.exports.readEzmasterConfig = function (image, cb) {
+module.exports.readEzmasterAppConfig = function (image, cb) {
   cb = cb || function () {};
-
+  var defaultConfig = {
+    port: 3000,
+    config: '/opt/ezmaster/config/config.json',
+    data:   '/opt/ezmaster/data/'
+  };
   var cmd = 'docker run --rm --entrypoint "" ' + image + ' cat /etc/ezmaster.json';
   exec(cmd, function (err, stdout, stderr) {
-    if (err) return cb(err);
+    if (err) {
+      // image is not found or ezmaster.json does not exists
+      return cb(err, defaultConfig);
+    }
     try {
       stdout = JSON.parse(stdout);
       return cb(null, stdout);
     } catch (err2) {
+      // ezmaster.json is not a valid JSON
       err2 = new Error(err2);
       err2.code = 2;
-      return cb(err2, stdout);
+      return cb(err2, defaultConfig);
     }
   });
 };

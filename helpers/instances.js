@@ -13,6 +13,7 @@ var path = require('path')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
   , sortBy = require('sort-by')
   , _ = require('lodash')
+  , exec = require('child_process').exec
   ;
 
 
@@ -128,13 +129,13 @@ module.exports.getInstances = function (cb) {
 
             instance.running = true;
 
-            // search the correct port mapped to the 3000 internal
+            // search the correct PublicPort port mapped to the internal one
             // Example of data in data.Ports:
             // [ { PrivatePort: 59599, Type: 'tcp' },
             //   { IP: '0.0.0.0', PrivatePort: 3000, PublicPort: 32769, Type: 'tcp' } ]
-            // we have to take the one with PrivatePort = 3000
+            // we have to take the one having a PublicPort
             var portToHandle = data.Ports.filter(function (elt) {
-              return elt.PrivatePort == 3000;
+              return elt.PublicPort !== undefined;
             });
 
             if (portToHandle.length > 0 && portToHandle[0].PublicPort) {
@@ -233,4 +234,11 @@ module.exports.refreshInstances = function (core) {
 
   });
 
+};
+
+module.exports.getInstanceInternalIp = function (techName, cb) {
+  var cmd = "docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' " + techName;
+  exec(cmd, function (err, stdout, stderr) {
+    cb(err, ('' + stdout).trim());
+  });
 };

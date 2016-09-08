@@ -378,27 +378,34 @@ module.exports = function (router, core) {
           portMax = freePortSplitted[0];
         }
 
-        var cmd = 'docker run -dt -p '+portMax+':3000 ' +
-        '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '+
-        '--net=ezmaster_default --link ezmaster_db '+
-        '-v '+process.env.EZMASTER_PATH+'/instances/'+
-        technicalName+'/config/config.json:'+'/opt/ezmaster/config/config.json '+
-        '-v '+process.env.EZMASTER_PATH+'/instances/'
-        +technicalName+'/data/:/opt/ezmaster/data/ '+
-        '--name '+technicalName+' '+image;
+        // reads from the image where is located the port, config and data
+        // ex: {
+        //   port: 3333,
+        //   config: '/myapp/config.json',
+        //   data: /myapp/data/
+        // }
+        app.readEzmasterAppConfig(image, function (err, appConfig) {
 
-        var newlongName = {
-          'longName' : longName
-        };
+          // prepare the command line to create and run the instance
+          var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.port+ ' '
+          + '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '
+          + '--net=ezmaster_default --link ezmaster_db '
+          + '-v ' + process.env.EZMASTER_PATH + '/instances/'
+          + technicalName + '/config/config.json:' + appConfig.config + ' '
+          + '-v ' + process.env.EZMASTER_PATH+'/instances/'
+          + technicalName + '/data/:' + appConfig.data + ' '
+          + '--name ' + technicalName + ' ' + image;
+          // and execute !
+          exec(cmd, refreshAndReturn);
 
+          // creates the instance manifest
+          jsonfile.writeFile(
+            path.join(__dirname, '../manifests/'+technicalName+'.json')
+            , { 'longName' : longName }, function (err) {
+              if (err) { return next(err); }
+            });
+        });
 
-        jsonfile.writeFile(
-          path.join(__dirname, '../manifests/'+technicalName+'.json')
-          , newlongName, function (err) {
-            if (err) { return next(err); }
-          });
-
-        exec(cmd, refreshAndReturn);
       }
     }
 
