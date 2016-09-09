@@ -66,9 +66,9 @@ describe('The ezmasterized fakeapp', function () {
   it ('and the app has a specific /etc/ezmaster.json', function (done) {
     app.readEzmasterAppConfig('fakeapp-ezmasterized:latest', function (err, conf) {
       if (err) return done(err);
-      expect(conf.port).to.equals(3333);
-      expect(conf.config).to.equals('/fakeapp/config.json');
-      expect(conf.data).to.equals('/fakeapp/data/');
+      expect(conf.httpPort).to.equals(3333);
+      expect(conf.configPath).to.equals('/fakeapp/config.json');
+      expect(conf.dataPath).to.equals('/fakeapp/data/');
       done();
     });
   });

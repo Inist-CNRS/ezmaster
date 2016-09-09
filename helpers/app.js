@@ -72,9 +72,9 @@ module.exports.getApps = function (cb) {
 module.exports.readEzmasterAppConfig = function (image, cb) {
   cb = cb || function () {};
   var defaultConfig = {
-    port: 3000,
-    config: '/opt/ezmaster/config/config.json',
-    data:   '/opt/ezmaster/data/'
+    httpPort: 3000,
+    configPath: '/opt/ezmaster/config/config.json',
+    dataPath:   '/opt/ezmaster/data/'
   };
   var cmd = 'docker run --rm --entrypoint "" ' + image + ' cat /etc/ezmaster.json';
   exec(cmd, function (err, stdout, stderr) {
