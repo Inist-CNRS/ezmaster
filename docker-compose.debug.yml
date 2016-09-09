@@ -24,7 +24,7 @@ services:
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
       NODE_ENV: "development"
-      DEBUG: "ezmaster*"
+      DEBUG: ${DEBUG}
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
