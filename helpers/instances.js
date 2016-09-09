@@ -248,3 +248,38 @@ module.exports.getInstanceInternalIp = function (techName, cb) {
     cb(err, ('' + stdout).trim());
   });
 };
+
+/**
+ * Initialize an instance with the original
+ * data coming from the application
+ */
+module.exports.initConfigAndData = function (params, cb) {
+  module.exports.initConfig(params, function (err) {
+    if (err) return cb(err);
+    module.exports.initData(params, function (err) {
+      return cb(err);
+    });
+  });
+}
+
+module.exports.initConfig = function (params, cb) {
+  exec('docker run --rm ' + params.appSrc
+    + ' cat ' + params.appConfig.configPath
+    + ' > config/config.json', {
+    cwd: __dirname + '/../instances/' + params.instanceDst
+  }, function (err, stdout, stderr) {
+    return cb(err);
+  });
+}
+
+module.exports.initData = function (params, cb) {
+  var baseDataPath = path.dirname(params.appConfig.dataPath);
+  var dataDirName  = params.appConfig.dataPath.replace(baseDataPath, '');
+
+  exec('docker run --rm ' + params.appSrc
+    + ' tar czf - -C ' + baseDataPath + ' ./' + dataDirName + ' | tar xzf -', {
+    cwd: __dirname + '/../instances/' + params.instanceDst
+  }, function (err, stdout, stderr) {
+    return cb(err);
+  });
+}

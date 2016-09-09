@@ -359,7 +359,6 @@ module.exports = function (router, core) {
       checkContainer();
     }
 
-
     function checkContainer() {
       var element = containers.pop();
 
@@ -386,24 +385,28 @@ module.exports = function (router, core) {
         // }
         app.readEzmasterAppConfig(image, function (err, appConfig) {
 
-          // prepare the command line to create and run the instance
-          var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.httpPort+ ' '
-          + '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '
-          + '--net=ezmaster_default --link ezmaster_db '
-          + '-v ' + process.env.EZMASTER_PATH + '/instances/'
-          + technicalName + '/config/config.json:' + appConfig.configPath + ' '
-          + '-v ' + process.env.EZMASTER_PATH+'/instances/'
-          + technicalName + '/data/:' + appConfig.dataPath + ' '
-          + '--name ' + technicalName + ' ' + image;
-          // and execute !
-          exec(cmd, refreshAndReturn);
+          instances.initConfigAndData({ instanceDst: technicalName, appSrc: image, appConfig: appConfig }, function (err) {
+            if (err) return next(err);
 
-          // creates the instance manifest
-          jsonfile.writeFile(
-            path.join(__dirname, '../manifests/'+technicalName+'.json')
-            , { 'longName' : longName }, function (err) {
-              if (err) { return next(err); }
-            });
+            // prepare the command line to create and run the instance
+            var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.httpPort+ ' '
+            + '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '
+            + '--net=ezmaster_default --link ezmaster_db '
+            + '-v ' + process.env.EZMASTER_PATH + '/instances/'
+            + technicalName + '/config/config.json:' + appConfig.configPath + ' '
+            + '-v ' + process.env.EZMASTER_PATH+'/instances/'
+            + technicalName + '/data/:' + appConfig.dataPath + ' '
+            + '--name ' + technicalName + ' ' + image;
+            // and execute !
+            exec(cmd, function (err, stdout, stderr) { refreshAndReturn(err, appConfig); });
+
+            // creates the instance manifest
+            jsonfile.writeFile(
+              path.join(__dirname, '../manifests/'+technicalName+'.json')
+              , { 'longName' : longName }, function (err) {
+                if (err) { return next(err); }
+              });
+          });
         });
 
       }
@@ -424,7 +427,7 @@ module.exports = function (router, core) {
     }
 
 
-    function refreshAndReturn(err, stdout, stderr) {
+    function refreshAndReturn(err, appConfig) {
       if (err) { return next(err); }
 
       // When an instance is created, we call refreshInstances() to update the

@@ -81,7 +81,7 @@ describe('The ezmasterized fakeapp', function () {
       .expect(200)
       .end(function (err, res) {
         if (err) return done(err);
-        expect(JSON.stringify(res.body)).to.equals('{}');
+        expect(res.text).to.equals('{"myparam":"myvalue"}');
         done();
       });
 
