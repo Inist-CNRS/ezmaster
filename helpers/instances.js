@@ -13,6 +13,7 @@ var path = require('path')
   , docker = new Docker({ socketPath: '/var/run/docker.sock'})
   , sortBy = require('sort-by')
   , _ = require('lodash')
+  , exec = require('child_process').exec
   ;
 
 
@@ -128,13 +129,13 @@ module.exports.getInstances = function (cb) {
 
             instance.running = true;
 
-            // search the correct port mapped to the 3000 internal
+            // search the correct PublicPort port mapped to the internal one
             // Example of data in data.Ports:
             // [ { PrivatePort: 59599, Type: 'tcp' },
             //   { IP: '0.0.0.0', PrivatePort: 3000, PublicPort: 32769, Type: 'tcp' } ]
-            // we have to take the one with PrivatePort = 3000
+            // we have to take the one having a PublicPort
             var portToHandle = data.Ports.filter(function (elt) {
-              return elt.PrivatePort == 3000;
+              return elt.PublicPort !== undefined;
             });
 
             if (portToHandle.length > 0 && portToHandle[0].PublicPort) {
@@ -234,3 +235,68 @@ module.exports.refreshInstances = function (core) {
   });
 
 };
+
+/**
+ * Returns the internal ip of the wanted instance
+ * (used for unittests)
+ */
+module.exports.getInstanceInternalIp = function (techName, cb) {
+  var cmd = 'docker inspect '
+    + '--format="{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" '
+    + techName;
+  exec(cmd, function (err, stdout, stderr) {
+    cb(err, ('' + stdout).trim());
+  });
+};
+
+/**
+ * Initialize an instance with the original
+ * data coming from the application
+ */
+module.exports.initConfigAndData = function (params, cb) {
+  module.exports.initConfig(params, function (err) {
+    if (err) return cb(err);
+    module.exports.initData(params, function (err) {
+      return cb(err);
+    });
+  });
+}
+module.exports.initConfig = function (params, cb) {
+  // check the config file exists before doing anything
+  exec('docker run --rm ' + params.appSrc
+    + ' ls ' + params.appConfig.configPath, function (err, stdout, stderr) {
+    // config file does not exists, skip this step
+    if (err) return cb(null);
+   
+    // config file exists so copy the config file
+    exec('docker run --rm ' + params.appSrc
+      + ' cat ' + params.appConfig.configPath
+      + ' > config/config.json', {
+      cwd: __dirname + '/../instances/' + params.instanceDst
+    }, function (err, stdout, stderr) {
+      return cb(err);
+    });
+  });
+
+}
+module.exports.initData = function (params, cb) {
+  // check the data folder is not empty before doing anything
+  exec('docker run --rm ' + params.appSrc
+    + ' ls ' + params.appConfig.dataPath,
+    function (err, stdout, stderr) {
+      // data folder is empty or doesnot exists, skip this step
+      if (err || stdout == '') return cb(null);
+      
+      // then copy the data folder content into the instance initial state
+      var baseDataPath = path.dirname(params.appConfig.dataPath);
+      var dataDirName  = params.appConfig.dataPath.replace(baseDataPath, '');
+      exec('docker run --rm ' + params.appSrc
+        + ' tar czf - -C ' + baseDataPath + ' ./' + dataDirName + ' | tar xzf -', {
+        cwd: __dirname + '/../instances/' + params.instanceDst
+      }, function (err, stdout, stderr) {
+        return cb(err);
+      });
+    }
+  );
+}
+

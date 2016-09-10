@@ -79,6 +79,7 @@
     "istanbul": "^0.4.4",
     "mocha": "^2.5.3",
     "nodemon": "^1.9.2",
+    "request": "^2.74.0",
     "supertest": "^1.2.0",
     "vue-hot-reload-api": "^2.0.5"
   }
