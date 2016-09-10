@@ -29,7 +29,7 @@
                   <div class="form-group">
                     <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
                     <div class="col-md-9">
-                      <input class="form-control sizeInput" id="inputImageName" name="inputImageName" placeholder=" Ex : inistcnrs/ezvis" type="text" value='[[ imageName ]]' v-model="imageName" v-validate:imageName="{ required: true }">
+                      <input class="form-control sizeInput" id="inputImageName" name="inputImageName" placeholder=" Ex: inistcnrs/ezvis" type="text" value='[[ imageName ]]' v-model="imageName" v-validate:imageName="{ required: true }">
                       <input class="form-control sizeInput" id="inputVersionImage" placeholder="Tag (ex: 6.8.6)" value="[[ versionImage ]]" type="text" min='0' v-model="versionImage" v-validate:project="{ required: true}">
                     </div>
 
@@ -41,22 +41,22 @@
                     <div class="form-group" id='settings' v-show="show">
                       <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
                       <div class="col-md-9">
-                        <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder=" Ex : vsregistry.intra.inist.fr:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
+                        <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder=" Ex: vsregistry.intra.inist.fr:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
                       </div>
 
                       <label for="inputUserName" class="col-md-3 control-label">UserName</label>
                       <div class="col-md-9">
-                        <input class="form-control sizeInput" id="inputUserName" name="inputUserName" placeholder=" Ex : username" type="text" value='[[ username ]]' v-model="username">
+                        <input class="form-control sizeInput" id="inputUserName" name="inputUserName" placeholder=" Ex: username" type="text" value='[[ username ]]' v-model="username">
                       </div>
 
                       <label for="inputImageHub" class="col-md-3 control-label">Password</label>
                       <div class="col-md-9">
-                        <input class="form-control sizeInput" id="inputPassword" name="inputPassword" placeholder=" Ex : password" type="password" value='[[ password ]]' v-model="password">
+                        <input class="form-control sizeInput" id="inputPassword" name="inputPassword" placeholder=" Ex: password" type="password" value='[[ password ]]' v-model="password">
                       </div>
 
                       <label for="inputEmail" class="col-md-3 control-label">Email</label>
                       <div class="col-md-9">
-                        <input class="form-control sizeInput" id="inputEmail" name="inputEmail" placeholder=" Ex : test@email.com" type="text" value='[[ email ]]' v-model="email">
+                        <input class="form-control sizeInput" id="inputEmail" name="inputEmail" placeholder=" Ex: test@email.com" type="text" value='[[ email ]]' v-model="email">
 
                       </div>
 
