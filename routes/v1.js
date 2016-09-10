@@ -643,9 +643,9 @@ module.exports = function (router, core) {
 
 
 
-
-  // APPLICATION MANAGEMENT
-
+  /**
+   * Creates a new application (docker pull)
+   */
   router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
     var image = req.body.imageName;
@@ -664,88 +664,99 @@ module.exports = function (router, core) {
       imageToPull = registery+'/'+image+':'+tag;
     }
 
-
-    docker.pull(imageToPull, {'authconfig': auth}, function(err, stream) {
-
+    app.checkIfAppExistsInLocalCache(imageToPull, function (err, imgAlreadyPulled) {
       if (err) { return next(err); }
-
-      docker.modem.followProgress(stream, onFinished, onProgress);
-
-      function onFinished(err, output) {
-
-        if (err) { return res.status(500).send(err); }
-
-        var container = docker.getImage(imageToPull);
-
-        container.inspect(function (err, data) {
-
-          //If the ocntainer is not found, it's mean the pull has been stop
-          //During the onProgress function, because there is not enough space on the disk
-          if (err) { return res.status(500).send('Not enough space on the disk'); }
-
-          var imageName = {
-            'imageName' : imageToPull,
-            'imageId' : data.Id.split(':')[1],
-            'creationDate' :  moment(data.Created, moment.ISO_8601).format('YYYY/MM/DD hh:mm:ss')
-          };
-
-          var nameManifest = new Buffer(imageToPull).toString('base64');
-
-          jsonfile.writeFile(
-          path.join(__dirname, '../applications/'+nameManifest+'.json')
-          , imageName, function (err) {
-            if (err) {
-              return res.status(500).send(err);
-            }
-            return res.status(200).send(output);
-          });
-        });
-
+      if (imgAlreadyPulled) {
+        return afterTheImageIsPulled(null, 'Application ' + imageToPull + ' already pulled. It exists in the local cache.');
       }
 
-      function onProgress(event) {
+      // pull the image once we checked it does not exists in the local cache
+      docker.pull(imageToPull, {'authconfig': auth}, function(err, stream) {
 
-        var socket;
+        if (err) { return next(err); }
 
-        if (!socket) {
-          socket = core.socket;
+        docker.modem.followProgress(stream, afterTheImageIsPulled, onImagePullProgress);
+
+        function onImagePullProgress(event) {
+
+          var socket;
 
           if (!socket) {
-            return;
+            socket = core.socket;
+
+            if (!socket) {
+              return;
+            }
+          }
+
+          var totalDisk;
+          var availableDisk;
+
+          disk.check('/', function(err, info) {
+
+            if (err) { return new Error(err); }
+            totalDisk = info.total;
+            availableDisk = info.available;
+          });
+
+          // If we have enough space on the disk we can continue the pull of the image
+          if (totalDisk*(core.config.get('fullFsPercent')/100)
+            >= totalDisk*(core.config.get('fullFsPercent')/100)-(totalDisk-availableDisk)) {
+
+            if (event['status'] != null && event.progress != null
+            &&  event.progress.split(']')[1] != 'error during stream parsing') {
+
+              socket.broadcast.emit('progressBar', event.progress.split(']')[1]);
+              socket.emit('progressBar', event.progress.split(']')[1]);
+
+              socket.broadcast.emit('statusPull', event.status+':');
+              socket.emit('statusPull', event.status+':');
+
+            }
+          } else {
+            //We cut the stream and go to the Onfinished function
+            stream.req.destroy();
+
           }
         }
+      });
 
-        var totalDisk;
-        var availableDisk;
 
-        disk.check('/', function(err, info) {
-
-          if (err) { return new Error(err); }
-          totalDisk = info.total;
-          availableDisk = info.available;
-        });
-
-        // If we have enough space on the disk we can continue the pull of the image
-        if (totalDisk*(core.config.get('fullFsPercent')/100)
-          >= totalDisk*(core.config.get('fullFsPercent')/100)-(totalDisk-availableDisk)) {
-
-          if (event['status'] != null && event.progress != null
-          &&  event.progress.split(']')[1] != 'error during stream parsing') {
-
-            socket.broadcast.emit('progressBar', event.progress.split(']')[1]);
-            socket.emit('progressBar', event.progress.split(']')[1]);
-
-            socket.broadcast.emit('statusPull', event.status+':');
-            socket.emit('statusPull', event.status+':');
-
-          }
-        } else {
-          //We cut the stream and go to the Onfinished function
-          stream.req.destroy();
-
-        }
-      }
     });
+
+    function afterTheImageIsPulled(err, output) {
+
+      if (err) { return res.status(500).send(err); }
+
+      var container = docker.getImage(imageToPull);
+
+      container.inspect(function (err, data) {
+
+        //If the ocntainer is not found, it's mean the pull has been stop
+        //During the onImagePullProgress function, because there is not enough space on the disk
+        if (err) { return res.status(500).send('Not enough space on the disk'); }
+
+        var imageName = {
+          'imageName' : imageToPull,
+          'imageId' : data.Id.split(':')[1],
+          'creationDate' :  moment(data.Created, moment.ISO_8601).format('YYYY/MM/DD hh:mm:ss')
+        };
+
+        var nameManifest = new Buffer(imageToPull).toString('base64');
+
+        jsonfile.writeFile(
+        path.join(__dirname, '../applications/'+nameManifest+'.json')
+        , imageName, function (err) {
+          if (err) {
+            return res.status(500).send(err);
+          }
+          return res.status(200).send(output);
+        });
+      });
+
+    }
+
+
   });
 
 

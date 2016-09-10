@@ -93,3 +93,19 @@ module.exports.readEzmasterAppConfig = function (image, cb) {
     }
   });
 };
+
+
+
+/**
+ * Check if it exists a such image in the local docker cache
+ * (docker images)
+ */
+module.exports.checkIfAppExistsInLocalCache = function (image, cb) {
+  cb = cb || function () {};
+  var cmd = 'docker images ' + image + ' --format "{{.ID}}"';
+  exec(cmd, function (err, stdout, stderr) {
+    if (err) return cb(err, false);
+    var imgExists = (stdout != '');
+    return cb(null, imgExists);
+  });
+};
