@@ -2,9 +2,14 @@
 
 var http   = require('http');
 var config = require('./config.json');
+var fs     = require('fs');
 
 var server = http.createServer(function (req, res) {
-  res.end(JSON.stringify(config));
+  if (req.url == '/') {
+    res.end(JSON.stringify(config));  
+  } else {
+    fs.createReadStream('./data/hello.csv').pipe(res);
+  }
 });
 
 server.listen(3333);

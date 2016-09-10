@@ -80,6 +80,19 @@ describe('The ezmasterized fakeapp', function () {
       supertest(url).get('/')
       .expect(200)
       .end(function (err, res) {
+        done(err);
+      });
+
+    });
+  });
+
+  it('the default config.json is correctly filled', function (done) {
+    instance.getInstanceInternalIp('fakeapp-ezmasterized', function (err, ip) {
+      if (err) return done(err);
+      var url = 'http://' + ip + ':3333';
+      supertest(url).get('/')
+      .expect(200)
+      .end(function (err, res) {
         if (err) return done(err);
         expect(res.text).to.equals('{"myparam":"myvalue"}');
         done();
@@ -88,8 +101,22 @@ describe('The ezmasterized fakeapp', function () {
     });
   });
 
-  it('and this instance is able to be deleted', function (done) {
+  it('the default data folder is correctly filled', function (done) {
+    instance.getInstanceInternalIp('fakeapp-ezmasterized', function (err, ip) {
+      if (err) return done(err);
+      var url = 'http://' + ip + ':3333';
+      supertest(url).get('/data/hello.csv')
+      .expect(200)
+      .end(function (err, res) {
+        if (err) return done(err);
+        expect(res.text).to.equals('hello,world');
+        done();
+      });
 
+    });
+  });
+
+  it('and this instance deleteable', function (done) {
     supertest('http://127.0.0.1:35267')
     .delete('/-/v1/instances/fakeapp-ezmasterized')
     .expect(200, function (err) {
