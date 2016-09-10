@@ -79,36 +79,41 @@ make run-debug
 
 ### Dockerfile modifications
 
-- Your application must have a web server listening on port 3000 (mandatory).
+- Your application must have a web server (mandatory).
 - Your application can use a json config and a data folder (optional)
 
 For example your dockerfile could looks like this one:
 ```shell
 FROM ubuntu or node or ...
 
-# 3000 is the default port.
+#...
+
+# 3000 is your web server listening port
 EXPOSE 3000
+# then create the /etc/ezmaster.json in your docker image
+# it will tell to ezmaster where is your web server (ex: port 3000)
+# where is your JSON configuration file
+# and where is your data folder
+RUN echo '{ \
+  "httpPort": 3000, \
+  "configPath": "/yourapp/config.json", \
+  "dataPath": "/yourapp/data/" \
+}' > /etc/ezmaster.json
 
-# WARNING: put this line AFTER your CMD line
-# Otherwise the links don't work
-RUN sudo mkdir -p /opt/ezmaster/config/
-RUN sudo ln -s ###path to your config file### /opt/ezmaster/config/config.json
-RUN sudo ln -s ###path to your data directory### /opt/ezmaster/data
+# ...
 ```
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Volume_Mounting.jpg)
 
 ### MongoDB database (optional)
 
 If your application uses a mongodb database, your can use the ezmaster database. 
 Regarding to this, you just have to use the envrionment variable: ``EZMASTER_MONGODB_HOST_PORT``
-This variable contains for example: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017)
+This variable will contains something like this: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017)
 
 ### Dockerfile example of ezmasterized applications
 
-- EZVIS Dockerfile: https://github.com/madec-project/ezvis/blob/master/Docker/Dockerfile
-- EZARK Dockerfile: https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile
-- EZPAARSE Dockerfile: https://github.com/ezpaarse-project/ezpaarse/blob/master/Dockerfile
+- ezvis Dockerfile: https://github.com/madec-project/ezvis/blob/master/Docker/Dockerfile
+- ezark Dockerfile: https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile
+- ezpaarse Dockerfile: https://github.com/ezpaarse-project/ezpaarse/blob/master/Dockerfile
 
 ## How to for developers
 
