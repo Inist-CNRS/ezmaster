@@ -105,11 +105,10 @@
         this.$http.delete('/-/v1/app/'+name).then(function (result) {
           document.getElementById('modal-delete-image').style.display = 'none';
           this.refresh();
-        }, function (error) {
-            console.log(error);
-            this.$set('messageErrorPull', 'This image is being used by one or many instance(s), please delete them first');
-            console.log(error.data);
-            document.getElementById('errorLoaderImage').style.display = 'block';
+        }, function (err) {
+          var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : '';
+          this.$set('messageErrorPull', 'This image is being used by one or many instance(s), please delete them first.' + msgDetails);
+          document.getElementById('errorLoaderImage').style.display = 'block';
         });
 
       },
