@@ -261,25 +261,42 @@ module.exports.initConfigAndData = function (params, cb) {
     });
   });
 }
-
 module.exports.initConfig = function (params, cb) {
+  // check the config file exists before doing anything
   exec('docker run --rm ' + params.appSrc
-    + ' cat ' + params.appConfig.configPath
-    + ' > config/config.json', {
-    cwd: __dirname + '/../instances/' + params.instanceDst
-  }, function (err, stdout, stderr) {
-    return cb(err);
+    + ' ls ' + params.appConfig.configPath, function (err, stdout, stderr) {
+    // config file does not exists, skip this step
+    if (err) return cb(null);
+   
+    // config file exists so copy the config file
+    exec('docker run --rm ' + params.appSrc
+      + ' cat ' + params.appConfig.configPath
+      + ' > config/config.json', {
+      cwd: __dirname + '/../instances/' + params.instanceDst
+    }, function (err, stdout, stderr) {
+      return cb(err);
+    });
   });
-}
 
+}
 module.exports.initData = function (params, cb) {
-  var baseDataPath = path.dirname(params.appConfig.dataPath);
-  var dataDirName  = params.appConfig.dataPath.replace(baseDataPath, '');
-
+  // check the data folder is not empty before doing anything
   exec('docker run --rm ' + params.appSrc
-    + ' tar czf - -C ' + baseDataPath + ' ./' + dataDirName + ' | tar xzf -', {
-    cwd: __dirname + '/../instances/' + params.instanceDst
-  }, function (err, stdout, stderr) {
-    return cb(err);
-  });
+    + ' ls ' + params.appConfig.dataPath,
+    function (err, stdout, stderr) {
+      // data folder is empty or doesnot exists, skip this step
+      if (err || stdout == '') return cb(null);
+      
+      // then copy the data folder content into the instance initial state
+      var baseDataPath = path.dirname(params.appConfig.dataPath);
+      var dataDirName  = params.appConfig.dataPath.replace(baseDataPath, '');
+      exec('docker run --rm ' + params.appSrc
+        + ' tar czf - -C ' + baseDataPath + ' ./' + dataDirName + ' | tar xzf -', {
+        cwd: __dirname + '/../instances/' + params.instanceDst
+      }, function (err, stdout, stderr) {
+        return cb(err);
+      });
+    }
+  );
 }
+
