@@ -67,10 +67,11 @@ docker-compose up -d
 ```shell
 git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
-make install
-make run-debug
-# ezmaster is listening at http://127.0.0.1:35267/
+make install                   # installs npm dependencies
+make build                     # builds the docker image used byt docker-compose.debug.yml
+DEBUG=ezmaster* make run-debug # starts ezmaster in debug mode (CTRL+C to quit)
 ```
+Then ezmaster is listening at http://127.0.0.1:35267/
 
 ## Ezmasterizing an application
 
