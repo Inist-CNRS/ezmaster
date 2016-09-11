@@ -49,11 +49,9 @@ export EZMASTER_FULL_FS_PERCENT=80
 ## Install and run for production
 
 ```shell
-mkdir ./ezmaster
-cd ezmaster
-mkdir ./applications
-mkdir ./instances
-mkdir ./manifests
+mkdir ./ezmaster && cd ezmaster
+mkdir ./applications ./instances ./manifests
+
 wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
@@ -61,7 +59,7 @@ export EZMASTER_FULL_FS_PERCENT=80
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 docker-compose up -d
 
-# then ezmaster is listening at http://<Your IP>:35267
+# then ezmaster is listening at http://<Your ezmaster server IP>:35267
 # and the instances can be accessed at http://<tech-name>.lod-test.istex.fr
 ```
 
