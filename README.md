@@ -170,7 +170,3 @@ You finally should have something like this:
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
 
 
-
-## Next
-
-[All is in our french trello board](https://trello.com/b/GCu64gDf/ezmaster-suivi-du-projet)
