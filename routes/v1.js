@@ -385,7 +385,9 @@ module.exports = function (router, core) {
         // }
         app.readEzmasterAppConfig(image, function (err, appConfig) {
 
-          instances.initConfigAndData({ instanceDst: technicalName, appSrc: image, appConfig: appConfig }, function (err) {
+          instances.initConfigAndData({ instanceDst: technicalName,
+                                        appSrc: image,
+                                        appConfig: appConfig }, function (err) {
             if (err) return next(err);
 
             // prepare the command line to create and run the instance
@@ -670,7 +672,9 @@ module.exports = function (router, core) {
     app.checkIfAppExistsInLocalCache(imageToPull, function (err, imgAlreadyPulled) {
       if (err) { return next(err); }
       if (imgAlreadyPulled) {
-        return afterTheImageIsPulled(null, 'Application ' + imageToPull + ' already pulled. It exists in the local cache.');
+        return afterTheImageIsPulled(null,
+          'Application ' + imageToPull +
+          ' already pulled. It exists in the local cache.');
       }
 
       // pull the image once we checked it does not exists in the local cache

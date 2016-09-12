@@ -37,7 +37,7 @@ module.exports = function(options, core) {
         return;
       }
     }
-    
+
     instances.refreshInstances(core);
   };
 };

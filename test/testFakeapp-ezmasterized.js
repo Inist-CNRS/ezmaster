@@ -9,7 +9,6 @@ var exec = require('child_process').exec
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
   , supertest = require('supertest')
-  , request = require('request')
   , expect = require('chai').expect;
 
 // build localy the fakeapp ezmaster
@@ -18,7 +17,8 @@ before(function (done) {
 
   this.timeout(60000);
 
-  var cmd = path.join('docker build -t fakeapp-ezmasterized:latest --build-arg https_proxy --build-arg http_proxy '
+  var cmd = path.join('docker build -t fakeapp-ezmasterized:latest ' +
+                      '--build-arg https_proxy --build-arg http_proxy '
             , __dirname, '/datasets/fakeapp-ezmasterized/');
 
   exec(cmd, done);
@@ -51,19 +51,19 @@ describe('The ezmasterized fakeapp', function () {
 
   });
 
-  var theInstance = {};
+  // var theInstance = {};
   it('and is found in the ezmaster instance list once created', function (done) {
     supertest('http://127.0.0.1:35267').get('/-/v1/instances/').expect(function (res) {
       expect(res.body).to.have.property('fakeapp-ezmasterized');
       expect(res.body['fakeapp-ezmasterized']).to.have.property('publicURL');
       expect(res.body['fakeapp-ezmasterized'].publicURL).to.not.equal('');
-      theInstance = res.body['fakeapp-ezmasterized'];
+      // theInstance = res.body['fakeapp-ezmasterized'];
     })
     .end(done);
 
   });
 
-  it ('and the app has a specific /etc/ezmaster.json', function (done) {
+  it('and the app has a specific /etc/ezmaster.json', function (done) {
     app.readEzmasterAppConfig('fakeapp-ezmasterized:latest', function (err, conf) {
       if (err) return done(err);
       expect(conf.httpPort).to.equals(3333);
@@ -123,5 +123,5 @@ describe('The ezmasterized fakeapp', function () {
       done(err);
     });
   });
-  
+
 });

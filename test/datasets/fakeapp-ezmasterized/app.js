@@ -1,4 +1,5 @@
 // basic http server listening on http://127.0.0.1:3333 and returning the config.json value
+'use strict';
 
 var http   = require('http');
 var config = require('./config.json');
@@ -6,7 +7,7 @@ var fs     = require('fs');
 
 var server = http.createServer(function (req, res) {
   if (req.url == '/') {
-    res.end(JSON.stringify(config));  
+    res.end(JSON.stringify(config));
   } else {
     fs.createReadStream('./data/hello.csv').pipe(res);
   }
