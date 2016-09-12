@@ -391,6 +391,9 @@ module.exports = function (router, core) {
             // prepare the command line to create and run the instance
             var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.httpPort+ ' '
             + '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '
+            + '-e EZMASTER_TECHNICAL_NAME="' + technicalName + '" '
+            + '-e EZMASTER_LONG_NAME="' + longName.replace + '" '
+            + '-e EZMASTER_APPLICATION="' + image + '" '
             + '--net=ezmaster_default --link ezmaster_db '
             + '-v ' + process.env.EZMASTER_PATH + '/instances/'
             + technicalName + '/config/config.json:' + appConfig.configPath + ' '
