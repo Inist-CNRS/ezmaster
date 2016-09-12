@@ -130,6 +130,7 @@ describe('The ezmasterized fakeapp', function () {
         expect(env.EZMASTER_TECHNICAL_NAME).to.equal('fakeapp-ezmasterized');
         expect(env.EZMASTER_LONG_NAME).to.equal('Test an ezmasterized fakeapp instance');
         expect(env.EZMASTER_APPLICATION).to.equal('fakeapp-ezmasterized:latest');
+        expect(env.DEBUG).to.exist;
         done();
       });
     });

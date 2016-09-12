@@ -397,6 +397,7 @@ module.exports = function (router, core) {
             // eslint-disable-next-line quotes
             + '-e EZMASTER_LONG_NAME="' + longName.replace('"', "\\\"") + '" '
             + '-e EZMASTER_APPLICATION="' + image + '" '
+            + '-e DEBUG '
             + '--net=ezmaster_default --link ezmaster_db '
             + '-v ' + process.env.EZMASTER_PATH + '/instances/'
             + technicalName + '/config/config.json:' + appConfig.configPath + ' '
