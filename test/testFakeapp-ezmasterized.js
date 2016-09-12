@@ -116,6 +116,25 @@ describe('The ezmasterized fakeapp', function () {
     });
   });
 
+  it('should get the ad hoc environment variables', function (done) {
+    instance.getInstanceInternalIp('fakeapp-ezmasterized', function (err, ip) {
+      if (err) return done(err);
+      var url = 'http://' + ip + ':3333';
+      supertest(url)
+      .get('/env')
+      .expect(200)
+      .end(function (err, res) {
+        if (err) return done(err);
+        const env = JSON.parse(res.text);
+        expect(typeof env).to.equal('object');
+        expect(env.EZMASTER_TECHNICAL_NAME).to.equal('fakeapp-ezmasterized');
+        expect(env.EZMASTER_LONG_NAME).to.equal('Test an ezmasterized fakeapp instance');
+        expect(env.EZMASTER_APPLICATION).to.equal('fakeapp-ezmasterized:latest');
+        done();
+      });
+    });
+  });
+
   it('and this instance deleteable', function (done) {
     supertest('http://127.0.0.1:35267')
     .delete('/-/v1/instances/fakeapp-ezmasterized')
