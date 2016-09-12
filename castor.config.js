@@ -8,7 +8,7 @@ var publicDomain  = process.env.EZMASTER_PUBLIC_DOMAIN || '';
 var publicIP      = process.env.EZMASTER_PUBLIC_IP || '127.0.0.1';
 var baseURL       = process.env.EZMASTER_PUBLIC_DOMAIN || 'http://' + publicIP + ':35267';
 var fullFsPercent = process.env.EZMASTER_FULL_FS_PERCENT || 80;
-var freePortRange = process.env.EZMASTER_FREE_PORT_RANGE || '49152-60000'
+var freePortRange = process.env.EZMASTER_FREE_PORT_RANGE || '49152-60000';
 
 module.exports = {
 

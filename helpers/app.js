@@ -66,7 +66,7 @@ module.exports.getApps = function (cb) {
  *           err.code = 1 if ezmaster.json does not exists
  *           err.code = 2 if ezmaster.json is not a valid JSON
  *           err.code = 125 if image is not found
- * - config: the JSON (if no /etc/ezmaster.json is found, it 
+ * - config: the JSON (if no /etc/ezmaster.json is found, it
  *           returns the symlink old convention)
  */
 module.exports.readEzmasterAppConfig = function (image, cb) {
@@ -88,9 +88,9 @@ module.exports.readEzmasterAppConfig = function (image, cb) {
       return cb(null, stdout);
     } catch (err2) {
       // ezmaster.json is not a valid JSON
-      err2 = new Error(err2);
-      err2.code = 2;
-      return cb(err2, defaultConfig);
+      var err3 = new Error(err2);
+      err3.code = 2;
+      return cb(err3, defaultConfig);
     }
   });
 };

@@ -7,10 +7,9 @@ Administration of docker applications without any IT skills.
 
 ## Requirements
 
-- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 - [Docker](https://docs.docker.com/engine/installation/) (Version >= 1.12)
 - [Docker Compose](https://docs.docker.com/compose/install/) (Version >= 1.7)
-- Make
+- For developments: [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and Make
 
 ## Environment variables
 
@@ -50,11 +49,9 @@ export EZMASTER_FULL_FS_PERCENT=80
 ## Install and run for production
 
 ```shell
-mkdir ./ezmaster
-cd ezmaster
-mkdir ./applications
-mkdir ./instances
-mkdir ./manifests
+mkdir ./ezmaster && cd ezmaster
+mkdir ./applications ./instances ./manifests
+
 wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
@@ -62,7 +59,7 @@ export EZMASTER_FULL_FS_PERCENT=80
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 docker-compose up -d
 
-# then ezmaster is listening at http://<Your IP>:35267
+# then ezmaster is listening at http://<Your ezmaster server IP>:35267
 # and the instances can be accessed at http://<tech-name>.lod-test.istex.fr
 ```
 
@@ -70,10 +67,11 @@ docker-compose up -d
 ```shell
 git clone https://github.com/Inist-CNRS/ezmaster.git
 cd ezmaster
-make install
-make run-debug
-# ezmaster is listening at http://127.0.0.1:35267/
+make install                   # installs npm dependencies
+make build                     # builds the docker image used byt docker-compose.debug.yml
+DEBUG=ezmaster* make run-debug # starts ezmaster in debug mode (CTRL+C to quit)
 ```
+Then ezmaster is listening at http://127.0.0.1:35267/
 
 ## Ezmasterizing an application
 
@@ -172,7 +170,3 @@ You finally should have something like this:
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
 
 
-
-## Next
-
-[All is in our french trello board](https://trello.com/b/GCu64gDf/ezmaster-suivi-du-projet)
