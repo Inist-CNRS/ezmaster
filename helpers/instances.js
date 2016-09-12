@@ -263,14 +263,14 @@ module.exports.initConfigAndData = function (params, cb) {
 }
 module.exports.initConfig = function (params, cb) {
   // check the config file exists before doing anything
-  exec('docker run --rm ' + params.appSrc
-    + ' ls ' + params.appConfig.configPath, function (err, stdout, stderr) {
+  exec('docker run --rm --entrypoint "/bin/ls" ' + params.appSrc
+    + ' ' + params.appConfig.configPath, function (err, stdout, stderr) {
     // config file does not exists, skip this step
     if (err) return cb(null);
    
     // config file exists so copy the config file
-    exec('docker run --rm ' + params.appSrc
-      + ' cat ' + params.appConfig.configPath
+    exec('docker run --rm --entrypoint "/bin/cat" ' + params.appSrc
+      + ' ' + params.appConfig.configPath
       + ' > config/config.json', {
       cwd: __dirname + '/../instances/' + params.instanceDst
     }, function (err, stdout, stderr) {
@@ -281,8 +281,8 @@ module.exports.initConfig = function (params, cb) {
 }
 module.exports.initData = function (params, cb) {
   // check the data folder is not empty before doing anything
-  exec('docker run --rm ' + params.appSrc
-    + ' ls ' + params.appConfig.dataPath,
+  exec('docker run --rm --entrypoint "/bin/ls" ' + params.appSrc
+    + ' ' + params.appConfig.dataPath,
     function (err, stdout, stderr) {
       // data folder is empty or doesnot exists, skip this step
       if (err || stdout == '') return cb(null);
@@ -290,8 +290,8 @@ module.exports.initData = function (params, cb) {
       // then copy the data folder content into the instance initial state
       var baseDataPath = path.dirname(params.appConfig.dataPath);
       var dataDirName  = params.appConfig.dataPath.replace(baseDataPath, '');
-      exec('docker run --rm ' + params.appSrc
-        + ' tar czf - -C ' + baseDataPath + ' ./' + dataDirName + ' | tar xzf -', {
+      exec('docker run --rm --entrypoint "/bin/tar" ' + params.appSrc
+        + ' czf - -C ' + baseDataPath + ' ./' + dataDirName + ' | tar xzf -', {
         cwd: __dirname + '/../instances/' + params.instanceDst
       }, function (err, stdout, stderr) {
         return cb(err);
