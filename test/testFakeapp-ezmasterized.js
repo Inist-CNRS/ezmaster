@@ -131,6 +131,8 @@ describe('The ezmasterized fakeapp', function () {
         expect(env.EZMASTER_LONG_NAME).to.equal('Test an ezmasterized fakeapp instance');
         expect(env.EZMASTER_APPLICATION).to.equal('fakeapp-ezmasterized:latest');
         expect(env.DEBUG).to.exist;
+        // Different when ezmaster was launched with EZMASTER_PUBLIC_DOMAIN=public.dom
+        expect(env.EZMASTER_PUBLIC_URL.substr(0, 28)).to.equal('http://fakeapp-ezmasterized.');
         done();
       });
     });

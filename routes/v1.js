@@ -390,6 +390,8 @@ module.exports = function (router, core) {
                                         appConfig: appConfig }, function (err) {
             if (err) return next(err);
 
+            var publicUrl = 'http://' + technicalName + '.' + core.config.get('publicDomain');
+
             // prepare the command line to create and run the instance
             var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.httpPort+ ' '
             + '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '
@@ -398,6 +400,7 @@ module.exports = function (router, core) {
             + '-e EZMASTER_LONG_NAME="' + longName.replace('"', "\\\"") + '" '
             + '-e EZMASTER_APPLICATION="' + image + '" '
             + '-e DEBUG '
+            + '-e EZMASTER_PUBLIC_URL="' + publicUrl + '" '
             + '--net=ezmaster_default --link ezmaster_db '
             + '-v ' + process.env.EZMASTER_PATH + '/instances/'
             + technicalName + '/config/config.json:' + appConfig.configPath + ' '
