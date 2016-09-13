@@ -287,12 +287,12 @@ module.exports.initData = function (params, cb) {
       // data folder is empty or doesnot exists, skip this step
       if (err || stdout == '') return cb(null);
 
-      // then copy the data folder content into the instance initial state
-      var baseDataPath = path.dirname(params.appConfig.dataPath);
-      var dataDirName  = params.appConfig.dataPath.replace(baseDataPath, '');
+      // then thanks to tar commande, copy the data folder content into the instance initial state
+      // example:
+      // docker run --rm -w /blog/source/_posts --entrypoint "/bin/tar" inistcnrs/ezmaster-hexo:latest cf - -C /blog/source/_posts . | tar vxf -
       exec('docker run --rm --entrypoint "/bin/tar" ' + params.appSrc
-        + ' czf - -C ' + baseDataPath + ' ./' + dataDirName + ' | tar xzf -', {
-          cwd: path.join(__dirname, '../instances/', params.instanceDst)
+        + ' cf - -C ' + params.appConfig.dataPath + ' . | tar vxf -', {
+          cwd: path.join(__dirname, '../instances/', params.instanceDst + '/data/')
         }, function (err, stdout, stderr) {
           return cb(err);
         });
