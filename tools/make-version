@@ -11,4 +11,4 @@ set -e
 echo "---> Patching docker-compose.yml (prod file) for using this version ${npm_package_version}"
 sed -i "s#\(image: inistcnrs/ezmaster:\)\([\.a-z0-9]\+\)#\1${npm_package_version}#g" docker-compose.yml
 sed -i "s#\(version \)\([\.a-z0-9]\+\)#\1${npm_package_version}#g" views/layout.html
-git add docker-compose.yml
+git add docker-compose.yml views/layout.html
