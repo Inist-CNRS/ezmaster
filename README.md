@@ -3,6 +3,8 @@
 
 [![french trello board](https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/doc/trello_20x20.png)](https://trello.com/b/GCu64gDf/ezmaster-suivi-du-projet) [![Build Status](https://travis-ci.org/Inist-CNRS/ezmaster.svg?branch=master)](https://travis-ci.org/Inist-CNRS/ezmaster) [![bitHound Overall Score](https://www.bithound.io/github/Inist-CNRS/ezmaster/badges/score.svg)](https://www.bithound.io/github/Inist-CNRS/ezmaster)
 
+[![Docker status](http://dockeri.co/image/ezpaarseproject/ezpaarse)](https://registry.hub.docker.com/u/ezpaarseproject/ezpaarse/)
+
 Administration of docker applications without any IT skills.
 
 ## Requirements
