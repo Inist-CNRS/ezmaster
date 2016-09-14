@@ -112,7 +112,7 @@ This variable will contain something like this: ``ezmaster_db:27017`` (it means 
 
 ### Dockerfile example of ezmasterized applications
 
-- ezvis Dockerfile: https://github.com/madec-project/ezvis/blob/master/Docker/Dockerfile
+- ezvis Dockerfile: https://github.com/madec-project/ezvis/blob/master/Dockerfile
 - ezark Dockerfile: https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile
 - ezpaarse Dockerfile: https://github.com/ezpaarse-project/ezpaarse/blob/master/Dockerfile
 - ezmaster-hexo Dockerfile: https://github.com/Inist-CNRS/ezmaster-hexo/blob/master/Dockerfile
