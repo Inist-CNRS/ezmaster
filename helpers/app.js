@@ -78,7 +78,7 @@ module.exports.readEzmasterAppConfig = function (image, cb) {
   };
   var cmd = 'docker run --rm --entrypoint "/bin/cat" ' + image + ' /etc/ezmaster.json';
   exec(cmd, function (err, stdout, stderr) {
-    debug(err, stdout, stderr)
+    debug(err, stdout, stderr);
     if (err) {
       // image is not found or ezmaster.json does not exists
       return cb(err, defaultConfig);

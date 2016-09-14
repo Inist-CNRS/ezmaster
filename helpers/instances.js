@@ -289,7 +289,8 @@ module.exports.initData = function (params, cb) {
 
       // then thanks to tar commande, copy the data folder content into the instance initial state
       // example:
-      // docker run --rm -w /blog/source/_posts --entrypoint "/bin/tar" inistcnrs/ezmaster-hexo:latest cf - -C /blog/source/_posts . | tar vxf -
+      // docker run --rm -w /blog/source/_posts --entrypoint "/bin/tar" \
+      //  inistcnrs/ezmaster-hexo:latest cf - \ -C /blog/source/_posts . | tar vxf -
       exec('docker run --rm --entrypoint "/bin/tar" ' + params.appSrc
         + ' cf - -C ' + params.appConfig.dataPath + ' . | tar vxf -', {
           cwd: path.join(__dirname, '../instances/', params.instanceDst + '/data/')
