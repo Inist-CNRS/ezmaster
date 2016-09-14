@@ -11,3 +11,9 @@
       /* Specify that <div> elements should have padding and border included in the element's total width and height. */
       box-sizing: border-box;
   }
+
+  .ezfooter {
+    position: fixed;
+    bottom: 0;
+    left: 10px;
+  }
