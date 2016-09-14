@@ -74,7 +74,7 @@ module.exports.getInstances = function (cb) {
           // the manifest content to get other metadata.
           // NOTA : filename example : 'manifests/myprj-mystudy-5.json'
           //         then technicalName will be 'myprj-mystudy-5'.
-          var technicalName = _.last(file.split('.')[0].split('/'));
+          var technicalName = _.last(file.slice(0, -5).split('/'));
           fs.readFile(file, 'utf8', function (err, manifestContent) {
             if (err) {
               debug('cannot read the file, something goes wrong with the file', err);
