@@ -390,7 +390,17 @@ module.exports = function (router, core) {
                                         appConfig: appConfig }, function (err) {
             if (err) return next(err);
 
-            var publicUrl = 'http://' + technicalName + '.' + core.config.get('publicDomain');
+            var publicDomain = core.config.get('publicDomain');
+            var publicUrl;
+            if (publicDomain) {
+              publicUrl = 'http://' + technicalName + '.' + publicDomain;
+            } else {
+              publicUrl = 'http://'
+                + process.env.EZMASTER_PUBLIC_IP + ':' + appConfig.httpPort;
+              if (!process.env.EZMASTER_PUBLIC_IP) {
+                publicUrl = 'http://127.0.0.1:' + appConfig.httpPort;
+              }
+            }
 
             // prepare the command line to create and run the instance
             var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.httpPort+ ' '
