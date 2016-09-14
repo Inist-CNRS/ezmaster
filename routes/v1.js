@@ -169,11 +169,15 @@ module.exports = function (router, core) {
   });
 
 
-
+  /**
+   * Check whether there is a manifest for the passed technicalName
+   * Returns OK when the manifest does not yet exist
+   * Returns KO when the manifest already exist
+   */
   router.route('/-/v1/instances/verif/:technicalName').get(bodyParser(), function (req, res, next) {
 
     if (fileExists(path.join(__dirname, '../manifests/'+req.params.technicalName+'.json'))
-    ==false) {
+    == false) {
       res.status(200).send('OK');
     }
     else {
@@ -290,32 +294,26 @@ module.exports = function (router, core) {
       , image = req.body.app
       , project = req.body.project
       , study = req.body.study
+      , version = req.body.version
       ;
 
-
     if (/^[a-z0-9]+$/.test(project) == false && project != '' && project != null) {
-
       return res.status(400).send('Enter a valid project name');
-
     }
-
 
     if (/^[a-z0-9]+$/.test(study) == false && study != '' && study != null) {
-
       return res.status(400).send('Enter a valid study name');
-
     }
 
+    if (/^[0-9]*$/.test(version) === false) {
+      return res.status(400).send('Enter a valid version number');
+    }
 
     if (fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == true) {
-
       res.status(409).send('Technical name already exists');
-
     }
     else {
-
       mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), makeDataDirectory);
-
     }
 
 

@@ -26,7 +26,7 @@ var cacheInstances = null;
 /**
  * Returns the instances list
  * return example:
- *  { 'test-fakeapp': {}
+ *  { 'test-fakeapp': {
  *      technicalName: 'test-fakeapp',
  *      containerId: '5e338b98a6ecd910b20efa282e1ead07f06af5673ddb4b525d4551d699b4be47',
  *      dataPath: '/home/kerphi/ezmaster/instances/test-fakeapp/data/',
