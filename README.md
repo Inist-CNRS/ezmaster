@@ -23,8 +23,8 @@ To configure ezmaster, setup these environment variables before running ezmaster
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 
 
-# The ports range ezmaster is allowed to use to expose instances internal web address
-# (revelant when reverse proxy is disabled)
+# The ports range ezmaster is allowed to use to expose instances internal web
+# address (revelant when reverse proxy is disabled)
 # Default is "49152-60000".
 # Notice : 49152 is recommended as the minimal port.
 # 	See http://www.tcpipguide.com/free/t_TCPIPApplicationAssignmentsandServerPortNumberRang-2.htm
@@ -80,7 +80,7 @@ Then ezmaster is listening at http://127.0.0.1:35267/
 - Your application must have a web server (mandatory).
 - Your application can use a json config and a data folder (optional)
 
-For example your dockerfile could looks like this one:
+For example your dockerfile could look like this one:
 ```shell
 FROM ubuntu or node or ...
 
@@ -88,9 +88,9 @@ FROM ubuntu or node or ...
 
 # 3000 is your web server listening port
 EXPOSE 3000
-# then create the /etc/ezmaster.json in your docker image
-# it will tell to ezmaster where is your web server (ex: port 3000)
-# where is your JSON configuration file
+# Then create the /etc/ezmaster.json in your docker image.
+# It will tell to ezmaster where is your web server (ex: port 3000),
+# where is your JSON configuration file,
 # and where is your data folder
 RUN echo '{ \
   "httpPort": 3000, \
@@ -103,15 +103,31 @@ RUN echo '{ \
 
 ### MongoDB database (optional)
 
-If your application uses a mongodb database, your can use the ezmaster database. 
-Regarding to this, you just have to use the envrionment variable: ``EZMASTER_MONGODB_HOST_PORT``
-This variable will contains something like this: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017)
+If your application uses a mongodb database, your can use the ezmaster database.
+Regarding this, you just have to use the environment variable: ``EZMASTER_MONGODB_HOST_PORT``.
+This variable will contain something like this: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017).
 
 ### Dockerfile example of ezmasterized applications
 
 - ezvis Dockerfile: https://github.com/madec-project/ezvis/blob/master/Docker/Dockerfile
 - ezark Dockerfile: https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile
 - ezpaarse Dockerfile: https://github.com/ezpaarse-project/ezpaarse/blob/master/Dockerfile
+- ezmaster-hexo Dockerfile: https://github.com/Inist-CNRS/ezmaster-hexo/blob/master/Dockerfile
+- lodex Dockerfile: https://github.com/Inist-CNRS/lodex/blob/master/Dockerfile
+
+### Environment variables available to your application
+
+When ezmaster launches your application, it provides few environment variables
+to this instance:
+
+- `EZMASTER_MONGODB_HOST_PORT`: (see above), ex: `ezmaster_db:27017`
+- `EZMASTER_TECHNICAL_NAME`: the identifier of the instance within ezmaster (ex: `myapp-usage-1`)
+- `EZMASTER_LONG_NAME`: a free label for the instance (ex: `This instance is used for the customer C, and maintained by Matt`)
+- `EZMASTER_APPLICATION`: the complete tag of your application's docker image (ex: `inistcnrs/ezmaster-hexo:1.0.3`)
+- `EZMASTER_PUBLIC_URL`: if you use ezmaster's reverse proxy feature (using `EZMASTER_PUBLIC_DOMAIN`), it is the URL publicly available to your internet users (ex: `http://my-app-usage.public.dom`, when `EZMASTER_PUBLIC_DOMAIN`'s value is `public.dom`)
+- `DEBUG`: this variable maybe useful to debug your application running via ezmaster (using the [debug module](https://www.npmjs.com/package/debug)), and logging your instance (via `docker logs myapp-usage-1`)
+- `http_proxy`, `https_proxy`: these variables are taken from ezmaster's environment, and allow your application to use your proxy. They can be empty (especially if you don't use a proxy)
+
 
 ## How to for developers
 
@@ -153,9 +169,9 @@ You finally should have something like this:
 
 ### How to save the data and config of the instances ?
 
-- If you want to save the config and the data of your instances
-- You have to save the "applications, "manifests" and "instances" files.
-- You also have to save the mongodb database on the address : mongodb://ezmaster_db:27017
+If you want to save the config and the data of your instances:
+- you have to save the `applications`, `manifests` and `instances` files.
+- you also have to save the mongodb database on the address : `mongodb://ezmaster_db:27017`
 
 
 
