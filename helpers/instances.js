@@ -281,6 +281,7 @@ module.exports.initConfig = function (params, cb) {
 };
 module.exports.initData = function (params, cb) {
   // check the data folder is not empty before doing anything
+  if (!params.appConfig.dataPath) return cb(null);
   exec('docker run --rm --entrypoint "/bin/ls" ' + params.appSrc
     + ' ' + params.appConfig.dataPath,
     function (err, stdout, stderr) {

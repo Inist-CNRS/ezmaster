@@ -412,8 +412,8 @@ module.exports = function (router, core) {
             + '--net=ezmaster_default --link ezmaster_db '
             + '-v ' + process.env.EZMASTER_PATH + '/instances/'
             + technicalName + '/config/config.json:' + appConfig.configPath + ' '
-            + '-v ' + process.env.EZMASTER_PATH+'/instances/'
-            + technicalName + '/data/:' + appConfig.dataPath + ' '
+            + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH+'/instances/'
+                                    + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
             + '--name ' + technicalName + ' ' + image;
             // and execute !
             exec(cmd, function (err, stdout, stderr) { refreshAndReturn(err, appConfig); });
