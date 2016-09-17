@@ -8,6 +8,8 @@
 
 Administration of docker applications without any IT skills.
 
+![ezmaster demo](/doc/anim2.gif)
+
 ## Requirements
 
 - [Docker](https://docs.docker.com/engine/installation/) (Version >= 1.12)
