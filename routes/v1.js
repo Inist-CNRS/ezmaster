@@ -402,7 +402,7 @@ module.exports = function (router, core) {
 
             // prepare the command line to create and run the instance
             var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.httpPort+ ' '
-            + '-e http_proxy -e https_proxy -e EZMASTER_MONGODB_HOST_PORT '
+            + '-e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT '
             + '-e EZMASTER_TECHNICAL_NAME="' + technicalName + '" '
             // eslint-disable-next-line quotes
             + '-e EZMASTER_LONG_NAME="' + longName.replace('"', "\\\"") + '" '

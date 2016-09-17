@@ -18,6 +18,7 @@ services:
     environment:
       http_proxy:  ${http_proxy}
       https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
       EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017"
       EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
