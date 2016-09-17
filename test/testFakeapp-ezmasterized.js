@@ -131,6 +131,9 @@ describe('The ezmasterized fakeapp', function () {
         expect(env.EZMASTER_LONG_NAME).to.equal('Test an ezmasterized fakeapp instance');
         expect(env.EZMASTER_APPLICATION).to.equal('fakeapp-ezmasterized:latest');
         expect(env.DEBUG).to.exist;
+        expect(env.http_proxy).to.exist;
+        expect(env.https_proxy).to.exist;
+        expect(env.no_proxy).to.exist;
         const expectedURL = process.env.EZMASTER_PUBLIC_DOMAIN ?
           'http://fakeapp-ezmasterized.' + process.env.EZMASTER_PUBLIC_DOMAIN :
           'http://127.0.0.1:3333';
