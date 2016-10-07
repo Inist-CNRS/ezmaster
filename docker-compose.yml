@@ -13,9 +13,9 @@ services:
     links:
       - ezmaster_db
     volumes:
-      - ./applications:/app/applications
-      - ./instances:/app/instances
-      - ./manifests:/app/manifests
+      - ./data/applications:/app/data/applications
+      - ./data/instances:/app/data/instances
+      - ./data/manifests:/app/data/manifests
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       http_proxy:  ${http_proxy}

@@ -736,8 +736,7 @@ router.route('/-/v1/app').post(bodyParser(), function (req, res, next) {
 
       var nameManifest = new Buffer(imageToPull).toString('base64');
 
-      jsonfile.writeFile(
-      path.join(__dirname, '../applications/'+nameManifest+'.json')
+      jsonfile.writeFile(cfg.dataApplicationsPath + '/' + nameManifest + '.json'
       , imageName, function (err) {
         if (err) {
           return res.status(500).send('' + err);

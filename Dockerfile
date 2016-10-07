@@ -36,9 +36,9 @@ RUN npm config set strict-ssl false \
 # instances and manifests folders are a volume
 # because they will for example contains the user's
 # data files (ex: CSV)
-VOLUME /app/instances
-VOLUME /app/manifests
-VOLUME /app/applications
+VOLUME /app/data/instances
+VOLUME /app/data/manifests
+VOLUME /app/data/applications
 
 # run the application
 CMD ["npm", "start"]
