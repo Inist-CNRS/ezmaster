@@ -1,8 +1,6 @@
 {
   "ignore": [
-    "instances/*",
-    "manifests/*",
-    "applications/*",
+    "data/*",
     "README.md",
     "LICENSE",
     "Makefile",
@@ -10,7 +8,7 @@
     "nodemon.json",
     "package.json",
     "Dockerfile",
-    "assets/*"
+    "public/*"
   ],
   "ext": "js, json, html"
 }

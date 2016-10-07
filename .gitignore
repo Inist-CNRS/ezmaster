@@ -1,9 +1,9 @@
 .ackrc
-assets/bundle.js
+public/dist/*
 .DS_Store
 config.local.js
 node_modules
-coverage/
+data/*
 tmp/
 
 

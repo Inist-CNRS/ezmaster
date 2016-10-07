@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,26 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <!-- Thanks to nunjucks we declare blocks we can extend in other files, see end of template.html for example. -->
-    {% block head %}{% endblock %}
-
     <link href="/favicon.ico" rel="icon">
-
-    <!-- Fonts -->
-    <!-- <link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'> -->
 
     <!-- Bootstrap core CSS -->
     <link href="/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="/dist/main.css" rel="stylesheet">
 
     <!-- Material Design for Bootstrap -->
     <!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
     <link href="/libs/bootstrap-material-design/dist/css/roboto.min.css" rel="stylesheet">
     <link href="/libs/bootstrap-material-design/dist/css/material.min.css" rel="stylesheet">
     <link href="/libs/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../libs/icon/index">
 
     <link href="/libs/jsoneditor/dist/jsoneditor.css" rel="stylesheet" type="text/css">
     <script src="/libs/jsoneditor/dist/jsoneditor.js"></script>
@@ -40,9 +32,7 @@
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-      <![endif]-->
-
-    {% block styles %}{% endblock %}
+    <![endif]-->
 
   </head>
 
@@ -77,7 +67,25 @@
     </nav>
 
 
-    {% block body %}{% endblock %}
+
+    <div class="tab-content">
+
+
+      <div id="instancestable" class="tab-pane fade in active">
+
+        <instancestable></instancestable>
+        <addinstance ></addinstance>
+
+      </div>
+
+      <div id="apps" class="tab-pane fade">
+
+        <apps></apps>
+        <addapps></addapps>
+
+      </div>
+
+    </div>
 
     <div class="ezfooter">
       <a href="https://github.com/Inist-CNRS/ezmaster">ezMaster</a> version 2.5.19
@@ -88,34 +96,22 @@
       It is automatically provided by the nodeJS server thanks to the socket.io module.
       It allows to manage communication with the server from client side.
     -->
-    <script src="../socket.io/socket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 
     <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="/libs.js"></script>
+         Placed at the end of the document so the pages load faster -->
     <script src="/libs/jquery/dist/jquery.min.js"></script>
     <script src="/libs/jquery-migrate/dist/jquery-migrate.min.js"></script>
     <script src="/libs/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap-material-design/dist/js/ripples.min.js"></script>
     <script src="/libs/bootstrap-material-design/dist/js/material.min.js"></script>
-
     <script>
-
-      $(document).ready(function() {
-
-        // This command is used to initialize some elements and make them work properly
+      $(document).ready(function () {
         $.material.init();
-
       });
-
     </script>
 
-    <script src="/assets/js/main.js"></script>
-
-
-    {% block scripts %}{% endblock %}
-
+    <script src="/dist/bundle.js"></script>
 
   </body>
 
