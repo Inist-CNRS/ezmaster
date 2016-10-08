@@ -598,8 +598,7 @@ router.route('/-/v1/instances/:containerId/:fileName').delete(function (req, res
     // Delete the file.
     // splittedName[1] is the instance technical name.
     rimraf(
-      cfg.dataInstancesPath + '/' + splittedName[1] + '/data'
-    , req.params.fileName
+      cfg.dataInstancesPath + '/' + splittedName[1] + '/data/' + req.params.fileName
     , function (err) {
 
       if (err) { return next(err); }
