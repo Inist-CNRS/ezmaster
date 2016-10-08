@@ -17,7 +17,6 @@ app.use(express.static('public'));
 app.use('/', require('./routes/v1.js'));
 
 io.on('connection', function (socket) {
-  console.log('connexion')
   cfg.socket = socket;
 });
 
