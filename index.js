@@ -13,9 +13,13 @@ var app    = express();
 var server = require('http').Server(app);
 var io     = require('socket.io')(server);
 
+// load routes and middleware
+app.use(require('./middlewares/reverse-proxy.js'));
 app.use(express.static('public'));
 app.use('/', require('./routes/v1.js'));
 
+// load socket.io connections
+// TODO: gérer le multi-utilisateur car la on ne communique qu'au dernier client  
 io.on('connection', function (socket) {
   cfg.socket = socket;
 });
