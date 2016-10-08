@@ -32,7 +32,7 @@ services:
       - 35267:35267
     depends_on:
       - ezmaster_db
-    command: ./node_modules/.bin/nodemon -V ./index.js
+    command: npm run start-debug
 
   ezmaster_db:
     container_name: ezmaster_db
