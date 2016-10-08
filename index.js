@@ -24,3 +24,9 @@ server.listen(cfg.EZMASTER_PORT, function (err) {
   console.info(kuler(cfg.package.name + ' ' + cfg.package.version + ' is listening.', 'olive'));
   console.info(kuler(cfg.baseURL + '/', 'limegreen'));
 });
+
+// periodical background task
+var heartbeats = require('heartbeats');
+var heart = heartbeats.createHeart(1000);
+heart.createEvent(5, require('./lib/event-refresh-infos-machine.js'));
+heart.createEvent(2, require('./lib/event-refresh-instances.js'));
