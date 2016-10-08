@@ -77,7 +77,7 @@
                   <button v-else type="button" id='save' class="btn btn-primary button-create" disabled>Create</button>
                   <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled" disabled>Create</button>
                   <div id='loader' class="loader">
-                    <img id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
+                    <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                   </div>
                   <div id='errorLoader' class="loader">
