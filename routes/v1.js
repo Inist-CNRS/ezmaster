@@ -126,7 +126,7 @@ router.route('/-/v1/instances/config/:containerId').put(bodyParser(), function (
     var splittedName = data.Name.split('/');
 
     jsonfile.writeFile(
-      path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
+      cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.json',
       req.body.newConfig, function (err) {
 
         if (err) { return next(err); }
@@ -157,7 +157,7 @@ router.route('/-/v1/instances/config/:containerId').put(bodyParser(), function (
  */
 router.route('/-/v1/instances/verif/:technicalName').get(bodyParser(), function (req, res, next) {
 
-  if (fileExists(path.join(__dirname, '../manifests/'+req.params.technicalName+'.json'))
+  if (fileExists(cfg.dataManifestsPath + '/' + req.params.technicalName + '.json')
   == false) {
     res.status(200).send('OK');
   }
@@ -180,7 +180,7 @@ router.route('/-/v1/instances/:containerId').get(bodyParser(), function (req, re
     var splittedName = data.Name.split('/');
 
     // Get Delete Information.
-    var directoryDatas = path.join(__dirname, '../instances/', splittedName[1], '/data/')
+    var directoryDatas = cfg.dataInstancesPath + '/' + splittedName[1] + '/data/'
       , result = {};
 
     getSize(directoryDatas, function (err, size) {
@@ -192,7 +192,7 @@ router.route('/-/v1/instances/:containerId').get(bodyParser(), function (req, re
 
       // Get Configuration Information.
       jsonfile.readFile(
-      path.join(__dirname, '../instances/', splittedName[1], '/config/config.json'),
+        cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.json',
       function (err, obj) {
 
         if (err) { return next(err); }
@@ -246,10 +246,10 @@ router.route('/-/v1/instances/:containerId').delete(function (req, res, next) {
     if (err) { return res.status(500).send('' + err); }
 
     var splittedName = containerName.split('/');
-    rimraf(path.join(__dirname, '../instances/', splittedName[1]), function (err) {
+    rimraf(cfg.dataInstancesPath + '/' + splittedName[1], function (err) {
       if (err) { return next(err); }
 
-      rimraf(path.join(__dirname, '../manifests/', splittedName[1] + '.json'), function (err) {
+      rimraf(cfg.dataManifestsPath + '/' + splittedName[1] + '.json', function (err) {
         if (err) { return next(err); }
 
         // When an instance is deleted, we call refreshInstances() to update the
@@ -289,28 +289,25 @@ router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
     return res.status(400).send('Enter a valid version number');
   }
 
-  if (fileExists(path.join(__dirname, '../manifests/'+req.query.technicalName+'.json')) == true) {
+  if (fileExists(cfg.dataManifestsPath + '/' + req.query.technicalName + '.json') == true) {
     res.status(409).send('Technical name already exists');
   }
   else {
-    mkdirp(path.join(__dirname, '../instances/'+technicalName+'/config/'), makeDataDirectory);
+    mkdirp(cfg.dataInstancesPath + '/' + technicalName + '/config/', makeDataDirectory);
   }
 
 
   function makeDataDirectory(err) {
     if (err) { return next(err); }
 
-    mkdirp(path.join(__dirname, '../instances/'+technicalName+'/data/'), createConfigFile);
+    mkdirp(cfg.dataInstancesPath + '/' + technicalName + '/data/', createConfigFile);
   }
 
 
   function createConfigFile(err) {
     if (err) { return next(err); }
 
-    fs.appendFile(
-      path.join(
-        __dirname, '../instances/'+technicalName+'/config/config.json'
-      )
+    fs.appendFile(cfg.dataInstancesPath + '/' + technicalName + '/config/config.json'
       , '{}'
       , readInstances
     );
@@ -320,7 +317,7 @@ router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
   function readInstances(err) {
     if (err) { return next(err); }
 
-    instancesArray = fs.readdirSync(path.join(__dirname, '../instances/'));
+    instancesArray = fs.readdirSync(cfg.dataInstancesPath);
 
     docker.listContainers({all : true}, createInstance);
   }
@@ -368,7 +365,7 @@ router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
                                       appConfig: appConfig }, function (err) {
           if (err) return next(err);
 
-          var publicDomain = core.publicDomain;
+          var publicDomain = cfg.publicDomain;
           var publicUrl;
           if (publicDomain) {
             publicUrl = 'http://' + technicalName + '.' + publicDomain;
@@ -390,17 +387,17 @@ router.route('/-/v1/instances').post(bodyParser(), function (req, res, next) {
           + '-e DEBUG '
           + '-e EZMASTER_PUBLIC_URL="' + publicUrl + '" '
           + '--net=ezmaster_default --link ezmaster_db '
-          + '-v ' + process.env.EZMASTER_PATH + '/instances/'
+          + '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
           + technicalName + '/config/config.json:' + appConfig.configPath + ' '
-          + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH+'/instances/'
+          + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
                                   + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
           + '--name ' + technicalName + ' ' + image;
+
           // and execute !
           exec(cmd, function (err, stdout, stderr) { refreshAndReturn(err, appConfig); });
 
           // creates the instance manifest
-          jsonfile.writeFile(
-            path.join(__dirname, '../manifests/'+technicalName+'.json')
+          jsonfile.writeFile(cfg.dataManifestsPath + '/' + technicalName + '.json'
             , { 'longName' : longName }, function (err) {
               if (err) { return next(err); }
             });
@@ -468,7 +465,7 @@ router.route('/-/v1/instances/:instanceId/data/')
 
           // We save the file in the correct folder.
           // splittedName[1] is the instance technical name.
-          callback(null, './instances/'+splittedName[1]+'/data');
+          callback(null, cfg.dataInstancesPath + '/' + splittedName[1] + '/data');
 
         },
 
@@ -530,7 +527,7 @@ router.route('/-/v1/instances/:instanceId/data').get(function (req, res, next) {
 
     // The path to the data folder.
     // splittedName[1] is the instance technical name.
-    var dir = './instances/'+splittedName[1]+'/data';
+    var dir = cfg.dataInstancesPath + '/' + splittedName[1] + '/data';
 
     // The object we will return which contains the information.
     var results = {};
@@ -601,8 +598,8 @@ router.route('/-/v1/instances/:containerId/:fileName').delete(function (req, res
     // Delete the file.
     // splittedName[1] is the instance technical name.
     rimraf(
-    path.join(__dirname, '../instances/'+splittedName[1]+'/data'
-    , req.params.fileName)
+      cfg.dataInstancesPath + '/' + splittedName[1] + '/data'
+    , req.params.fileName
     , function (err) {
 
       if (err) { return next(err); }
@@ -765,8 +762,7 @@ router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
     var nameManifest = req.params.imageId;
 
     rimraf(
-    path.join(__dirname, '../applications/'
-    , nameManifest + '.json')
+      cfg.dataApplicationsPath + '/' + nameManifest + '.json'
     , function (err) {
       if (err) { return next(err); }
     });
