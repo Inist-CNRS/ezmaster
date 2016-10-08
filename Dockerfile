@@ -22,7 +22,7 @@ WORKDIR /app
 
 # install ezmaster npm dependancies
 # build bundle.js and bundle.css
-RUN npm config set strict-ssl false \
+RUN npm config set strict-ssl false && \
     npm install -q && \
     npm run build && \
     rm -rf ./node_modules && \
