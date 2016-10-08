@@ -1,4 +1,3 @@
-NODE_VERSION=4.4.0
 .PHONY: help install npm clean test coverage lint build run-debug run-prod stop-prod run-prod run-debug chown
 
 .DEFAULT_GOAL := help
@@ -17,7 +16,7 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
 endif
 
 install: ## install depedencies thanks to a dockerized npm install
-	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:${NODE_VERSION} npm install -q
+	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:4.4.0 npm install -q
 	@make chown
 
 build: ## build the docker inistcnrs/ezmaster image localy
@@ -39,10 +38,10 @@ stop-prod: ## stop ezmaster production daemon
 
 # makefile rule used to keep current user's unix rights on the docker mounted files
 chown:
-	@test ! -d $$(pwd)/node_modules || docker run -it --rm --net=host -v $$(pwd):/app node:${NODE_VERSION} chown -R $$(id -u):$$(id -g) /app/
+	@test ! -d $$(pwd)/node_modules || docker run -it --rm --net=host -v $$(pwd):/app node:4.4.0 chown -R $$(id -u):$$(id -g) /app/
 
 npm: ## npm wrapper. example: make npm install --save mongodb-querystring
-	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:${NODE_VERSION} npm $(filter-out $@,$(MAKECMDGOALS))
+	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:4.4.0 npm $(filter-out $@,$(MAKECMDGOALS))
 	@make chown
 
 test: ## run ezmaster unit tests
@@ -52,7 +51,7 @@ coverage: ## run istanbul to have how much % of the ezmaster code is covered by 
 	@docker-compose -f ./docker-compose.debug.yml exec ezmaster ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec
 
 lint: ## checks the coding rules (in a dockerized process)
-	@docker run -it --rm -v $$(pwd):/app -w /app -e NODE_ENV -e http_proxy -e https_proxy node:${NODE_VERSION} ./node_modules/.bin/eslint *.js components/ heartbeats/ helpers/ loaders/ routes/ test/ views/ assets/
+	@docker run -it --rm -v $$(pwd):/app -w /app -e NODE_ENV -e http_proxy -e https_proxy node:4.4.0 ./node_modules/.bin/eslint *.js components/ heartbeats/ helpers/ loaders/ routes/ test/ views/ assets/
 
 clean: ## remove node_modules and temp files
 	@rm -Rf ./node_modules/ ./npm-debug.log
