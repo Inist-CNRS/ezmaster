@@ -20,22 +20,17 @@ RUN set -x \
 COPY . /app
 WORKDIR /app
 
-# Run the test to make sure
-# the docker image will be ok.
-# If the test fails, the image
-# will not be built
+# install ezmaster npm dependancies
+# build bundle.js and bundle.css
 RUN npm config set strict-ssl false \
-    # npm install -q && \
-    # npm test && \
-    # Then just install
-    # production node modules
+    npm install -q && \
+    npm run build && \
     rm -rf ./node_modules && \
     npm install -q --production && \
     npm cache clean
 
-# instances and manifests folders are a volume
-# because they will for example contains the user's
-# data files (ex: CSV)
+# instances, manifests and applications folders are volumes
+# because these data should be persistent
 VOLUME /app/data/instances
 VOLUME /app/data/manifests
 VOLUME /app/data/applications
