@@ -1,7 +1,7 @@
 {
   "ignore": [
     "**/node_modules/**",
-    "libs/**",
+    "public/libs/**",
     "**/ie10-viewport-bug-workaround.js",
     "**/ie-emulation-modes-warning.js",
     "**/ie8-responsive-file-warning.js"
@@ -12,8 +12,6 @@
   ],
   "dependencies": {
     "unused-ignores": [
-        "castor-core",
-        "castor-load*",
         "debug",
         "babel-core",
         "babel-plugin-transform-runtime",
@@ -48,7 +46,6 @@
         "vue-resource",
         "vue-validator",
         "heartbeats",
-        "jbj-parse",
         "vue-awesome",
         "vue-router",
         "vue-infinite-scroll",
