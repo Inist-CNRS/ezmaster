@@ -773,12 +773,4 @@ router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
 });
 
 
-/**
- * Returns the ezmaster public configuration parameters
- */
-router.route('/-/v1/config').get(function (req, res, next) {
-  return res.status(200).send(_.pick(cfg, cfg.publicParameters));
-});
-
-
 module.exports = router;
