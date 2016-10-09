@@ -36,7 +36,7 @@ var express = require('express');
 var router = express.Router();
 
 router.route('/-/v1/app').get(function (req, res, next) {
-  
+
   app.getApps(function (err, data) {
 
     if (err) { return next(err); }

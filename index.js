@@ -19,16 +19,18 @@ app.use(express.static('public'));
 app.use('/', require('./routes/v1.js'));
 
 // load socket.io connections
-// TODO: gérer le multi-utilisateur car la on ne communique qu'au dernier client  
+// TODO: gérer le multi-utilisateur car la on ne communique qu'au dernier client
 io.on('connection', function (socket) {
   cfg.socket = socket;
 });
 
-server.listen(cfg.EZMASTER_PORT, function (err) {
+server.listen(cfg.EZMASTER_PORT, function () {
   console.info(kuler(cfg.package.name + ' ' + cfg.package.version + ' is listening.', 'olive'));
-  console.info('EzMaster backoffice:    ' + kuler('http://' + cfg.publicIP + ':35267' + '/', 'limegreen'));
+  console.info('EzMaster backoffice:    ' +
+               kuler('http://' + cfg.publicIP + ':35267' + '/', 'limegreen'));
   if (cfg.publicDomain) {
-    console.info('EzMaster reverse proxy: ' + kuler('http://*.' + cfg.publicDomain + '/', 'limegreen'));
+    console.info('EzMaster reverse proxy: ' +
+                 kuler('http://*.' + cfg.publicDomain + '/', 'limegreen'));
   }
 });
 
