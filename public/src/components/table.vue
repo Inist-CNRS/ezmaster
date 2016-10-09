@@ -223,8 +223,8 @@
       self.$http.get('/-/v1/instances').then(function (result) {
         self.$set('containers', result.data);
       }, console.error);
-      self.$http.get('/-/v3/config.js').then(function (result) {
-        var config = JSON.parse(result.data);
+      self.$http.get('/-/v1/config').then(function (result) {
+        var config = result.data;
         self.$set('publicDomain', config.publicDomain);
       }, console.error);
       // Listen incoming messages typed as 'refreshInstances' from the server.

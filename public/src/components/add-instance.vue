@@ -112,8 +112,8 @@
 
       var self = this;
 
-      self.$http.get('/-/v3/config.js').then(function (result) {
-        var config = JSON.parse(result.data);
+      self.$http.get('/-/v1/config').then(function (result) {
+        var config = result.data;
         self.$set('publicDomain', config.publicDomain);
         publicDomain = config.publicDomain;
       }, console.error);

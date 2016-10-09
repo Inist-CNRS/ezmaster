@@ -28,7 +28,7 @@ var cfg = require('../lib/config.js')
   , Magic = mmm.Magic
   , multer = require('multer')
   , disk = require('diskusage')
-  ;
+  , _ = require('lodash');
 jsonfile.spaces = 2;
 
 
@@ -770,6 +770,14 @@ router.route('/-/v1/app/:imageId').delete(function (req, res, next) {
 
   });
 
+});
+
+
+/**
+ * Returns the ezmaster public configuration parameters
+ */
+router.route('/-/v1/config').get(function (req, res, next) {
+  return res.status(200).send(_.pick(cfg, cfg.publicParameters));
 });
 
 
