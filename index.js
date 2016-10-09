@@ -26,7 +26,10 @@ io.on('connection', function (socket) {
 
 server.listen(cfg.EZMASTER_PORT, function (err) {
   console.info(kuler(cfg.package.name + ' ' + cfg.package.version + ' is listening.', 'olive'));
-  console.info(kuler(cfg.baseURL + '/', 'limegreen'));
+  console.info('EzMaster backoffice:    ' + kuler('http://' + cfg.publicIP + ':35267' + '/', 'limegreen'));
+  if (cfg.publicDomain) {
+    console.info('EzMaster reverse proxy: ' + kuler('http://*.' + cfg.publicDomain + '/', 'limegreen'));
+  }
 });
 
 // periodical background task
