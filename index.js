@@ -16,7 +16,7 @@ var io     = require('socket.io')(server);
 // load routes and middleware
 app.use(require('./middlewares/reverse-proxy.js'));
 app.use(express.static('public'));
-app.use('/',               require('./routes/v1.js'));
+app.use('/-/v1/',          require('./routes/v1.js'));
 app.use('/-/v1/config',    require('./routes/v1-config.js'));
 app.use('/-/v1/app',       require('./routes/v1-app.js'));
 app.use('/-/v1/instances', require('./routes/v1-instances.js'));
