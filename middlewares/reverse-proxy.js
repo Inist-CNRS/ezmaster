@@ -17,7 +17,7 @@ var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer({});
 
 module.exports = function (req, res, next) {
-  
+
   // totaly skip the revese proxy if EZMASTER_PUBLIC_DOMAIN is not set
   if (!cfg.publicDomain) {
     //debug('skiping reverse-proxy middleware');
