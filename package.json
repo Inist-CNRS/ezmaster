@@ -58,7 +58,7 @@
     "diskusage": "^0.1.5",
     "dockerode": "^2.3.0",
     "express": "^4.14.0",
-    "file-exists": "^1.0.0",
+    "file-exists": "^2.0.0",
     "filesize": "^3.3.0",
     "get-folder-size": "^1.0.0",
     "glob": "^7.0.5",
@@ -91,16 +91,16 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "^2.13.1",
+    "eslint": "^3.7.1",
     "istanbul": "^0.4.4",
     "less": "^2.7.1",
     "less-plugin-clean-css": "^1.5.1",
     "minifyify": "^7.3.3",
-    "mocha": "^2.5.3",
+    "mocha": "^3.1.0",
     "nodemon": "^1.9.2",
     "npm-run-all": "^3.1.0",
     "request": "^2.74.0",
-    "supertest": "^1.2.0",
+    "supertest": "^2.0.0",
     "vue-hot-reload-api": "^2.0.5",
     "watch": "^1.0.1"
   }
