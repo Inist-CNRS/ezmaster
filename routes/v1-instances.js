@@ -23,12 +23,10 @@ var cfg = require('../lib/config.js')
   , containers
   , portMax
   , freePortSplitted
-  , moment = require('moment')
   , mmm = require('mmmagic')
   , Magic = mmm.Magic
   , multer = require('multer')
-  , disk = require('diskusage')
-  , _ = require('lodash');
+  , disk = require('diskusage');
 jsonfile.spaces = 2;
 
 
