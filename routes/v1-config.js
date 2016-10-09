@@ -10,7 +10,7 @@ var router  = express.Router();
 /**
  * Returns the ezmaster public configuration parameters
  */
-router.get('/', function (req, res, next) {
+router.route('/').get(function (req, res, next) {
   return res.status(200).send(_.pick(cfg, cfg.publicParameters));
 });
 

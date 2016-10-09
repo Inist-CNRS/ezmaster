@@ -18,6 +18,7 @@ app.use(require('./middlewares/reverse-proxy.js'));
 app.use(express.static('public'));
 app.use('/', require('./routes/v1.js'));
 app.use('/-/v1/config', require('./routes/v1-config.js'));
+app.use('/-/v1/app', require('./routes/v1-app.js'));
 
 // load socket.io connections
 // TODO: gérer le multi-utilisateur car la on ne communique qu'au dernier client
