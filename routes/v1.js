@@ -2,7 +2,8 @@
 /*eslint no-sync: "off", global-require: "off"*/
 'use strict';
 
-var path = require('path')
+var cfg = require('../lib/config.js')
+  , path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
   , jsonfile = require('jsonfile')
@@ -16,7 +17,7 @@ var router = express.Router();
 // Route to get information on total size allowed and free disk space.
 router.route('/').get(function (req, res, next) {
 
-  disk.check('/', function(err, info) {
+  disk.check(cfg.dataInstancesPath + '/..', function(err, info) {
 
     if (err) { return new Error(err); }
 
