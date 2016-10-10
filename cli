@@ -1,5 +1,0 @@
-#!/usr/bin/env node
-/* vim: set ft=javascript: */
-"use strict";
-
-require('castor-core')(require('./server.js'));

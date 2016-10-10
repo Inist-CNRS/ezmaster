@@ -77,7 +77,7 @@
                   <button v-else type="button" id='save' class="btn btn-primary button-create" disabled>Create</button>
                   <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled" disabled>Create</button>
                   <div id='loader' class="loader">
-                    <img id="loaderAddInstance" src="../assets/img/ajax-loader.gif" alt="Loading"/><br />
+                    <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                   </div>
                   <div id='errorLoader' class="loader">
@@ -112,8 +112,8 @@
 
       var self = this;
 
-      self.$http.get('/-/v3/config.js').then(function (result) {
-        var config = JSON.parse(result.data);
+      self.$http.get('/-/v1/config').then(function (result) {
+        var config = result.data;
         self.$set('publicDomain', config.publicDomain);
         publicDomain = config.publicDomain;
       }, console.error);

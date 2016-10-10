@@ -4,8 +4,8 @@
 // Travis run this file while building.
 var exec = require('child_process').exec
   , path = require('path')
-  , app = require('../helpers/app.js')
-  , instance = require('../helpers/instances.js')
+  , app = require('../lib/app.js')
+  , instance = require('../lib/instances.js')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
   , supertest = require('supertest')

@@ -55,7 +55,7 @@ export EZMASTER_FULL_FS_PERCENT=80
 
 ```shell
 mkdir ./ezmaster && cd ezmaster
-mkdir ./applications ./instances ./manifests
+mkdir -p ./data/applications ./data/instances ./data/manifests
 
 wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"

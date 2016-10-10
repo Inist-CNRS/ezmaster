@@ -10,9 +10,9 @@ services:
       - ezmaster_db
     volumes:
       - .:/app
-      - ./applications:/app/applications
-      - ./instances:/app/instances
-      - ./manifests:/app/manifests
+      - ./data/applications:/app/data/applications
+      - ./data/instances:/app/data/instances
+      - ./data/manifests:/app/data/manifests
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /app
     environment:
@@ -32,7 +32,7 @@ services:
       - 35267:35267
     depends_on:
       - ezmaster_db
-    command: ./node_modules/.bin/nodemon ./ezmaster
+    command: npm run start-debug
 
   ezmaster_db:
     container_name: ezmaster_db
