@@ -98,208 +98,176 @@
 
 
 <script>
-
-  /* global Vue, global document, global location*/
-
-  'use strict';
-
-  var publicDomain;
-
+  /* global document, location*/
+  var publicDomain
 
   export default {
 
     ready () {
-
-      var self = this;
+      var self = this
 
       self.$http.get('/-/v1/config').then(function (result) {
-        var config = result.data;
-        self.$set('publicDomain', config.publicDomain);
-        publicDomain = config.publicDomain;
-      }, console.error);
+        var config = result.data
+        self.$set('publicDomain', config.publicDomain)
+        publicDomain = config.publicDomain
+      }, console.error)
 
       self.$http.get('/-/v1/app').then(function (result) {
-        self.$set('apps', result.data);
-      }, console.error);
+        self.$set('apps', result.data)
+      }, console.error)
 
-
-      this.$watch('longName', function(longName) {
-
+      this.$watch('longName', function (longName) {
         // The longName parameter contains the longName field value.
 
-        if (longName == '') {
+        if (longName === '') {
           // Red background.
-          document.getElementById('inputLongName').style.backgroundColor='#FFCDD2';
+          document.getElementById('inputLongName').style.backgroundColor = '#FFCDD2'
         }
         else {
           // Green background.
-          document.getElementById('inputLongName').style.backgroundColor='#C5E1A5';
+          document.getElementById('inputLongName').style.backgroundColor = '#C5E1A5'
         }
+      })
 
-      });
-
-
-      this.$watch('study', function(study) {
-
+      this.$watch('study', function (study) {
         // The study parameter contains the study field value.
 
-        this.study = study;
+        this.study = study
 
-        if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-        else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
+        if (this.version === '') { this.technicalName = this.project + '-' + this.study }
+        else { this.technicalName = this.project + '-' + this.study + '-' + this.version }
 
-        this.verif(this.technicalName);
+        this.verif(this.technicalName)
 
-
-        if (/^[a-z0-9]+$/.test(study)==false || study == '') {
+        if (/^[a-z0-9]+$/.test(study) === false || study === '') {
           // Red background.
-          document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
+          document.getElementById('inputStudy').style.backgroundColor = '#FFCDD2'
         }
         else {
           // Green background.
-          document.getElementById('inputStudy').style.backgroundColor='#C5E1A5';
+          document.getElementById('inputStudy').style.backgroundColor = '#C5E1A5'
         }
+      })
 
-      });
-
-
-      this.$watch('project', function(project) {
-
+      this.$watch('project', function (project) {
         // The project parameter contains the project field value.
 
-        this.project = project;
+        this.project = project
 
-        if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-        else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
+        if (this.version === '') { this.technicalName = this.project + '-' + this.study }
+        else { this.technicalName = this.project + '-' + this.study + '-' + this.version }
 
-        this.verif(this.technicalName);
+        this.verif(this.technicalName)
 
-
-        if (/^[a-z0-9]+$/.test(project)==false || project == '') {
+        if (/^[a-z0-9]+$/.test(project) === false || project === '') {
           // Red background.
-          document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
+          document.getElementById('inputProject').style.backgroundColor = '#FFCDD2'
         }
         else {
           // Green background.
-          document.getElementById('inputProject').style.backgroundColor='#C5E1A5';
+          document.getElementById('inputProject').style.backgroundColor = '#C5E1A5'
         }
-
-      });
-
+      })
 
       this.$watch('version', function (version) {
-
         // The version parameter contains the version field value.
 
-        this.version = version;
+        this.version = version
 
-        if (this.version == '') { this.technicalName = this.project + '-' + this.study; }
-        else { this.technicalName = this.project + '-' + this.study + '-' + this.version; }
+        if (this.version === '') { this.technicalName = this.project + '-' + this.study }
+        else { this.technicalName = this.project + '-' + this.study + '-' + this.version }
 
-        this.verif(this.technicalName);
-
-      });
-
+        this.verif(this.technicalName)
+      })
     },
 
+    methods: {
 
-    methods : {
-
-      verif : function (technicalName) {
-
-        this.$http.get('/-/v1/instances/verif/'+technicalName).then(function (result) {
-
+      verif: function (technicalName) {
+        this.$http.get('/-/v1/instances/verif/' + technicalName).then(function (result) {
           if (result.data === 'OK') {
-            document.getElementById('technicalNameExists').style.display = 'none';
-            document.getElementById('save').style.display = 'block';
-            document.getElementById('saveTechnicalExists').style.display = 'none';
+            document.getElementById('technicalNameExists').style.display = 'none'
+            document.getElementById('save').style.display = 'block'
+            document.getElementById('saveTechnicalExists').style.display = 'none'
           }
           else {
-            document.getElementById('inputProject').style.backgroundColor='#FFCDD2';
-            document.getElementById('inputStudy').style.backgroundColor='#FFCDD2';
-            document.getElementById('technicalNameExists').style.display = 'block';
-            document.getElementById('save').style.display = 'none';
-            document.getElementById('saveTechnicalExists').style.display = 'block';
+            document.getElementById('inputProject').style.backgroundColor = '#FFCDD2'
+            document.getElementById('inputStudy').style.backgroundColor = '#FFCDD2'
+            document.getElementById('technicalNameExists').style.display = 'block'
+            document.getElementById('save').style.display = 'none'
+            document.getElementById('saveTechnicalExists').style.display = 'block'
           }
-
-        });
-
+        })
       },
 
-      displayFormAddInstance : function (event) {
-        document.getElementById('modal-add-instance').style.display = 'block';
+      displayFormAddInstance: function (event) {
+        document.getElementById('modal-add-instance').style.display = 'block'
       },
 
-      cancelAddInstance : function (event) {
-        document.getElementById('modal-add-instance').style.display = 'none';
+      cancelAddInstance: function (event) {
+        document.getElementById('modal-add-instance').style.display = 'none'
       },
 
-      addInstance : function (event) {
-        this.longName = document.getElementById('inputLongName').value;
-        this.project = document.getElementById('inputProject').value;
-        this.study = document.getElementById('inputStudy').value;
-        this.version = document.getElementById('inputVersion').value;
+      addInstance: function (event) {
+        this.longName = document.getElementById('inputLongName').value
+        this.project = document.getElementById('inputProject').value
+        this.study = document.getElementById('inputStudy').value
+        this.version = document.getElementById('inputVersion').value
 
-        document.getElementById('save').style.display = 'none';
-        document.getElementById('close_modal').style.display = 'none';
-        document.getElementById('loader').style.display = 'block';
+        document.getElementById('save').style.display = 'none'
+        document.getElementById('close_modal').style.display = 'none'
+        document.getElementById('loader').style.display = 'block'
 
-        if (this.longName == '') { this.longName = 'Free comment of '+this.technicalName; }
+        if (this.longName === '') { this.longName = 'Free comment of ' + this.technicalName }
 
         var data = {
-          'longName' : this.longName,
-          'project' : this.project,
-          'version' : this.version,
-          'study': this.study,
-          'technicalName' :  this.technicalName,
-          'app' : document.getElementById('app').value
-        };
+          longName: this.longName,
+          project: this.project,
+          version: this.version,
+          study: this.study,
+          technicalName: this.technicalName,
+          app: document.getElementById('app').value
+        }
         this.$http.post('/-/v1/instances', data).then(function (result) {
-          if (result.status == 200) { location.reload(); }
+          if (result.status === 200) { location.reload() }
         }, function (error) {
-          if (error.status == 400) {
-            this.codeErrorPull = error.status;
-            this.messageErrorPull = error.data;
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('errorLoader').style.display = 'block';
+          if (error.status === 400) {
+            this.codeErrorPull = error.status
+            this.messageErrorPull = error.data
+            document.getElementById('loader').style.display = 'none'
+            document.getElementById('errorLoader').style.display = 'block'
           }
-        });
+        })
       },
 
-      tryAgain : function (event) {
-        location.reload();
+      tryAgain: function (event) {
+        location.reload()
       }
 
     },
 
-
-    data() {
-
+    data () {
       return {
-        longName : '',
+        longName: '',
         project: '',
-        version : '',
-        study : '',
-        technicalName : '',
-        urlPreview : '',
-        messageErrorPull : '',
-        publicDomain : '',
-        apps : '',
-        codeErrorPull : ''
+        version: '',
+        study: '',
+        technicalName: '',
+        urlPreview: '',
+        messageErrorPull: '',
+        publicDomain: '',
+        apps: '',
+        codeErrorPull: ''
       }
-
     },
-
 
     computed: { // Here we manage fields built from other ones.
 
       urlPreview: function () {
-
         // By return we update what is present in the urlPreview field.
         // So, the content of the urlPreview field will be :
         // 'http://'+this.technicalName+'.'+publicDomain
-        return 'http://'+this.technicalName+'.'+publicDomain;
-
+        return 'http://' + this.technicalName + '.' + publicDomain
       }
 
     }

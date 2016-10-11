@@ -50,83 +50,73 @@
 </template>
 
 <script>
-
-/* global Vue, global document, global JSONEditor, global io*/
+/* global document, io*/
 
   // Socket connection.
-  var socket = io();
+  var socket = io()
 
   var optsEditor = {}
-    , idToDelete = null
-    ,nameTodelete
-    ;
-
+  var idToDelete = null
+  var nameTodelete
 
   export default {
 
     ready () {
-
-      let self = this;
+      const self = this
 
       // ... call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/app').then(function (result) {
-        self.$set('containers', result.data);
-      }, console.error);
-
+        self.$set('containers', result.data)
+      }, console.error)
     },
     methods: {
 
-      refresh : function () {
+      refresh: function () {
         this.$http.get('/-/v1/app').then(function (result) {
-          this.$set('containers', result.data);
-        }, console.error);
-        this.$set('messageErrorPull', '');
+          this.$set('containers', result.data)
+        }, console.error)
+        this.$set('messageErrorPull', '')
       },
 
-
-      deleteapplication : function (event) {
-
-        this.$set('imageNameToDelete', event.target.id);
-        nameTodelete = event.target.id;
-        document.getElementById('modal-delete-image').style.display = 'block';
-
+      deleteapplication: function (event) {
+        this.$set('imageNameToDelete', event.target.id)
+        nameTodelete = event.target.id
+        document.getElementById('modal-delete-image').style.display = 'block'
       },
 
-      cancelDeleteapplication : function (event) {
-        document.getElementById('modal-delete-image').style.display = 'none';
-        this.$set('messageErrorPull', '');
-        document.getElementById('errorLoaderImage').style.display = 'none';
+      cancelDeleteapplication: function (event) {
+        document.getElementById('modal-delete-image').style.display = 'none'
+        this.$set('messageErrorPull', '')
+        document.getElementById('errorLoaderImage').style.display = 'none'
       },
 
-      confirmDeleteapplication : function (event) {
-
-        var name = new Buffer(nameTodelete).toString('base64');
-        this.$http.delete('/-/v1/app/'+name).then(function (result) {
-          document.getElementById('modal-delete-image').style.display = 'none';
-          this.refresh();
+      confirmDeleteapplication: function (event) {
+        var name = new Buffer(nameTodelete).toString('base64')
+        this.$http.delete('/-/v1/app/' + name).then(function (result) {
+          document.getElementById('modal-delete-image').style.display = 'none'
+          this.refresh()
         }, function (err) {
-          var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : '';
-          this.$set('messageErrorPull', 'This image is being used by one or many instance(s), please delete them first.' + msgDetails);
-          document.getElementById('errorLoaderImage').style.display = 'block';
-        });
-
+          var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : ''
+          this.$set('messageErrorPull',
+            'This image is being used by one or many instance(s), please delete them first.' +
+            msgDetails)
+          document.getElementById('errorLoaderImage').style.display = 'block'
+        })
       },
 
-
-    data () {
-      return {
-        sizeToDelete : '',
-        imageNameToDelete : '',
-        containers : [],
-        messageErrorPull : '',
-        publicDomain : ''
+      data () {
+        return {
+          sizeToDelete: '',
+          imageNameToDelete: '',
+          containers: [],
+          messageErrorPull: '',
+          publicDomain: ''
+        }
       }
+
     }
-
   }
-}
-
 
 </script>
 

@@ -204,358 +204,335 @@
 
 
 <script>
-
-  /* global Vue, global document, global JSONEditor, global io*/
+  /* global document, JSONEditor, io*/
   // Socket connection.
 
-  var socket = io();
-  var optsEditor = {};
-  var editor = new JSONEditor();
-  var filesize = require('filesize');
+  var socket = io()
+  var optsEditor = {}
+  var editor = new JSONEditor()
+  var filesize = require('filesize')
 
   export default {
 
     ready () {
-
-      let self = this;
+      const self = this
       // Call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/instances').then(function (result) {
-        self.$set('containers', result.data);
-      }, console.error);
+        self.$set('containers', result.data)
+      }, console.error)
+
       self.$http.get('/-/v1/config').then(function (result) {
-        var config = result.data;
-        self.$set('publicDomain', config.publicDomain);
-      }, console.error);
+        var config = result.data
+        self.$set('publicDomain', config.publicDomain)
+      }, console.error)
+
       // Listen incoming messages typed as 'refreshInstances' from the server.
       // Here the message comes from eventRefreshInstances.js.
-      socket.on('refreshInstances', function(beatInstances) {
+      socket.on('refreshInstances', function (beatInstances) {
         // Update variable 'containers' which will automatically
         // refresh the instances-table component.
-        self.$set('containers', beatInstances);
-      });
+        self.$set('containers', beatInstances)
+      })
     },
 
     methods: {
 
-      startInstance : function (event) {
-
+      startInstance: function (event) {
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
         // button start > li > ul > td > tr > id="[[ item.description.Id ]]"
-        this.$http.put('/-/v1/instances/start/'+event.target.id).then(function (result) {
-        }, console.error);
-
+        this.$http.put('/-/v1/instances/start/' + event.target.id).then(function (result) {
+        }, console.error)
       },
 
-      stopInstance : function (event) {
-
-        this.$http.put('/-/v1/instances/stop/'+event.target.id).then(function (result) {
-        }, console.error);
-
+      stopInstance: function (event) {
+        this.$http.put('/-/v1/instances/stop/' + event.target.id).then(function (result) {
+        }, console.error)
       },
 
-      deleteInstance : function (event) {
+      deleteInstance: function (event) {
+        // Update the data variable instanceId which will automatically update the HTML
+        //  with this new value.
+        this.instanceId = event.target.id
 
-        // Update the data variable instanceId which will automatically update the HTML with this new value.
-        this.instanceId = event.target.id;
+        this.$http.get('/-/v1/instances/' + this.instanceId).then(function (result) {
+          this.technicalNameToDelete = result.data.technicalName
+          this.sizeToDelete = result.data.size
 
-        this.$http.get('/-/v1/instances/'+this.instanceId).then(function (result) {
-
-          this.technicalNameToDelete = result.data.technicalName;
-          this.sizeToDelete = result.data.size;
-
-          document.getElementById('modal-delete-instance').style.display = 'block';
-
-        }, console.error);
-
+          document.getElementById('modal-delete-instance').style.display = 'block'
+        }, console.error)
       },
 
-      cancelDeleteInstance : function (event) {
-        document.getElementById('modal-delete-instance').style.display = 'none';
+      cancelDeleteInstance: function (event) {
+        document.getElementById('modal-delete-instance').style.display = 'none'
       },
 
-      confirmDeleteInstance : function (event) {
-        this.$http.delete('/-/v1/instances/'+this.instanceId).then(function (result) {
-          document.getElementById('modal-delete-instance').style.display = 'none';
-        }, console.error);
+      confirmDeleteInstance: function (event) {
+        this.$http.delete('/-/v1/instances/' + this.instanceId).then(function (result) {
+          document.getElementById('modal-delete-instance').style.display = 'none'
+        }, console.error)
       },
 
-      displayConfig : function (event) {
+      displayConfig: function (event) {
+        document.getElementById('jsoneditor').innerHTML = ''
 
-        document.getElementById('jsoneditor').innerHTML = '';
+        // Update the data variable instanceId which will automatically update the HTML
+        //  with this new value.
+        this.instanceId = event.target.id
 
-        // Update the data variable instanceId which will automatically update the HTML with this new value.
-        this.instanceId = event.target.id;
-
-        this.$http.get('/-/v1/instances/'+this.instanceId).then(function (result) {
-
-          document.getElementById('modal-update-config').style.display = 'block';
+        this.$http.get('/-/v1/instances/' + this.instanceId).then(function (result) {
+          document.getElementById('modal-update-config').style.display = 'block'
 
           optsEditor = {
 
             mode: 'code',
-            onChange : function() {
+            onChange: function () {
               try {
-                editor.get();
-                document.getElementById('spanConfigError').style.display = 'none';
-                document.getElementById('buttonUpdateDisable').style.display = 'none';
-                document.getElementById('buttonUpdate').style.display = 'block';
+                editor.get()
+                document.getElementById('spanConfigError').style.display = 'none'
+                document.getElementById('buttonUpdateDisable').style.display = 'none'
+                document.getElementById('buttonUpdate').style.display = 'block'
               }
               catch (e) {
-                document.getElementById('spanConfigError').innerHTML = e;
-                document.getElementById('buttonUpdate').style.display = 'none';
-                document.getElementById('buttonUpdateDisable').style.display = 'block';
-                document.getElementById('spanConfigError').style.display = 'block';
+                document.getElementById('spanConfigError').innerHTML = e
+                document.getElementById('buttonUpdate').style.display = 'none'
+                document.getElementById('buttonUpdateDisable').style.display = 'block'
+                document.getElementById('spanConfigError').style.display = 'block'
               }
             }
 
-          };
+          }
 
-          editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
-          editor.set(result.data.config);
-
-        });
+          editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor)
+          editor.set(result.data.config)
+        })
       },
 
-      cancelConfig : function (event) {
-        document.getElementById('modal-update-config').style.display = 'none';
+      cancelConfig: function (event) {
+        document.getElementById('modal-update-config').style.display = 'none'
       },
 
-      updateConfig : function (event) {
-        var newConfig = editor.get();
+      updateConfig: function (event) {
+        var newConfig = editor.get()
         var data = {
-          newConfig : newConfig,
-          newTitle : newConfig.title
-        };
-        this.$http.put('/-/v1/instances/config/'+this.instanceId, data).then(function (result) {
-          document.getElementById('modal-update-config').style.display = 'none';
-        });
+          newConfig: newConfig,
+          newTitle: newConfig.title
+        }
+        this.$http.put('/-/v1/instances/config/' + this.instanceId, data).then(function (result) {
+          document.getElementById('modal-update-config').style.display = 'none'
+        })
       },
 
-      displayFormUpload : function (event) {
-
+      displayFormUpload: function (event) {
         // Shows the modal upload and reset the inputs.
-        document.getElementById('modal-upload-data').style.display = 'block';
-        document.getElementById('submitUpload').style.display = 'none';
-        document.getElementById('spanFileName').innerHTML = "";
-        document.getElementById('spanFileSize').innerHTML = "";
-        document.getElementById('spanFileType').innerHTML = "";
-
+        document.getElementById('modal-upload-data').style.display = 'block'
+        document.getElementById('submitUpload').style.display = 'none'
+        document.getElementById('spanFileName').innerHTML = ''
+        document.getElementById('spanFileSize').innerHTML = ''
+        document.getElementById('spanFileType').innerHTML = ''
 
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
-        // Update the data variable instanceId which will automatically update the HTML with this new value.
-        this.instanceId = event.target.id;
+        // Update the data variable instanceId which will automatically update the HTML with
+        // this new value.
+        this.instanceId = event.target.id
 
         // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
+        this.$http.get('/-/v1/instances/' + this.instanceId + '/data').then(function (result) {
+          // Update the data variable files which will automatically update the data files
+          //  list on the modal.
+          this.files = result.data
 
-          // Update the data variable files which will automatically update the data files list on the modal.
-          this.files = result.data;
-
-          // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
-          this.nbDataFiles = Object.keys(this.files).length;
+          // Update the data variable nbDataFiles which will automatically update the HTML
+          //  with this new value.
+          this.nbDataFiles = Object.keys(this.files).length
 
           // If there are no files already uploaded we don't show the files list.
-          if(this.nbDataFiles > 0)
-            document.getElementById('filesList').style.display = 'block';
-          else
-            document.getElementById('filesList').style.display = 'none';
-
-        }, console.error);
-
+          if (this.nbDataFiles > 0) {
+            document.getElementById('filesList').style.display = 'block'
+          }
+          else {
+            document.getElementById('filesList').style.display = 'none'
+          }
+        }, console.error)
       },
 
-      cancelUpload : function (event) {
-
-        document.getElementById('modal-upload-data').style.display = 'none';
-        document.getElementById('btnFile').value = "";
-
+      cancelUpload: function (event) {
+        document.getElementById('modal-upload-data').style.display = 'none'
+        document.getElementById('btnFile').value = ''
       },
 
-      onChangeInputFile : function (event) {
-
+      onChangeInputFile: function (event) {
         // When the user choose a file.
 
         // Get information on total size allowed and free disk space.
         // Warn the user if a problem appears.
         this.$http.get('/-/v1').then(function (result) {
+          document.getElementById('submitUpload').style.display = 'block'
 
-          document.getElementById('submitUpload').style.display = 'block';
+          document.getElementById('spanFileSize').style.color = 'black'
+          document.getElementById('spanFileType').style.color = 'black'
 
-          document.getElementById('spanFileSize').style.color = "black";
-          document.getElementById('spanFileType').style.color = "black";
-
-          var btn = document.getElementById('btnFile').value;
+          var btn = document.getElementById('btnFile').value
 
           // We calculate the total size of selected files.
 
-          var files = document.getElementById('btnFile').files;
+          var files = document.getElementById('btnFile').files
           var nbFiles = 0
 
-          this.filesSize = 0;
+          this.filesSize = 0
 
-          for(var i = 0 ; i < files.length ; i++) {
-            nbFiles += 1;
-            this.filesSize += files[i].size;
+          for (var i = 0; i < files.length; i++) {
+            nbFiles += 1
+            this.filesSize += files[i].size
           }
 
           // Get the first file to check if it exists.
-          var file = document.getElementById('btnFile').files[0];
+          var file = document.getElementById('btnFile').files[0]
 
           // If the file exists.
           if (file) {
-
-            var fileSize = 0;
-            if (this.filesSize > 1024 * 1024 * 1024)
-              fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024 * 1024)) / 100).toString() + 'GB';
-            else if (this.filesSize > 1024 * 1024)
-              fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-            else
-              fileSize = (Math.round(this.filesSize * 100 / 1024) / 100).toString() + 'KB';
-
-            // Display information on the selected file.
-            document.getElementById('spanFileName').style.color = "black";
-            if(nbFiles == 1) {
-              document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name;
-              document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type;
+            var fileSize = 0
+            if (this.filesSize > 1024 * 1024 * 1024) {
+              fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024 * 1024)) / 100)
+              .toString() + 'GB'
+            }
+            else if (this.filesSize > 1024 * 1024) {
+              fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024)) / 100)
+              .toString() + 'MB'
             }
             else {
-              document.getElementById('spanFileName').innerHTML = 'Name : Multi Files';
-              document.getElementById('spanFileType').innerHTML = 'Type : Multi Types';
+              fileSize = (Math.round(this.filesSize * 100 / 1024) / 100)
+              .toString() + 'KB'
             }
-            document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize;
 
+            // Display information on the selected file.
+            document.getElementById('spanFileName').style.color = 'black'
+            if (nbFiles === 1) {
+              document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name
+              document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type
+            }
+            else {
+              document.getElementById('spanFileName').innerHTML = 'Name : Multi Files'
+              document.getElementById('spanFileType').innerHTML = 'Type : Multi Types'
+            }
+            document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize
           }
 
           // Checking if total file size is (or not) above free disk space.
           if (this.filesSize >= result.data.freeDiskSpace) {
-
-            document.getElementById('spanFileName').innerHTML = 'ERROR';
-            document.getElementById('spanFileSize').innerHTML = 'Total size upload : '+filesize(this.filesSize);
-            document.getElementById('spanFileType').innerHTML = 'Free space : '+filesize(result.data.freeDiskSpace);
-            document.getElementById('spanFileName').style.color = "red";
-            document.getElementById('spanFileSize').style.color = "red";
-            document.getElementById('spanFileType').style.color = "red";
-            document.getElementById('submitUpload').style.display = 'none';
-
+            document.getElementById('spanFileName').innerHTML = 'ERROR'
+            document.getElementById('spanFileSize').innerHTML = 'Total size upload : ' +
+              filesize(this.filesSize)
+            document.getElementById('spanFileType').innerHTML = 'Free space : ' +
+              filesize(result.data.freeDiskSpace)
+            document.getElementById('spanFileName').style.color = 'red'
+            document.getElementById('spanFileSize').style.color = 'red'
+            document.getElementById('spanFileType').style.color = 'red'
+            document.getElementById('submitUpload').style.display = 'none'
           }
 
           // Checking if total file size is (or not) above allowed total size.
           if (this.filesSize > result.data.sizeAllowed) {
-
-            document.getElementById('spanFileName').innerHTML = 'ERROR';
-            document.getElementById('spanFileSize').innerHTML = 'Total size upload : '+filesize(this.filesSize);
-            document.getElementById('spanFileType').innerHTML = 'Total size allowed : '+filesize(result.data.sizeAllowed);
-            document.getElementById('spanFileName').style.color = "red";
-            document.getElementById('spanFileSize').style.color = "red";
-            document.getElementById('spanFileType').style.color = "red";
-            document.getElementById('submitUpload').style.display = 'none';
-
+            document.getElementById('spanFileName').innerHTML = 'ERROR'
+            document.getElementById('spanFileSize').innerHTML = 'Total size upload : ' +
+              filesize(this.filesSize)
+            document.getElementById('spanFileType').innerHTML = 'Total size allowed : ' +
+              filesize(result.data.sizeAllowed)
+            document.getElementById('spanFileName').style.color = 'red'
+            document.getElementById('spanFileSize').style.color = 'red'
+            document.getElementById('spanFileType').style.color = 'red'
+            document.getElementById('submitUpload').style.display = 'none'
           }
-
-        });
-
+        })
       },
 
-      uploadData : function (event) {
-
+      uploadData: function (event) {
         // When the user click on the upload button.
 
-        var btn = document.getElementById('btnFile').value;
-        //var file = btn.split('\\')[2];
+        var btn = document.getElementById('btnFile').value
+        // var file = btn.split('\\')[2];
 
         // Check if a file has been selected or not and give a feedback to the user.
-        if(btn != "") {
-
-          document.getElementById('spanFileName').innerHTML = "Uploaded";
-          document.getElementById('spanFileName').style.color = "green";
-
+        if (btn !== '') {
+          document.getElementById('spanFileName').innerHTML = 'Uploaded'
+          document.getElementById('spanFileName').style.color = 'green'
         }
         else {
-
-          document.getElementById('spanFileName').innerHTML = "No file selected.";
-          document.getElementById('spanFileName').style.color = "red";
-
+          document.getElementById('spanFileName').innerHTML = 'No file selected.'
+          document.getElementById('spanFileName').style.color = 'red'
         }
-
       },
 
-      deleteUploadedFile : function (event) {
-
+      deleteUploadedFile: function (event) {
         // event.path[2].id go up 2 times in the HTML tree to get the id of the reached element.
         // Here the file name.
-        var fileName = event.target.id;
+        var fileName = event.target.id
 
         // Delete the file.
-        this.$http.delete('/-/v1/instances/'+this.instanceId+'/'+fileName).then(function (resultDelete) {
-
+        this.$http.delete('/-/v1/instances/' + this.instanceId + '/' + fileName)
+        .then(function (resultDelete) {
           // Get information on formerly uploaded files for the concerned instance.
-          this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (resultGet) {
+          this.$http.get('/-/v1/instances/' + this.instanceId + '/data')
+          .then(function (resultGet) {
+            // Update the data variable nbDataFiles which will automatically update the HTML
+            // with this new value.
+            this.nbDataFiles = Object.keys(this.files).length
 
-            // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
-            this.nbDataFiles = Object.keys(this.files).length;
+            // Update the data variable files which will automatically update the data files
+            // list on the modal.
+            this.files = resultGet.data
 
-            // Update the data variable files which will automatically update the data files list on the modal.
-            this.files = resultGet.data;
-
-            // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
-            this.nbDataFiles -= 1;
+            // Update the data variable nbDataFiles which will automatically update the HTML
+            // with this new value.
+            this.nbDataFiles -= 1
 
             // If there are no files already uploaded we don't show the files list.
-            if(this.nbDataFiles > 0)
-              document.getElementById('filesList').style.display = 'block';
-            else
-              document.getElementById('filesList').style.display = 'none';
+            if (this.nbDataFiles > 0) {
+              document.getElementById('filesList').style.display = 'block'
+            }
+            else {
+              document.getElementById('filesList').style.display = 'none'
+            }
 
-            document.getElementById(fileName).style.display = 'none';
-
-          }, console.error);
-
-        });
-
+            document.getElementById(fileName).style.display = 'none'
+          }, console.error)
+        })
       },
 
-      refreshDataFilesList : function (event) {
-
+      refreshDataFilesList: function (event) {
         // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get('/-/v1/instances/'+this.instanceId+'/data').then(function (result) {
+        this.$http.get('/-/v1/instances/' + this.instanceId + '/data').then(function (result) {
+          // Update the data variable files which will automatically update the data files list
+          // on the modal.
+          this.files = result.data
 
-          // Update the data variable files which will automatically update the data files list on the modal.
-          this.files = result.data;
-
-          // Update the data variable nbDataFiles which will automatically update the HTML with this new value.
-          this.nbDataFiles = Object.keys(this.files).length;
+          // Update the data variable nbDataFiles which will automatically update the HTML
+          // with this new value.
+          this.nbDataFiles = Object.keys(this.files).length
 
           // If there are no files already uploaded we don't show the files list.
-          if(this.nbDataFiles > 0)
-            document.getElementById('filesList').style.display = 'block';
-          else
-            document.getElementById('filesList').style.display = 'none';
-
-        }, console.error);
-
-      },
-
-
-
-
-
-
+          if (this.nbDataFiles > 0) {
+            document.getElementById('filesList').style.display = 'block'
+          }
+          else {
+            document.getElementById('filesList').style.display = 'none'
+          }
+        }, console.error)
+      }
 
     }, // End of Methods
 
-
     data () {
       return {
-        sizeToDelete : '',
-        technicalNameToDelete : '',
-        containers : [],
-        publicDomain : '',
-        instanceId : '',
-        files : {},
-        nbDataFiles : 0,
-        filesSize : 0
+        sizeToDelete: '',
+        technicalNameToDelete: '',
+        containers: [],
+        publicDomain: '',
+        instanceId: '',
+        files: {},
+        nbDataFiles: 0,
+        filesSize: 0
       }
     }
   }

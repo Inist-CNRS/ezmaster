@@ -93,130 +93,112 @@
 
 
 <script>
-
-  /* global Vue, global document, global location*/
-
-  'use strict';
-
-  var socket = io();
-
+  /* global document, location, io*/
+  var socket = io()
 
   export default {
 
+    ready () {
+      var self = this
+      var fullFsPercent
 
+      socket.on('progressBar', function (infoPull) {
+        self.$set('progressPull', infoPull)
+      })
 
-    ready() {
-      var self = this;
-      var fullFsPercent;
-
-      socket.on('progressBar', function(infoPull) {
-        self.$set('progressPull', infoPull);
-      });
-
-      socket.on('statusPull', function(infoPull) {
-        self.$set('statusPull', infoPull);
-      });
+      socket.on('statusPull', function (infoPull) {
+        self.$set('statusPull', infoPull)
+      })
 
       self.$http.get('/-/v1/config').then(function (result) {
-        var config = result.data;
-        self.$set('fullFsPercent', config.fullFsPercent);
-        fullFsPercent = config.fullFsPercent;
-      }, console.error);
+        var config = result.data
+        self.$set('fullFsPercent', config.fullFsPercent)
+        fullFsPercent = config.fullFsPercent
+      }, console.error)
 
-      socket.on('refreshInfosMachine', function(infosMachineSocket) {
+      socket.on('refreshInfosMachine', function (infosMachineSocket) {
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
-        self.$set('infosMachine', infosMachineSocket);
+        self.$set('infosMachine', infosMachineSocket)
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
-        self.$set('boolInfosFeed', true);
-        self.$set('showAddbutton', fullFsPercent>infosMachineSocket.useDiskPercentage);
-
-      });
-
-
+        self.$set('boolInfosFeed', true)
+        self.$set('showAddbutton', fullFsPercent > infosMachineSocket.useDiskPercentage)
+      })
     },
 
-    methods : {
+    methods: {
 
-
-      displayFormAddImage : function (event) {
-        document.getElementById('modal-add-image').style.display = 'block';
+      displayFormAddImage: function (event) {
+        document.getElementById('modal-add-image').style.display = 'block'
       },
 
-      cancelAddImage : function (event) {
-        document.getElementById('modal-add-image').style.display = 'none';
+      cancelAddImage: function (event) {
+        document.getElementById('modal-add-image').style.display = 'none'
       },
 
-      addImage : function (event) {
-        this.imageName = document.getElementById('inputImageName').value;
-        this.versionImage = document.getElementById('inputVersionImage').value;
+      addImage: function (event) {
+        this.imageName = document.getElementById('inputImageName').value
+        this.versionImage = document.getElementById('inputVersionImage').value
 
-        document.getElementById('close_modal_image').style.display = 'none';
-        document.getElementById('loaderImage').style.display = 'block';
+        document.getElementById('close_modal_image').style.display = 'none'
+        document.getElementById('loaderImage').style.display = 'block'
 
         var data = {
-          'imageName' : this.imageName,
-          'versionImage' : this.versionImage,
-          'imageHub' : this.imageHub,
-          'username' : this.username,
-          'password' : this.password,
-          'email' : this.email
-        };
-
-        this.$http.post('/-/v1/app', data).then(function (result) {
-
-          if (result.status == 200) { location.reload(); }
-        }, function (error) {
-
-          if (error) {
-            this.$set('codeErrorPull', error.status);
-            this.$set('messageErrorPull', error.data);
-            document.getElementById('loaderImage').style.display = 'none';
-            document.getElementById('errorLoaderImages').style.display = 'block';
-
-          }
-        });
-      },
-
-      tryAgain : function (event) {
-        location.reload();
-      },
-
-      showSettings : function (event) {
-
-        if(this.show == false){
-          this.$set('show', true);
-        }else{
-          this.$set('show', false);
+          imageName: this.imageName,
+          versionImage: this.versionImage,
+          imageHub: this.imageHub,
+          username: this.username,
+          password: this.password,
+          email: this.email
         }
 
+        this.$http.post('/-/v1/app', data).then(function (result) {
+          if (result.status === 200) { location.reload() }
+        }, function (error) {
+          if (error) {
+            this.$set('codeErrorPull', error.status)
+            this.$set('messageErrorPull', error.data)
+            document.getElementById('loaderImage').style.display = 'none'
+            document.getElementById('errorLoaderImages').style.display = 'block'
+          }
+        })
+      },
+
+      tryAgain: function (event) {
+        location.reload()
+      },
+
+      showSettings: function (event) {
+        if (this.show === false) {
+          this.$set('show', true)
+        }
+        else {
+          this.$set('show', false)
+        }
       }
 
     },
 
-
-    data() {
-
+    data () {
       return {
-        imageName : '',
-        versionImage : '',
-        messageErrorPull : '',
-        imageHub : '',
+        imageName: '',
+        versionImage: '',
+        messageErrorPull: '',
+        imageHub: '',
         email: '',
         password: '',
         username: '',
-        show : false,
-        progressPull : '',
-        statusPull : '',
-        codeErrorPull : '',
+        show: false,
+        progressPull: '',
+        statusPull: '',
+        codeErrorPull: '',
         infosMachine: {},
         fullFsPercent: '',
         showAddbutton: true,
         boolInfosFeed: false
       }
-
-    },
+    }
 
   }
 

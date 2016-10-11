@@ -12,7 +12,7 @@
 
   <div class="nav navbar-text navbar-right infoMachineGroup">
 
-    <!-- LoadAverage -->  
+    <!-- LoadAverage -->
     <div class="glyphicon1 glyphicon glyphicon-tasks" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average\n[[ infosMachine.nbCPUs ]] CPUs"></div>
     <span class="badge1-1 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 1 minutes">[[ (infosMachine.loadAverage)[0] ]]</span>
     <span class="badge1-2 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 5 minutes">[[ (infosMachine.loadAverage)[1] ]]</span>
@@ -33,46 +33,37 @@
 
 
 <script>
-
-  /*global Vue, global io*/
+  /*global io, $*/
 
   // Socket connection.
-  var socket = io();
-
+  var socket = io()
 
   export default {
 
     ready () {
-
-      let self = this;
+      const self = this
 
       // enables the bootstrap component for tooltips
-      $('.infoMachineGroup [data-toggle="tooltip"]').tooltip();
+      $('.infoMachineGroup [data-toggle="tooltip"]').tooltip()
 
       // Listen incoming messages typed as 'refreshInfosMachine' from the server.
       // Here the message comes from eventRefreshInfosMachine.js.
-      socket.on('refreshInfosMachine', function(infosMachineSocket) {
-
+      socket.on('refreshInfosMachine', function (infosMachineSocket) {
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
-        self.$set('infosMachine', infosMachineSocket);
+        self.$set('infosMachine', infosMachineSocket)
 
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
-        self.$set('boolInfosFeed', true);
-
-      });
-
+        self.$set('boolInfosFeed', true)
+      })
     },
 
-
     data () {
-
       return {
         infosMachine: {},
         boolInfosFeed: false
       }
-
     }
 
   }
