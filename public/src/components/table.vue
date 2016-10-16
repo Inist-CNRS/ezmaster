@@ -373,8 +373,6 @@
           document.getElementById('spanFileSize').style.color = 'black'
           document.getElementById('spanFileType').style.color = 'black'
 
-          var btn = document.getElementById('btnFile').value
-
           // We calculate the total size of selected files.
 
           var files = document.getElementById('btnFile').files

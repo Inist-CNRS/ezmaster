@@ -1,7 +1,7 @@
 /*eslint no-unused-vars: 0*/
 'use strict';
 
-import Vue from 'vue';
+var Vue = require('vue');
 
 Vue.config.delimiters = ['[[', ']]'];
 

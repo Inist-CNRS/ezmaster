@@ -50,13 +50,7 @@
 </template>
 
 <script>
-/* global document, io*/
-
-  // Socket connection.
-  var socket = io()
-
-  var optsEditor = {}
-  var idToDelete = null
+  /* global document */
   var nameTodelete
 
   export default {
