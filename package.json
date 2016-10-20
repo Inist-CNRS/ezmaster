@@ -17,7 +17,7 @@
     "build-css": "lessc --clean-css='--compatibility=ie8 --advanced' public/less/*.less > public/dist/bundle.css",
     "insertversion": "sed -i \"s#\\(image: inistcnrs/ezmaster:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose.yml && sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" public/index.html",
     "preversion": "npm run lint",
-    "version": "npm run insertversion && git add public/index.html",
+    "version": "npm run insertversion && git add public/index.html docker-compose.yml",
     "postversion": "git push && git push --tags"
   },
   "browserify": {
