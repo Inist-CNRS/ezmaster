@@ -68,9 +68,9 @@
 
                 <div class="panel-footer">
                   <button type="button" id="close_modal_image" class="btn btn-default" v-on:click='cancelAddImage' data-dismiss="modal">Cancel</button>
-                  <button v-if="$validation1.valid" type="button" id='save' class="btn btn-primary button-create" v-on:click='addImage'>Create</button>
-                  <button v-else type="button" id='save' class="btn btn-primary button-create-disabled" disabled>Create</button>
-                  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled-none" disabled>Create</button>
+                  <button v-if="$validation1.valid" type="button" id='save' class="btn btn-primary button-add" v-on:click='addImage'>Add</button>
+                  <button v-else type="button" id='save' class="btn btn-primary button-add-disabled" disabled>Add</button>
+                  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-add-disabled-none" disabled>Add</button>
                   <div id='loaderImage' class="loader">
                     <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">[[ statusPull ]][[ progressPull ]]</span>
@@ -243,15 +243,15 @@
     border:solid white 5px;
   }
 
-  .button-create{
+  .button-add{
     float:right;
   }
 
-  .button-create-disabled{
+  .button-add-disabled{
     float:right;
   }
 
-  .button-create-disabled-none{
+  .button-add-disabled-none{
     float:right;
     display: none;
   }
