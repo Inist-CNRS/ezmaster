@@ -8,18 +8,17 @@
 
 <template>
 
-  <div id='addImage' v-on:keyup.esc="cancelAddImage">
-    <button id="add_image" class="btn btn-raised btn-primary" v-show="showAddbutton" v-on:click="displayFormAddImage" >Add Application</button>
+  <div id="addImage">
+    <button class="btn btn-raised btn-primary" data-toggle="modal" data-target="#modal-add-image">Add Application</button>
 
     <div class="modal" id="modal-add-image">
       <div class="modal-dialog">
         <div class="modal-content">
-<!--           <validator name="validation1"> -->
             <form novalidate id="add-image-form" name="Form" class="form-horizontal">
               <fieldset>
                 <div class="modal-header modal-addapp">
                   <legend>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelAddImage">×</button>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
                     <span class="titleFormAddInstance">Add Application</span>
                   </legend>
                 </div>
@@ -67,9 +66,8 @@
 
 
                 <div class="panel-footer">
-                  <button type="button" id="close_modal_image" class="btn btn-default" v-on:click='cancelAddImage' data-dismiss="modal">Cancel</button>
-                  <button type="button" id='save' class="btn btn-primary button-add" v-on:click='addImage'>Add</button>
-				  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-add-disabled-none" disabled>Add</button>
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary button-add" v-on:click="addImage" v-bind:disabled="disableAddButton">Add</button>
                   <div id='loaderImage' class="loader">
                     <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">{{ statusPull }}{{ progressPull }}</span>
@@ -82,7 +80,6 @@
                 </div>
               </fieldset>
             </form>
-<!--           </validator> -->
         </div>
       </div>
     </div>
@@ -122,28 +119,18 @@
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
         self.boolInfosFeed = true;
-        self.showAddbutton = fullFsPercent > infosMachineSocket.useDiskPercentage;
+        self.disableAddButton = fullFsPercent < infosMachineSocket.useDiskPercentage;
       })
     },
 
     methods: {
 
-      displayFormAddImage: function (event) {
-        document.getElementById('modal-add-image').style.display = 'block'
-      },
-
-      cancelAddImage: function (event) {
-        document.getElementById('modal-add-image').style.display = 'none'
-      },
-
       addImage: function (event) {
-        this.imageName = document.getElementById('inputImageName').value
-        this.versionImage = document.getElementById('inputVersionImage').value
+		var self = this;
 
-        document.getElementById('close_modal_image').style.display = 'none'
         document.getElementById('loaderImage').style.display = 'block'
 
-        var data = {
+        var formdata = {
           imageName: this.imageName,
           versionImage: this.versionImage,
           imageHub: this.imageHub,
@@ -152,8 +139,11 @@
           email: this.email
         }
 
-        this.$http.post('/-/v1/app', data).then(function (result) {
-          if (result.status === 200) { location.reload() }
+        this.$http.post('/-/v1/app', formdata).then(function (result) {
+          if (result.status === 200) {
+			$('#modal-add-image').modal('hide')
+			self.$emit('refreshApplications');
+		  }
         }, function (error) {
           if (error) {
             this.codeErrorPull = error.status;
@@ -194,7 +184,7 @@
         codeErrorPull: '',
         infosMachine: {},
         fullFsPercent: '',
-        showAddbutton: true,
+        disableAddButton: false,
         boolInfosFeed: false
       }
     }
