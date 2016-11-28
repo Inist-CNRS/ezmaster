@@ -207,7 +207,7 @@
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/instances').then(function (result) {
         self.containers = result.data
-      }, console.error);
+      }, console.error)
 
       self.$http.get('/-/v1/config').then(function (result) {
         var config = result.data

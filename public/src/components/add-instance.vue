@@ -152,7 +152,7 @@
       this.$watch('project', function (project) {
         // The project parameter contains the project field value.
 
-        this.project = project;
+        this.project = project
 
         if (this.version === '') { this.technicalName = this.project + '-' + this.study }
         else { this.technicalName = this.project + '-' + this.study + '-' + this.version }
