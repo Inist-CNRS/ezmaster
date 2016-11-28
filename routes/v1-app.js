@@ -21,6 +21,7 @@ var express = require('express');
 var router = express.Router();
 
 router.route('/').get(function (req, res, next) {
+  debug('GET ', req.originalUrl);
 
   app.getApps(function (err, data) {
 
@@ -37,6 +38,7 @@ router.route('/').get(function (req, res, next) {
  * Creates a new application (docker pull)
  */
 router.route('/').post(bodyParser(), function (req, res, next) {
+  debug('POST ', req.originalUrl);
 
   var image = req.body.imageName;
   var tag = req.body.versionImage;
@@ -147,6 +149,7 @@ router.route('/').post(bodyParser(), function (req, res, next) {
 
 
 router.route('/:imageId').delete(function (req, res, next) {
+  debug('DELETE ', req.originalUrl);
 
   var name = new Buffer(req.params.imageId, 'base64').toString();
 
