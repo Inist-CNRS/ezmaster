@@ -18,6 +18,10 @@ var proxy = httpProxy.createProxyServer({});
 
 module.exports = function (req, res, next) {
 
+  if (req.headers['x-forwarded-for'] && !cfg.publicDomain) {
+    next(new Error('It\'s strange, EZmaster is behind a reverse proxy but EZMASTER_PUBLIC_DOMAIN is not set'));
+  }
+
   // totaly skip the revese proxy if EZMASTER_PUBLIC_DOMAIN is not set
   if (!cfg.publicDomain) {
     //debug('skiping reverse-proxy middleware');
