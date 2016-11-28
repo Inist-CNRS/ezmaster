@@ -70,7 +70,7 @@
                   <button type="button" class="btn btn-primary button-add" v-on:click="addImage" v-bind:disabled="disableAddButton">Add</button>
                   <div id='loaderImage' class="loader">
                     <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
-                    <span class="text-primary" id="messageLoaderAddInstance">{{ statusPull }}{{ progressPull }}</span>
+                    <span class="text-primary" id="messageLoaderAddInstance">{{ statusPull }}</span>
                   </div>
                    <div id='errorLoaderImages' class="loader">
                     <span class="text-danger" id="errorLoaderAddImage">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
@@ -97,10 +97,6 @@
     mounted () {
       var self = this
       var fullFsPercent
-
-      socket.on('progressBar', function (infoPull) {
-        self.progressPull = infoPull
-      })
 
       socket.on('statusPull', function (infoPull) {
         self.statusPull = infoPull
@@ -179,7 +175,6 @@
         password: '',
         username: '',
         show: false,
-        progressPull: '',
         statusPull: '',
         codeErrorPull: '',
         infosMachine: {},

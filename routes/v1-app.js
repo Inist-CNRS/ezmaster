@@ -94,11 +94,15 @@ router.route('/').post(bodyParser(), function (req, res, next) {
           if (event['status'] != null && event.progress != null
           &&  event.progress.split(']')[1] != 'error during stream parsing') {
 
-            socket.broadcast.emit('progressBar', event.progress.split(']')[1]);
-            socket.emit('progressBar', event.progress.split(']')[1]);
-
-            socket.broadcast.emit('statusPull', event.status+':');
-            socket.emit('statusPull', event.status+':');
+            // notify the client of docker pull download progress info
+            // and do not send too much data (wait 200ms)
+            if (!app.dockerPullIsSpammed) {
+              setTimeout(function () {
+                app.dockerPullIsSpammed = false;
+              }, 200);
+              socket.emit('statusPull', event.status + ': ' + event.progress.split(']')[1]);
+              app.dockerPullIsSpammed = true;
+            }
 
           }
         } else {
