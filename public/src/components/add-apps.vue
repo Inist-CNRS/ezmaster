@@ -69,7 +69,7 @@
                 <div class="panel-footer">
                   <button type="button" id="close_modal_image" class="btn btn-default" v-on:click='cancelAddImage' data-dismiss="modal">Cancel</button>
                   <button type="button" id='save' class="btn btn-primary button-add" v-on:click='addImage'>Add</button>
-                  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-add-disabled-none" disabled>Add</button>
+				  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-add-disabled-none" disabled>Add</button>
                   <div id='loaderImage' class="loader">
                     <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">{{ statusPull }}{{ progressPull }}</span>
