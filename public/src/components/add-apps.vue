@@ -102,27 +102,27 @@
       var fullFsPercent
 
       socket.on('progressBar', function (infoPull) {
-        self.$set('progressPull', infoPull)
+        self.progressPull = infoPull;
       })
 
       socket.on('statusPull', function (infoPull) {
-        self.$set('statusPull', infoPull)
+        self.statusPull = infoPull;
       })
 
       self.$http.get('/-/v1/config').then(function (result) {
         var config = result.data
-        self.$set('fullFsPercent', config.fullFsPercent)
+        self.fullFsPercent = config.fullFsPercent;
         fullFsPercent = config.fullFsPercent
       }, console.error)
 
       socket.on('refreshInfosMachine', function (infosMachineSocket) {
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
-        self.$set('infosMachine', infosMachineSocket)
+        self.infosMachine = infosMachineSocket;
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
-        self.$set('boolInfosFeed', true)
-        self.$set('showAddbutton', fullFsPercent > infosMachineSocket.useDiskPercentage)
+        self.boolInfosFeed = true;
+        self.showAddbutton = fullFsPercent > infosMachineSocket.useDiskPercentage;
       })
     },
 
@@ -156,8 +156,8 @@
           if (result.status === 200) { location.reload() }
         }, function (error) {
           if (error) {
-            this.$set('codeErrorPull', error.status)
-            this.$set('messageErrorPull', error.data)
+            this.codeErrorPull = error.status;
+            this.messageErrorPull = error.data;
             document.getElementById('loaderImage').style.display = 'none'
             document.getElementById('errorLoaderImages').style.display = 'block'
           }
@@ -170,10 +170,10 @@
 
       showSettings: function (event) {
         if (this.show === false) {
-          this.$set('show', true)
+          this.show = true;
         }
         else {
-          this.$set('show', false)
+          this.show = false;
         }
       }
 

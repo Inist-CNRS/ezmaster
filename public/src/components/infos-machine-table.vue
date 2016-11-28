@@ -54,11 +54,11 @@
       socket.on('refreshInfosMachine', function (infosMachineSocket) {
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
-        self.$set('infosMachine', infosMachineSocket);
+        self.infosMachine = infosMachineSocket;
 
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
-        self.$set('boolInfosFeed', true);
+        self.boolInfosFeed = true;
       });
 
     },
