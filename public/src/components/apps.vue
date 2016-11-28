@@ -9,12 +9,12 @@
     </thead>
     <tbody>
       <template v-for="item in containers">
-        <tr class="success" id="[[ item.imageName ]]">
-          <td>[[ item.imageName ]]</td>
-          <td>[[ item.creationDate ]]</td>
+        <tr class="success" :id="item.imageName">
+          <td>{{ item.imageName }}</td>
+          <td>{{ item.creationDate }}</td>
           <td class="actions">
             <ul class="bread">
-              <li class="delete" title="Delete the application"><button type='button' class="btn btn-raised btn-sm btn-warning button" id="[[ item.imageName ]]" v-on:click="deleteapplication">Delete</button></li>
+              <li class="delete" title="Delete the application"><button type='button' class="btn btn-raised btn-sm btn-warning button" :id="item.imageName" v-on:click="deleteapplication">Delete</button></li>
             </ul>
 
             <div class="modal" id="modal-delete-image">
@@ -27,10 +27,10 @@
                     </div>
                     <div class="panel-body">
                       <p>
-                        <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ imageNameToDelete ]]</span> application.</span><br /><br />
+                        <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">{{ imageNameToDelete }}</span> application.</span><br /><br />
                       </p><br />
-                      <div id='errorLoaderImage' class="error-loader">
-                    <span class="text-danger" id="errorLoaderAddInstance">An error was received : [[ messageErrorPull ]].</span><br />
+                      <div id="errorLoaderImage" class="error-loader">
+                    <span class="text-danger" id="errorLoaderAddInstance">An error was received : {{ messageErrorPull }}.</span><br />
                   </div>
                     </div>
                     <div class="panel-footer">
@@ -55,19 +55,19 @@
   export default {
 
     mounted () {
-      const self = this
+      const self = this;
 
       // ... call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/app').then(function (result) {
-        self.containers = result.data
+        self.containers = result.data;
       }, console.error)
     },
     methods: {
 
       refresh: function () {
         this.$http.get('/-/v1/app').then(function (result) {
-          this.containers = result.data
+          self.containers = result.data;
         }, console.error)
         this.messageErrorPull = ''
       },
@@ -96,19 +96,19 @@
             msgDetails
           document.getElementById('errorLoaderImage').style.display = 'block'
         })
-      },
-
-      data () {
-        return {
-          sizeToDelete: '',
-          imageNameToDelete: '',
-          containers: [],
-          messageErrorPull: '',
-          publicDomain: ''
-        }
       }
 
-    }
+    },
+
+    data () {
+      return {
+        sizeToDelete: '',
+        imageNameToDelete: '',
+        containers: [],
+        messageErrorPull: '',
+        publicDomain: ''
+      }
+    }    
   }
 
 </script>

@@ -25,7 +25,7 @@
 
       <template v-for="item in containers">
 
-        <tr v-if="item.running == 'true'" class="success" >
+        <tr v-if="item.running" class="success" >
           <td>{{ item.longName }}</td>
           <td>{{ item.technicalName }}</td>
           <td>{{ item.creationDate }}</td>
@@ -34,10 +34,10 @@
           <td class="actions">
             <ul class="bread" :data-id="item.technicalName">
               <li class="start" title="Start the instance."><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
-              <li class="stop" title="Stop the instance."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
-              <li class="delete" title="Delete the instance."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
-              <li class="updateConfig" title="Update the instance configuration."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config </button></li>
-              <li class="updateData" title="Upload data for the instance."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload">Data</button></li>
+              <li class="stop" title="Stop the instance."><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance(item.containerId)">Stop</button></li>
+              <li class="delete" title="Delete the instance."><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
+              <li class="updateConfig" title="Update the instance configuration."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config </button></li>
+              <li class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload(item.containerId)">Data</button></li>
               <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL">Access</a></li>
               <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
             </ul>
@@ -52,11 +52,11 @@
           <td><span>Stopped</span></td>
           <td class="actions">
             <ul class="bread" :data-id="item.technicalName">
-              <li class="start" title="Start the instance"><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
+              <li class="start" title="Start the instance"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance(item.containerId)">Start</button></li>
               <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
-              <li class="delete" title="Delete the instance"><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
-              <li class="updateConfig" title="Updating configuration of the instance"><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
-              <li class="updateData" title="Upload data for the instance."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload">Data</button></li>
+              <li class="delete" title="Delete the instance"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
+              <li class="updateConfig" title="Updating configuration of the instance"><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config</button></li>
+              <li class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload(item.containerId)">Data</button></li>
               <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Access</button></li>
               <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Public Access</button></li>
             </ul>
@@ -174,12 +174,12 @@
                   </thead>
                   <tbody>
                     <template v-for="file in files">
-                      <tr :id="file.name">
+                      <tr>
                         <td class="files-list-name-column"><a :href="'/-/v1/instances/' + instanceId + '/data/' + file.name">{{ file.name }}</a></td>
                         <td>{{ file.size }}</td>
                         <td>{{ file.mimeType }}</td>
                         <td>
-                          <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
+                          <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile(file.name)">
                         </td>
                       </tr>
                     </template>
@@ -241,25 +241,25 @@
 
     methods: {
 
-      startInstance: function (event) {
+      startInstance: function (instanceId) {
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
         // button start > li > ul > td > tr > id="{{ item.description.Id }}"
-        this.$http.put('/-/v1/instances/start/' + event.target.id).then(function (result) {
+        this.$http.put(`/-/v1/instances/start/${instanceId}`).then(function (result) {
         }, console.error)
       },
 
-      stopInstance: function (event) {
-        this.$http.put('/-/v1/instances/stop/' + event.target.id).then(function (result) {
+      stopInstance: function (instanceId) {
+        this.$http.put(`/-/v1/instances/stop/${instanceId}`).then(function (result) {
         }, console.error)
       },
 
-      deleteInstance: function (event) {
+      deleteInstance: function (instanceId) {
         // Update the data variable instanceId which will automatically update the HTML
         //  with this new value.
-        this.instanceId = event.target.id
+        this.instanceId = instanceId
 
-        this.$http.get('/-/v1/instances/' + this.instanceId).then(function (result) {
+        this.$http.get(`/-/v1/instances/${instanceId}`).then(function (result) {
           this.technicalNameToDelete = result.data.technicalName
           this.sizeToDelete = result.data.size
 
@@ -267,24 +267,24 @@
         }, console.error)
       },
 
-      cancelDeleteInstance: function (event) {
+      cancelDeleteInstance: function () {
         document.getElementById('modal-delete-instance').style.display = 'none'
       },
 
-      confirmDeleteInstance: function (event) {
+      confirmDeleteInstance: function () {
         this.$http.delete('/-/v1/instances/' + this.instanceId).then(function (result) {
           document.getElementById('modal-delete-instance').style.display = 'none'
         }, console.error)
       },
 
-      displayConfig: function (event) {
+      displayConfig: function (instanceId) {
         document.getElementById('jsoneditor').innerHTML = ''
 
         // Update the data variable instanceId which will automatically update the HTML
         //  with this new value.
-        this.instanceId = event.target.id
+        this.instanceId = instanceId
 
-        this.$http.get('/-/v1/instances/' + this.instanceId).then(function (result) {
+        this.$http.get(`/-/v1/instances/${this.instanceId}`).then(function (result) {
           document.getElementById('modal-update-config').style.display = 'block'
 
           optsEditor = {
@@ -312,11 +312,11 @@
         })
       },
 
-      cancelConfig: function (event) {
+      cancelConfig: function () {
         document.getElementById('modal-update-config').style.display = 'none'
       },
 
-      updateConfig: function (event) {
+      updateConfig: function () {
         var newConfig = editor.get()
         var data = {
           newConfig: newConfig,
@@ -327,7 +327,7 @@
         })
       },
 
-      displayFormUpload: function (event) {
+      displayFormUpload: function (instanceId) {
         // Shows the modal upload and reset the inputs.
         document.getElementById('modal-upload-data').style.display = 'block'
         document.getElementById('submitUpload').style.display = 'none'
@@ -338,10 +338,10 @@
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Update the data variable instanceId which will automatically update the HTML with
         // this new value.
-        this.instanceId = event.target.id
+        this.instanceId = instanceId
 
         // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get('/-/v1/instances/' + this.instanceId + '/data').then(function (result) {
+        this.$http.get(`/-/v1/instances/${instanceId}/data`).then(function (result) {
           // Update the data variable files which will automatically update the data files
           //  list on the modal.
           this.files = result.data
@@ -360,12 +360,12 @@
         }, console.error)
       },
 
-      cancelUpload: function (event) {
+      cancelUpload: function () {
         document.getElementById('modal-upload-data').style.display = 'none'
         document.getElementById('btnFile').value = ''
       },
 
-      onChangeInputFile: function (event) {
+      onChangeInputFile: function () {
         // When the user choose a file.
 
         // Get information on total size allowed and free disk space.
@@ -448,7 +448,7 @@
         })
       },
 
-      uploadData: function (event) {
+      uploadData: function () {
         // When the user click on the upload button.
 
         var btn = document.getElementById('btnFile').value
@@ -465,16 +465,15 @@
         }
       },
 
-      deleteUploadedFile: function (event) {
+      deleteUploadedFile: function (fileName) {
         // event.path[2].id go up 2 times in the HTML tree to get the id of the reached element.
         // Here the file name.
-        var fileName = event.target.id
 
         // Delete the file.
-        this.$http.delete('/-/v1/instances/' + this.instanceId + '/' + fileName)
+        this.$http.delete(`/-/v1/instances/${this.instanceId}/${fileName}`)
         .then(function (resultDelete) {
           // Get information on formerly uploaded files for the concerned instance.
-          this.$http.get('/-/v1/instances/' + this.instanceId + '/data')
+          this.$http.get(`/-/v1/instances/${this.instanceId}/data`)
           .then(function (resultGet) {
             // Update the data variable nbDataFiles which will automatically update the HTML
             // with this new value.
@@ -501,9 +500,9 @@
         })
       },
 
-      refreshDataFilesList: function (event) {
+      refreshDataFilesList: function () {
         // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get('/-/v1/instances/' + this.instanceId + '/data').then(function (result) {
+        this.$http.get(`/-/v1/instances/${this.instanceId}/data`).then(function (result) {
           // Update the data variable files which will automatically update the data files list
           // on the modal.
           this.files = result.data

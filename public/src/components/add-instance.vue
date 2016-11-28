@@ -113,7 +113,7 @@
       }, console.error)
 
       self.$http.get('/-/v1/app').then(function (result) {
-        self.$copyArray(result.data, self.apps)
+        self.apps = result.data
       }, console.error)
 
       this.$watch('longName', function (longName) {
@@ -242,12 +242,6 @@
 
       tryAgain: function (event) {
         location.reload()
-      },
-
-      $copyArray (from, to) {
-        for (let i = 0; i < from.length; i++) {
-          this.$set(to, i, from[i])
-        }
       }
 
     },
