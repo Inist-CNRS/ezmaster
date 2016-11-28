@@ -72,10 +72,10 @@
                   <button type="button" id='saveTechnicalExists' class="btn btn-primary button-add-disabled-none" disabled>Add</button>
                   <div id='loaderImage' class="loader">
                     <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
-                    <span class="text-primary" id="messageLoaderAddInstance">[[ statusPull ]][[ progressPull ]]</span>
+                    <span class="text-primary" id="messageLoaderAddInstance">{{ statusPull }}{{ progressPull }}</span>
                   </div>
                    <div id='errorLoaderImages' class="loader">
-                    <span class="text-danger" id="errorLoaderAddImage">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
+                    <span class="text-danger" id="errorLoaderAddImage">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
                     <button type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                   </div>
 
