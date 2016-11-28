@@ -60,27 +60,27 @@
       // ... call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/app').then(function (result) {
-        self.$set('containers', result.data)
+        self.containers = result.data
       }, console.error)
     },
     methods: {
 
       refresh: function () {
         this.$http.get('/-/v1/app').then(function (result) {
-          this.$set('containers', result.data)
+          this.containers = result.data
         }, console.error)
-        this.$set('messageErrorPull', '')
+        this.messageErrorPull = ''
       },
 
       deleteapplication: function (event) {
-        this.$set('imageNameToDelete', event.target.id)
+        this.imageNameToDelete = event.target.id
         nameTodelete = event.target.id
         document.getElementById('modal-delete-image').style.display = 'block'
       },
 
       cancelDeleteapplication: function (event) {
         document.getElementById('modal-delete-image').style.display = 'none'
-        this.$set('messageErrorPull', '')
+        this.messageErrorPull = ''
         document.getElementById('errorLoaderImage').style.display = 'none'
       },
 
@@ -91,9 +91,9 @@
           this.refresh()
         }, function (err) {
           var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : ''
-          this.$set('messageErrorPull',
+          this.messageErrorPull =
             'This image is being used by one or many instance(s), please delete them first.' +
-            msgDetails)
+            msgDetails
           document.getElementById('errorLoaderImage').style.display = 'block'
         })
       },

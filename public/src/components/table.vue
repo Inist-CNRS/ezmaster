@@ -222,12 +222,12 @@
       // Call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/instances').then(function (result) {
-        self.$set('containers', result.data)
+        self.containers = result.data
       }, console.error);
 
       self.$http.get('/-/v1/config').then(function (result) {
         var config = result.data
-        self.$set('publicDomain', config.publicDomain)
+        self.publicDomain = config.publicDomain
       }, console.error)
 
       // Listen incoming messages typed as 'refreshInstances' from the server.
@@ -235,7 +235,7 @@
       socket.on('refreshInstances', function (beatInstances) {
         // Update variable 'containers' which will automatically
         // refresh the instances-table component.
-        self.$set('containers', beatInstances)
+        self.containers = beatInstances
       })
     },
 

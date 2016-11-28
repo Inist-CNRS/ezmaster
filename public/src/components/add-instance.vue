@@ -51,7 +51,7 @@
                         <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" placeholder="study" type="text" v-model="study">-
                         <input class="form-control sizeInput" id="inputVersion" placeholder="1" type="text" min='0' v-model="version">
                       </div>
-<!-- 
+<!--
                       <div v-if='$validation1.project.dirty'>
                         <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
                         <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits for the first part.</span>
@@ -108,12 +108,12 @@
 
       self.$http.get('/-/v1/config').then(function (result) {
         var config = result.data
-        self.$set('publicDomain', config.publicDomain)
+        self.publicDomain = config.publicDomain
         publicDomain = config.publicDomain
       }, console.error)
 
       self.$http.get('/-/v1/app').then(function (result) {
-        self.$set('apps', result.data)
+        self.apps = result.data
       }, console.error)
 
       this.$watch('longName', function (longName) {
