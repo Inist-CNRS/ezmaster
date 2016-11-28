@@ -2,15 +2,22 @@
 'use strict';
 
 // http://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
-var Vue = require('vue/dist/vue.js');
+const Vue = require('vue/dist/vue.js');
+const VeeValidate = require('vee-validate');
+
+VeeValidate.Validator.extend('lowercase', {
+  getMessage: field => `The ${field} is not lowercase.`,
+  validate: value => value.toLowerCase() === value
+});
 
 Vue.use(require('vue-resource'));
+Vue.use(VeeValidate);
 
-var vueInfosMachineTable = require('./components/infos-machine-table.vue');
-var vueTable             = require('./components/table.vue');
-var vueAddInstance       = require('./components/add-instance.vue');
-var vueaddApps           = require('./components/add-apps.vue');
-var vueApps              = require('./components/apps.vue');
+const vueInfosMachineTable = require('./components/infos-machine-table.vue');
+const vueTable             = require('./components/table.vue');
+const vueAddInstance       = require('./components/add-instance.vue');
+const vueaddApps           = require('./components/add-apps.vue');
+const vueApps              = require('./components/apps.vue');
 
 module.exports = new Vue({
 

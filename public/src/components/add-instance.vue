@@ -14,81 +14,72 @@
     <div class="modal" id="modal-add-instance">
       <div class="modal-dialog">
         <div class="modal-content">
-<!--           <validator name="validation1"> -->
-            <form novalidate id="add-instance-form" name="Form" class="form-horizontal">
-              <fieldset>
-                <div class="modal-header modal-add-instance">
-                  <legend>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelAddInstance">×</button>
-                    <span class="titleFormAddInstance">Add Instance</span>
-                  </legend>
-                </div>
-                <br />
-                <div class="modal-body">
-                  <div class="form-group">
-                    <label for="app" class="col-md-3 control-label">Application</label>
+          <form novalidate id="add-instance-form" name="Form" class="form-horizontal">
+            <fieldset>
+              <div class="modal-header modal-add-instance">
+                <legend>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelAddInstance">×</button>
+                  <span class="titleFormAddInstance">Add Instance</span>
+                </legend>
+              </div>
+              <br />
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="app" class="col-md-3 control-label">Application</label>
 
-                    <div class="col-md-9">
-                      <select id="app" class="form-control">
-                          <option v-for="app in apps" :value='app.imageName'>{{ app.imageName }}</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="inputLongName" class="col-md-3 control-label">Long Name</label>
-                    <div class="col-md-9">
-                      <input class="form-control" id="inputLongName" name="inputLongName" placeholder="A free text, human-readable." type="text" v-model="longName">
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label class="col-md-3 control-label">Technical Name</label>
-
-                    <div class="col-md-9">
-                      <div class="block-input">
-                        <input class="form-control sizeInput" id="inputProject" name="inputProject" placeholder="project" type="text" v-model="project">-
-                        <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" placeholder="study" type="text" v-model="study">-
-                        <input class="form-control sizeInput" id="inputVersion" placeholder="1" type="text" min='0' v-model="version">
-                      </div>
-<!--
-                      <div v-if='$validation1.project.dirty'>
-                        <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
-                        <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits for the first part.</span>
-                      </div>
-                      <div v-if='$validation1.study.dirty'>
-                        <span class="help-block text-danger" v-if="$validation1.study.required">Fill the second part of the technical name.</span>
-                        <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
-                      </div>
- -->
-                      <span id='technicalNameExists' class="help-block text-danger span-exists">Technical name "{{ technicalName }}" already exists</span>
-                    </div>
-                  </div>
-
-                  <div class="form-group" v-if="publicDomain != ''">
-                    <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
-                    <div class="col-md-9">
-                      <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" v-model='urlPreview' disabled>
-                    </div>
+                  <div class="col-md-9">
+                    <select id="app" class="form-control">
+                        <option v-for="app in apps" :value='app.imageName'>{{ app.imageName }}</option>
+                    </select>
                   </div>
                 </div>
 
-                <div class="panel-footer">
-                  <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
-                  <button type="button" id='save' class="btn btn-primary button-create" v-on:click='addInstance'>Create</button>
-                  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled" disabled>Create</button>
-                  <div id='loader' class="loader">
-                    <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
-                    <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
-                  </div>
-                  <div id='errorLoader' class="loader">
-                    <span class="text-danger" id="errorLoaderAddInstance">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
-                    <button type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
+                <div class="form-group">
+                  <label for="inputLongName" class="col-md-3 control-label">Long Name</label>
+                  <div class="col-md-9">
+                    <input class="form-control" id="inputLongName" name="inputLongName" v-validate data-vv-rules="required" placeholder="A free text, human-readable." type="text" v-model="longName">
                   </div>
                 </div>
-              </fieldset>
-            </form>
-<!--           </validator> -->
+
+                <div class="form-group">
+                  <label class="col-md-3 control-label">Technical Name</label>
+
+                  <div class="col-md-9">
+                    <div class="block-input">
+                      <input class="form-control sizeInput" id="inputProject" name="inputProject" v-validate data-vv-rules="required|alpha_num|lowercase" placeholder="project" type="text" v-model="project">-
+                      <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" v-validate data-vv-rules="required|alpha_num|lowercase" placeholder="study" type="text" v-model="study">-
+                      <input class="form-control sizeInput" id="inputVersion" v-validate data-vv-rules="numeric" placeholder="1" type="text" min='0' v-model="version">
+                    </div>
+                    <ul v-show="errors.any()" class="help-block text-danger">
+                      <li v-for="error in errors.all()">{{ error }}</li>
+                    </ul>
+                    <span id='technicalNameExists' class="help-block text-danger span-exists">Technical name "{{ technicalName }}" already exists</span>
+                  </div>
+                </div>
+
+                <div class="form-group" v-if="publicDomain != ''">
+                  <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
+                  <div class="col-md-9">
+                    <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" v-model='urlPreview' disabled>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel-footer">
+                <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
+                <button v-if="errors.any() || invalid" type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled" disabled>Create</button>
+                <button v-else                         type="button" id='save' class="btn btn-primary button-create" v-on:click='addInstance'>Create</button>
+                <div id='loader' class="loader">
+                  <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
+                  <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
+                </div>
+                <div id='errorLoader' class="loader">
+                  <span class="text-danger" id="errorLoaderAddInstance">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
+                  <button type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
         </div>
       </div>
     </div>
@@ -184,18 +175,19 @@
     methods: {
 
       verif: function (technicalName) {
+        var self = this
         this.$http.get('/-/v1/instances/verif/' + technicalName).then(function (result) {
           if (result.data === 'OK') {
+            // document.getElementById('inputProject').style.backgroundColor = '#c5e1a5'
+            // document.getElementById('inputStudy').style.backgroundColor = '#c5e1a5'
             document.getElementById('technicalNameExists').style.display = 'none'
-            document.getElementById('save').style.display = 'block'
-            document.getElementById('saveTechnicalExists').style.display = 'none'
+            self.invalid = false
           }
           else {
             document.getElementById('inputProject').style.backgroundColor = '#FFCDD2'
             document.getElementById('inputStudy').style.backgroundColor = '#FFCDD2'
             document.getElementById('technicalNameExists').style.display = 'block'
-            document.getElementById('save').style.display = 'none'
-            document.getElementById('saveTechnicalExists').style.display = 'block'
+            self.invalid = true
           }
         })
       },
@@ -257,7 +249,8 @@
         messageErrorPull: '',
         publicDomain: '',
         apps: [],
-        codeErrorPull: ''
+        codeErrorPull: '',
+        invalid: true
       }
     },
 
@@ -325,7 +318,7 @@
 
   .button-create-disabled{
     float:right;
-    display: none;
+    /* display: none; */
   }
 
   .loader{
