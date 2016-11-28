@@ -493,6 +493,30 @@ router.route('/:instanceId/data/')
 });
 
 
+router.route('/:instanceId/data/:filename').get(function (req, res, next) {
+  // Examining the container.
+  var container = docker.getContainer(req.params.instanceId);
+
+  container.inspect(function goOn(err, data) {
+
+    if (err) { return next(err); }
+
+    // Split the instance name.
+    var splittedName = data.Name.split('/');
+
+    // The path to the data folder.
+    // splittedName[1] is the instance technical name.
+    var dir = cfg.dataInstancesPath + '/' + splittedName[1] + '/data';
+
+    res.sendFile(req.params.filename, {
+      root : dir,
+      dotfiles : 'deny',
+      maxAge: 10000
+    });
+
+  });
+
+});
 
 /**
  * Route to get information on the data files from a specific instance.

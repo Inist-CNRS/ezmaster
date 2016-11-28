@@ -174,7 +174,7 @@
                   <tbody>
                     <template v-for="file in files">
                       <tr id="[[ file.name ]]">
-                        <td class="files-list-name-column">[[ file.name ]]</td>
+                        <td class="files-list-name-column"><a href="/-/v1/instances/[[ instanceId ]]/data/[[ file.name ]]">[[ file.name ]]</a></td>
                         <td>[[ file.size ]]</td>
                         <td>[[ file.mimeType ]]</td>
                         <td>
