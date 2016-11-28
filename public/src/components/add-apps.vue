@@ -8,7 +8,7 @@
 
 <template>
 
-  <div id="addImage">
+  <div id="addImage" v-on:keyup.esc="cancelAddApp">
     <button class="btn btn-raised btn-primary" data-toggle="modal" data-target="#modal-add-image">Add Application</button>
 
     <div class="modal" id="modal-add-image">
@@ -152,6 +152,10 @@
 
       tryAgain: function (event) {
         location.reload()
+      },
+
+      cancelAddApp: function (event) {
+        $('#modal-add-image').modal('hide')
       },
 
       showSettings: function (event) {
