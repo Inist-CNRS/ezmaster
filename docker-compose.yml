@@ -27,7 +27,9 @@ services:
       EZMASTER_FREE_PORT_RANGE: ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
+      DEBUG: ${DEBUG}
     working_dir: /app
+    tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
       - 35267:35267
