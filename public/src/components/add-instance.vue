@@ -30,7 +30,7 @@
 
                     <div class="col-md-9">
                       <select id="app" class="form-control">
-                          <option v-for="app in apps" value='[[ app.imageName ]]'>[[ app.imageName ]]</option>
+                          <option v-for="app in apps" :value='app.imageName'>{{ app.imageName }}</option>
                       </select>
                     </div>
                   </div>
@@ -61,11 +61,11 @@
                         <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
                       </div>
  -->
-                      <span id='technicalNameExists' class="help-block text-danger span-exists">Technical name "[[ technicalName ]]" already exists</span>
+                      <span id='technicalNameExists' class="help-block text-danger span-exists">Technical name "{{ technicalName }}" already exists</span>
                     </div>
                   </div>
 
-                  <div class="form-group" v-if="[[ publicDomain ]] != ''">
+                  <div class="form-group" v-if="publicDomain != ''">
                     <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
                     <div class="col-md-9">
                       <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" v-model='urlPreview' disabled>
@@ -82,7 +82,7 @@
                     <span class="text-primary" id="messageLoaderAddInstance">This may take several minutes.</span>
                   </div>
                   <div id='errorLoader' class="loader">
-                    <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
+                    <span class="text-danger" id="errorLoaderAddInstance">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
                     <button type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                   </div>
                 </div>
@@ -113,7 +113,7 @@
       }, console.error)
 
       self.$http.get('/-/v1/app').then(function (result) {
-        self.apps = result.data
+        self.$copyArray(result.data, self.apps)
       }, console.error)
 
       this.$watch('longName', function (longName) {
@@ -242,6 +242,12 @@
 
       tryAgain: function (event) {
         location.reload()
+      },
+
+      $copyArray (from, to) {
+        for (let i = 0; i < from.length; i++) {
+          this.$set(to, i, from[i])
+        }
       }
 
     },
@@ -256,7 +262,7 @@
         urlPreview: '',
         messageErrorPull: '',
         publicDomain: '',
-        apps: '',
+        apps: [],
         codeErrorPull: ''
       }
     },
