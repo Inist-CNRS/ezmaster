@@ -2,7 +2,7 @@
 'use strict';
 
 // http://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
-var Vue = require('vue/dist/vue.js')
+var Vue = require('vue/dist/vue.js');
 
 Vue.use(require('vue-resource'));
 

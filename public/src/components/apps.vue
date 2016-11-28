@@ -55,20 +55,20 @@
   export default {
 
     mounted () {
-      const self = this;
+      const self = this
 
       // ... call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/app').then(function (result) {
-        self.containers = result.data;
+        self.containers = result.data
       }, console.error)
     },
     methods: {
 
       refresh: function () {
-        const self = this;
+        const self = this
         this.$http.get('/-/v1/app').then(function (result) {
-          self.containers = result.data;
+          self.containers = result.data
         }, console.error)
         this.messageErrorPull = ''
       },
@@ -89,7 +89,7 @@
         var name = new Buffer(nameTodelete).toString('base64')
         this.$http.delete('/-/v1/app/' + name).then(function (result) {
           document.getElementById('modal-delete-image').style.display = 'none'
-          this.refresh();
+          this.refresh()
         }, function (err) {
           var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : ''
           this.messageErrorPull =
@@ -109,7 +109,7 @@
         messageErrorPull: '',
         publicDomain: ''
       }
-    }    
+    }
   }
 
 </script>

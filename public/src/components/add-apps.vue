@@ -89,7 +89,7 @@
 
 
 <script>
-  /* global io*/
+  /* global io */
   var socket = io()
 
   export default {
@@ -99,34 +99,34 @@
       var fullFsPercent
 
       socket.on('progressBar', function (infoPull) {
-        self.progressPull = infoPull;
+        self.progressPull = infoPull
       })
 
       socket.on('statusPull', function (infoPull) {
-        self.statusPull = infoPull;
+        self.statusPull = infoPull
       })
 
       self.$http.get('/-/v1/config').then(function (result) {
         var config = result.data
-        self.fullFsPercent = config.fullFsPercent;
+        self.fullFsPercent = config.fullFsPercent
         fullFsPercent = config.fullFsPercent
       }, console.error)
 
       socket.on('refreshInfosMachine', function (infosMachineSocket) {
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
-        self.infosMachine = infosMachineSocket;
+        self.infosMachine = infosMachineSocket
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
-        self.boolInfosFeed = true;
-        self.disableAddButton = fullFsPercent < infosMachineSocket.useDiskPercentage;
+        self.boolInfosFeed = true
+        self.disableAddButton = fullFsPercent < infosMachineSocket.useDiskPercentage
       })
     },
 
     methods: {
 
       addImage: function (event) {
-		var self = this;
+        var self = this
 
         document.getElementById('loaderImage').style.display = 'block'
 
@@ -141,13 +141,13 @@
 
         this.$http.post('/-/v1/app', formdata).then(function (result) {
           if (result.status === 200) {
-			$('#modal-add-image').modal('hide')
-			self.$emit('refreshApplications');
-		  }
+            $('#modal-add-image').modal('hide')
+            self.$emit('refreshApplications')
+          }
         }, function (error) {
           if (error) {
-            this.codeErrorPull = error.status;
-            this.messageErrorPull = error.data;
+            this.codeErrorPull = error.status
+            this.messageErrorPull = error.data
             document.getElementById('loaderImage').style.display = 'none'
             document.getElementById('errorLoaderImages').style.display = 'block'
           }
@@ -160,10 +160,10 @@
 
       showSettings: function (event) {
         if (this.show === false) {
-          this.show = true;
+          this.show = true
         }
         else {
-          this.show = false;
+          this.show = false
         }
       }
 
