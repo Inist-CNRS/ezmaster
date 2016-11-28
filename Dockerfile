@@ -1,11 +1,11 @@
-FROM node:4.4.0
+FROM node:6.9.1
 
 # install the docker and docker-compose client inside this image
 # ezmaster uses it to manage the app instances
 # (to upgrade see https://hub.docker.com/_/docker/)
 ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.12.0
-ENV DOCKER_SHA256 3dd07f65ea4a7b4c8829f311ab0213bca9ac551b5b24706f3e79a97e22097f8b
+ENV DOCKER_VERSION 1.12.3
+ENV DOCKER_SHA256 626601deb41d9706ac98da23f673af6c0d4631c4d194a677a9a1a07d7219fa0f
 RUN set -x \
   && curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz" -o docker.tgz \
   && echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
@@ -15,17 +15,18 @@ RUN set -x \
   && rm docker.tgz \
   && docker -v
 
-# copy the code source of ezmaster and tells this folder
-# must be the basedir when running ezmaster
-COPY . /app
+# install npm dependencies
 WORKDIR /app
+COPY ./package.json /app/package.json
+RUN npm config set strict-ssl false && npm install -q
 
-# install ezmaster npm dependancies
-# build bundle.js and bundle.css
-RUN npm config set strict-ssl false && \
-    npm install -q && \
-    npm run build && \
-    rm -rf ./node_modules && \
+# copy the code source of ezmaster 
+# after dependencies installation
+COPY . /app
+RUN npm run build
+
+# cleanup
+RUN rm -rf ./node_modules && \
     npm install -q --production && \
     npm cache clean
 
