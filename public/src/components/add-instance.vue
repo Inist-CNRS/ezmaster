@@ -98,7 +98,6 @@
 
 
 <script>
-  /* global document, location*/
   var publicDomain
 
   export default {

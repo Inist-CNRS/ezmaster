@@ -50,7 +50,6 @@
 </template>
 
 <script>
-  /* global document */
   var nameTodelete
 
   export default {

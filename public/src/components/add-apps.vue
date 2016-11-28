@@ -93,7 +93,7 @@
 
 
 <script>
-  /* global document, location, io*/
+  /* global io*/
   var socket = io()
 
   export default {
