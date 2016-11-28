@@ -347,8 +347,8 @@ router.route('').post(bodyParser(), function (req, res, next) {
       app.readEzmasterAppConfig(image, function (err, appConfig) {
 
         instances.initConfigAndData({ instanceDst: technicalName,
-                                      appSrc: image,
-                                      appConfig: appConfig }, function (err) {
+          appSrc: image,
+          appConfig: appConfig }, function (err) {
           if (err) return next(err);
 
           var publicDomain = cfg.publicDomain;
