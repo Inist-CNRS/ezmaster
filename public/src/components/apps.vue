@@ -86,11 +86,19 @@
       },
 
       confirmDeleteapplication: function (event) {
+        // skip if button already disabled
+        if ($('a.button-delete').attr('disabled')) {
+          return;
+        }
+        $('a.button-delete').attr('disabled', 'disabled');
+
         var name = new Buffer(nameTodelete).toString('base64')
         this.$http.delete('/-/v1/app/' + name).then(function (result) {
-          document.getElementById('modal-delete-image').style.display = 'none'
-          this.refresh()
+        $('a.button-delete').removeAttr('disabled');
+          document.getElementById('modal-delete-image').style.display = 'none';
+          this.refresh();
         }, function (err) {
+          $('a.button-delete').removeAttr('disabled');
           var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : ''
           this.messageErrorPull =
             'This image is being used by one or many instance(s), please delete them first.' +
