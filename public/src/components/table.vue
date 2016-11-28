@@ -204,7 +204,7 @@
 
 
 <script>
-  /* global document, JSONEditor, io*/
+  /* global JSONEditor, io*/
   // Socket connection.
 
   var socket = io()

@@ -29,8 +29,8 @@
                   <div class="form-group">
                     <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
                     <div class="col-md-9">
-                      <input class="form-control sizeInput" id="inputImageName" name="inputImageName" placeholder=" Ex: inistcnrs/ezvis" type="text" value='[[ imageName ]]' v-model="imageName" v-validate:imageName="{ required: true }">
-                      <input class="form-control sizeInput" id="inputVersionImage" placeholder="Tag (ex: 6.8.9)" value="[[ versionImage ]]" type="text" min='0' v-model="versionImage" v-validate:project="{ required: true}">
+                      <input class="form-control sizeInput" id="inputImageName" name="inputImageName" placeholder="inistcnrs/ezvis" type="text" value='[[ imageName ]]' v-model="imageName" v-validate:imageName="{ required: true }">
+                      <input class="form-control sizeInput" id="inputVersionImage" placeholder="6.8.11" value="[[ versionImage ]]" type="text" min='0' v-model="versionImage" v-validate:project="{ required: true}">
                     </div>
 
                     <button type="button" class="btn btn-default btn-md" v-on:click='showSettings'>
@@ -41,22 +41,22 @@
                     <div class="form-group" id='settings' v-show="show">
                       <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
                       <div class="col-md-9">
-                        <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder=" Ex: vsregistry.intra.inist.fr:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
+                        <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder="vsregistry.intra.inist.fr:5000" type="text" value='[[ imageHub ]]' v-model="imageHub">
                       </div>
 
                       <label for="inputUserName" class="col-md-3 control-label">UserName</label>
                       <div class="col-md-9">
-                        <input class="form-control sizeInput" id="inputUserName" name="inputUserName" placeholder=" Ex: username" type="text" value='[[ username ]]' v-model="username">
+                        <input class="form-control sizeInput" id="inputUserName" name="inputUserName" placeholder="username" type="text" value='[[ username ]]' v-model="username">
                       </div>
 
                       <label for="inputImageHub" class="col-md-3 control-label">Password</label>
                       <div class="col-md-9">
-                        <input class="form-control sizeInput" id="inputPassword" name="inputPassword" placeholder=" Ex: password" type="password" value='[[ password ]]' v-model="password">
+                        <input class="form-control sizeInput" id="inputPassword" name="inputPassword" placeholder="password" type="password" value='[[ password ]]' v-model="password">
                       </div>
 
                       <label for="inputEmail" class="col-md-3 control-label">Email</label>
                       <div class="col-md-9">
-                        <input class="form-control sizeInput" id="inputEmail" name="inputEmail" placeholder=" Ex: test@email.com" type="text" value='[[ email ]]' v-model="email">
+                        <input class="form-control sizeInput" id="inputEmail" name="inputEmail" placeholder="test@email.com" type="text" value='[[ email ]]' v-model="email">
 
                       </div>
 
@@ -68,9 +68,9 @@
 
                 <div class="panel-footer">
                   <button type="button" id="close_modal_image" class="btn btn-default" v-on:click='cancelAddImage' data-dismiss="modal">Cancel</button>
-                  <button v-if="$validation1.valid" type="button" id='save' class="btn btn-primary button-create" v-on:click='addImage'>Create</button>
-                  <button v-else type="button" id='save' class="btn btn-primary button-create-disabled" disabled>Create</button>
-                  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled-none" disabled>Create</button>
+                  <button v-if="$validation1.valid" type="button" id='save' class="btn btn-primary button-add" v-on:click='addImage'>Add</button>
+                  <button v-else type="button" id='save' class="btn btn-primary button-add-disabled" disabled>Add</button>
+                  <button type="button" id='saveTechnicalExists' class="btn btn-primary button-add-disabled-none" disabled>Add</button>
                   <div id='loaderImage' class="loader">
                     <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">[[ statusPull ]][[ progressPull ]]</span>
@@ -93,7 +93,7 @@
 
 
 <script>
-  /* global document, location, io*/
+  /* global io*/
   var socket = io()
 
   export default {
@@ -243,15 +243,15 @@
     border:solid white 5px;
   }
 
-  .button-create{
+  .button-add{
     float:right;
   }
 
-  .button-create-disabled{
+  .button-add-disabled{
     float:right;
   }
 
-  .button-create-disabled-none{
+  .button-add-disabled-none{
     float:right;
     display: none;
   }
