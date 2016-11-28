@@ -7,6 +7,7 @@
  -->
 
 <template>
+<div>
 
   <table id="instances-table" class="table table-striped">
     <thead>
@@ -24,40 +25,40 @@
 
       <template v-for="item in containers">
 
-        <tr v-if="[[ item.running ]] == 'true'" class="success" >
-          <td>[[ item.longName ]]</td>
-          <td>[[ item.technicalName ]]</td>
-          <td>[[ item.creationDate ]]</td>
-          <td>[[ item.app ]]</td>
+        <tr v-if="item.running == 'true'" class="success" >
+          <td>{{ item.longName }}</td>
+          <td>{{ item.technicalName }}</td>
+          <td>{{ item.creationDate }}</td>
+          <td>{{ item.app }}</td>
           <td> <span>Started</span> </td>
           <td class="actions">
-            <ul class="bread" id="[[ item.technicalName ]]">
+            <ul class="bread" :data-id="item.technicalName">
               <li class="start" title="Start the instance."><button type='button' class="btn btn-raised btn-sm btn-success button" disabled>Start</button></li>
-              <li class="stop" title="Stop the instance."><button id="[[ item.containerId ]]" type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
-              <li class="delete" title="Delete the instance."><button id="[[ item.containerId ]]" type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
-              <li class="updateConfig" title="Update the instance configuration."><button id="[[ item.containerId ]]" type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config </button></li>
-              <li class="updateData" title="Upload data for the instance."><button id="[[ item.containerId ]]" type='button' id='btn_data' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload">Data</button></li>
-              <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button" target="[[ item.target ]]" class="publicLink" href='[[ item.publicURL ]]'>Access</a></li>
-              <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button"  target="[[ item.target ]].[[ publicDomain ]]" class="publicLink" href='http://[[ item.target ]].[[ publicDomain ]]'>Public Access </a></li>
+              <li class="stop" title="Stop the instance."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance">Stop</button></li>
+              <li class="delete" title="Delete the instance."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
+              <li class="updateConfig" title="Update the instance configuration."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config </button></li>
+              <li class="updateData" title="Upload data for the instance."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload">Data</button></li>
+              <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL">Access</a></li>
+              <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
             </ul>
           </td>
         </tr>
 
-        <tr v-else class="danger" id="[[ item.containerId ]]">
-          <td>[[ item.longName ]]</td>
-          <td>[[ item.technicalName ]]</td>
-          <td>[[ item.creationDate ]]</td>
-          <td>[[ item.app ]]</td>
-          <td><span v-else>Stopped</span></td>
+        <tr v-else class="danger" :data-id="item.containerId">
+          <td>{{ item.longName }}</td>
+          <td>{{ item.technicalName }}</td>
+          <td>{{ item.creationDate }}</td>
+          <td>{{ item.app }}</td>
+          <td><span>Stopped</span></td>
           <td class="actions">
-            <ul class="bread" id="[[ item.technicalName ]]">
-              <li class="start" title="Start the instance"><button id="[[ item.containerId ]]" type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
+            <ul class="bread" :data-id="item.technicalName">
+              <li class="start" title="Start the instance"><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance">Start</button></li>
               <li class="stop" title="Stop the instance"><button type='button' class="btn btn-raised btn-sm btn-danger button" disabled>Stop</button></li>
-              <li class="delete" title="Delete the instance"><button id="[[ item.containerId ]]" type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
-              <li class="updateConfig" title="Updating configuration of the instance"><button id="[[ item.containerId ]]" type='button' id='displayConfig' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
-              <li class="updateData" title="Upload data for the instance."><button id="[[ item.containerId ]]" type='button' id='btn_data' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload">Data</button></li>
+              <li class="delete" title="Delete the instance"><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance">Delete</button></li>
+              <li class="updateConfig" title="Updating configuration of the instance"><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig">Config</button></li>
+              <li class="updateData" title="Upload data for the instance."><button :data-id="item.containerId" type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload">Data</button></li>
               <li class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Access</button></li>
-              <li v-if="[[ publicDomain ]] != ''" class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Public Access</button></li>
+              <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance"><button type="button" class="btn btn-raised btn-sm btn-link button" disabled>Public Access</button></li>
             </ul>
           </td>
         </tr>
@@ -78,8 +79,8 @@
           </div>
           <div class="panel-body">
             <p>
-              <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">[[ technicalNameToDelete ]]</span> instance.</span><br /><br />
-              <span class="deleteSizeFolder">It represents <span class="text-warning">[[ sizeToDelete ]]</span> of data.</span>
+              <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">{{ technicalNameToDelete }}</span> instance.</span><br /><br />
+              <span class="deleteSizeFolder">It represents <span class="text-warning">{{ sizeToDelete }}</span> of data.</span>
             </p><br />
           </div>
           <div class="panel-footer">
@@ -127,7 +128,7 @@
           <div class="panel-body">
 
             <!-- The form calls directly a route to perform the upload. -->
-            <form method="POST" action="/-/v1/instances/[[ instanceId ]]/data/" enctype="multipart/form-data" class="form-inline">
+            <form method="POST" :action="'/-/v1/instances/' + instanceId + '/data/'" enctype="multipart/form-data" class="form-inline">
 
               <fieldset>
 
@@ -154,7 +155,7 @@
             <br />
 
             <div class="nb-files">
-              <h4>[[ nbDataFiles ]] Data File(s)</h4>
+              <h4>{{ nbDataFiles }} Data File(s)</h4>
             </div>
 
             <div class="button-refresh">
@@ -173,12 +174,12 @@
                   </thead>
                   <tbody>
                     <template v-for="file in files">
-                      <tr id="[[ file.name ]]">
-                        <td class="files-list-name-column"><a href="/-/v1/instances/[[ instanceId ]]/data/[[ file.name ]]">[[ file.name ]]</a></td>
-                        <td>[[ file.size ]]</td>
-                        <td>[[ file.mimeType ]]</td>
+                      <tr :id="file.name">
+                        <td class="files-list-name-column"><a :href="'/-/v1/instances/' + instanceId + '/data/' + file.name">{{ file.name }}</a></td>
+                        <td>{{ file.size }}</td>
+                        <td>{{ file.mimeType }}</td>
                         <td>
-                          <input id="[[ file.name ]]" type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
+                          <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile">
                         </td>
                       </tr>
                     </template>
@@ -199,6 +200,7 @@
     </div>
   </div>
 
+</div>
 </template>
 
 
@@ -214,13 +216,14 @@
 
   export default {
 
-    ready () {
+    mounted () {
       const self = this
+
       // Call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/instances').then(function (result) {
         self.$set('containers', result.data)
-      }, console.error)
+      }, console.error);
 
       self.$http.get('/-/v1/config').then(function (result) {
         var config = result.data
@@ -241,7 +244,7 @@
       startInstance: function (event) {
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
-        // button start > li > ul > td > tr > id="[[ item.description.Id ]]"
+        // button start > li > ul > td > tr > id="{{ item.description.Id }}"
         this.$http.put('/-/v1/instances/start/' + event.target.id).then(function (result) {
         }, console.error)
       },
@@ -533,6 +536,7 @@
         filesSize: 0
       }
     }
+
   }
 
 </script>

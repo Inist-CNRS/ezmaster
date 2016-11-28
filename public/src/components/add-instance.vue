@@ -14,7 +14,7 @@
     <div class="modal" id="modal-add-instance">
       <div class="modal-dialog">
         <div class="modal-content">
-          <validator name="validation1">
+<!--           <validator name="validation1"> -->
             <form novalidate id="add-instance-form" name="Form" class="form-horizontal">
               <fieldset>
                 <div class="modal-header modal-add-instance">
@@ -38,7 +38,7 @@
                   <div class="form-group">
                     <label for="inputLongName" class="col-md-3 control-label">Long Name</label>
                     <div class="col-md-9">
-                      <input class="form-control" id="inputLongName" name="inputLongName" placeholder="A free text, human-readable." type="text" value='[[ longName ]]' v-model="longName" v-validate:longName="{ required: true }">
+                      <input class="form-control" id="inputLongName" name="inputLongName" placeholder="A free text, human-readable." type="text" v-model="longName">
                     </div>
                   </div>
 
@@ -47,10 +47,11 @@
 
                     <div class="col-md-9">
                       <div class="block-input">
-                        <input class="form-control sizeInput" id="inputProject" name="inputProject" placeholder=" project" type="text" value='[[ project ]]' v-model="project" v-validate:project="{ required: true, lowercaseAndDigits : true}">-
-                        <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" placeholder="study" type="text" value='[[ study ]]' v-model="study" v-validate:study="{ required: true, lowercaseAndDigits : true }">-
-                        <input class="form-control sizeInput" id="inputVersion" placeholder="1" value="[[ version ]]" type="text" min='0' v-model="version">
+                        <input class="form-control sizeInput" id="inputProject" name="inputProject" placeholder="project" type="text" v-model="project">-
+                        <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" placeholder="study" type="text" v-model="study">-
+                        <input class="form-control sizeInput" id="inputVersion" placeholder="1" type="text" min='0' v-model="version">
                       </div>
+<!-- 
                       <div v-if='$validation1.project.dirty'>
                         <span class="help-block text-danger" v-if="$validation1.project.required">Fill the first part of the technical name.</span>
                         <span class="help-block text-danger" v-if="$validation1.project.lowercaseAndDigits">Only lower case letters and digits for the first part.</span>
@@ -59,6 +60,7 @@
                         <span class="help-block text-danger" v-if="$validation1.study.required">Fill the second part of the technical name.</span>
                         <span class="help-block text-danger" v-if="$validation1.study.lowercaseAndDigits">Only lower case letters and digits for the second part.</span>
                       </div>
+ -->
                       <span id='technicalNameExists' class="help-block text-danger span-exists">Technical name "[[ technicalName ]]" already exists</span>
                     </div>
                   </div>
@@ -66,15 +68,14 @@
                   <div class="form-group" v-if="[[ publicDomain ]] != ''">
                     <label for="urlPreview" class="col-md-3 control-label">URL preview</label>
                     <div class="col-md-9">
-                      <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" value='[[ urlPreview ]]' v-model='urlPreview' disabled>
+                      <input class="form-control" id="urlPreview" placeholder='Generated URL' type="text" v-model='urlPreview' disabled>
                     </div>
                   </div>
                 </div>
 
                 <div class="panel-footer">
                   <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
-                  <button v-if="$validation1.valid" type="button" id='save' class="btn btn-primary button-create" v-on:click='addInstance'>Create</button>
-                  <button v-else type="button" id='save' class="btn btn-primary button-create" disabled>Create</button>
+                  <button type="button" id='save' class="btn btn-primary button-create" v-on:click='addInstance'>Create</button>
                   <button type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled" disabled>Create</button>
                   <div id='loader' class="loader">
                     <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
@@ -82,12 +83,12 @@
                   </div>
                   <div id='errorLoader' class="loader">
                     <span class="text-danger" id="errorLoaderAddInstance">An error [[ codeErrorPull ]] was received : [[ messageErrorPull ]].</span><br />
-                    <button v-else type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
+                    <button type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
                   </div>
                 </div>
               </fieldset>
             </form>
-          </validator>
+<!--           </validator> -->
         </div>
       </div>
     </div>
@@ -102,7 +103,7 @@
 
   export default {
 
-    ready () {
+    mounted () {
       var self = this
 
       self.$http.get('/-/v1/config').then(function (result) {
@@ -151,7 +152,7 @@
       this.$watch('project', function (project) {
         // The project parameter contains the project field value.
 
-        this.project = project
+        this.project = project;
 
         if (this.version === '') { this.technicalName = this.project + '-' + this.study }
         else { this.technicalName = this.project + '-' + this.study + '-' + this.version }

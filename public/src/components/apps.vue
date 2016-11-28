@@ -54,7 +54,7 @@
 
   export default {
 
-    ready () {
+    mounted () {
       const self = this
 
       // ... call the route /-/v1/instances with a get wich get the instances list.

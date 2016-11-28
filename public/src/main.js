@@ -1,22 +1,10 @@
 /*eslint no-unused-vars: 0*/
 'use strict';
 
-var Vue = require('vue');
+// http://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
+var Vue = require('vue/dist/vue.js')
 
-Vue.config.delimiters = ['[[', ']]'];
-
-Vue.use(require('vue-validator'));
 Vue.use(require('vue-resource'));
-
-
-Vue.validator('numeric', function (val) {
-  return /^[0-9]+$/.test(val);
-});
-
-Vue.validator('lowercaseAndDigits', function (val) {
-  return /^[a-z0-9]+$/.test(val);
-});
-
 
 var vueInfosMachineTable = require('./components/infos-machine-table.vue');
 var vueTable             = require('./components/table.vue');
@@ -26,7 +14,7 @@ var vueApps              = require('./components/apps.vue');
 
 module.exports = new Vue({
 
-  el: 'body',
+  el: '#content',
 
   components: {
 

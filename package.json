@@ -24,7 +24,8 @@
     "transform": [
       "vueify",
       "babelify"
-    ]
+    ],
+    "vue": "vue/dist/vue.common"
   },
   "keywords": [
     "docker",
@@ -63,7 +64,7 @@
     "filesize": "^3.3.0",
     "get-folder-size": "^1.0.0",
     "glob": "^7.0.5",
-    "heartbeats": "^3.1.3",
+    "heartbeats": "^5.0.1",
     "http-proxy": "^1.14.0",
     "jsonfile": "^2.3.1",
     "kuler": "0.0.0",
@@ -80,22 +81,22 @@
     "sort-by": "^1.1.1",
     "storage": "^0.2.0",
     "utile": "^0.3.0",
-    "vue": "^1.0.26-csp",
-    "vue-awesome": "^0.3.0",
-    "vue-infinite-scroll": "^0.2.3",
-    "vue-resource": "^0.9.3",
-    "vue-router": "^0.7.13",
+    "vue": "^2.1.3",
+    "vue-awesome": "^2.0.3",
+    "vue-infinite-scroll": "^2.0.0",
+    "vue-resource": "^1.0.3",
+    "vue-router": "^2.0.3",
     "vue-strap": "^1.0.11",
-    "vue-validator": "^2.1.3",
-    "vueify": "^8.7.0",
-    "vuex": "^1.0.0-rc.2"
+    "vueify": "^9.3.0",
+    "vuex": "^2.0.0"
   },
   "devDependencies": {
+    "browserify": "^13.1.1",
     "chai": "^3.5.0",
     "eslint": "^3.7.1",
-    "eslint-config-vue": "^1.1.0",
+    "eslint-config-vue": "^2.0.1",
     "eslint-plugin-html": "^1.5.3",
-    "eslint-plugin-vue": "^0.1.1",
+    "eslint-plugin-vue": "^1.0.0",
     "istanbul": "^0.4.4",
     "less": "^2.7.1",
     "less-plugin-clean-css": "^1.5.1",
@@ -105,7 +106,6 @@
     "npm-run-all": "^3.1.0",
     "request": "^2.74.0",
     "supertest": "^2.0.0",
-    "vue-hot-reload-api": "^2.0.5",
     "watch": "^1.0.1"
   }
 }
