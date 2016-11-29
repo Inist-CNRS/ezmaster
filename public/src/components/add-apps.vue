@@ -1,8 +1,8 @@
 <template>
-  <div id="addImage" v-on:keyup.esc="cancelAddApp">
+  <div id="addImage">
     <button class="btn btn-raised btn-primary" data-toggle="modal" data-target="#modal-add-image">Add Application</button>
 
-    <div class="modal" id="modal-add-image">
+    <div class="modal fade" id="modal-add-image"  tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
             <form novalidate id="add-image-form" name="Form" class="form-horizontal">
@@ -65,7 +65,7 @@
                   </div>
                    <div id='errorLoaderImages' class="loader">
                     <span class="text-danger" id="errorLoaderAddImage">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
-                    <button type="button" id='tryAgain' v-on:click='tryAgain' class="btn btn-danger">Cancel</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                   </div>
 
                 </div>
@@ -142,21 +142,8 @@
         })
       },
 
-      tryAgain: function (event) {
-        location.reload()
-      },
-
-      cancelAddApp: function (event) {
-        $('#modal-add-image').modal('hide')
-      },
-
       showSettings: function (event) {
-        if (this.show === false) {
-          this.show = true
-        }
-        else {
-          this.show = false
-        }
+		this.show = this.show === false ? true : false
       }
 
     },
