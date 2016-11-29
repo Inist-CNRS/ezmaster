@@ -37,7 +37,7 @@
                 <div class="form-group" :class="{ 'has-error': errors.has('inputLongName') }">
                   <label for="inputLongName" class="col-md-3 control-label">Long Name</label>
                   <div class="col-md-9">
-                    <input class="form-control" id="inputLongName" name="inputLongName" v-validate data-vv-rules="required" placeholder="A free text, human-readable." type="text" v-model="longName">
+                    <input class="form-control" id="inputLongName" name="Long Name" v-validate data-vv-rules="required" placeholder="A free text, human-readable." type="text" v-model="longName">
                   </div>
                 </div>
 
@@ -46,9 +46,9 @@
 
                   <div class="col-md-9">
                     <div class="block-input">
-                      <input class="form-control sizeInput" id="inputProject" name="inputProject" v-validate data-vv-rules="required|alpha_num|lowercase" placeholder="project" type="text" v-model="project">-
-                      <input class="form-control has-warning sizeInput" id="inputStudy" name="inputStudy" v-validate data-vv-rules="required|alpha_num|lowercase" placeholder="study" type="text" v-model="study">-
-                      <input class="form-control sizeInput" id="inputVersion" v-validate data-vv-rules="numeric" placeholder="1" type="text" min='0' v-model="version">
+                      <input class="form-control sizeInput" id="inputProject" name="project" v-validate data-vv-rules="required|alpha_num|lowercase" placeholder="project" type="text" v-model="project">-
+                      <input class="form-control has-warning sizeInput" id="inputStudy" name="study" v-validate data-vv-rules="required|alpha_num|lowercase" placeholder="study" type="text" v-model="study">-
+                      <input class="form-control sizeInput" id="inputVersion" name="version" v-validate data-vv-rules="numeric" placeholder="1" type="text" min='0' v-model="version">
                     </div>
                     <ul v-show="errors.any()" class="help-block text-danger">
                       <li v-for="error in errors.all()">{{ error }}</li>
@@ -103,8 +103,13 @@
         publicDomain = config.publicDomain
       }, console.error)
 
-      self.$http.get('/-/v1/app').then(function (result) {
-        self.apps = result.data
+      self.$http.get('/-/v1/app').then(result => {
+        self.apps = result.data.sort((app1, app2) => {
+          if (app1.imageName === app2.imageName) {
+            return 0
+          }
+          return app1.imageName > app2.imageName ? -1 : 1
+        })
       }, console.error)
 
       this.$watch('study', function (study) {
@@ -127,7 +132,6 @@
         else { this.technicalName = this.project + '-' + this.study + '-' + this.version }
 
         this.verif(this.technicalName)
-
       })
 
       this.$watch('version', function (version) {
@@ -147,7 +151,6 @@
       verif: function (technicalName) {
         var self = this
         this.$http.get('/-/v1/instances/verif/' + technicalName).then(function (result) {
-          console.log('verif', result.data)
           if (result.data === 'OK') {
             // document.getElementById('technicalNameExists').style.display = 'none'
             self.invalid = false
@@ -242,7 +245,6 @@
 
   #add_instance {
     margin-left: 2.5%;
-    background-color:#0277BD;
   }
 
   .sizeInput {

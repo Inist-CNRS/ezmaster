@@ -74,6 +74,7 @@
     "jsonfile": "^2.3.1",
     "kuler": "0.0.0",
     "lodash": "^4.13.1",
+    "memory-cache": "^0.1.6",
     "mkdirp": "^0.5.1",
     "mmmagic": "^0.4.5",
     "moment": "^2.13.0",

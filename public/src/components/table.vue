@@ -40,7 +40,7 @@
               <li class="stop" title="Stop the instance."><button type='button' class="btn btn-raised btn-sm btn-danger button" v-bind:disabled="!item.running" v-on:click="stopInstance(item.containerId)">Stop</button></li>
               <li class="delete" title="Delete the instance."><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
               <li class="updateConfig" title="Update the instance configuration."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config </button></li>
-              <li class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload(item.containerId)">Data</button></li>
+              <li v-show="item.dataPath" class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload(item.containerId)">Data</button></li>
               <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running">Access</a></li>
               <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
             </ul>
@@ -77,12 +77,17 @@
   </div>
 
 
-  <div class="modal" id="modal-update-config">
+  <div class="modal" v-bind:class="{ 'modal-fullscreen': fullscreen }" id="modal-update-config">
     <div class="modal-dialog">
       <div class="modal-content">
          <div class="panel panel-info">
           <div class="panel-heading">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">×</button>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="fs-button close" aria-hidden="true" v-on:click="fullscreenConfig">
+              <span class="glyphicon" v-bind:class="{ 'glyphicon-resize-small': fullscreen, 'glyphicon-resize-full': !fullscreen }" aria-hidden="true"></span>
+            </button>            
             <h3 class="panel-title">Configuration Update</h3>
           </div>
           <div class="panel-body">
@@ -119,8 +124,6 @@
                 <label class="btn btn-success btn-file" style="float:left;margin-right:20px;">
                     Add File <input type="file" name="btnFile" id="btnFile" style="display: none; float: right;" required multiple @change="onChangeInputFile">
                 </label>
-
-                <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
 
                 <div class="list-infos-file">
                   <div><span id="spanFileName"></span></div>
@@ -298,6 +301,10 @@
 
       cancelConfig: function () {
         document.getElementById('modal-update-config').style.display = 'none'
+      },
+
+      fullscreenConfig: function () {
+        this.fullscreen = !this.fullscreen;
       },
 
       updateConfig: function () {
@@ -516,7 +523,8 @@
         instanceId: '',
         files: {},
         nbDataFiles: 0,
-        filesSize: 0
+        filesSize: 0,
+        fullscreen: false
       }
     }
 
@@ -619,4 +627,23 @@
     width:10%;
   }
 
+  .fs-button {
+    margin-right: 10px;
+  }
+  .modal-fullscreen .modal-dialog {
+    margin: 0;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    max-width: 1024;
+  }
+  .modal-fullscreen .panel-footer {
+    padding: 0;
+  }
+  .modal-fullscreen .panel-body {
+    padding: 0; 
+  }
+  .modal-fullscreen #jsoneditor {
+    height: calc(100vh - 100px);
+  }
 </style>

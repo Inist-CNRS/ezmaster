@@ -1,12 +1,8 @@
-/*eslint no-unused-vars: 0*/
-'use strict';
-
 // http://vuejs.org/guide/installation.html#Standalone-vs-Runtime-only-Build
 
-
 import Vue         from 'vue/dist/vue.js';
-import VeeValidate from 'vee-validate'
-import App         from './components/app.vue'
+import VeeValidate from 'vee-validate';
+import App         from './components/app.vue';
 
 VeeValidate.Validator.extend('lowercase', {
   getMessage: field => `The ${field} is not lowercase.`,
