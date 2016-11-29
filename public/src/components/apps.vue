@@ -1,5 +1,5 @@
 <template>
-  <table id="applications-table" class="table table-striped">
+  <table id="applications-table" class="table table-hover">
     <thead>
       <tr>
         <th>Image</th>
@@ -9,7 +9,7 @@
     </thead>
     <tbody>
       <template v-for="item in containers">
-        <tr class="success" :id="item.imageName">
+        <tr :id="item.imageName" scope="row">
           <td>{{ item.imageName }}</td>
           <td>{{ item.creationDate }}</td>
           <td class="actions">
