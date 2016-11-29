@@ -20,15 +20,22 @@
                   <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
                   <div class="col-md-9">
                     <input class="form-control sizeInput"
+                           list="applicationImages"
                            id="inputImageName"
                            name="inputImageName"
                            placeholder="inistcnrs/ezvis"
                            type="text"
                            v-model="imageName"
+                           v-on:keydown.stop="searchImages"
                            v-on:blur.stop="searchTags"
                            >
-                           <select class="form-control sizeInput" v-bind:disabled="isSearchingTags" id="inputVersionImage" v-model="versionImage">
-                             <option v-for="(version, index) in applicationVersions">
+                           <datalist id="applicationImages">
+                             <option v-for="(image, index) in applicationImages">
+                             {{ image.repo_name }}
+                             </option>
+                           </datalist>
+                           <select id="applicationVersions" class="form-control sizeInput" v-bind:disabled="isSearchingTags" v-model="versionImage">
+                             <option v-for="(version, index) in applicationVersions" v-bind:selected="true">
                              {{ version.name }}
                              </option>
                            </select>
@@ -37,8 +44,7 @@
                   <button type="button" class="btn btn-default btn-md" v-on:click='toggleSettings'>
                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings
                   </button>
-
-
+:
                   <div class="form-group" id='settings' v-show="show">
                     <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
                     <div class="col-md-9">
@@ -63,9 +69,6 @@
 
                   </div>
                 </div>
-
-
-
 
                 <div class="panel-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -123,6 +126,26 @@ export default {
 
   methods: {
 
+    searchImages: function () {
+      const self = this;
+      if (self.isSearchingImages === true) {
+        return
+      }
+      self.isSearchingImages = true;
+      self.applicationImages = [];
+      const url = "/-/v1/hub/search/repositories/?query=" + self.imageName + "&page=1&page_size=5";
+      self.applicationImages = [];
+      self.$http.get(url).then((response) => {
+        if (response.body && response.body.results && Array.isArray(response.body.results)) {
+          response.body.results.forEach(function (item) {
+            self.$set(self.applicationImages, self.applicationImages.length, item)
+          })
+        }
+        self.isSearchingImages = false;
+      }, (response) => {
+        self.isSearchingImages = false;
+      })
+    },
     searchTags: function () {
       const self = this;
       if (self.isSearchingTags === true) {
@@ -136,9 +159,12 @@ export default {
         self.$http.get(url).then((response) => {
           self.cacheImageVersions[self.imageName] = true;
           if (response.body && response.body.results && Array.isArray(response.body.results)) {
-            response.body.results.forEach(function (item) {
+            response.body.results.forEach(function (item, index) {
+              if (index=== 0) {
+                self.versionImage = item.name;
+              }
               self.$set(self.applicationVersions, self.applicationVersions.length, item)
-            })
+            });
           }
           self.isSearchingTags = false;
         }, (response) => {
@@ -202,6 +228,8 @@ export default {
       disableAddButton: false,
       boolInfosFeed: false,
       applicationVersions: [],
+      applicationImages: [],
+      isSearchingImages: false,
       isSearchingTags: false
     }
   }
