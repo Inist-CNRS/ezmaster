@@ -194,7 +194,7 @@
 
 
 
-<style>
+<style scoped>
 
   #add_image {
     margin-left: 2.5%;
@@ -210,16 +210,8 @@
     display: block;
   }
 
-  #inputLongName, #inputProject, #inputStudy {
-     background-color:        #FFCDD2;
-  }
-
   #urlPreview{
       background-color:       #CFD8DC;
-  }
-
-  #save, #saveTechnicalExists {
-      background-color:#0277BD;
   }
 
   .titleFormAddInstance {
