@@ -14,11 +14,11 @@
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="nav-item active">
-				<a data-toggle="tab" class="nav-link" href="#instances">Instances</a>
-			  </li>
+        <a data-toggle="tab" class="nav-link" href="#instances">Instances</a>
+        </li>
               <li class="nav-item">
-			    <a data-toggle="tab" class="nav-link" href="#apps">Applications</a>
-			  </li>
+          <a data-toggle="tab" class="nav-link" href="#apps">Applications</a>
+        </li>
             </ul>
             <InfosMachine></InfosMachine>
           </div>
@@ -38,31 +38,30 @@
 </template>
 
 <script>
-import InfosMachine     from './infos-machine-table.vue';
-import Instances        from './table.vue';
-import AddInstance      from './add-instance.vue';
-import AddApp           from './add-apps.vue';
-import Apps             from './apps.vue';
-
+import InfosMachine from './infos-machine-table.vue'
+import Instances from './table.vue'
+import AddInstance from './add-instance.vue'
+import AddApp from './add-apps.vue'
+import Apps from './apps.vue'
 
 export default {
-	mounted : function() {
-		const self = this;
-		self.$refs.addapps.$on('refreshApplicationsList', function (msg) {
-			self.$refs.appslist.refresh()
-		})
-	},
-	components: {
-	    InfosMachine,
-		Instances,
-		AddInstance,
-		Apps,
-		AddApp
-	}
+  mounted: function () {
+    const self = this
+    self.$refs.addapps.$on('refreshApplicationsList', function (msg) {
+      self.$refs.appslist.refresh()
+    })
+  },
+  components: {
+    InfosMachine,
+    Instances,
+    AddInstance,
+    Apps,
+    AddApp
+  }
 }
 </script>
 <style>
 .mainbar {
-	background-color: #0277BD;
+  background-color: #0277BD;
 }
 </style>
