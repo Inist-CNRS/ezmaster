@@ -40,7 +40,7 @@
               <li class="stop" title="Stop the instance."><button type='button' class="btn btn-raised btn-sm btn-danger button" v-bind:disabled="!item.running" v-on:click="stopInstance(item.containerId)">Stop</button></li>
               <li class="delete" title="Delete the instance."><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
               <li class="updateConfig" title="Update the instance configuration."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config </button></li>
-              <li class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload(item.containerId)">Data</button></li>
+              <li v-show="item.dataPath" class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload(item.containerId)">Data</button></li>
               <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running">Access</a></li>
               <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
             </ul>
