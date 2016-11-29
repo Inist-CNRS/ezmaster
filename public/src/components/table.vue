@@ -77,12 +77,17 @@
   </div>
 
 
-  <div class="modal" id="modal-update-config">
+  <div class="modal" v-bind:class="{ 'modal-fullscreen': fullscreen }" id="modal-update-config">
     <div class="modal-dialog">
       <div class="modal-content">
          <div class="panel panel-info">
           <div class="panel-heading">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">×</button>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+            <button type="button" class="fs-button close" aria-hidden="true" v-on:click="fullscreenConfig">
+              <span class="glyphicon" v-bind:class="{ 'glyphicon-resize-small': fullscreen, 'glyphicon-resize-full': !fullscreen }" aria-hidden="true"></span>
+            </button>            
             <h3 class="panel-title">Configuration Update</h3>
           </div>
           <div class="panel-body">
@@ -296,6 +301,10 @@
 
       cancelConfig: function () {
         document.getElementById('modal-update-config').style.display = 'none'
+      },
+
+      fullscreenConfig: function () {
+        this.fullscreen = !this.fullscreen;
       },
 
       updateConfig: function () {
@@ -514,7 +523,8 @@
         instanceId: '',
         files: {},
         nbDataFiles: 0,
-        filesSize: 0
+        filesSize: 0,
+        fullscreen: false
       }
     }
 
@@ -617,4 +627,23 @@
     width:10%;
   }
 
+  .fs-button {
+    margin-right: 10px;
+  }
+  .modal-fullscreen .modal-dialog {
+    margin: 0;
+    margin-right: auto;
+    margin-left: auto;
+    width: 100%;
+    max-width: 1024;
+  }
+  .modal-fullscreen .panel-footer {
+    padding: 0;
+  }
+  .modal-fullscreen .panel-body {
+    padding: 0; 
+  }
+  .modal-fullscreen #jsoneditor {
+    height: calc(100vh - 100px);
+  }
 </style>
