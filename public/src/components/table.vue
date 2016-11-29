@@ -304,7 +304,7 @@
       },
 
       fullscreenConfig: function () {
-        this.fullscreen = !this.fullscreen;
+        this.fullscreen = !this.fullscreen
       },
 
       updateConfig: function () {
