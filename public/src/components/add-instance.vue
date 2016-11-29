@@ -34,14 +34,14 @@
                   </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" :class="{ 'has-error': errors.has('inputLongName') }">
                   <label for="inputLongName" class="col-md-3 control-label">Long Name</label>
                   <div class="col-md-9">
                     <input class="form-control" id="inputLongName" name="inputLongName" v-validate data-vv-rules="required" placeholder="A free text, human-readable." type="text" v-model="longName">
                   </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group" :class="{ 'has-error': errors.has('inputProject') || errors.has('inputStudy') || errors.has('inputVersion') }">
                   <label class="col-md-3 control-label">Technical Name</label>
 
                   <div class="col-md-9">
@@ -53,7 +53,7 @@
                     <ul v-show="errors.any()" class="help-block text-danger">
                       <li v-for="error in errors.all()">{{ error }}</li>
                     </ul>
-                    <span id='technicalNameExists' class="help-block text-danger span-exists">Technical name "{{ technicalName }}" already exists</span>
+                    <span v-show="invalid" id='technicalNameExists' class="help-block text-danger">Technical name "{{ technicalName }}" already exists</span>
                   </div>
                 </div>
 
@@ -67,7 +67,7 @@
 
               <div class="panel-footer">
                 <button type="button" id="close_modal" class="btn btn-default" v-on:click='cancelAddInstance' data-dismiss="modal">Cancel</button>
-                <button v-if="errors.any() || invalid" type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled" disabled>Create</button>
+                <button v-if="errors.any() || invalid || technicalName == ''" type="button" id='saveTechnicalExists' class="btn btn-primary button-create-disabled" disabled>Create</button>
                 <button v-else                         type="button" id='save' class="btn btn-primary button-create" v-on:click='addInstance'>Create</button>
                 <div id='loader' class="loader">
                   <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
@@ -107,19 +107,6 @@
         self.apps = result.data
       }, console.error)
 
-      this.$watch('longName', function (longName) {
-        // The longName parameter contains the longName field value.
-
-        if (longName === '') {
-          // Red background.
-          document.getElementById('inputLongName').style.backgroundColor = '#FFCDD2'
-        }
-        else {
-          // Green background.
-          document.getElementById('inputLongName').style.backgroundColor = '#C5E1A5'
-        }
-      })
-
       this.$watch('study', function (study) {
         // The study parameter contains the study field value.
 
@@ -129,15 +116,6 @@
         else { this.technicalName = this.project + '-' + this.study + '-' + this.version }
 
         this.verif(this.technicalName)
-
-        if (/^[a-z0-9]+$/.test(study) === false || study === '') {
-          // Red background.
-          document.getElementById('inputStudy').style.backgroundColor = '#FFCDD2'
-        }
-        else {
-          // Green background.
-          document.getElementById('inputStudy').style.backgroundColor = '#C5E1A5'
-        }
       })
 
       this.$watch('project', function (project) {
@@ -150,14 +128,6 @@
 
         this.verif(this.technicalName)
 
-        if (/^[a-z0-9]+$/.test(project) === false || project === '') {
-          // Red background.
-          document.getElementById('inputProject').style.backgroundColor = '#FFCDD2'
-        }
-        else {
-          // Green background.
-          document.getElementById('inputProject').style.backgroundColor = '#C5E1A5'
-        }
       })
 
       this.$watch('version', function (version) {
@@ -177,16 +147,13 @@
       verif: function (technicalName) {
         var self = this
         this.$http.get('/-/v1/instances/verif/' + technicalName).then(function (result) {
+          console.log('verif', result.data)
           if (result.data === 'OK') {
-            // document.getElementById('inputProject').style.backgroundColor = '#c5e1a5'
-            // document.getElementById('inputStudy').style.backgroundColor = '#c5e1a5'
-            document.getElementById('technicalNameExists').style.display = 'none'
+            // document.getElementById('technicalNameExists').style.display = 'none'
             self.invalid = false
           }
           else {
-            document.getElementById('inputProject').style.backgroundColor = '#FFCDD2'
-            document.getElementById('inputStudy').style.backgroundColor = '#FFCDD2'
-            document.getElementById('technicalNameExists').style.display = 'block'
+            // document.getElementById('technicalNameExists').style.display = 'block'
             self.invalid = true
           }
         })
@@ -250,7 +217,7 @@
         publicDomain: '',
         apps: [],
         codeErrorPull: '',
-        invalid: true
+        invalid: false
       }
     },
 
@@ -271,7 +238,7 @@
 
 
 
-<style>
+<style scoped>
 
   #add_instance {
     margin-left: 2.5%;
@@ -285,10 +252,6 @@
 
   .block-input {
     display: block;
-  }
-
-  #inputLongName, #inputProject, #inputStudy {
-     background-color:        #FFCDD2;
   }
 
   #urlPreview{
@@ -310,10 +273,6 @@
   .modal-add-instance{
     background-color: #0277BD;
     border:solid white 5px;
-  }
-
-  .span-exists{
-    display: none;
   }
 
   .button-create-disabled{

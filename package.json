@@ -8,8 +8,8 @@
     "start": "node index.js",
     "start-debug": "npm-run-all --parallel watch-js watch-less start-nodemon",
     "start-nodemon": "nodemon -V index.js",
-    "watch-js": "watch 'browserify -d public/src/main.js > public/dist/bundle.js && echo \"-> bundle.js written\"' ./public/src/",
-    "watch-less": "watch 'lessc --source-map-map-inline --source-map-less-inline public/less/*.less > public/dist/bundle.css && echo \"-> bundle.css written\"' ./public/less/",
+    "watch-js": "watch 'browserify -d public/src/main.js > public/dist/bundle.js && echo \"-> bundle.js written [$(date +%T)]\"' ./public/src/",
+    "watch-less": "watch 'lessc --source-map-map-inline --source-map-less-inline public/less/*.less > public/dist/bundle.css && echo \"-> bundle.css written [$(date +%T)]\"' ./public/less/",
     "lint": "eslint --ext=.js,.vue ./routes/ ./middlewares/ ./test/ ./lib/ ./public/src/",
     "test": "mocha",
     "build": "npm run build-js && npm run build-css",
@@ -19,6 +19,11 @@
     "preversion": "npm run lint",
     "version": "npm run insertversion && git add public/index.html docker-compose.yml",
     "postversion": "git push && git push --tags"
+  },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "browserify": {
     "transform": [
@@ -98,6 +103,7 @@
     "eslint-config-vue": "^2.0.1",
     "eslint-plugin-html": "^1.5.3",
     "eslint-plugin-vue": "^1.0.0",
+    "ghooks": "^1.3.2",
     "istanbul": "^0.4.4",
     "less": "^2.7.1",
     "less-plugin-clean-css": "^1.5.1",
