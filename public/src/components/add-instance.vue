@@ -245,7 +245,6 @@
 
   #add_instance {
     margin-left: 2.5%;
-    background-color:#0277BD;
   }
 
   .sizeInput {
