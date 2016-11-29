@@ -19,8 +19,19 @@
                   <div class="form-group">
                     <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
                     <div class="col-md-9">
-                      <input class="form-control sizeInput" id="inputImageName" name="inputImageName" placeholder="inistcnrs/ezvis" type="text" v-model="imageName">
-                      <input class="form-control sizeInput" id="inputVersionImage" placeholder="6.8.11" type="text" min='0' v-model="versionImage">
+                      <input class="form-control sizeInput"
+					         id="inputImageName"
+							 name="inputImageName"
+							 placeholder="inistcnrs/ezvis"
+							 type="text"
+							 v-model="imageName"
+							 v-on:blur.stop="searchTags"
+							 >
+					  <select class="form-control sizeInput" v-bind:disabled="isSearchingTags" id="inputVersionImage" v-model="versionImage">
+						<option v-for="(version, index) in applicationVersions">
+							{{ version.name }}
+						</option>
+					  </select>
                     </div>
 
                     <button type="button" class="btn btn-default btn-md" v-on:click='showSettings'>
@@ -112,6 +123,34 @@
 
     methods: {
 
+	  searchTags : function() {
+		const self = this;
+		if (self.isSearchingTags === true) {
+			return
+		}
+		self.isSearchingTags = true;
+		console.log('searchTags for', self.imageName);
+		self.applicationVersions = [];
+		if (self.imageName.search(/\w\/\w/) >= 0) {
+			const url = '/-/v1/hub/repositories/' + self.imageName.trim() + '/tags/?page=1&page_size=5'
+			console.log('fecth', url);
+			self.applicationVersions = [];
+			self.$http.get(url).then((response) => {
+				self.cacheImageVersions[self.imageName] = true;
+				if (response.body && response.body.results && Array.isArray(response.body.results)) {
+					response.body.results.forEach(function(item) {
+						self.$set(self.applicationVersions, self.applicationVersions.length, item)
+					})
+					}
+				self.isSearchingTags = false;
+			}, (response) => {
+			self.isSearchingTags = false;
+			})
+		}
+		else {
+			self.isSearchingTags = false;
+		}
+	  },
       addImage: function (event) {
         var self = this
 
@@ -152,6 +191,7 @@
       return {
         imageName: '',
         versionImage: '',
+		cacheImageVersions: {},
         messageErrorPull: '',
         imageHub: '',
         email: '',
@@ -163,7 +203,9 @@
         infosMachine: {},
         fullFsPercent: '',
         disableAddButton: false,
-        boolInfosFeed: false
+        boolInfosFeed: false,
+		applicationVersions: [],
+		isSearchingTags: false
       }
     }
 

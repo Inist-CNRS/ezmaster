@@ -19,6 +19,7 @@ app.use(express.static('public'));
 app.use('/-/v1/',          require('./routes/v1.js'));
 app.use('/-/v1/config',    require('./routes/v1-config.js'));
 app.use('/-/v1/app',       require('./routes/v1-app.js'));
+app.use('/-/v1/hub',       require('./routes/v1-hub.js'));
 app.use('/-/v1/instances', require('./routes/v1-instances.js'));
 
 // load socket.io connections
