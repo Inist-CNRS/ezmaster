@@ -30,7 +30,7 @@
           <AddInstance></AddInstance>
         </div>
         <div id="apps" class="tab-pane fade">
-          <Apps ref="appslist"></Apps>
+          <Applications ref="appslist"></Applications>
           <AddApp ref="addapps"></AddApp>
         </div>
       </div>
@@ -42,7 +42,7 @@ import InfosMachine from './infos-machine-table.vue'
 import Instances from './table.vue'
 import AddInstance from './add-instance.vue'
 import AddApp from './add-apps.vue'
-import Apps from './apps.vue'
+import Applications from './applications.vue'
 
 export default {
   mounted: function () {
@@ -55,7 +55,7 @@ export default {
     InfosMachine,
     Instances,
     AddInstance,
-    Apps,
+    Applications,
     AddApp
   }
 }

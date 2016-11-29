@@ -120,8 +120,6 @@
                     Add File <input type="file" name="btnFile" id="btnFile" style="display: none; float: right;" required multiple @change="onChangeInputFile">
                 </label>
 
-                <!--<input type="file" name="btnFile" id="btnFile" required multiple class="input-large btn btn-file">-->
-
                 <div class="list-infos-file">
                   <div><span id="spanFileName"></span></div>
                   <div><span id="spanFileSize"></span></div>
