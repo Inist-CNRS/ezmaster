@@ -1,5 +1,5 @@
 <template>
-    <div id="content">
+    <div>
 
       <nav class="navbar navbar-light" style="background-color: #0277BD;">
 
