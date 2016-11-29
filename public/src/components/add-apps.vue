@@ -1,13 +1,4 @@
-
-<!--
-  This is a .vue component divided into 3 parts :
-  - <template> containing the HTML code of this component.
-  - <script> containing the javascript code of this component.
-  - <style> containing the CSS code of this component.
- -->
-
 <template>
-
   <div id="addImage" v-on:keyup.esc="cancelAddApp">
     <button class="btn btn-raised btn-primary" data-toggle="modal" data-target="#modal-add-image">Add Application</button>
 
@@ -138,7 +129,8 @@
         this.$http.post('/-/v1/app', formdata).then(function (result) {
           if (result.status === 200) {
             $('#modal-add-image').modal('hide')
-            self.$emit('refreshApplications')
+			console.log('emit', 'refreshApplicationsList')
+            self.$emit('refreshApplicationsList')
           }
         }, function (error) {
           if (error) {
@@ -248,5 +240,7 @@
     display:none;
     text-align: center;
   }
-
+  #addImage {
+    margin-left: 2.5%;
+  }
 </style>
