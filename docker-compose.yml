@@ -27,6 +27,7 @@ services:
       EZMASTER_FREE_PORT_RANGE: ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
+      EZMASTER_FULL_FS_PERCENT: ${EZMASTER_FULL_FS_PERCENT}
       DEBUG: ${DEBUG}
     working_dir: /app
     tty: true         # to have nice debug(...) outputs

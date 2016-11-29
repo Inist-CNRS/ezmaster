@@ -24,7 +24,7 @@
 
     <!-- HDD -->
     <div class="glyphicon3 glyphicon glyphicon-hdd" data-toggle="tooltip" data-placement="bottom" data-original-title="HDD usage"></div>
-    <span class="badge3-1 badge" data-toggle="tooltip" data-placement="bottom" v-bind:class="{ 'badge-warning': infosMachine.useDiskPercentage }" :data-original-title="'HDD\nTotal : ' + infosMachine.totalDisk + '\nFree : ' + infosMachine.freeDisk">{{ infosMachine.useDiskPercentage }} %</span>
+    <span class="badge3-1 badge" data-toggle="tooltip" data-placement="bottom" v-bind:class="{ 'badge-warning': infosMachine.fsIsAlmostFilled }" :data-original-title="'HDD\nTotal : ' + infosMachine.totalDisk + '\nFree : ' + infosMachine.freeDisk">{{ infosMachine.useDiskPercentage }} %</span>
 
   </div>
 
