@@ -15,20 +15,19 @@ RUN set -x \
   && rm docker.tgz \
   && docker -v
 
+# install yarn (faster than npm...)
+RUN npm config set strict-ssl false && npm install -q -g yarn
+
 # install npm dependencies
 WORKDIR /app
 COPY ./package.json /app/package.json
-RUN npm config set strict-ssl false && npm install -q
+RUN yarn install && yarn cache clean
+
 
 # copy the code source of ezmaster 
 # after dependencies installation
 COPY . /app
 RUN npm run build
-
-# cleanup
-RUN rm -rf ./node_modules && \
-    npm install -q --production && \
-    npm cache clean
 
 # instances, manifests and applications folders are volumes
 # because these data should be persistent
