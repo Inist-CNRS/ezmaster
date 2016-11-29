@@ -38,7 +38,7 @@ stop-prod: ## stop ezmaster production daemon
 
 # makefile rule used to keep current user's unix rights on the docker mounted files
 chown:
-	@test ! -d $$(pwd)/node_modules || docker run -it --rm --net=host -v $$(pwd):/app node:6.9.1 chown -R $$(id -u):$$(id -g) /app/
+	@test ! -d $$(pwd)/node_modules || docker run -it --rm -v $$(pwd):/app node:6.9.1 chown -R $$(id -u):$$(id -g) /app/
 
 npm: ## npm wrapper. example: make npm install --save mongodb-querystring
 	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:6.9.1 npm $(filter-out $@,$(MAKECMDGOALS))
