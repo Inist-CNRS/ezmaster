@@ -457,14 +457,11 @@ router.route('/:instanceId/data/')
         }
       });
 
-      // We use it to cap the upload size with multer.
-      var capSize = info.total * (cfg.fullFsPercent / 100) - (info.total - info.available);
-
       // .any() allows any file.
       // limits : the user can't upload a file which size is greater than capSize.
       var upload = multer({
         storage : storage,
-        limits: { fileSize: capSize }
+        limits: { fileSize: info.maxFileCapSize }
       }).any();
 
       upload(req, res, function(err) {
