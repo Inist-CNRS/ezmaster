@@ -24,8 +24,8 @@
  * Copyright (c) 2011-2016 Jos de Jong, http://jsoneditoronline.org
  *
  * @author  Jos de Jong, <wjosdejong@gmail.com>
- * @version 5.5.2
- * @date    2016-04-18
+ * @version 5.5.10
+ * @date    2016-11-02
  */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
@@ -1152,6 +1152,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // create expand all button
 	  var expandAll = document.createElement('button');
+	  expandAll.type = 'button';
 	  expandAll.className = 'jsoneditor-expand-all';
 	  expandAll.title = 'Expand all fields';
 	  expandAll.onclick = function () {
@@ -1161,6 +1162,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // create expand all button
 	  var collapseAll = document.createElement('button');
+	  collapseAll.type = 'button';
 	  collapseAll.title = 'Collapse all fields';
 	  collapseAll.className = 'jsoneditor-collapse-all';
 	  collapseAll.onclick = function () {
@@ -1172,6 +1174,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  if (this.history) {
 	    // create undo button
 	    var undo = document.createElement('button');
+	    undo.type = 'button';
 	    undo.className = 'jsoneditor-undo jsoneditor-separator';
 	    undo.title = 'Undo last action (Ctrl+Z)';
 	    undo.onclick = function () {
@@ -1182,6 +1185,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // create redo button
 	    var redo = document.createElement('button');
+	    redo.type = 'button';
 	    redo.className = 'jsoneditor-redo';
 	    redo.title = 'Redo (Ctrl+Shift+Z)';
 	    redo.onclick = function () {
@@ -1295,7 +1299,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        // drag a singe node
 	        Node.onDragStart(node, event);
 	      }
-	      else if (!node || (event.target != node.dom.field && event.target != node.dom.value)) {
+	      else if (!node || (event.target != node.dom.field && event.target != node.dom.value && event.target != node.dom.select)) {
 	        // select multiple nodes
 	        this._onMultiSelectStart(event);
 	      }
@@ -2702,6 +2706,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    var value = jsonPath.substring(1, end);
+	    if (value[0] === '\'') {
+	      // ajv produces string prop names with single quotes, so we need
+	      // to reformat them into valid double-quoted JSON strings
+	      value = '\"' + value.substring(1, value.length - 1) + '\"';
+	    }
+
 	    prop = value === '*' ? value : JSON.parse(value); // parse string and number
 	    remainder = jsonPath.substr(end + 1);
 	  }
@@ -3294,12 +3304,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	  tbodySearch.appendChild(tr);
 
 	  var refreshSearch = document.createElement('button');
+	  refreshSearch.type = 'button';
 	  refreshSearch.className = 'jsoneditor-refresh';
 	  td = document.createElement('td');
 	  td.appendChild(refreshSearch);
 	  tr.appendChild(td);
 
 	  var search = document.createElement('input');
+	  // search.type = 'button';
 	  this.dom.search = search;
 	  search.oninput = function (event) {
 	    searchBox._onDelayedSearch(event);
@@ -3323,6 +3335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  tr.appendChild(td);
 
 	  var searchNext = document.createElement('button');
+	  searchNext.type = 'button';
 	  searchNext.title = 'Next result (Enter)';
 	  searchNext.className = 'jsoneditor-next';
 	  searchNext.onclick = function () {
@@ -3333,6 +3346,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  tr.appendChild(td);
 
 	  var searchPrevious = document.createElement('button');
+	  searchPrevious.type = 'button';
 	  searchPrevious.title = 'Previous result (Shift+Enter)';
 	  searchPrevious.className = 'jsoneditor-previous';
 	  searchPrevious.onclick = function () {
@@ -3602,6 +3616,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // create a (non-visible) button to set the focus to the menu
 	  var focusButton = document.createElement('button');
+	  focusButton.type = 'button';
 	  dom.focusButton = focusButton;
 	  var li = document.createElement('li');
 	  li.style.overflow = 'hidden';
@@ -3628,6 +3643,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        // create a button in the menu item
 	        var button = document.createElement('button');
+	        button.type = 'button';
 	        button.className = item.className;
 	        domItem.button = button;
 	        if (item.title) {
@@ -3656,6 +3672,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            button.className += ' jsoneditor-default';
 
 	            var buttonExpand = document.createElement('button');
+	            buttonExpand.type = 'button';
 	            domItem.buttonExpand = buttonExpand;
 	            buttonExpand.className = 'jsoneditor-expand';
 	            buttonExpand.innerHTML = '<div class="jsoneditor-expand"></div>';
@@ -4103,9 +4120,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var node = this;
 	  var path = [];
 	  while (node) {
-	    var field = (!node.parent || node.parent.type != 'array')
-	        ? node.field
-	        : node.index;
+	    var field = !node.parent
+	        ? undefined  // do not add an (optional) field name of the root node
+	        :  (node.parent.type != 'array')
+	            ? node.field
+	            : node.index;
 
 	    if (field !== undefined) {
 	      path.unshift(field);
@@ -4185,6 +4204,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    popover.appendChild(document.createTextNode(error.message));
 
 	    var button = document.createElement('button');
+	    button.type = 'button';
 	    button.className = 'jsoneditor-schema-error';
 	    button.appendChild(popover);
 
@@ -5285,8 +5305,17 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	      this.dom.checkbox.checked = this.value;
 	    }
-	    //If the node has an enum property and it is editable lets create the select element
-	    else if (this.enum && this.editable.value) {
+	    else {
+	      // cleanup checkbox when displayed
+	      if (this.dom.tdCheckbox) {
+	        this.dom.tdCheckbox.parentNode.removeChild(this.dom.tdCheckbox);
+	        delete this.dom.tdCheckbox;
+	        delete this.dom.checkbox;
+	      }
+	    }
+
+	    if (this.enum && this.editable.value) {
+	      // create select box when this node has an enum object
 	      if (!this.dom.select) {
 	        this.dom.select = document.createElement('select');
 	        this.id = this.field + "_" + new Date().getUTCMilliseconds();
@@ -5300,10 +5329,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.dom.select.appendChild(this.dom.select.option);
 
 	        //Iterate all enum values and add them as options
-	        for(var i = 0; i < this.enum.enum.length; i++) {
+	        for(var i = 0; i < this.enum.length; i++) {
 	          this.dom.select.option = document.createElement('option');
-	          this.dom.select.option.value = this.enum.enum[i];
-	          this.dom.select.option.innerHTML = this.enum.enum[i];
+	          this.dom.select.option.value = this.enum[i];
+	          this.dom.select.option.innerHTML = this.enum[i];
 	          if(this.dom.select.option.value == this.value){
 	            this.dom.select.option.selected = true;
 	          }
@@ -5314,35 +5343,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.dom.tdSelect.className = 'jsoneditor-tree';
 	        this.dom.tdSelect.appendChild(this.dom.select);
 	        this.dom.tdValue.parentNode.insertBefore(this.dom.tdSelect, this.dom.tdValue);
+	      }
 
-	        //If the enum is inside a composite type display both the simple input and the dropdown field
-	        if(this.schema !== undefined && (
-	            !this.schema.hasOwnProperty("oneOf") &&
-	            !this.schema.hasOwnProperty("anyOf") &&
-	            !this.schema.hasOwnProperty("anyOf") &&
-	            !this.schema.hasOwnProperty("allOf"))
-	        ) {
-	            this.valueFieldHTML = this.dom.tdValue.innerHTML;
-	            this.dom.tdValue.style.visibility = 'hidden';
-	            this.dom.tdValue.innerHTML = '';
-	        } else {
-	            delete this.valueFieldHTML;
-	        }
+	      // If the enum is inside a composite type display
+	      // both the simple input and the dropdown field
+	      if(this.schema && (
+	          !this.schema.hasOwnProperty("oneOf") &&
+	          !this.schema.hasOwnProperty("anyOf") &&
+	          !this.schema.hasOwnProperty("allOf"))
+	      ) {
+	        this.valueFieldHTML = this.dom.tdValue.innerHTML;
+	        this.dom.tdValue.style.visibility = 'hidden';
+	        this.dom.tdValue.innerHTML = '';
+	      } else {
+	        delete this.valueFieldHTML;
 	      }
 	    }
 	    else {
-	      // cleanup checkbox when displayed
-	      if (this.dom.tdCheckbox) {
-	        this.dom.tdCheckbox.parentNode.removeChild(this.dom.tdCheckbox);
-	        delete this.dom.tdCheckbox;
-	        delete this.dom.checkbox;
-	      } else if (this.dom.tdSelect) {
-	          this.dom.tdSelect.parentNode.removeChild(this.dom.tdSelect);
-	          delete this.dom.tdSelect;
-	          delete this.dom.select;
-	          this.dom.tdValue.innerHTML = this.valueFieldHTML;
-	          this.dom.tdValue.style.visibility = '';
-	          delete this.valueFieldHTML;
+	      // cleanup select box when displayed
+	      if (this.dom.tdSelect) {
+	        this.dom.tdSelect.parentNode.removeChild(this.dom.tdSelect);
+	        delete this.dom.tdSelect;
+	        delete this.dom.select;
+	        this.dom.tdValue.innerHTML = this.valueFieldHTML;
+	        this.dom.tdValue.style.visibility = '';
+	        delete this.valueFieldHTML;
 	      }
 	    }
 
@@ -5432,7 +5457,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var duplicateKeys = [];
 	    for (var i = 0; i < this.childs.length; i++) {
 	      var child = this.childs[i];
-	      if (keys[child.field]) {
+	      if (keys.hasOwnProperty(child.field)) {
 	        duplicateKeys.push(child.field);
 	      }
 	      keys[child.field] = true;
@@ -5501,6 +5526,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      // create draggable area
 	      if (this.parent) {
 	        var domDrag = document.createElement('button');
+	        domDrag.type = 'button';
 	        dom.drag = domDrag;
 	        domDrag.className = 'jsoneditor-dragarea';
 	        domDrag.title = 'Drag to move this field (Alt+Shift+Arrows)';
@@ -5512,6 +5538,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // create context menu
 	    var tdMenu = document.createElement('td');
 	    var menu = document.createElement('button');
+	    menu.type = 'button';
 	    dom.menu = menu;
 	    menu.className = 'jsoneditor-contextmenu';
 	    menu.title = 'Click to open the actions menu (Ctrl+M)';
@@ -6006,59 +6033,61 @@ return /******/ (function(modules) { // webpackBootstrap
 	Node.prototype._updateSchema = function () {
 	  //Locating the schema of the node and checking for any enum type
 	  if(this.editor && this.editor.options) {
-	    var field = (this.index != undefined) ? this.index : this.field;
-
-	    //Search for the schema element of the current node and store it in the schema attribute.
-	    //Hereafter, wherever you have access in the node you will have also access in its own schema.
-	    this.schema = this._getJsonObject(this.editor.options.schema, 'name', field)[0];
-	    if(!this.schema) {
-	      this.schema = this._getJsonObject(this.editor.options.schema, field)[0];
+	    // find the part of the json schema matching this nodes path
+	    this.schema = Node._findSchema(this.editor.options.schema, this.getPath());
+	    if (this.schema) {
+	      this.enum = Node._findEnum(this.schema);
 	    }
-
-	    //Search for any enumeration type in the schema of the current node.
-	    //Enum types can be also be part of a composite type.
-	    if(this.schema){
-	      if(this.schema.hasOwnProperty('enum')){
-	        this.enum = {};
-	        this.enum.enum = this.schema.enum;
-	      } else if(this.schema.hasOwnProperty('oneOf')){
-	        this.enum = this._getJsonObject(this.schema.oneOf, 'enum')[0];
-	      } else if(this.schema.hasOwnProperty('anyOf')){
-	        this.enum = this._getJsonObject(this.schema.anyOf, 'enum')[0];
-	      } else if(this.schema.hasOwnProperty('allOf')){
-	        this.enum = this._getJsonObject(this.schema.allOf, 'enum')[0];
-	      } else {
-	        delete this.enum;
-	      }
-	    } else {
+	    else {
 	      delete this.enum;
 	    }
 	  }
 	};
 
 	/**
-	 * Get all sub-elements of the given object with the specified key and value.
+	 * find an enum definition in a JSON schema, as property `enum` or inside
+	 * one of the schemas composites (`oneOf`, `anyOf`, `allOf`)
+	 * @param  {Object} schema
+	 * @return {Array | null} Returns the enum when found, null otherwise.
 	 * @private
 	 */
-	Node.prototype._getJsonObject = function (obj, key, val) {
-	  var objects = [];
-	  for (var i in obj) {
-	    if (!obj.hasOwnProperty(i)) continue;
-	    if (typeof obj[i] == 'object') {
-	      if(i === key && val === undefined){
-	        if(Array.isArray(obj[i])) {
-	          objects.push(obj);
-	        } else {
-	          objects.push(obj[i]);
-	        }
-	      } else {
-	        objects = objects.concat(this._getJsonObject(obj[i], key, val));
-	      }
-	    } else if (i == key && obj[key] == val) {
-	      objects.push(obj);
+	Node._findEnum = function (schema) {
+	  if (schema.enum) {
+	    return schema.enum;
+	  }
+
+	  var composite = schema.oneOf || schema.anyOf || schema.allOf;
+	  if (composite) {
+	    var match = composite.filter(function (entry) {return entry.enum});
+	    if (match.length > 0) {
+	      return match[0].enum;
 	    }
 	  }
-	  return objects;
+
+	  return null
+	};
+
+	/**
+	 * Return the part of a JSON schema matching given path.
+	 * @param {Object} schema
+	 * @param {Array.<string | number>} path
+	 * @return {Object | null}
+	 * @private
+	 */
+	Node._findSchema = function (schema, path) {
+	  var childSchema = schema;
+
+	  for (var i = 0; i < path.length && childSchema; i++) {
+	    var key = path[i];
+	    if (typeof key === 'string' && childSchema.properties) {
+	      childSchema = childSchema.properties[key] || null
+	    }
+	    else if (typeof key === 'number' && childSchema.items) {
+	      childSchema = childSchema.items
+	    }
+	  }
+
+	  return childSchema
 	};
 
 	/**
@@ -6137,6 +6166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Node.prototype._createDomExpandButton = function () {
 	  // create expand button
 	  var expand = document.createElement('button');
+	  expand.type = 'button';
 	  if (this._hasChilds()) {
 	    expand.className = this.expanded ? 'jsoneditor-expanded' : 'jsoneditor-collapsed';
 	    expand.title =
@@ -6255,7 +6285,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.dom.value.innerHTML = !this.value;
 	    this._getDomValue();
 	  }
-	  //Update the value of the node based on the selected option
+
+	  // update the value of the node based on the selected option
 	  if (type == 'change' && target == dom.select) {
 	    this.dom.value.innerHTML = dom.select.value;
 	    this._getDomValue();
@@ -6367,7 +6398,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    }
 	    else {
-	      if (domValue) {
+	      if (domValue && !this.enum) {
 	        util.setEndOfContentEditable(domValue);
 	        domValue.focus();
 	      }
@@ -7483,7 +7514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	 * @private
 	 */
 	Node.prototype._unescapeHTML = function (escapedText) {
-	  var json = '"' + this._escapeJSON(escapedText.trim()) + '"';
+	  var json = '"' + this._escapeJSON(escapedText) + '"';
 	  var htmlEscaped = util.parse(json);
 
 	  return htmlEscaped
@@ -7640,7 +7671,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    // TODO: consistent naming
 
-	    if (this.editable.field) {
+	    if (this.editor.options.mode === 'tree') {
 	      // a cell for the dragarea column
 	      dom.tdDrag = document.createElement('td');
 
@@ -7648,6 +7679,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      var tdMenu = document.createElement('td');
 	      dom.tdMenu = tdMenu;
 	      var menu = document.createElement('button');
+	      menu.type = 'button';
 	      menu.className = 'jsoneditor-contextmenu';
 	      menu.title = 'Click to open the actions menu (Ctrl+M)';
 	      dom.menu = menu;
@@ -7902,6 +7934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // create the html element
 	  var box = document.createElement('button');
+	  box.type = 'button';
 	  box.className = 'jsoneditor-modes jsoneditor-separator';
 	  box.innerHTML = currentTitle + ' &#x25BE;';
 	  box.title = 'Switch editor mode';
@@ -8045,6 +8078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // create format button
 	  var buttonFormat = document.createElement('button');
+	  buttonFormat.type = 'button';
 	  buttonFormat.className = 'jsoneditor-format';
 	  buttonFormat.title = 'Format JSON data, with proper indentation and line feeds (Ctrl+\\)';
 	  this.menu.appendChild(buttonFormat);
@@ -8060,6 +8094,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  // create compact button
 	  var buttonCompact = document.createElement('button');
+	  buttonCompact.type = 'button';
 	  buttonCompact.className = 'jsoneditor-compact';
 	  buttonCompact.title = 'Compact JSON data, remove all whitespaces (Ctrl+Shift+\\)';
 	  this.menu.appendChild(buttonCompact);
@@ -8076,8 +8111,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	  // create mode box
 	  if (this.options && this.options.modes && this.options.modes.length) {
 	    this.modeSwitcher = new ModeSwitcher(this.menu, this.options.modes, this.options.mode, function onSwitch(mode) {
-	      me.modeSwitcher.destroy();
-
 	      // switch mode and restore focus
 	      me.setMode(mode);
 	      me.modeSwitcher.focus();

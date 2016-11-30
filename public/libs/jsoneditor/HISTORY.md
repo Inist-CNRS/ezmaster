@@ -3,6 +3,58 @@
 https://github.com/josdejong/jsoneditor
 
 
+## 2016-11-02, version 5.5.10
+
+- Fixed #85: pressing enter in an input in a form containing a JSONEditor too
+  breaks submitting the form.
+
+
+## 2016-10-17, version 5.5.9
+
+- Fixed #329: Editor showing duplicate key warnings for keys defined on the
+  Object prototype, like `toString` and `watch`.
+
+
+## 2016-09-27, version 5.5.8
+
+- Fixed #314: JSON schema validation throwing an error "Unexpected token ' in
+  JSON at position 0" in specific cases. Thanks @apostrophest
+
+
+## 2016-08-17, version 5.5.7
+
+- Fixed #308: wrong positioning of label "empty array" when `onEditable`
+  returns false.
+
+
+## 2016-06-15, version 5.5.6
+
+- Fixed #303: editor contents collapsed when the parent div of the JSONEditor
+  has no height set.
+- Improved example 04_load_and_save.html. Thanks @RDCH106.
+
+
+## 2016-05-24, version 5.5.5
+
+- Fixed #298: Switch mode button disappears when switching from text/code to
+  tree/form/view mode when the JSON contained errors.
+- Fixed enum drop downs not working when the JSONEditor is configured with
+  a name.
+
+
+## 2016-05-22, version 5.5.4
+
+- Fixed #285: an issue with the enum drop down when having defined multiple
+  enums in a JSON schema.
+- Fixed a (harmless) error in the console when clicking right from an enum
+  drop down.
+
+
+## 2016-05-22, version 5.5.3
+
+- Fixed #299: reverted the fix of #268 by trimming text in fields and values.
+
+
 ## 2016-04-18, version 5.5.2
 
 - Fixed #294: Fields reset their caret location on every key press in Firefox.

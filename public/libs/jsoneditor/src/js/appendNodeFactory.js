@@ -44,7 +44,7 @@ function appendNodeFactory(Node) {
 
     // TODO: consistent naming
 
-    if (this.editable.field) {
+    if (this.editor.options.mode === 'tree') {
       // a cell for the dragarea column
       dom.tdDrag = document.createElement('td');
 
@@ -52,6 +52,7 @@ function appendNodeFactory(Node) {
       var tdMenu = document.createElement('td');
       dom.tdMenu = tdMenu;
       var menu = document.createElement('button');
+      menu.type = 'button';
       menu.className = 'jsoneditor-contextmenu';
       menu.title = 'Click to open the actions menu (Ctrl+M)';
       dom.menu = menu;

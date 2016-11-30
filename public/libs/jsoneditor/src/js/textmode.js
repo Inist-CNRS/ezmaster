@@ -95,6 +95,7 @@ textmode.create = function (container, options) {
 
   // create format button
   var buttonFormat = document.createElement('button');
+  buttonFormat.type = 'button';
   buttonFormat.className = 'jsoneditor-format';
   buttonFormat.title = 'Format JSON data, with proper indentation and line feeds (Ctrl+\\)';
   this.menu.appendChild(buttonFormat);
@@ -110,6 +111,7 @@ textmode.create = function (container, options) {
 
   // create compact button
   var buttonCompact = document.createElement('button');
+  buttonCompact.type = 'button';
   buttonCompact.className = 'jsoneditor-compact';
   buttonCompact.title = 'Compact JSON data, remove all whitespaces (Ctrl+Shift+\\)';
   this.menu.appendChild(buttonCompact);
@@ -126,8 +128,6 @@ textmode.create = function (container, options) {
   // create mode box
   if (this.options && this.options.modes && this.options.modes.length) {
     this.modeSwitcher = new ModeSwitcher(this.menu, this.options.modes, this.options.mode, function onSwitch(mode) {
-      me.modeSwitcher.destroy();
-
       // switch mode and restore focus
       me.setMode(mode);
       me.modeSwitcher.focus();
