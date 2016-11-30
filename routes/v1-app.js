@@ -89,7 +89,7 @@ router.route('/').post(bodyParser(), function (req, res, next) {
 
             if (err) { return new Error(err); }
 
-            // If we do not have enough space on the disk 
+            // If we do not have enough space on the disk
             // we cut the docker pull stream
             if (info.fsIsAlmostFilled) {
               return stream.req.destroy();

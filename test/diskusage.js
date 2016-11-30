@@ -10,7 +10,7 @@ describe('the ezmaster diskusage lib', function () {
 
     dusage(function (err, result) {
       if (err) return done(err);
-      
+
       expect(result).to.have.property('freeDiskRaw');
       expect(result).to.have.property('totalDiskRaw');
       expect(result).to.have.property('freeDisk');
@@ -20,7 +20,7 @@ describe('the ezmaster diskusage lib', function () {
 
       done();
     });
-    
+
   });
 
 });

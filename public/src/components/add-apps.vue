@@ -105,20 +105,18 @@ export default {
 
   mounted () {
     var self = this;
-    var fullFsPercent;
 
     // enables the bootstrap component for tooltips
-    $('#addImage [data-toggle="tooltip"]').tooltip()
+    $('#addImage [data-toggle="tooltip"]').tooltip();
 
-      socket.on('statusPull', function (infoPull) {
-        self.statusPull = infoPull;
-      })
+    socket.on('statusPull', function (infoPull) {
+      self.statusPull = infoPull;
+    });
 
     self.$http.get('/-/v1/config').then(function (result) {
       var config = result.data;
       self.fullFsPercent = config.fullFsPercent;
-      fullFsPercent = config.fullFsPercent;
-    }, console.error)
+    }, console.error);
 
     socket.on('refreshInfosMachine', function (infosMachineSocket) {
       // Update variable 'infosMachine'.
@@ -128,8 +126,7 @@ export default {
       // This bool is used on the HTML code just above.
       self.boolInfosFeed = true;
       self.fsIsAlmostFilled = infosMachineSocket.fsIsAlmostFilled;
-      console.log('DIS', self.fsIsAlmostFilled)
-    })
+    });
   },
 
   methods: {
@@ -137,27 +134,27 @@ export default {
     searchImages () {
       const self = this;
       if (self.isSearchingImages === true) {
-        return
+        return;
       }
       self.isSearchingImages = true;
       self.applicationImages = [];
-      const url = "/-/v1/hub/search/repositories/?query=" + self.imageName + "&page=1&page_size=5";
+      const url = `/-/v1/hub/search/repositories/?query=${self.imageName}&page=1&page_size=5`;
       self.applicationImages = [];
       self.$http.get(url).then((response) => {
         if (response.body && response.body.results && Array.isArray(response.body.results)) {
           response.body.results.forEach(function (item) {
-            self.$set(self.applicationImages, self.applicationImages.length, item)
-          })
+            self.$set(self.applicationImages, self.applicationImages.length, item);
+          });
         }
         self.isSearchingImages = false;
       }, (response) => {
         self.isSearchingImages = false;
-      })
+      });
     },
     searchTags () {
       const self = this;
       if (self.isSearchingTags === true) {
-        return
+        return;
       }
       self.isSearchingTags = true;
       self.applicationTags = [];
@@ -168,13 +165,13 @@ export default {
           self.cacheImageVersions[self.imageName] = true;
           if (response.body && response.body.results && Array.isArray(response.body.results)) {
             response.body.results.forEach(function (item, index) {
-              self.$set(self.applicationTags, self.applicationTags.length, item)
+              self.$set(self.applicationTags, self.applicationTags.length, item);
             });
           }
           self.isSearchingTags = false;
         }, (response) => {
           self.isSearchingTags = false;
-        })
+        });
       }
       else {
         self.isSearchingTags = false;
@@ -193,7 +190,7 @@ export default {
         username: this.username,
         password: this.password,
         email: this.email
-      }
+      };
 
       this.$http.post('/-/v1/app', formdata).then(function (result) {
         if (result.status === 200) {
@@ -208,7 +205,7 @@ export default {
           document.getElementById('loaderImage').style.display = 'none';
           document.getElementById('errorLoaderImages').style.display = 'block';
         }
-      })
+      });
     },
 
     toggleSettings: function (event) {
@@ -238,11 +235,11 @@ export default {
       isSearchingImages: false,
       applicationTags: [],
       isSearchingTags: false,
-      isAdding : false
-    }
+      isAdding: false
+    };
   }
 
-}
+};
 
 </script>
 
