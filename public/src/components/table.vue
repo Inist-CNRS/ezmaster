@@ -87,7 +87,7 @@
             </button>
             <button type="button" class="fs-button close" aria-hidden="true" v-on:click="fullscreenConfig">
               <span class="glyphicon" v-bind:class="{ 'glyphicon-resize-small': fullscreen, 'glyphicon-resize-full': !fullscreen }" aria-hidden="true"></span>
-            </button>            
+            </button>
             <h3 class="panel-title">Configuration Update</h3>
           </div>
           <div class="panel-body">
@@ -196,34 +196,34 @@
   /* global JSONEditor, io*/
   // Socket connection.
 
-  var socket = io()
-  var optsEditor = {}
-  var editor = new JSONEditor()
-  var filesize = require('filesize')
+  var socket = io();
+  var optsEditor = {};
+  var editor = new JSONEditor();
+  var filesize = require('filesize');
 
   export default {
 
     mounted () {
-      const self = this
+      const self = this;
 
       // Call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/instances').then(function (result) {
-        self.containers = result.data
-      }, console.error)
+        self.containers = result.data;
+      }, console.error);
 
       self.$http.get('/-/v1/config').then(function (result) {
-        var config = result.data
-        self.publicDomain = config.publicDomain
-      }, console.error)
+        var config = result.data;
+        self.publicDomain = config.publicDomain;
+      }, console.error);
 
       // Listen incoming messages typed as 'refreshInstances' from the server.
       // Here the message comes from eventRefreshInstances.js.
       socket.on('refreshInstances', function (beatInstances) {
         // Update variable 'containers' which will automatically
         // refresh the instances-table component.
-        self.containers = beatInstances
-      })
+        self.containers = beatInstances;
+      });
     },
 
     methods: {
@@ -233,127 +233,127 @@
         // Here, the instance id.
         // button start > li > ul > td > tr > id="{{ item.description.Id }}"
         this.$http.put(`/-/v1/instances/start/${instanceId}`).then(function (result) {
-        }, console.error)
+        }, console.error);
       },
 
       stopInstance: function (instanceId) {
         this.$http.put(`/-/v1/instances/stop/${instanceId}`).then(function (result) {
-        }, console.error)
+        }, console.error);
       },
 
       deleteInstance: function (instanceId) {
         // Update the data variable instanceId which will automatically update the HTML
         //  with this new value.
-        this.instanceId = instanceId
+        this.instanceId = instanceId;
 
         this.$http.get(`/-/v1/instances/${instanceId}`).then(function (result) {
-          this.technicalNameToDelete = result.data.technicalName
-          this.sizeToDelete = result.data.size
+          this.technicalNameToDelete = result.data.technicalName;
+          this.sizeToDelete = result.data.size;
 
-          document.getElementById('modal-delete-instance').style.display = 'block'
-        }, console.error)
+          document.getElementById('modal-delete-instance').style.display = 'block';
+        }, console.error);
       },
 
       cancelDeleteInstance: function () {
-        document.getElementById('modal-delete-instance').style.display = 'none'
+        document.getElementById('modal-delete-instance').style.display = 'none';
       },
 
       confirmDeleteInstance: function () {
         this.$http.delete('/-/v1/instances/' + this.instanceId).then(function (result) {
-          document.getElementById('modal-delete-instance').style.display = 'none'
-        }, console.error)
+          document.getElementById('modal-delete-instance').style.display = 'none';
+        }, console.error);
       },
 
       displayConfig: function (instanceId) {
-        document.getElementById('jsoneditor').innerHTML = ''
+        document.getElementById('jsoneditor').innerHTML = '';
 
         // Update the data variable instanceId which will automatically update the HTML
         //  with this new value.
-        this.instanceId = instanceId
+        this.instanceId = instanceId;
 
         this.$http.get(`/-/v1/instances/${this.instanceId}`).then(function (result) {
-          document.getElementById('modal-update-config').style.display = 'block'
+          document.getElementById('modal-update-config').style.display = 'block';
 
           optsEditor = {
 
             mode: 'code',
             onChange: function () {
               try {
-                editor.get()
-                document.getElementById('spanConfigError').style.display = 'none'
-                document.getElementById('buttonUpdateDisable').style.display = 'none'
-                document.getElementById('buttonUpdate').style.display = 'block'
+                editor.get();
+                document.getElementById('spanConfigError').style.display = 'none';
+                document.getElementById('buttonUpdateDisable').style.display = 'none';
+                document.getElementById('buttonUpdate').style.display = 'block';
               }
               catch (e) {
-                document.getElementById('spanConfigError').innerHTML = e
-                document.getElementById('buttonUpdate').style.display = 'none'
-                document.getElementById('buttonUpdateDisable').style.display = 'block'
-                document.getElementById('spanConfigError').style.display = 'block'
+                document.getElementById('spanConfigError').innerHTML = e;
+                document.getElementById('buttonUpdate').style.display = 'none';
+                document.getElementById('buttonUpdateDisable').style.display = 'block';
+                document.getElementById('spanConfigError').style.display = 'block';
               }
             }
 
-          }
+          };
 
-          editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor)
-          editor.set(result.data.config)
-        })
+          editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
+          editor.set(result.data.config);
+        });
       },
 
       cancelConfig: function () {
-        document.getElementById('modal-update-config').style.display = 'none'
+        document.getElementById('modal-update-config').style.display = 'none';
       },
 
       fullscreenConfig: function () {
-        this.fullscreen = !this.fullscreen
+        this.fullscreen = !this.fullscreen;
       },
 
       updateConfig: function () {
-        var newConfig = editor.get()
+        var newConfig = editor.get();
         var data = {
           newConfig: newConfig,
           newTitle: newConfig.title
-        }
+        };
         this.$http.put('/-/v1/instances/config/' + this.instanceId, data).then(function (result) {
-          document.getElementById('modal-update-config').style.display = 'none'
-        })
+          document.getElementById('modal-update-config').style.display = 'none';
+        });
       },
 
       displayFormUpload: function (instanceId) {
         // Shows the modal upload and reset the inputs.
-        document.getElementById('modal-upload-data').style.display = 'block'
-        document.getElementById('submitUpload').style.display = 'none'
-        document.getElementById('spanFileName').innerHTML = ''
-        document.getElementById('spanFileSize').innerHTML = ''
-        document.getElementById('spanFileType').innerHTML = ''
+        document.getElementById('modal-upload-data').style.display = 'block';
+        document.getElementById('submitUpload').style.display = 'none';
+        document.getElementById('spanFileName').innerHTML = '';
+        document.getElementById('spanFileSize').innerHTML = '';
+        document.getElementById('spanFileType').innerHTML = '';
 
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Update the data variable instanceId which will automatically update the HTML with
         // this new value.
-        this.instanceId = instanceId
+        this.instanceId = instanceId;
 
         // Get information on formerly uploaded files for the concerned instance.
         this.$http.get(`/-/v1/instances/${instanceId}/data`).then(function (result) {
           // Update the data variable files which will automatically update the data files
           //  list on the modal.
-          this.files = result.data
+          this.files = result.data;
 
           // Update the data variable nbDataFiles which will automatically update the HTML
           //  with this new value.
-          this.nbDataFiles = Object.keys(this.files).length
+          this.nbDataFiles = Object.keys(this.files).length;
 
           // If there are no files already uploaded we don't show the files list.
           if (this.nbDataFiles > 0) {
-            document.getElementById('filesList').style.display = 'block'
+            document.getElementById('filesList').style.display = 'block';
           }
           else {
-            document.getElementById('filesList').style.display = 'none'
+            document.getElementById('filesList').style.display = 'none';
           }
-        }, console.error)
+        }, console.error);
       },
 
       cancelUpload: function () {
-        document.getElementById('modal-upload-data').style.display = 'none'
-        document.getElementById('btnFile').value = ''
+        document.getElementById('modal-upload-data').style.display = 'none';
+        document.getElementById('btnFile').value = '';
       },
 
       onChangeInputFile: function () {
@@ -362,97 +362,97 @@
         // Get information on total size allowed and free disk space.
         // Warn the user if a problem appears.
         this.$http.get('/-/v1').then(function (result) {
-          document.getElementById('submitUpload').style.display = 'block'
+          document.getElementById('submitUpload').style.display = 'block';
 
-          document.getElementById('spanFileSize').style.color = 'black'
-          document.getElementById('spanFileType').style.color = 'black'
+          document.getElementById('spanFileSize').style.color = 'black';
+          document.getElementById('spanFileType').style.color = 'black';
 
           // We calculate the total size of selected files.
 
-          var files = document.getElementById('btnFile').files
-          var nbFiles = 0
+          var files = document.getElementById('btnFile').files;
+          var nbFiles = 0;
 
-          this.filesSize = 0
+          this.filesSize = 0;
 
           for (var i = 0; i < files.length; i++) {
-            nbFiles += 1
-            this.filesSize += files[i].size
+            nbFiles += 1;
+            this.filesSize += files[i].size;
           }
 
           // Get the first file to check if it exists.
-          var file = document.getElementById('btnFile').files[0]
+          var file = document.getElementById('btnFile').files[0];
 
           // If the file exists.
           if (file) {
-            var fileSize = 0
+            var fileSize = 0;
             if (this.filesSize > 1024 * 1024 * 1024) {
               fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024 * 1024)) / 100)
-              .toString() + 'GB'
+              .toString() + 'GB';
             }
             else if (this.filesSize > 1024 * 1024) {
               fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024)) / 100)
-              .toString() + 'MB'
+              .toString() + 'MB';
             }
             else {
               fileSize = (Math.round(this.filesSize * 100 / 1024) / 100)
-              .toString() + 'KB'
+              .toString() + 'KB';
             }
 
             // Display information on the selected file.
-            document.getElementById('spanFileName').style.color = 'black'
+            document.getElementById('spanFileName').style.color = 'black';
             if (nbFiles === 1) {
-              document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name
-              document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type
+              document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name;
+              document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type;
             }
             else {
-              document.getElementById('spanFileName').innerHTML = 'Name : Multi Files'
-              document.getElementById('spanFileType').innerHTML = 'Type : Multi Types'
+              document.getElementById('spanFileName').innerHTML = 'Name : Multi Files';
+              document.getElementById('spanFileType').innerHTML = 'Type : Multi Types';
             }
-            document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize
+            document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize;
           }
 
           // Checking if total file size is (or not) above free disk space.
           if (this.filesSize >= result.data.freeDiskSpace) {
-            document.getElementById('spanFileName').innerHTML = 'ERROR'
+            document.getElementById('spanFileName').innerHTML = 'ERROR';
             document.getElementById('spanFileSize').innerHTML = 'Total size upload : ' +
-              filesize(this.filesSize)
+              filesize(this.filesSize);
             document.getElementById('spanFileType').innerHTML = 'Free space : ' +
-              filesize(result.data.freeDiskSpace)
-            document.getElementById('spanFileName').style.color = 'red'
-            document.getElementById('spanFileSize').style.color = 'red'
-            document.getElementById('spanFileType').style.color = 'red'
-            document.getElementById('submitUpload').style.display = 'none'
+              filesize(result.data.freeDiskSpace);
+            document.getElementById('spanFileName').style.color = 'red';
+            document.getElementById('spanFileSize').style.color = 'red';
+            document.getElementById('spanFileType').style.color = 'red';
+            document.getElementById('submitUpload').style.display = 'none';
           }
 
           // Checking if total file size is (or not) above allowed total size.
           if (this.filesSize > result.data.sizeAllowed) {
-            document.getElementById('spanFileName').innerHTML = 'ERROR'
+            document.getElementById('spanFileName').innerHTML = 'ERROR';
             document.getElementById('spanFileSize').innerHTML = 'Total size upload : ' +
-              filesize(this.filesSize)
+              filesize(this.filesSize);
             document.getElementById('spanFileType').innerHTML = 'Total size allowed : ' +
-              filesize(result.data.sizeAllowed)
-            document.getElementById('spanFileName').style.color = 'red'
-            document.getElementById('spanFileSize').style.color = 'red'
-            document.getElementById('spanFileType').style.color = 'red'
-            document.getElementById('submitUpload').style.display = 'none'
+              filesize(result.data.sizeAllowed);
+            document.getElementById('spanFileName').style.color = 'red';
+            document.getElementById('spanFileSize').style.color = 'red';
+            document.getElementById('spanFileType').style.color = 'red';
+            document.getElementById('submitUpload').style.display = 'none';
           }
-        })
+        });
       },
 
       uploadData: function () {
         // When the user click on the upload button.
 
-        var btn = document.getElementById('btnFile').value
+        var btn = document.getElementById('btnFile').value;
         // var file = btn.split('\\')[2];
 
         // Check if a file has been selected or not and give a feedback to the user.
         if (btn !== '') {
-          document.getElementById('spanFileName').innerHTML = 'Uploaded'
-          document.getElementById('spanFileName').style.color = 'green'
+          document.getElementById('spanFileName').innerHTML = 'Uploaded';
+          document.getElementById('spanFileName').style.color = 'green';
         }
         else {
-          document.getElementById('spanFileName').innerHTML = 'No file selected.'
-          document.getElementById('spanFileName').style.color = 'red'
+          document.getElementById('spanFileName').innerHTML = 'No file selected.';
+          document.getElementById('spanFileName').style.color = 'red';
         }
       },
 
@@ -468,27 +468,27 @@
           .then(function (resultGet) {
             // Update the data variable nbDataFiles which will automatically update the HTML
             // with this new value.
-            this.nbDataFiles = Object.keys(this.files).length
+            this.nbDataFiles = Object.keys(this.files).length;
 
             // Update the data variable files which will automatically update the data files
             // list on the modal.
-            this.files = resultGet.data
+            this.files = resultGet.data;
 
             // Update the data variable nbDataFiles which will automatically update the HTML
             // with this new value.
-            this.nbDataFiles -= 1
+            this.nbDataFiles -= 1;
 
             // If there are no files already uploaded we don't show the files list.
             if (this.nbDataFiles > 0) {
-              document.getElementById('filesList').style.display = 'block'
+              document.getElementById('filesList').style.display = 'block';
             }
             else {
-              document.getElementById('filesList').style.display = 'none'
+              document.getElementById('filesList').style.display = 'none';
             }
 
-            document.getElementById(fileName).style.display = 'none'
-          }, console.error)
-        })
+            document.getElementById(fileName).style.display = 'none';
+          }, console.error);
+        });
       },
 
       refreshDataFilesList: function () {
@@ -496,20 +496,20 @@
         this.$http.get(`/-/v1/instances/${this.instanceId}/data`).then(function (result) {
           // Update the data variable files which will automatically update the data files list
           // on the modal.
-          this.files = result.data
+          this.files = result.data;
 
           // Update the data variable nbDataFiles which will automatically update the HTML
           // with this new value.
-          this.nbDataFiles = Object.keys(this.files).length
+          this.nbDataFiles = Object.keys(this.files).length;
 
           // If there are no files already uploaded we don't show the files list.
           if (this.nbDataFiles > 0) {
-            document.getElementById('filesList').style.display = 'block'
+            document.getElementById('filesList').style.display = 'block';
           }
           else {
-            document.getElementById('filesList').style.display = 'none'
+            document.getElementById('filesList').style.display = 'none';
           }
-        }, console.error)
+        }, console.error);
       }
 
     }, // End of Methods
@@ -525,10 +525,10 @@
         nbDataFiles: 0,
         filesSize: 0,
         fullscreen: false
-      }
+      };
     }
 
-  }
+  };
 
 </script>
 
@@ -641,7 +641,7 @@
     padding: 0;
   }
   .modal-fullscreen .panel-body {
-    padding: 0; 
+    padding: 0;
   }
   .modal-fullscreen #jsoneditor {
     height: calc(100vh - 100px);

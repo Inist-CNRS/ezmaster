@@ -1,6 +1,6 @@
 <template>
   <div id="addImage">
-    <button class="btn btn-raised btn-primary" data-toggle="modal" data-target="#modal-add-image" v-bind:disabled="disableAddButton"><span data-toggle="tooltip" data-placement="right" :data-original-title="disableAddButton ? 'File system almost full, please free disk space to be able to add an application.' : ''">Add Application</span></button>
+    <button class="btn btn-raised btn-primary" data-toggle="modal" data-target="#modal-add-image" v-bind:disabled="fsIsAlmostFilled"><span data-toggle="tooltip" data-placement="right" :data-original-title="fsIsAlmostFilled ? 'File system almost full, please free disk space to be able to add an application.' : ''">Add Application</span></button>
 
     <div class="modal fade" id="modal-add-image"  tabindex="-1" role="dialog">
       <div class="modal-dialog">
@@ -127,8 +127,8 @@ export default {
       // Put this bool to true in order to avoid console error on infosMachine component launch.
       // This bool is used on the HTML code just above.
       self.boolInfosFeed = true;
-      self.disableAddButton = infosMachineSocket.fsIsAlmostFilled;
-      console.log('DIS', self.disableAddButton)
+      self.fsIsAlmostFilled = infosMachineSocket.fsIsAlmostFilled;
+      console.log('DIS', self.fsIsAlmostFilled)
     })
   },
 
@@ -232,7 +232,7 @@ export default {
       codeErrorPull: '',
       infosMachine: {},
       fullFsPercent: '',
-      disableAddButton: true,
+      fsIsAlmostFilled: true,
       boolInfosFeed: false,
       applicationImages: [],
       isSearchingImages: false,

@@ -50,61 +50,61 @@
 </template>
 
 <script>
-  var nameTodelete
+  var nameTodelete;
 
   export default {
 
     mounted () {
-      const self = this
+      const self = this;
 
       // ... call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       self.$http.get('/-/v1/app').then(function (result) {
-        self.containers = result.data
-      }, console.error)
+        self.containers = result.data;
+      }, console.error);
     },
     methods: {
 
       refresh: function () {
-        const self = this
+        const self = this;
         this.$http.get('/-/v1/app').then(function (result) {
-          self.containers = result.data
-        }, console.error)
-        this.messageErrorPull = ''
+          self.containers = result.data;
+        }, console.error);
+        this.messageErrorPull = '';
       },
 
       deleteapplication: function (event) {
-        this.imageNameToDelete = event.target.id
-        nameTodelete = event.target.id
-        document.getElementById('modal-delete-image').style.display = 'block'
+        this.imageNameToDelete = event.target.id;
+        nameTodelete = event.target.id;
+        document.getElementById('modal-delete-image').style.display = 'block';
       },
 
       cancelDeleteapplication: function (event) {
-        document.getElementById('modal-delete-image').style.display = 'none'
-        this.messageErrorPull = ''
-        document.getElementById('errorLoaderImage').style.display = 'none'
+        document.getElementById('modal-delete-image').style.display = 'none';
+        this.messageErrorPull = '';
+        document.getElementById('errorLoaderImage').style.display = 'none';
       },
 
       confirmDeleteapplication: function (event) {
         // skip if button already disabled
         if ($('a.button-delete').attr('disabled')) {
-          return
+          return;
         }
-        $('a.button-delete').attr('disabled', 'disabled')
+        $('a.button-delete').attr('disabled', 'disabled');
 
-        var name = new Buffer(nameTodelete).toString('base64')
+        var name = new Buffer(nameTodelete).toString('base64');
         this.$http.delete('/-/v1/app/' + name).then(function (result) {
-          $('a.button-delete').removeAttr('disabled')
-          document.getElementById('modal-delete-image').style.display = 'none'
-          this.refresh()
+          $('a.button-delete').removeAttr('disabled');
+          document.getElementById('modal-delete-image').style.display = 'none';
+          this.refresh();
         }, function (err) {
-          $('a.button-delete').removeAttr('disabled')
-          var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : ''
+          $('a.button-delete').removeAttr('disabled');
+          var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : '';
           this.messageErrorPull =
             'This image is being used by one or many instance(s), please delete them first.' +
-            msgDetails
-          document.getElementById('errorLoaderImage').style.display = 'block'
-        })
+            msgDetails;
+          document.getElementById('errorLoaderImage').style.display = 'block';
+        });
       }
 
     },
@@ -116,9 +116,9 @@
         containers: [],
         messageErrorPull: '',
         publicDomain: ''
-      }
+      };
     }
-  }
+  };
 
 </script>
 
