@@ -22,29 +22,33 @@
                     <input class="form-control sizeInput"
                            list="applicationImages"
                            id="inputImageName"
-                           name="inputImageName"
                            placeholder="inistcnrs/ezvis"
                            type="text"
                            v-model="imageName"
                            v-on:keydown.stop="searchImages"
-                           v-on:blur.stop="searchTags"
-                           >
-                           <datalist id="applicationImages">
-                             <option v-for="(image, index) in applicationImages">
-                             {{ image.repo_name }}
-                             </option>
-                           </datalist>
-                           <select id="applicationVersions" class="form-control sizeInput" v-bind:disabled="isSearchingTags" v-model="versionImage">
-                             <option v-for="(version, index) in applicationVersions" v-bind:selected="true">
-                             {{ version.name }}
-                             </option>
-                           </select>
+                           v-on:blur.stop="searchTags">
+                    <datalist id="applicationImages">
+                      <option v-for="(image, index) in applicationImages">
+                      {{ image.repo_name }}
+                      </option>
+                    </datalist>
+                    <input class="form-control sizeInput"
+                           list="applicationTags"
+                           placeholder="inistcnrs/ezvis"
+                           type="text"
+                           v-model="imageTag"
+                           v-on:keydown.stop="searchTags">
+                    <datalist id="applicationTags">
+                      <option v-for="(tag, index) in applicationTags">
+                      {{ tag.name }}
+                      </option>
+                    </datalist>
                   </div>
 
                   <button type="button" class="btn btn-default btn-md" v-on:click='toggleSettings'>
                     <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings
                   </button>
-:
+                  :
                   <div class="form-group" id='settings' v-show="show">
                     <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
                     <div class="col-md-9">
@@ -72,7 +76,7 @@
 
                 <div class="panel-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary button-add" v-on:click="addImage" v-bind:disabled="disableAddButton">Add</button>
+                  <button type="button" class="btn btn-primary button-add" v-on:click="addImage" v-bind:disabled="isAdding">Add</button>
                   <div id='loaderImage' class="loader">
                     <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
                     <span class="text-primary" id="messageLoaderAddInstance">{{ statusPull }}</span>
@@ -106,9 +110,9 @@ export default {
     // enables the bootstrap component for tooltips
     $('#addImage [data-toggle="tooltip"]').tooltip()
 
-    socket.on('statusPull', function (infoPull) {
-      self.statusPull = infoPull;
-    })
+      socket.on('statusPull', function (infoPull) {
+        self.statusPull = infoPull;
+      })
 
     self.$http.get('/-/v1/config').then(function (result) {
       var config = result.data;
@@ -130,7 +134,7 @@ export default {
 
   methods: {
 
-    searchImages: function () {
+    searchImages () {
       const self = this;
       if (self.isSearchingImages === true) {
         return
@@ -150,24 +154,21 @@ export default {
         self.isSearchingImages = false;
       })
     },
-    searchTags: function () {
+    searchTags () {
       const self = this;
       if (self.isSearchingTags === true) {
         return
       }
       self.isSearchingTags = true;
-      self.applicationVersions = [];
+      self.applicationTags = [];
       if (self.imageName.search(/\w\/\w/) >= 0) {
         const url = '/-/v1/hub/repositories/' + self.imageName.trim() + '/tags/?page=1&page_size=5';
-        self.applicationVersions = [];
+        self.applicationTags = [];
         self.$http.get(url).then((response) => {
           self.cacheImageVersions[self.imageName] = true;
           if (response.body && response.body.results && Array.isArray(response.body.results)) {
             response.body.results.forEach(function (item, index) {
-              if (index=== 0) {
-                self.versionImage = item.name;
-              }
-              self.$set(self.applicationVersions, self.applicationVersions.length, item)
+              self.$set(self.applicationTags, self.applicationTags.length, item)
             });
           }
           self.isSearchingTags = false;
@@ -179,14 +180,15 @@ export default {
         self.isSearchingTags = false;
       }
     },
-    addImage: function (event) {
+    addImage (event) {
       var self = this;
 
+      self.isAdding = true;
       document.getElementById('loaderImage').style.display = 'block';
 
       var formdata = {
         imageName: this.imageName,
-        versionImage: this.versionImage,
+        versionImage: this.imageTag,
         imageHub: this.imageHub,
         username: this.username,
         password: this.password,
@@ -199,6 +201,7 @@ export default {
           self.$emit('refreshApplicationsList');
         }
       }, function (error) {
+        self.isAdding = true;
         if (error) {
           this.codeErrorPull = error.status;
           this.messageErrorPull = error.data;
@@ -217,7 +220,7 @@ export default {
   data () {
     return {
       imageName: '',
-      versionImage: '',
+      imageTag: '',
       cacheImageVersions: {},
       messageErrorPull: '',
       imageHub: '',
@@ -231,10 +234,11 @@ export default {
       fullFsPercent: '',
       disableAddButton: true,
       boolInfosFeed: false,
-      applicationVersions: [],
       applicationImages: [],
       isSearchingImages: false,
-      isSearchingTags: false
+      applicationTags: [],
+      isSearchingTags: false,
+      isAdding : false
     }
   }
 
