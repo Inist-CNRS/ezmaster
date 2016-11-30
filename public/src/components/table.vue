@@ -8,7 +8,6 @@
 
 <template>
 <div>
-
   <table id="instances-table" class="table table-striped">
     <thead>
       <tr>
@@ -40,7 +39,7 @@
               <li class="stop" title="Stop the instance."><button type='button' class="btn btn-raised btn-sm btn-danger button" v-bind:disabled="!item.running" v-on:click="stopInstance(item.containerId)">Stop</button></li>
               <li class="delete" title="Delete the instance."><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
               <li class="updateConfig" title="Update the instance configuration."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config </button></li>
-              <li v-show="item.dataPath" class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFormUpload(item.containerId)">Data</button></li>
+              <li v-show="item.dataPath" class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFiles(item.containerId)">Data</button></li>
               <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running">Access</a></li>
               <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
               <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></li>
@@ -105,88 +104,7 @@
     </div>
   </div>
 
-
-  <!-- Modal Show Upload Data Files -->
-  <div class="modal" id="modal-upload-data">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelUpload">×</button>
-            <h3 class="panel-title">Data Upload </h3>
-          </div>
-          <div class="panel-body">
-
-            <!-- The form calls directly a route to perform the upload. -->
-            <form method="POST" :action="'/-/v1/instances/' + instanceId + '/data/'" enctype="multipart/form-data" class="form-inline">
-
-              <fieldset>
-
-                <label class="btn btn-success btn-file" style="float:left;margin-right:20px;">
-                    Add File <input type="file" name="btnFile" id="btnFile" style="display: none; float: right;" required multiple @change="onChangeInputFile">
-                </label>
-
-                <div class="list-infos-file">
-                  <div><span id="spanFileName"></span></div>
-                  <div><span id="spanFileSize"></span></div>
-                  <div><span id="spanFileType"></span></div>
-                </div>
-
-                <div>
-                  <input type="submit" id="submitUpload" value="Upload" class="btn btn-info" v-on:click="uploadData">
-                </div>
-
-              </fieldset>
-
-            </form>
-
-            <br />
-
-            <div class="nb-files">
-              <h4>{{ nbDataFiles }} Data File(s)</h4>
-            </div>
-
-            <div class="button-refresh">
-              <input type="button" value="Refresh List" class="btn btn-info" v-on:click="refreshDataFilesList">
-            </div>
-
-            <div id="filesList">
-              <table id="data-files-table" class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Size</th>
-                      <th>Type</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <template v-for="file in files">
-                      <tr>
-                        <td class="files-list-name-column"><a :href="'/-/v1/instances/' + instanceId + '/data/' + file.name">{{ file.name }}</a></td>
-                        <td>{{ file.size }}</td>
-                        <td>{{ file.mimeType }}</td>
-                        <td>
-                          <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteUploadedFile(file.name)">
-                        </td>
-                      </tr>
-                    </template>
-                  </tbody>
-              </table>
-            </div>
-
-          </div>
-
-          <div class="panel-footer">
-
-            <a class="btn btn-danger" id="cancelUpload" v-on:click='cancelUpload' data-dismiss="modal">Exit</a>
-
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
+  <FileManagement v-if="showFiles" v-on:close="closeFiles" :instanceId="instanceId"></FileManagement>
 
 </div>
 </template>
@@ -200,7 +118,8 @@
   var socket = io();
   var optsEditor = {};
   var editor = new JSONEditor();
-  var filesize = require('filesize');
+
+  import FileManagement from './file-management.vue';
 
   export default {
 
@@ -319,216 +238,32 @@
         });
       },
 
-      displayFormUpload: function (instanceId) {
+      displayFiles: function (instanceId) {
         // Shows the modal upload and reset the inputs.
-        document.getElementById('modal-upload-data').style.display = 'block';
-        document.getElementById('submitUpload').style.display = 'none';
-        document.getElementById('spanFileName').innerHTML = '';
-        document.getElementById('spanFileSize').innerHTML = '';
-        document.getElementById('spanFileType').innerHTML = '';
-
-        // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
-        // Update the data variable instanceId which will automatically update the HTML with
-        // this new value.
+        this.showFiles = true;
         this.instanceId = instanceId;
-
-        // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get(`/-/v1/instances/${instanceId}/data`).then(function (result) {
-          // Update the data variable files which will automatically update the data files
-          //  list on the modal.
-          this.files = result.data;
-
-          // Update the data variable nbDataFiles which will automatically update the HTML
-          //  with this new value.
-          this.nbDataFiles = Object.keys(this.files).length;
-
-          // If there are no files already uploaded we don't show the files list.
-          if (this.nbDataFiles > 0) {
-            document.getElementById('filesList').style.display = 'block';
-          }
-          else {
-            document.getElementById('filesList').style.display = 'none';
-          }
-        }, console.error);
       },
 
-      cancelUpload: function () {
-        document.getElementById('modal-upload-data').style.display = 'none';
-        document.getElementById('btnFile').value = '';
-      },
-
-      onChangeInputFile: function () {
-        // When the user choose a file.
-
-        // Get information on total size allowed and free disk space.
-        // Warn the user if a problem appears.
-        this.$http.get('/-/v1').then(function (result) {
-          document.getElementById('submitUpload').style.display = 'block';
-
-          document.getElementById('spanFileSize').style.color = 'black';
-          document.getElementById('spanFileType').style.color = 'black';
-
-          // We calculate the total size of selected files.
-
-          var files = document.getElementById('btnFile').files;
-          var nbFiles = 0;
-
-          this.filesSize = 0;
-
-          for (var i = 0; i < files.length; i++) {
-            nbFiles += 1;
-            this.filesSize += files[i].size;
-          }
-
-          // Get the first file to check if it exists.
-          var file = document.getElementById('btnFile').files[0];
-
-          // If the file exists.
-          if (file) {
-            var fileSize = 0;
-            if (this.filesSize > 1024 * 1024 * 1024) {
-              fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024 * 1024)) / 100)
-              .toString() + 'GB';
-            }
-            else if (this.filesSize > 1024 * 1024) {
-              fileSize = (Math.round(this.filesSize * 100 / (1024 * 1024)) / 100)
-              .toString() + 'MB';
-            }
-            else {
-              fileSize = (Math.round(this.filesSize * 100 / 1024) / 100)
-              .toString() + 'KB';
-            }
-
-            // Display information on the selected file.
-            document.getElementById('spanFileName').style.color = 'black';
-            if (nbFiles === 1) {
-              document.getElementById('spanFileName').innerHTML = 'Name : ' + file.name;
-              document.getElementById('spanFileType').innerHTML = 'Type : ' + file.type;
-            }
-            else {
-              document.getElementById('spanFileName').innerHTML = 'Name : Multi Files';
-              document.getElementById('spanFileType').innerHTML = 'Type : Multi Types';
-            }
-            document.getElementById('spanFileSize').innerHTML = 'Size : ' + fileSize;
-          }
-
-          // Checking if total file size is (or not) above free disk space.
-          if (this.filesSize >= result.data.freeDiskSpace) {
-            document.getElementById('spanFileName').innerHTML = 'ERROR';
-            document.getElementById('spanFileSize').innerHTML = 'Total size upload : ' +
-              filesize(this.filesSize);
-            document.getElementById('spanFileType').innerHTML = 'Free space : ' +
-              filesize(result.data.freeDiskSpace);
-            document.getElementById('spanFileName').style.color = 'red';
-            document.getElementById('spanFileSize').style.color = 'red';
-            document.getElementById('spanFileType').style.color = 'red';
-            document.getElementById('submitUpload').style.display = 'none';
-          }
-
-          // Checking if total file size is (or not) above allowed total size.
-          if (this.filesSize > result.data.sizeAllowed) {
-            document.getElementById('spanFileName').innerHTML = 'ERROR';
-            document.getElementById('spanFileSize').innerHTML = 'Total size upload : ' +
-              filesize(this.filesSize);
-            document.getElementById('spanFileType').innerHTML = 'Total size allowed : ' +
-              filesize(result.data.sizeAllowed);
-            document.getElementById('spanFileName').style.color = 'red';
-            document.getElementById('spanFileSize').style.color = 'red';
-            document.getElementById('spanFileType').style.color = 'red';
-            document.getElementById('submitUpload').style.display = 'none';
-          }
-        });
-      },
-
-      uploadData: function () {
-        // When the user click on the upload button.
-
-        var btn = document.getElementById('btnFile').value;
-        // var file = btn.split('\\')[2];
-
-        // Check if a file has been selected or not and give a feedback to the user.
-        if (btn !== '') {
-          document.getElementById('spanFileName').innerHTML = 'Uploaded';
-          document.getElementById('spanFileName').style.color = 'green';
-        }
-        else {
-          document.getElementById('spanFileName').innerHTML = 'No file selected.';
-          document.getElementById('spanFileName').style.color = 'red';
-        }
-      },
-
-      deleteUploadedFile: function (fileName) {
-        // event.path[2].id go up 2 times in the HTML tree to get the id of the reached element.
-        // Here the file name.
-
-        // Delete the file.
-        this.$http.delete(`/-/v1/instances/${this.instanceId}/${fileName}`)
-        .then(function (resultDelete) {
-          // Get information on formerly uploaded files for the concerned instance.
-          this.$http.get(`/-/v1/instances/${this.instanceId}/data`)
-          .then(function (resultGet) {
-            // Update the data variable nbDataFiles which will automatically update the HTML
-            // with this new value.
-            this.nbDataFiles = Object.keys(this.files).length;
-
-            // Update the data variable files which will automatically update the data files
-            // list on the modal.
-            this.files = resultGet.data;
-
-            // Update the data variable nbDataFiles which will automatically update the HTML
-            // with this new value.
-            this.nbDataFiles -= 1;
-
-            // If there are no files already uploaded we don't show the files list.
-            if (this.nbDataFiles > 0) {
-              document.getElementById('filesList').style.display = 'block';
-            }
-            else {
-              document.getElementById('filesList').style.display = 'none';
-            }
-
-            document.getElementById(fileName).style.display = 'none';
-          }, console.error);
-        });
-      },
-
-      refreshDataFilesList: function () {
-        // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get(`/-/v1/instances/${this.instanceId}/data`).then(function (result) {
-          // Update the data variable files which will automatically update the data files list
-          // on the modal.
-          this.files = result.data;
-
-          // Update the data variable nbDataFiles which will automatically update the HTML
-          // with this new value.
-          this.nbDataFiles = Object.keys(this.files).length;
-
-          // If there are no files already uploaded we don't show the files list.
-          if (this.nbDataFiles > 0) {
-            document.getElementById('filesList').style.display = 'block';
-          }
-          else {
-            document.getElementById('filesList').style.display = 'none';
-          }
-        }, console.error);
+      closeFiles: function () {
+        this.showFiles = false;
       }
 
     }, // End of Methods
 
     data () {
       return {
+        showFiles: false,
         sizeToDelete: '',
         technicalNameToDelete: '',
         containers: [],
         publicDomain: '',
         instanceId: '',
-        files: {},
-        nbDataFiles: 0,
-        filesSize: 0,
         fullscreen: false
       };
+    },
+    components: {
+      FileManagement
     }
-
   };
 
 </script>
@@ -538,10 +273,10 @@
 <style>
 
   #instances-table {
-      width: 95%;
-      margin: auto;
-      margin-bottom: 2%;
-      margin-top: 5%;
+    width: 95%;
+    margin: auto;
+    margin-bottom: 2%;
+    margin-top: 5%;
   }
   .bread {
     list-style: none;
@@ -563,69 +298,17 @@
     height: 450px;
   }
 
-  #progress p
-  {
-    display: block;
-    width: 240px;
-    padding: 2px 5px;
-    margin: 2px 0;
-    border: 1px inset #446;
-    border-radius: 5px;
+  .modal-dialog {
+    overflow-y: initial !important
   }
 
-  #progress p.success
-  {
-    background: #0c0 none 0 0 no-repeat;
+  .button-right {
+    float:right;
   }
 
-  #progress p.failed
-  {
-    background: #c00 none 0 0 no-repeat;
-  }
-
-  #modal-data-files{
-    height:100%;
-  }
-
-  #data-files-table{
-    table-layout: fixed;
-    word-wrap: break-word;
-  }
-
-  .modal-dialog{
-      overflow-y: initial !important
-  }
-
-  #filesList{
-      width:100%;
-      height: 250px;
-      overflow-y: auto;
-  }
-
-  .button-right{
-      float:right;
-  }
-
-  .button-update{
+  .button-update {
     float:right;
     display:none;
-  }
-
-  .list-infos-file{
-    float:left;
-    margin-right:20px;
-  }
-
-  .nb-files{
-    float:left;
-  }
-
-  .button-refresh{
-    float:right;
-  }
-
-  .files-list-name-column{
-    width:10%;
   }
 
   .fs-button {
