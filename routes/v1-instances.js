@@ -446,47 +446,37 @@ router.route('/:instanceId/data/')
       // We use multer to pass data from the input type file to this route file.
       // Multer is coupled with bodyparser because it can't manage input type file alone anymore.
       var storage = multer.diskStorage({
-
         destination: function (req, file, callback) {
-
           // We save the file in the correct folder.
           // splittedName[1] is the instance technical name.
           callback(null, cfg.dataInstancesPath + '/' + splittedName[1] + '/data');
-
         },
-
         filename: function (req, file, callback) {
-
           // We upload the file with its original name.
           callback(null, file.originalname);
-
         }
-
       });
 
-      // The upload concerns the button which id is btnFile.
-      // The Multer .any() method allows to select multiple files.
+      // We use it to cap the upload size with multer.
+      var capSize = info.total * (cfg.fullFsPercent / 100) - (info.total - info.available);
+
+      // .any() allows any file.
       // limits : the user can't upload a file which size is greater than capSize.
-      var upload = multer({ storage : storage, limits: { fileSize: info.maxFileCapSize }}).any('btnFile');
+      var upload = multer({
+        storage : storage,
+        limits: { fileSize: capSize }
+      }).any();
 
-      // The upload.
       upload(req, res, function(err) {
-
         if (err) {
-
-          // A problem occured while uploading.
           return res.end('Error uploading file.');
-
         }
-        // Else, the upload went well.
-        //res.end("File is uploaded");
 
+        res.end('File is uploaded');
       });
 
     });
-
   });
-
 });
 
 
