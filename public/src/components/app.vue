@@ -38,18 +38,18 @@
 </template>
 
 <script>
-import InfosMachine from './infos-machine-table.vue'
-import Instances from './table.vue'
-import AddInstance from './add-instance.vue'
-import AddApp from './add-apps.vue'
-import Applications from './applications.vue'
+import InfosMachine from './infos-machine-table.vue';
+import Instances from './table.vue';
+import AddInstance from './add-instance.vue';
+import AddApp from './add-apps.vue';
+import Applications from './applications.vue';
 
 export default {
   mounted: function () {
-    const self = this
+    const self = this;
     self.$refs.addapps.$on('refreshApplicationsList', function (msg) {
-      self.$refs.appslist.refresh()
-    })
+      self.$refs.appslist.refresh();
+    });
   },
   components: {
     InfosMachine,
@@ -58,7 +58,7 @@ export default {
     Applications,
     AddApp
   }
-}
+};
 </script>
 <style>
 .mainbar {

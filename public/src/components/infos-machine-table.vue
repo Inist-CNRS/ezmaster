@@ -33,33 +33,33 @@
 
 
 <script>
-  /*global io, $*/
+  /*global io*/
 
   // Socket connection.
-  var socket = io()
+  var socket = io();
 
   export default {
 
     mounted () {
-      const self = this
+      const self = this;
 
       // this.$nextTick(function () {
       // });
 
       // enables the bootstrap component for tooltips
-      $('.infoMachineGroup [data-toggle="tooltip"]').tooltip()
+      $('.infoMachineGroup [data-toggle="tooltip"]').tooltip();
 
       // Listen incoming messages typed as 'refreshInfosMachine' from the server.
       // Here the message comes from eventRefreshInfosMachine.js.
       socket.on('refreshInfosMachine', function (infosMachineSocket) {
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
-        self.infosMachine = infosMachineSocket
+        self.infosMachine = infosMachineSocket;
 
         // Put this bool to true in order to avoid console error on infosMachine component launch.
         // This bool is used on the HTML code just above.
-        self.boolInfosFeed = true
-      })
+        self.boolInfosFeed = true;
+      });
     },
 
     data () {
@@ -68,10 +68,10 @@
           loadAverage: [0, 0, 0]
         },
         boolInfosFeed: false
-      }
+      };
     }
 
-  }
+  };
 
 </script>
 
@@ -103,7 +103,7 @@
   }
 
   .infoMachineGroup .badge-warning {
-    background-color: #F72F0C; 
+    background-color: #F72F0C;
   }
 
 </style>
