@@ -34,7 +34,7 @@
                     </datalist>
                     <input class="form-control sizeInput"
                            list="applicationTags"
-                           placeholder="inistcnrs/ezvis"
+                           placeholder="1.0.0"
                            type="text"
                            v-model="imageTag"
                            v-on:keydown.stop="searchTags">
