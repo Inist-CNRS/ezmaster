@@ -12,6 +12,7 @@
     "watch-less": "watch 'lessc --source-map-map-inline --source-map-less-inline public/less/*.less > public/dist/bundle.css && echo \"-> bundle.css written [$(date +%T)]\"' ./public/less/",
     "lint": "eslint --ext=.js,.vue ./routes/ ./middlewares/ ./test/ ./lib/ ./public/src/",
     "test": "mocha",
+    "bower": "bower install",
     "build": "npm run build-js && npm run build-css",
     "build-js": "browserify -d public/src/main.js -p [minifyify --no-map] > public/dist/bundle.js",
     "build-css": "lessc --clean-css='--compatibility=ie8 --advanced' public/less/*.less > public/dist/bundle.css",
@@ -94,6 +95,7 @@
     "vuex": "^2.0.0"
   },
   "devDependencies": {
+    "bower": "^1.8.0",
     "browserify": "^13.1.1",
     "chai": "^3.5.0",
     "eslint": "^3.7.1",
