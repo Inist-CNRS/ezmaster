@@ -18,12 +18,8 @@
     "insertversion": "sed -i \"s#\\(image: inistcnrs/ezmaster:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose.yml && sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" public/index.html",
     "preversion": "npm run lint",
     "version": "npm run insertversion && git add public/index.html docker-compose.yml",
-    "postversion": "git push && git push --tags"
-  },
-  "config": {
-    "ghooks": {
-      "pre-commit": "npm run lint"
-    }
+    "postversion": "git push && git push --tags",
+    "precommit": "npm run lint"
   },
   "browserify": {
     "transform": [
@@ -104,7 +100,7 @@
     "eslint-config-vue": "^2.0.1",
     "eslint-plugin-html": "^1.5.3",
     "eslint-plugin-vue": "^1.0.0",
-    "ghooks": "^1.3.2",
+    "husky": "^0.11.9",
     "istanbul": "^0.4.4",
     "less": "^2.7.1",
     "less-plugin-clean-css": "^1.5.1",
