@@ -7,7 +7,7 @@ var cfg = require('../lib/config.js')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
   , jsonfile = require('jsonfile')
-  , disk = require('diskusage');
+  , udisk = require('../lib/diskusage.js');
 jsonfile.spaces = 2;
 
 
@@ -17,14 +17,15 @@ var router = express.Router();
 // Route to get information on total size allowed and free disk space.
 router.route('/').get(function (req, res, next) {
 
-  disk.check(cfg.dataInstancesPath + '/..', function(err, info) {
+  udisk(function(err, info) {
 
     if (err) { return new Error(err); }
 
     var result = {};
 
     // Get the free disk space.
-    result.freeDiskSpace = info.free;
+    result.freeDiskSpace  = info.freeDiskRaw;
+    result = Object.assign(info, result);
 
     return res.status(200).send(result);
 
