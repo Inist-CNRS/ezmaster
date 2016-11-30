@@ -8,8 +8,8 @@
 
 <template>
 
-  <div id='addInstance' v-on:keyup.esc="cancelAddInstance">
-    <button id="add_instance" class="btn btn-raised btn-primary" v-on:click="displayFormAddInstance" >Add Instance</button>
+  <div id="addInstance" v-on:keyup.esc="cancelAddInstance">
+    <button id="add_instance" class="btn btn-raised btn-primary" v-on:click="displayFormAddInstance" v-bind:disabled="fsIsAlmostFilled"><span data-toggle="tooltip" data-placement="right" :data-original-title="fsIsAlmostFilled ? 'File system almost full, please free disk space to be able to add an isntance.' : ''">Add Instance</span></button>
 
     <div class="modal" id="modal-add-instance">
       <div class="modal-dialog">
@@ -90,12 +90,18 @@
 
 
 <script>
+  /* global io */
+  var socket = io();
+
   var publicDomain
 
   export default {
 
     mounted () {
       var self = this
+
+      // enables the bootstrap component for tooltips
+      $('#addInstance [data-toggle="tooltip"]').tooltip()
 
       self.$http.get('/-/v1/config').then(function (result) {
         var config = result.data
@@ -143,6 +149,10 @@
         else { this.technicalName = this.project + '-' + this.study + '-' + this.version }
 
         this.verif(this.technicalName)
+      })
+
+      socket.on('refreshInfosMachine', function (infosMachineSocket) {
+        self.fsIsAlmostFilled = infosMachineSocket.fsIsAlmostFilled;
       })
     },
 
@@ -220,7 +230,8 @@
         publicDomain: '',
         apps: [],
         codeErrorPull: '',
-        invalid: false
+        invalid: false,
+        fsIsAlmostFilled: true
       }
     },
 
@@ -286,5 +297,4 @@
     display: none;
     text-align: center;
   }
-
 </style>
