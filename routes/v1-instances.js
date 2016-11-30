@@ -277,9 +277,19 @@ router.route('').post(bodyParser(), function (req, res, next) {
 
   if (fileExists(cfg.dataManifestsPath + '/' + req.query.technicalName + '.json') == true) {
     res.status(409).send('Technical name already exists');
-  }
-  else {
-    mkdirp(cfg.dataInstancesPath + '/' + technicalName + '/config/', makeDataDirectory);
+  } else {
+
+    udisk(function (err, info) {
+      if (err) {
+        return res.status(500).send(new Error(err));
+      }
+      if (info.fsIsAlmostFilled) {
+        return res.status(500).send('No space left in the file system. Cannot create a new instance.');
+      }
+
+      // space disk check ok, start creating the instance
+      mkdirp(cfg.dataInstancesPath + '/' + technicalName + '/config/', makeDataDirectory);
+    });
   }
 
 

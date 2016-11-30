@@ -201,12 +201,10 @@
         this.$http.post('/-/v1/instances', data).then(function (result) {
           if (result.status === 200) { location.reload(); }
         }, function (error) {
-          if (error.status === 400) {
-            this.codeErrorPull = error.status;
-            this.messageErrorPull = error.data;
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('errorLoader').style.display = 'block';
-          }
+          this.codeErrorPull = error.status;
+          this.messageErrorPull = error.data;
+          document.getElementById('loader').style.display = 'none';
+          document.getElementById('errorLoader').style.display = 'block';
         });
       },
 
