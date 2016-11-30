@@ -26,7 +26,7 @@ var cfg = require('../lib/config.js')
   , mmm = require('mmmagic')
   , Magic = mmm.Magic
   , multer = require('multer')
-  , disk = require('diskusage');
+  , udisk = require('../lib/diskusage.js');
 jsonfile.spaces = 2;
 
 
@@ -429,7 +429,7 @@ router.route('/:instanceId/data/')
 .post(bodyParser(), function (req, res, next) {
 
   // Get freeDisk space.
-  disk.check('/', function(err, info) {
+  udisk(function(err, info) {
 
     if (err) { return new Error(err); }
 
@@ -464,13 +464,10 @@ router.route('/:instanceId/data/')
 
       });
 
-      // We use it to cap the upload size with multer.
-      var capSize = info.total*(cfg.fullFsPercent/100)-(info.total-info.available);
-
       // The upload concerns the button which id is btnFile.
       // The Multer .any() method allows to select multiple files.
       // limits : the user can't upload a file which size is greater than capSize.
-      var upload = multer({ storage : storage, limits: { fileSize: capSize }}).any('btnFile');
+      var upload = multer({ storage : storage, limits: { fileSize: info.maxFileCapSize }}).any('btnFile');
 
       // The upload.
       upload(req, res, function(err) {

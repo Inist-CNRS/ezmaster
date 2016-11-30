@@ -13,7 +13,7 @@ var cfg = require('../lib/config.js')
   , rimraf = require('rimraf')
   , app = require('../lib/app.js')
   , moment = require('moment')
-  , disk = require('diskusage');
+  , udisk = require('../lib/diskusage.js');
 jsonfile.spaces = 2;
 
 
@@ -77,39 +77,33 @@ router.route('/').post(bodyParser(), function (req, res, next) {
           return;
         }
 
-        var totalDisk;
-        var availableDisk;
+        // notify the client of docker pull download progress info
+        // and do not send too much data (wait 200ms)
+        if (!app.dockerPullIsSpammed) {
+          setTimeout(function () {
+            app.dockerPullIsSpammed = false;
+          }, 200);
 
-        disk.check('/', function(err, info) {
+          // check durring the docker pull there is still disk space
+          udisk(function(err, info) {
 
-          if (err) { return new Error(err); }
-          totalDisk = info.total;
-          availableDisk = info.available;
-        });
+            if (err) { return new Error(err); }
 
-        // If we have enough space on the disk we can continue the pull of the image
-        if (totalDisk*(cfg.fullFsPercent/100)
-          >= totalDisk*(cfg.fullFsPercent/100)-(totalDisk-availableDisk)) {
+            // If we do not have enough space on the disk 
+            // we cut the docker pull stream
+            if (info.fsIsAlmostFilled) {
+              return stream.req.destroy();
+            }
 
-          if (event['status'] != null && event.progress != null
-          &&  event.progress.split(']')[1] != 'error during stream parsing') {
-
-            // notify the client of docker pull download progress info
-            // and do not send too much data (wait 200ms)
-            if (!app.dockerPullIsSpammed) {
-              setTimeout(function () {
-                app.dockerPullIsSpammed = false;
-              }, 200);
+            if (event['status'] != null && event.progress != null &&
+                event.progress.split(']')[1] != 'error during stream parsing') {
+              // notify the client of docker pull download progress info
               socket.emit('statusPull', event.status + ': ' + event.progress.split(']')[1]);
               app.dockerPullIsSpammed = true;
             }
-
-          }
-        } else {
-          //We cut the stream and go to the Onfinished function
-          stream.req.destroy();
-
+          });
         }
+
       }
     });
 
