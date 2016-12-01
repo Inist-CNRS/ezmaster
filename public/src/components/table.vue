@@ -57,7 +57,7 @@
 
   </table>
 
-  <Remover v-if="showRemover" v-on:close="closeRemover" :instance="selectedInstance"></Remover>
+  <Remover v-if="showRemover" v-on:instance-deleted="deleteInstance" v-on:close="closeRemover" :instance="selectedInstance"></Remover>
   <Config v-if="showConfig" v-on:close="closeConfig" :instance="selectedInstance"></Config>
   <FileManagement v-if="showFiles" v-on:close="closeFiles" :instance="selectedInstance"></FileManagement>
 
@@ -89,6 +89,7 @@
       Remover
     },
     mounted () {
+      var self = this;
       // Call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       this.$http.get('/-/v1/instances').then(result => {
@@ -100,9 +101,12 @@
         this.publicDomain = config.publicDomain;
       }, console.error);
 
-      // if an instance status changes, update the interface 
+      // if an instance status changes, update the interface
       this.Store.socket.on('docker-event', function (evt) {
-        console.log('docker-event', evt.status, evt.technicalName);
+        self.containers[evt.technicalName].running = (evt.status === 'start');
+        if (evt.status === 'destroy') {
+          self.$delete(self.containers, evt.technicalName);
+        }
       });
     },
 
@@ -119,6 +123,10 @@
       stopInstance: function (instanceId) {
         this.$http.put(`/-/v1/instances/stop/${instanceId}`).then(function (result) {
         }, console.error);
+      },
+
+      deleteInstance: function (technicalName) {
+        self.$delete(self.containers, technicalName);
       },
 
       displayRemover: function (instance) {
