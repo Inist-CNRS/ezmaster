@@ -26,7 +26,11 @@
 
         <tr>
           <td>{{ item.longName }}</td>
-          <td>{{ item.technicalName }}</td>
+          <td>
+            <span v-show="!item.running">{{ item.technicalName }}</span>
+            <a v-show="item.running && !publicDomain && item.publicURL" :href="item.publicURL" :target="item.target">{{ item.technicalName }}</a>
+            <a v-show="item.running && publicDomain" :href="'http://' + item.target + '.' + publicDomain" :target="item.target">{{ item.technicalName }}</a>
+          </td>
           <td>{{ item.creationDate }}</td>
           <td>{{ item.app }}</td>
           <td>
