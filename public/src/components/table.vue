@@ -35,15 +35,14 @@
           </td>
           <td class="actions">
             <ul class="bread">
-              <li v-show="!item.running" class="start" :title="'Start ' + item.technicalName"><span class="glyphicon glyphicon-play action" v-on:click="startInstance(item.containerId)"></span></li>
-              <li v-show="item.running" class="stop" :title="'Stop ' + item.technicalName"><span class="glyphicon glyphicon-stop action" v-on:click="stopInstance(item.containerId)"></span></li>
-
-              <li class="delete" :title="'Delete ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
-              <li class="updateConfig" :title="'Edit settings of ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config </button></li>
-              <li v-show="item.dataPath" class="updateData" :title="'Upload data to ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFiles(item.containerId)">Data</button></li>
-              <li class="openPublicLink" :title="'Open ' + item.technicalName"><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running">Access</a></li>
-              <li v-if="publicDomain != ''" class="openPublicLink" :title="'Open ' + item.technicalName + ' using its public URL'"><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
-              <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="_blank" :title="'See the logs of ' + item.technicalName"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></li>
+              <li v-show="!item.running" :title="'Start ' + item.technicalName"><span class="glyphicon glyphicon-play text-success action" v-on:click="startInstance(item.containerId)"></span></li>
+              <li v-show="item.running" :title="'Stop ' + item.technicalName"><span class="glyphicon glyphicon-stop text-danger action" v-on:click="stopInstance(item.containerId)"></span></li>
+              <li class="delete" :title="'Delete ' + item.technicalName"><span class="glyphicon glyphicon-trash text-warning action" v-on:click="deleteInstance(item.containerId)"></span></li>
+              <li class="updateConfig" :title="'Edit settings of ' + item.technicalName"><span class="glyphicon glyphicon-cog text-primary action" v-on:click="displayConfig(item.containerId)"></span></li>
+              <li v-show="item.dataPath" :title="'Upload data to ' + item.technicalName"><span class="glyphicon glyphicon-download-alt text-primary action" v-on:click="displayFiles(item.containerId)"></span></li>
+              <li :title="'Open ' + item.technicalName"><a :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running"><span class="glyphicon glyphicon-link"></span></a></li>
+              <li v-if="publicDomain != ''" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>
+              <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="_blank" :title="'See the logs of ' + item.technicalName"><span class="glyphicon glyphicon-file"></span></a></li>
             </ul>
           </td>
         </tr>
@@ -194,12 +193,6 @@
 <style>
   .action {
     cursor: pointer;
-  }
-  .glyphicon-play.action {
-    color: green;
-  }
-  .glyphicon-stop.action {
-    color: red;
   }
   #instances-table {
     width: 95%;
