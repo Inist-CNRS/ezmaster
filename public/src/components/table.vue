@@ -35,13 +35,13 @@
           </td>
           <td class="actions">
             <ul class="bread">
-              <li class="start" title="Start the instance."><button type='button' class="btn btn-raised btn-sm btn-success button" v-bind:disabled="item.running" v-on:click="startInstance(item.containerId)">Start</button></li>
-              <li class="stop" title="Stop the instance."><button type='button' class="btn btn-raised btn-sm btn-danger button" v-bind:disabled="!item.running" v-on:click="stopInstance(item.containerId)">Stop</button></li>
-              <li class="delete" title="Delete the instance."><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
-              <li class="updateConfig" title="Update the instance configuration."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config </button></li>
-              <li v-show="item.dataPath" class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFiles(item.containerId)">Data</button></li>
-              <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running">Access</a></li>
-              <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
+              <li class="start" :title="'Start ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-success button" v-bind:disabled="item.running" v-on:click="startInstance(item.containerId)">Start</button></li>
+              <li class="stop" :title="'Stop ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-bind:disabled="!item.running" v-on:click="stopInstance(item.containerId)">Stop</button></li>
+              <li class="delete" :title="'Delete ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
+              <li class="updateConfig" :title="'Edit settings of ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config </button></li>
+              <li v-show="item.dataPath" class="updateData" :title="'Upload data to ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFiles(item.containerId)">Data</button></li>
+              <li class="openPublicLink" :title="'Open ' + item.technicalName"><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running">Access</a></li>
+              <li v-if="publicDomain != ''" class="openPublicLink" :title="'Open ' + item.technicalName + ' using its public URL'"><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
               <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></li>
             </ul>
           </td>
