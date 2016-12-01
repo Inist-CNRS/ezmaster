@@ -85,24 +85,4 @@
 </script>
 
 <style>
-  #jsoneditor {
-    width: 100%;
-    height: 450px;
-  }
-  .modal-fullscreen .modal-dialog {
-    margin: 0;
-    margin-right: auto;
-    margin-left: auto;
-    width: 100%;
-    max-width: 1024;
-  }
-  .modal-fullscreen .panel-footer {
-    padding: 0;
-  }
-  .modal-fullscreen .panel-body {
-    padding: 0;
-  }
-  .modal-fullscreen #jsoneditor {
-    height: calc(100vh - 100px);
-  }
 </style>
