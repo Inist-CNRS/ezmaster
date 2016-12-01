@@ -78,69 +78,53 @@
   </div>
 
 
-  <div class="modal" v-bind:class="{ 'modal-fullscreen': fullscreen }" id="modal-update-config">
-    <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="panel panel-info">
-          <div class="panel-heading">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelConfig">
-              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="fs-button close" aria-hidden="true" v-on:click="fullscreenConfig">
-              <span class="glyphicon" v-bind:class="{ 'glyphicon-resize-small': fullscreen, 'glyphicon-resize-full': !fullscreen }" aria-hidden="true"></span>
-            </button>
-            <h3 class="panel-title">Configuration Update</h3>
-          </div>
-          <div class="panel-body">
-            <div id="jsoneditor"></div>
-            <span id="spanConfigError" class="text-danger"></span>
-          </div>
-          <div class="panel-footer">
-            <a class="btn btn-default" v-on:click="cancelConfig" data-dismiss="modal">Cancel</a>
-            <a id="buttonUpdate" class="btn btn-info button-right" v-on:click="updateConfig">Update</a>
-            <a id="buttonUpdateDisable" class="btn btn-info button-update" disabled>Update</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
+  <Config v-if="showConfig" v-on:close="closeConfig" :instanceId="instanceId"></Config>
   <FileManagement v-if="showFiles" v-on:close="closeFiles" :instanceId="instanceId"></FileManagement>
 
 </div>
 </template>
 
 
-
 <script>
-  /* global JSONEditor */
-  var optsEditor = {};
-  var editor = new JSONEditor();
-
   import FileManagement from './file-management.vue';
+  import Config from './instance-config.vue';
   import Store from './store.js';
+
   export default {
-
+    data () {
+      return {
+        Store,
+        showFiles: false,
+        showConfig: false,
+        sizeToDelete: '',
+        technicalNameToDelete: '',
+        containers: [],
+        publicDomain: '',
+        instanceId: ''
+      };
+    },
+    components: {
+      FileManagement,
+      Config
+    },
     mounted () {
-      const self = this;
-
       // Call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
-      self.$http.get('/-/v1/instances').then(function (result) {
-        self.containers = result.data;
+      this.$http.get('/-/v1/instances').then(result => {
+        this.containers = result.data;
       }, console.error);
 
-      self.$http.get('/-/v1/config').then(function (result) {
+      this.$http.get('/-/v1/config').then(result => {
         var config = result.data;
-        self.publicDomain = config.publicDomain;
+        this.publicDomain = config.publicDomain;
       }, console.error);
 
       // Listen incoming messages typed as 'refreshInstances' from the server.
       // Here the message comes from eventRefreshInstances.js.
-      self.Store.socket.on('refreshInstances', function (beatInstances) {
+      this.Store.socket.on('refreshInstances', beatInstances => {
         // Update variable 'containers' which will automatically
         // refresh the instances-table component.
-        self.containers = beatInstances;
+        this.containers = beatInstances;
       });
     },
 
@@ -183,57 +167,11 @@
       },
 
       displayConfig: function (instanceId) {
-        document.getElementById('jsoneditor').innerHTML = '';
-
-        // Update the data variable instanceId which will automatically update the HTML
-        //  with this new value.
+        this.showConfig = true;
         this.instanceId = instanceId;
-
-        this.$http.get(`/-/v1/instances/${this.instanceId}`).then(function (result) {
-          document.getElementById('modal-update-config').style.display = 'block';
-
-          optsEditor = {
-
-            mode: 'code',
-            onChange: function () {
-              try {
-                editor.get();
-                document.getElementById('spanConfigError').style.display = 'none';
-                document.getElementById('buttonUpdateDisable').style.display = 'none';
-                document.getElementById('buttonUpdate').style.display = 'block';
-              }
-              catch (e) {
-                document.getElementById('spanConfigError').innerHTML = e;
-                document.getElementById('buttonUpdate').style.display = 'none';
-                document.getElementById('buttonUpdateDisable').style.display = 'block';
-                document.getElementById('spanConfigError').style.display = 'block';
-              }
-            }
-
-          };
-
-          editor = new JSONEditor(document.getElementById('jsoneditor'), optsEditor);
-          editor.set(result.data.config);
-        });
       },
-
-      cancelConfig: function () {
-        document.getElementById('modal-update-config').style.display = 'none';
-      },
-
-      fullscreenConfig: function () {
-        this.fullscreen = !this.fullscreen;
-      },
-
-      updateConfig: function () {
-        var newConfig = editor.get();
-        var data = {
-          newConfig: newConfig,
-          newTitle: newConfig.title
-        };
-        this.$http.put('/-/v1/instances/config/' + this.instanceId, data).then(function (result) {
-          document.getElementById('modal-update-config').style.display = 'none';
-        });
+      closeConfig: function () {
+        this.showConfig = false;
       },
 
       displayFiles: function (instanceId) {
@@ -246,23 +184,7 @@
         this.showFiles = false;
       }
 
-    }, // End of Methods
-
-    data () {
-      return {
-        Store,
-        showFiles: false,
-        sizeToDelete: '',
-        technicalNameToDelete: '',
-        containers: [],
-        publicDomain: '',
-        instanceId: '',
-        fullscreen: false
-      };
-    },
-    components: {
-      FileManagement
-    }
+    } // End of Methods
   };
 
 </script>
