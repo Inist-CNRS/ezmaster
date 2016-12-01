@@ -42,7 +42,7 @@
               <li v-show="item.dataPath" class="updateData" title="Upload data for the instance."><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFiles(item.containerId)">Data</button></li>
               <li class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink" :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running">Access</a></li>
               <li v-if="publicDomain != ''" class="openPublicLink" title="Open the instance."><a class="btn btn-raised btn-sm btn-link button publicLink"  :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain">Public Access </a></li>
-              <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></li>
+              <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span></a></li>
             </ul>
           </td>
         </tr>
