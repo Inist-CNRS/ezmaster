@@ -358,6 +358,8 @@ router.route('').post(bodyParser(), function (req, res, next) {
       // }
       app.readEzmasterAppConfig(image, function (err, appConfig) {
 
+        appConfig.longName = longName;
+
         instances.initConfigAndData({ instanceDst: technicalName,
           appSrc: image,
           appConfig: appConfig }, function (err) {
@@ -396,7 +398,7 @@ router.route('').post(bodyParser(), function (req, res, next) {
 
           // creates the instance manifest
           jsonfile.writeFile(cfg.dataManifestsPath + '/' + technicalName + '.json'
-            , { 'longName' : longName }, function (err) {
+            , appConfig, function (err) {
               if (err) { return next(err); }
             });
         });
