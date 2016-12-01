@@ -11,7 +11,7 @@
         <div class="modal-body">
 
           <!-- File upload -->
-          <div class="panel panel-info">
+          <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">File upload</h3>
             </div>
@@ -42,7 +42,7 @@
           </div>
 
           <!-- File list -->
-          <div class="panel panel-info">
+          <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">{{ files.length }} Data file(s)</h3>
             </div>

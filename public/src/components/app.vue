@@ -1,6 +1,6 @@
 <template>
     <div>
-      <nav class="navbar navbar-light mainbar">
+      <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">

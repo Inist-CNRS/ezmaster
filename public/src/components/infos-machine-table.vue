@@ -13,17 +13,17 @@
   <div class="nav navbar-text navbar-right infoMachineGroup">
 
     <!-- LoadAverage -->
-    <div class="glyphicon1 glyphicon glyphicon-tasks" data-toggle="tooltip" data-placement="bottom" :data-original-title="'Load average\n' + infosMachine.nbCPUs + 'CPUs'"></div>
+    <div class="glyphicon glyphicon-tasks" data-toggle="tooltip" data-placement="bottom" :data-original-title="'Load average\n' + infosMachine.nbCPUs + 'CPUs'"></div>
     <span class="badge1-1 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 1 minutes">{{ (infosMachine.loadAverage)[0] }}</span>
     <span class="badge1-2 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 5 minutes">{{ (infosMachine.loadAverage)[1] }}</span>
     <span class="badge1-3 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 15 minutes">{{ (infosMachine.loadAverage)[2] }}</span>
 
     <!-- RAM -->
-    <div class="glyphicon2 glyphicon glyphicon-oil" data-toggle="tooltip" data-placement="bottom" data-original-title="RAM usage"></div>
+    <div class="glyphicon glyphicon-oil" data-toggle="tooltip" data-placement="bottom" data-original-title="RAM usage"></div>
     <span class="badge2-1 badge" data-toggle="tooltip" data-placement="bottom" :data-original-title="'RAM\nTotal : ' + infosMachine.totalMemory + '\nFree : ' + infosMachine.freeMemory">{{ infosMachine.useMemoryPercentage }} %</span>
 
     <!-- HDD -->
-    <div class="glyphicon3 glyphicon glyphicon-hdd" data-toggle="tooltip" data-placement="bottom" data-original-title="HDD usage"></div>
+    <div class="glyphicon glyphicon-hdd" data-toggle="tooltip" data-placement="bottom" data-original-title="HDD usage"></div>
     <span class="badge3-1 badge" data-toggle="tooltip" data-placement="bottom" v-bind:class="{ 'badge-warning': infosMachine.fsIsAlmostFilled }" :data-original-title="'HDD\nTotal : ' + infosMachine.totalDisk + '\nFree : ' + infosMachine.freeDisk">{{ infosMachine.useDiskPercentage }} %</span>
 
   </div>
@@ -79,28 +79,19 @@
 
 <style>
 
-  .navbar .navbar-text.infoMachineGroup {
-    margin-top: 18px;
-    margin-bottom: 0;
+  .infoMachineGroup {
+    padding-right: 10px;
   }
 
-  .infoMachineGroup .glyphicon2,
-  .infoMachineGroup .glyphicon3 {
+  .infoMachineGroup .glyphicon {
     margin-left: 20px;
-  }
-  .infoMachineGroup .glyphicon1,
-  .infoMachineGroup .glyphicon2,
-  .infoMachineGroup .glyphicon3 {
     margin-right: 3px;
+    vertical-align: middle;
   }
 
-  .infoMachineGroup .badge3-1 {
-    margin-right: 10px;
-  }
-
-  .infoMachineGroup .badge {
+  /*.infoMachineGroup .badge {
     background-color: #015b90;
-  }
+  }*/
 
   .infoMachineGroup .badge-warning {
     background-color: #F72F0C;
