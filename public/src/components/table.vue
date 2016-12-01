@@ -112,7 +112,7 @@
 
 
 <script>
-  /* global JSONEditor, io*/
+  /* global JSONEditor */
   var optsEditor = {};
   var editor = new JSONEditor();
 
@@ -249,7 +249,7 @@
 
     data () {
       return {
-		Store,
+        Store,
         showFiles: false,
         sizeToDelete: '',
         technicalNameToDelete: '',

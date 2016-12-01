@@ -60,7 +60,7 @@
 
     data () {
       return {
-		Store,
+        Store,
         infosMachine: {
           loadAverage: [0, 0, 0]
         },

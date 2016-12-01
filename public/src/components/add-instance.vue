@@ -89,7 +89,6 @@
 
 
 <script>
-  /* global io */
   var publicDomain;
 
   import Store from './store.js';

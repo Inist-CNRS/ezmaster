@@ -1,4 +1,5 @@
+/* global io */
 module.exports = {
-  socket : io(),
+  socket: io(),
   applications: []
 };

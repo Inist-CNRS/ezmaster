@@ -213,7 +213,7 @@ export default {
 
   data () {
     return {
-	  Store,
+      Store,
       imageName: '',
       imageTag: '',
       cacheImageVersions: {},
