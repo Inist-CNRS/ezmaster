@@ -1,5 +1,6 @@
 <template>
     <div>
+
       <nav class="navbar navbar-default navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -24,6 +25,8 @@
           </div>
         </div>
       </nav>
+
+
       <div class="tab-content">
         <div id="instances" class="tab-pane fade in active">
           <Instances></Instances>
@@ -34,7 +37,8 @@
           <AddApp ref="addapps"></AddApp>
         </div>
       </div>
-          </div>
+
+    </div>
 </template>
 
 <script>
@@ -80,5 +84,8 @@ export default {
 <style>
 .mainbar {
   background-color: #0277BD;
+}
+.tab-content {
+  margin-top: 60px;
 }
 </style>
