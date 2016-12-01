@@ -8,7 +8,7 @@
 
 <template>
 <div>
-  <table id="instances-table" class="table table-striped table-hover table-bordered">
+  <table id="instances-table" class="table table-striped table-hover">
     <thead>
       <tr>
         <th>Long Name</th>
