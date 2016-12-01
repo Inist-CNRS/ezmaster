@@ -284,7 +284,8 @@ router.route('').post(bodyParser(), function (req, res, next) {
         return res.status(500).send(new Error(err));
       }
       if (info.fsIsAlmostFilled) {
-        return res.status(500).send('No space left in the file system. Cannot create a new instance.');
+        return res.status(500)
+        .send('No space left in the file system. Cannot create a new instance.');
       }
 
       // space disk check ok, start creating the instance

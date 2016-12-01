@@ -2,8 +2,7 @@
 /*eslint no-sync: "off", global-require: "off"*/
 'use strict';
 
-var cfg = require('../lib/config.js')
-  , path = require('path')
+var path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
   , jsonfile = require('jsonfile')
