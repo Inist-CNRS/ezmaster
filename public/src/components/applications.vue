@@ -15,7 +15,7 @@
           <td class="actions">
             <ul class="bread">
               <li class="delete" title="Delete the application">
-                <button type='button' data-toggle="modal" data-target="#modal-delete-image" class="btn btn-raised btn-sm btn-warning button" :id="item.imageName" v-on:click="deleteapplication">Delete</button>
+                <button type='button' data-toggle="modal" data-target="#modal-delete-image" class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteApplication(item.imageName)">Delete</button>
               </li>
             </ul>
             <div class="modal fade" tabindex="-1" role="dialog" id="modal-delete-image">
@@ -28,7 +28,7 @@
                     </div>
                     <div class="panel-body">
                       <p>
-                      <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">{{ imageNameToDelete }}</span> application.</span><br /><br />
+                      <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">{{ imageToDelete }}</span> application.</span><br /><br />
                       </p><br />
                       <div id="errorLoaderImage" class="error-loader">
                         <span class="text-danger" id="errorLoaderAddInstance">An error was received : {{ messageErrorPull }}.</span><br />
@@ -51,7 +51,6 @@
 </template>
 
 <script>
-var nameTodelete;
 
 import Store from './store.js'
 
@@ -59,9 +58,8 @@ import Store from './store.js'
 export default {
   methods: {
 
-    deleteapplication: function (event) {
-      this.imageNameToDelete = event.target.id;
-      nameTodelete = event.target.id;
+    deleteApplication: function (imageName) {
+      this.imageToDelete = imageName;
     },
 
     cancelDeleteapplication: function (event) {
@@ -77,7 +75,8 @@ export default {
       }
       $('a.button-delete').attr('disabled', 'disabled');
 
-      var name = new Buffer(nameTodelete).toString('base64');
+      var name = new Buffer(self.imageToDelete).toString('base64');
+      self.imageToDelete = '';
       this.$http.delete('/-/v1/app/' + name).then(function (result) {
         $('a.button-delete').removeAttr('disabled');
         self.$emit('refreshApplicationsList');
@@ -97,7 +96,7 @@ export default {
     return {
       Store,
       sizeToDelete: '',
-      imageNameToDelete: '',
+      imageToDelete: '',
       applications: [],
       messageErrorPull: '',
       publicDomain: ''
