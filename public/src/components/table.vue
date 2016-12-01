@@ -57,9 +57,9 @@
 
   </table>
 
-  <Remover v-if="showRemover" v-on:instance-deleted="deleteInstance" v-on:close="closeRemover" :instance="selectedInstance"></Remover>
-  <Config v-if="showConfig" v-on:close="closeConfig" :instance="selectedInstance"></Config>
-  <FileManagement v-if="showFiles" v-on:close="closeFiles" :instance="selectedInstance"></FileManagement>
+  <Remover v-on:instance-deleted="deleteInstance"></Remover>
+  <Config></Config>
+  <FileManagement></FileManagement>
 
 </div>
 </template>
@@ -70,6 +70,7 @@
   import Config from './instance-config.vue';
   import Remover from './instance-remove.vue';
   import Store from './store.js';
+  import eventHub from './event-hub.js';
 
   export default {
     data () {
@@ -89,7 +90,6 @@
       Remover
     },
     mounted () {
-      var self = this;
       // Call the route /-/v1/instances with a get wich get the instances list.
       // Store the instances list into the variable containers used into the HTML with v-for.
       this.$http.get('/-/v1/instances').then(result => {
@@ -102,17 +102,18 @@
       }, console.error);
 
       // if an instance status changes, update the interface
-      this.Store.socket.on('docker-event', function (evt) {
-        self.containers[evt.technicalName].running = (evt.status === 'start');
+      this.Store.socket.on('docker-event', evt => {
+        this.containers[evt.technicalName].running = (evt.status === 'start');
+
         if (evt.status === 'destroy') {
-          self.$delete(self.containers, evt.technicalName);
+          this.$delete(this.containers, evt.technicalName);
         }
       });
     },
 
     methods: {
 
-      startInstance: function (instanceId) {
+      startInstance (instanceId) {
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
         // button start > li > ul > td > tr > id="{{ item.description.Id }}"
@@ -120,39 +121,25 @@
         }, console.error);
       },
 
-      stopInstance: function (instanceId) {
+      stopInstance (instanceId) {
         this.$http.put(`/-/v1/instances/stop/${instanceId}`).then(function (result) {
         }, console.error);
       },
 
-      deleteInstance: function (technicalName) {
+      deleteInstance (technicalName) {
         this.$delete(this.containers, technicalName);
       },
 
-      displayRemover: function (instance) {
-        this.showRemover = true;
-        this.selectedInstance = instance;
-      },
-      closeRemover: function () {
-        this.showRemover = false;
+      displayRemover (instance) {
+        eventHub.$emit('openDeletePrompt', instance);
       },
 
-      displayConfig: function (instance) {
-        this.showConfig = true;
-        this.selectedInstance = instance;
-      },
-      closeConfig: function () {
-        this.showConfig = false;
+      displayConfig (instance) {
+        eventHub.$emit('openConfig', instance);
       },
 
-      displayFiles: function (instance) {
-        // Shows the modal upload and reset the inputs.
-        this.showFiles = true;
-        this.selectedInstance = instance;
-      },
-
-      closeFiles: function () {
-        this.showFiles = false;
+      displayFiles (instance) {
+        eventHub.$emit('openFileManagement', instance);
       }
 
     } // End of Methods
