@@ -1,7 +1,7 @@
 <template>
   <!-- Modal for instance configuration -->
   <div class="fade modal" tabindex="-1" role="dialog" ref="modal" v-bind:class="{ 'modal-fullscreen': fullscreen }">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
 
         <div class="modal-header">
