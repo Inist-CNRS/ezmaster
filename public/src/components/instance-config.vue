@@ -56,29 +56,35 @@
 
       toggleFullscreen: function () {
         this.fullscreen = !this.fullscreen;
+
+        // resize the jsoneditor to take all the available space
+        this.$nextTick(function () {
+          editor.resize();
+        });
       },
 
       refreshConfig: function () {
-        this.refreshing = true;
+        var self = this;
+        self.refreshing = true;
 
-        this.$http.get(`/-/v1/instances/${this.instance.containerId}`).then(result => {
-          editor = new JSONEditor(this.$refs.jsoneditor, {
+        self.$http.get(`/-/v1/instances/${self.instance.containerId}`).then(result => {
+          editor = new JSONEditor(self.$refs.jsoneditor, {
             mode: 'code',
             onChange: () => {
               try {
                 editor.get();
-                this.jsonError = null;
+                self.jsonError = null;
               }
               catch (e) {
-                this.jsonError = e;
+                self.jsonError = e;
               }
             }
           });
 
-          this.refreshing = false;
+          self.refreshing = false;
           editor.set(result.data.config);
         }).catch(e => {
-          this.refreshing = false;
+          self.refreshing = false;
         });
       },
 
