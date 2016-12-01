@@ -35,8 +35,9 @@
           </td>
           <td class="actions">
             <ul class="bread">
-              <li v-show="!item.running" class="start" :title="'Start ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-success button" v-on:click="startInstance(item.containerId)">Start</button></li>
-              <li v-show="item.running" class="stop" :title="'Stop ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-danger button" v-on:click="stopInstance(item.containerId)">Stop</button></li>
+              <li v-show="!item.running" class="start" :title="'Start ' + item.technicalName"><span class="glyphicon glyphicon-play action" v-on:click="startInstance(item.containerId)"></span></li>
+              <li v-show="item.running" class="stop" :title="'Stop ' + item.technicalName"><span class="glyphicon glyphicon-stop action" v-on:click="stopInstance(item.containerId)"></span></li>
+
               <li class="delete" :title="'Delete ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-warning button" v-on:click="deleteInstance(item.containerId)">Delete</button></li>
               <li class="updateConfig" :title="'Edit settings of ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayConfig(item.containerId)">Config </button></li>
               <li v-show="item.dataPath" class="updateData" :title="'Upload data to ' + item.technicalName"><button type='button' class="btn btn-raised btn-sm btn-info button" v-on:click="displayFiles(item.containerId)">Data</button></li>
@@ -269,49 +270,21 @@
 
 
 <style>
-
+  .action {
+    cursor: pointer;
+  }
+  .glyphicon-play.action {
+    color: green;
+  }
+  .glyphicon-stop.action {
+    color: red;
+  }
   #instances-table {
     width: 95%;
     margin: auto;
     margin-bottom: 2%;
     margin-top: 5%;
   }
-  /*.bread {
-    list-style: none;
-    padding-left: 0px;
-    margin-bottom:0px;
-  }
-  .bread > li {
-    display: inline-block;
-    margin-right: 3%;
-  }
-  .actions {
-    padding: 6px !important;
-  }
-  .button {
-    margin: 0 !important;
-  }
-  #jsoneditor {
-    width: 100%;
-    height: 450px;
-  }
-
-  .modal-dialog {
-    overflow-y: initial !important
-  }
-
-  .button-right {
-    float:right;
-  }
-
-  .button-update {
-    float:right;
-    display:none;
-  }
-
-  .fs-button {
-    margin-right: 10px;
-  }*/
   .modal-fullscreen .modal-dialog {
     margin: 0;
     margin-right: auto;
