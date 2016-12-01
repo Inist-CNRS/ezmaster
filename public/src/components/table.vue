@@ -37,9 +37,9 @@
             <ul class="bread">
               <li v-show="!item.running" :title="'Start ' + item.technicalName"><span class="glyphicon glyphicon-play text-success action" v-on:click="startInstance(item.containerId)"></span></li>
               <li v-show="item.running" :title="'Stop ' + item.technicalName"><span class="glyphicon glyphicon-stop text-danger action" v-on:click="stopInstance(item.containerId)"></span></li>
-              <li :title="'Delete ' + item.technicalName"><span class="glyphicon glyphicon-trash text-warning action" v-on:click="deleteInstance(item.containerId)"></span></li>
-              <li :title="'Edit settings of ' + item.technicalName"><span class="glyphicon glyphicon-cog text-primary action" v-on:click="displayConfig(item.containerId)"></span></li>
-              <li v-show="item.dataPath" :title="'Upload data to ' + item.technicalName"><span class="glyphicon glyphicon-download-alt text-primary action" v-on:click="displayFiles(item.containerId)"></span></li>
+              <li :title="'Delete ' + item.technicalName"><span class="glyphicon glyphicon-trash text-warning action" v-on:click="displayRemover(item)"></span></li>
+              <li :title="'Edit settings of ' + item.technicalName"><span class="glyphicon glyphicon-cog text-primary action" v-on:click="displayConfig(item)"></span></li>
+              <li v-show="item.dataPath" :title="'Upload data to ' + item.technicalName"><span class="glyphicon glyphicon-download-alt text-primary action" v-on:click="displayFiles(item)"></span></li>
               <li v-show="item.running" :title="'Open ' + item.technicalName"><a :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running"><span class="glyphicon glyphicon-link"></span></a></li>
               <li v-show="publicDomain != '' && item.running" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>
               <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="_blank" :title="'See the logs of ' + item.technicalName"><span class="glyphicon glyphicon-file"></span></a></li>
@@ -53,32 +53,9 @@
 
   </table>
 
-  <div class="modal" id="modal-delete-instance">
-    <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="panel panel-warning">
-          <div class="panel-heading">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" v-on:click="cancelDeleteInstance">×</button>
-            <h3 class="panel-title">Delete Instance</h3>
-          </div>
-          <div class="panel-body">
-            <p>
-              <span class="deleteConfirmationMessage">You will delete the <span class="text-warning">{{ technicalNameToDelete }}</span> instance.</span><br /><br />
-              <span class="deleteSizeFolder">It represents <span class="text-warning">{{ sizeToDelete }}</span> of data.</span>
-            </p><br />
-          </div>
-          <div class="panel-footer">
-            <a class="btn btn-default" v-on:click='cancelDeleteInstance' data-dismiss="modal">Cancel</a>
-            <a class="btn btn-warning button-right" v-on:click="confirmDeleteInstance">Delete</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <Config v-if="showConfig" v-on:close="closeConfig" :instanceId="instanceId"></Config>
-  <FileManagement v-if="showFiles" v-on:close="closeFiles" :instanceId="instanceId"></FileManagement>
+  <Remover v-if="showRemover" v-on:close="closeRemover" :instance="selectedInstance"></Remover>
+  <Config v-if="showConfig" v-on:close="closeConfig" :instance="selectedInstance"></Config>
+  <FileManagement v-if="showFiles" v-on:close="closeFiles" :instance="selectedInstance"></FileManagement>
 
 </div>
 </template>
@@ -87,6 +64,7 @@
 <script>
   import FileManagement from './file-management.vue';
   import Config from './instance-config.vue';
+  import Remover from './instance-remove.vue';
   import Store from './store.js';
 
   export default {
@@ -95,16 +73,16 @@
         Store,
         showFiles: false,
         showConfig: false,
-        sizeToDelete: '',
-        technicalNameToDelete: '',
+        showRemover: false,
         containers: [],
         publicDomain: '',
-        instanceId: ''
+        selectedInstance: null
       };
     },
     components: {
       FileManagement,
-      Config
+      Config,
+      Remover
     },
     mounted () {
       // Call the route /-/v1/instances with a get wich get the instances list.
@@ -142,41 +120,26 @@
         }, console.error);
       },
 
-      deleteInstance: function (instanceId) {
-        // Update the data variable instanceId which will automatically update the HTML
-        //  with this new value.
-        this.instanceId = instanceId;
-
-        this.$http.get(`/-/v1/instances/${instanceId}`).then(function (result) {
-          this.technicalNameToDelete = result.data.technicalName;
-          this.sizeToDelete = result.data.size;
-
-          document.getElementById('modal-delete-instance').style.display = 'block';
-        }, console.error);
+      displayRemover: function (instance) {
+        this.showRemover = true;
+        this.selectedInstance = instance;
+      },
+      closeRemover: function () {
+        this.showRemover = false;
       },
 
-      cancelDeleteInstance: function () {
-        document.getElementById('modal-delete-instance').style.display = 'none';
-      },
-
-      confirmDeleteInstance: function () {
-        this.$http.delete('/-/v1/instances/' + this.instanceId).then(function (result) {
-          document.getElementById('modal-delete-instance').style.display = 'none';
-        }, console.error);
-      },
-
-      displayConfig: function (instanceId) {
+      displayConfig: function (instance) {
         this.showConfig = true;
-        this.instanceId = instanceId;
+        this.selectedInstance = instance;
       },
       closeConfig: function () {
         this.showConfig = false;
       },
 
-      displayFiles: function (instanceId) {
+      displayFiles: function (instance) {
         // Shows the modal upload and reset the inputs.
         this.showFiles = true;
-        this.instanceId = instanceId;
+        this.selectedInstance = instance;
       },
 
       closeFiles: function () {

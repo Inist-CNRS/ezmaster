@@ -90,7 +90,7 @@
 
 <script>
   export default {
-    props: ['instanceId'],
+    props: ['instance'],
     data () {
       return {
         freeSpaceExceeded: false,
@@ -155,7 +155,7 @@
       uploadFiles: function () {
         if (!this.formFiles.length || this.freeSpaceExceeded) { return; }
 
-        const url = `/-/v1/instances/${this.instanceId}/data/`;
+        const url = `/-/v1/instances/${this.instance.containerId}/data/`;
         const form = new FormData();
 
         for (let i = 0; i < this.formFiles.length; i++) {
@@ -183,7 +183,7 @@
 
       deleteFile: function (fileName) {
         // Delete the file.
-        this.$http.delete(`/-/v1/instances/${this.instanceId}/${fileName}`)
+        this.$http.delete(`/-/v1/instances/${this.instance.containerId}/${fileName}`)
         .then(this.refreshFileList)
         .catch(e => {
           console.error(e);
@@ -193,7 +193,7 @@
 
       refreshFileList: function () {
         // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get(`/-/v1/instances/${this.instanceId}/data`).then(function (result) {
+        this.$http.get(`/-/v1/instances/${this.instance.containerId}/data`).then(function (result) {
           this.files = [];
 
           for (const filename in result.data) {

@@ -37,7 +37,7 @@
   let editor;
 
   export default {
-    props: ['instanceId'],
+    props: ['instance'],
     data () {
       return {
         jsonError: null,
@@ -61,7 +61,7 @@
       refreshConfig: function () {
         this.refreshing = true;
 
-        this.$http.get(`/-/v1/instances/${this.instanceId}`).then(result => {
+        this.$http.get(`/-/v1/instances/${this.instance.containerId}`).then(result => {
           editor = new JSONEditor(this.$refs.jsoneditor, {
             mode: 'code',
             onChange: () => {
@@ -91,7 +91,7 @@
 
         this.updating = true;
 
-        this.$http.put(`/-/v1/instances/config/${this.instanceId}`, data).then(result => {
+        this.$http.put(`/-/v1/instances/config/${this.instance.containerId}`, data).then(result => {
           this.updating = false;
           this.closeModal();
         });
