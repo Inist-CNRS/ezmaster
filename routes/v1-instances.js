@@ -236,7 +236,8 @@ router
       return next(err);
     }
 
-    instances.initConfigAndData({
+    instances.cleanup({
+      containerId : req.params.containerId,
       appConfig: {
         cleanupScript : manifest.cleanupScript
       }
@@ -244,7 +245,6 @@ router
       if (err) {
         return next(err);
       }
-
       removeContainer(data.State.Running);
     });
 
