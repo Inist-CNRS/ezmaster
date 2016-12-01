@@ -8,7 +8,7 @@
 
 <template>
 <div>
-  <table id="instances-table" class="table table-striped">
+  <table id="instances-table" class="table table-striped table-hover table-bordered">
     <thead>
       <tr>
         <th>Long Name</th>
@@ -24,14 +24,14 @@
 
       <template v-for="item in containers">
 
-        <tr v-bind:class="{ success: item.running, danger: !item.running }">
+        <tr>
           <td>{{ item.longName }}</td>
           <td>{{ item.technicalName }}</td>
           <td>{{ item.creationDate }}</td>
           <td>{{ item.app }}</td>
           <td>
-            <span v-if="item.running">Started</span>
-            <span v-else>Stopped</span>
+            <span class="label label-success" v-if="item.running">Running</span>
+            <span class="label label-danger" v-else>Stopped</span>
           </td>
           <td class="actions">
             <ul class="bread">
@@ -278,7 +278,7 @@
     margin-bottom: 2%;
     margin-top: 5%;
   }
-  .bread {
+  /*.bread {
     list-style: none;
     padding-left: 0px;
     margin-bottom:0px;
@@ -313,7 +313,7 @@
 
   .fs-button {
     margin-right: 10px;
-  }
+  }*/
   .modal-fullscreen .modal-dialog {
     margin: 0;
     margin-right: auto;

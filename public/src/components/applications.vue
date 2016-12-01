@@ -1,5 +1,5 @@
 <template>
-  <table id="applications-table" class="table table-hover">
+  <table id="applications-table" class="table table-striped table-hover table-bordered">
     <thead>
       <tr>
         <th>Image</th>

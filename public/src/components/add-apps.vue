@@ -5,95 +5,94 @@
     <div class="modal fade" id="modal-add-image"  tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
-          <form novalidate id="add-image-form" name="Form" class="form-horizontal">
-            <fieldset>
-              <div class="modal-header modal-addapp">
-                <legend>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
-                  <span class="titleFormAddInstance">Add Application</span>
-                </legend>
+          
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
+            <h4 class="modal-title">Add Application</h4>
+          </div>
+
+          <div class="modal-body">
+            <form novalidate id="add-image-form" name="Form" class="form-horizontal">              
+              <div class="form-group">
+                <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
+                <div class="col-md-9">
+                  <input class="form-control sizeInput"
+                          list="applicationImages"
+                          id="inputImageName"
+                          placeholder="inistcnrs/ezvis"
+                          type="text"
+                          v-model="imageName"
+                          v-on:keydown.stop="searchImages"
+                          v-on:blur.stop="searchTags">
+
+                  <datalist id="applicationImages">
+                    <option v-for="(image, index) in applicationImages">
+                    {{ image.repo_name }}
+                    </option>
+                  </datalist>
+
+                  <input class="form-control sizeInput"
+                          list="applicationTags"
+                          placeholder="1.0.0"
+                          type="text"
+                          v-model="imageTag"
+                          v-on:keydown.stop="searchTags">
+
+                  <datalist id="applicationTags">
+                    <option v-for="(tag, index) in applicationTags">
+                    {{ tag.name }}
+                    </option>
+                  </datalist>
+                </div>
               </div>
-              <br />
-              <div class="modal-body">
 
-                <div class="form-group">
-                  <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
-                  <div class="col-md-9">
-                    <input class="form-control sizeInput"
-                           list="applicationImages"
-                           id="inputImageName"
-                           placeholder="inistcnrs/ezvis"
-                           type="text"
-                           v-model="imageName"
-                           v-on:keydown.stop="searchImages"
-                           v-on:blur.stop="searchTags">
-                    <datalist id="applicationImages">
-                      <option v-for="(image, index) in applicationImages">
-                      {{ image.repo_name }}
-                      </option>
-                    </datalist>
-                    <input class="form-control sizeInput"
-                           list="applicationTags"
-                           placeholder="1.0.0"
-                           type="text"
-                           v-model="imageTag"
-                           v-on:keydown.stop="searchTags">
-                    <datalist id="applicationTags">
-                      <option v-for="(tag, index) in applicationTags">
-                      {{ tag.name }}
-                      </option>
-                    </datalist>
-                  </div>
+              <button type="button" class="btn btn-default btn-md" v-on:click='toggleSettings'>
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings
+              </button>
 
-                  <button type="button" class="btn btn-default btn-md" v-on:click='toggleSettings'>
-                    <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings
-                  </button>
-                  :
-                  <div class="form-group" id='settings' v-show="show">
-                    <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
-                    <div class="col-md-9">
-                      <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder="vsregistry.intra.inist.fr:5000" type="text" v-model="imageHub">
-                    </div>
-
-                    <label for="inputUserName" class="col-md-3 control-label">UserName</label>
-                    <div class="col-md-9">
-                      <input class="form-control sizeInput" id="inputUserName" name="inputUserName" placeholder="username" type="text" v-model="username">
-                    </div>
-
-                    <label for="inputImageHub" class="col-md-3 control-label">Password</label>
-                    <div class="col-md-9">
-                      <input class="form-control sizeInput" id="inputPassword" name="inputPassword" placeholder="password" type="password" v-model="password">
-                    </div>
-
-                    <label for="inputEmail" class="col-md-3 control-label">Email</label>
-                    <div class="col-md-9">
-                      <input class="form-control sizeInput" id="inputEmail" name="inputEmail" placeholder="test@email.com" type="text" v-model="email">
-
-                    </div>
-
-                  </div>
+              <div class="form-group" id="settings" v-show="show">
+                <label for="inputImageHub" class="col-md-3 control-label">Docker registry</label>
+                <div class="col-md-9">
+                  <input class="form-control" id="inputImageHub" name="inputImageHub" placeholder="vsregistry.intra.inist.fr:5000" type="text" v-model="imageHub">
                 </div>
 
-                <div class="panel-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary button-add" v-on:click="addImage" v-bind:disabled="isAdding">Add</button>
-                  <div id='loaderImage' class="loader">
-                    <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
-                    <span class="text-primary" id="messageLoaderAddInstance">{{ statusPull }}</span>
-                  </div>
-                  <div id='errorLoaderImages' class="loader">
-                    <span class="text-danger" id="errorLoaderAddImage">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                  </div>
-
+                <label for="inputUserName" class="col-md-3 control-label">UserName</label>
+                <div class="col-md-9">
+                  <input class="form-control sizeInput" id="inputUserName" name="inputUserName" placeholder="username" type="text" v-model="username">
                 </div>
-            </fieldset>
-          </form>
+
+                <label for="inputImageHub" class="col-md-3 control-label">Password</label>
+                <div class="col-md-9">
+                  <input class="form-control sizeInput" id="inputPassword" name="inputPassword" placeholder="password" type="password" v-model="password">
+                </div>
+
+                <label for="inputEmail" class="col-md-3 control-label">Email</label>
+                <div class="col-md-9">
+                  <input class="form-control sizeInput" id="inputEmail" name="inputEmail" placeholder="test@email.com" type="text" v-model="email">
+                </div>
+
               </div>
+
+            </form>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary button-add" v-on:click="addImage" v-bind:disabled="isAdding">Add</button>
+            <div id="loaderImage" class="loader">
+              <img id="loaderAddInstance" src="/img/ajax-loader.gif" alt="Loading"/><br />
+              <span class="text-primary" id="messageLoaderAddInstance">{{ statusPull }}</span>
+            </div>
+            <div id="errorLoaderImages" class="loader">
+              <span class="text-danger" id="errorLoaderAddImage">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
-
+  </div>
 </template>
 
 
@@ -262,11 +261,7 @@ export default {
   }
 
   #urlPreview{
-    background-color:       #CFD8DC;
-  }
-
-  .titleFormAddInstance {
-    color:white;
+    background-color: #CFD8DC;
   }
 
   .modal-addapp{
