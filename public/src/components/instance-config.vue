@@ -1,7 +1,7 @@
 <template>
   <!-- Modal for instance configuration -->
-  <div class="fade modal" tabindex="-1" role="dialog" ref="modal" v-bind:class="{ 'modal-fullscreen': fullscreen }">
-    <div class="modal-dialog modal-lg" role="document">
+  <div class="fade modal" tabindex="-1" role="dialog" ref="modal">
+    <div class="modal-dialog modal-lg" role="document" v-bind:class="{ 'modal-fullscreen': fullscreen }">
       <div class="modal-content">
 
         <div class="modal-header">
@@ -120,20 +120,13 @@
     width: 100%;
     height: 450px;
   }
-  .modal-fullscreen .modal-dialog {
+  .modal-dialog.modal-fullscreen {
     margin: 0;
     margin-right: auto;
     margin-left: auto;
     width: 100%;
-    max-width: 1024;
-  }
-  .modal-fullscreen .panel-footer {
-    padding: 0;
-  }
-  .modal-fullscreen .panel-body {
-    padding: 0;
   }
   .modal-fullscreen #jsoneditor {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 180px);
   }
 </style>
