@@ -11,7 +11,7 @@
           <button type="button" class="fs-button close" aria-hidden="true" v-on:click="toggleFullscreen">
             <span class="glyphicon" v-bind:class="{ 'glyphicon-resize-small': fullscreen, 'glyphicon-resize-full': !fullscreen }" aria-hidden="true"></span>
           </button>
-          <h4 class="modal-title">Configuration <i v-show="refreshing" class="fa fa-refresh fa-spin fa-fw"></i></h4>
+          <h4 class="modal-title">Configuration {{instance.technicalName}}<i v-show="refreshing" class="fa fa-refresh fa-spin fa-fw"></i></h4>
         </div>
 
         <div class="modal-body">
