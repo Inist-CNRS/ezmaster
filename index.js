@@ -27,7 +27,7 @@ app.use('/-/v1/instances', require('./routes/v1-instances.js'));
 io.on('connection', function (socket) {
   cfg.socket = socket;
 });
-// start listening and forwarding docker events through websocket 
+// start listening and forwarding docker events through websocket
 require('./lib/docker-websocket.js').init(io);
 
 
