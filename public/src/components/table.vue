@@ -126,7 +126,7 @@
       },
 
       deleteInstance: function (technicalName) {
-        self.$delete(self.containers, technicalName);
+        this.$delete(this.containers, technicalName);
       },
 
       displayRemover: function (instance) {
