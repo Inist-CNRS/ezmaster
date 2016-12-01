@@ -31,13 +31,32 @@ var cfg = require('../lib/config.js')
 jsonfile.spaces = 2;
 
 
+function checkContainer(containerId, cb) {
+  var container = docker.getContainer(containerId);
+  container.inspect(function (err, data) {
+    if (err) {
+      return cb(err);
+    }
+    instances.getInstancesManifests(function(err, manifests) {
+      var manifest = manifests[data.Name.slice(1)]
+
+      if (manifest === undefined) {
+        return cb(new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')'))
+      }
+
+      cb(null, container, data, manifest);
+    });
+  });
+}
+
 var express = require('express');
 var router = express.Router();
 
 /**
  * Returns the instance list
  */
-router.route('/').get(function (req, res, next) {
+router.route('/')
+.get(function (req, res, next) {
 
   instances.getInstances(function (err, data) {
     if (err) { return next(err); }
@@ -49,11 +68,10 @@ router.route('/').get(function (req, res, next) {
 /**
  * Start an instance
  */
-router.route('/start/:containerId').put(bodyParser(), function (req, res, next) {
+router.route('/start/:containerId')
+.put(bodyParser(), function (req, res, next) {
 
-  var container = docker.getContainer(req.params.containerId);
-
-  container.inspect(function (err, data) {
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -76,22 +94,30 @@ router.route('/start/:containerId').put(bodyParser(), function (req, res, next) 
 /**
  * Stop an instance
  */
-router.route('/stop/:containerId').put(bodyParser(), function (req, res, next) {
+router
+.route('/stop/:containerId')
+.put(bodyParser(), function (req, res, next) {
 
-  var container = docker.getContainer(req.params.containerId);
-
-  container.inspect(function (err, data) {
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
-    container.stop(function (err, datas, container) {
-      if (err) { return next(err); }
+    instances.getInstancesManifests(function(err, manifests) {
+      var manifest = manifests[data.Name.slice(1)]
 
-      // When an instance is stopped, we call refreshInstances() to update the
-      // instances list cache and socket emit the updated list to all users.
-      instances.refreshInstances();
+      if (manifest === undefined) {
+        next(new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')'))
+      }
 
-      res.status(200).send('Stoping done');
+      container.stop(function (err, datas, container) {
+        if (err) { return next(err); }
+
+        // When an instance is stopped, we call refreshInstances() to update the
+        // instances list cache and socket emit the updated list to all users.
+        instances.refreshInstances();
+
+        res.status(200).send('Stoping done');
+      });
     });
 
   });
@@ -102,11 +128,10 @@ router.route('/stop/:containerId').put(bodyParser(), function (req, res, next) {
 /**
  * Update a config.json of a specific instance
  */
-router.route('/config/:containerId').put(bodyParser(), function (req, res, next) {
-
-  var container = docker.getContainer(req.params.containerId);
-
-  container.inspect(function (err, data) {
+router
+.route('/config/:containerId')
+.put(bodyParser(), function (req, res, next) {
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -127,7 +152,8 @@ router.route('/config/:containerId').put(bodyParser(), function (req, res, next)
         else {
           res.status(200).send('Update done');
         }
-      });
+      }
+    );
 
     // When a new config is given to an instance, we call refreshInstances() to update the
     // instances list cache and socket emit the updated list to all users.
@@ -142,10 +168,12 @@ router.route('/config/:containerId').put(bodyParser(), function (req, res, next)
  * Returns OK when the manifest does not yet exist
  * Returns KO when the manifest already exist
  */
-router.route('/verif/:technicalName').get(bodyParser(), function (req, res, next) {
+router
+.route('/verif/:technicalName')
+.get(bodyParser(), function (req, res, next) {
 
   if (fileExists(cfg.dataManifestsPath + '/' + req.params.technicalName + '.json')
-  == false) {
+    == false) {
     res.status(200).send('OK');
   }
   else {
@@ -156,11 +184,11 @@ router.route('/verif/:technicalName').get(bodyParser(), function (req, res, next
 
 
 
-router.route('/:containerId').get(bodyParser(), function (req, res, next) {
+router
+.route('/:containerId')
+.get(bodyParser(), function (req, res, next) {
 
-  var container = docker.getContainer(req.params.containerId);
-
-  container.inspect(function (err, data) {
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -180,15 +208,16 @@ router.route('/:containerId').get(bodyParser(), function (req, res, next) {
       // Get Configuration Information.
       jsonfile.readFile(
         cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.json',
-      function (err, obj) {
+        function (err, obj) {
 
-        if (err) { return next(err); }
+          if (err) { return next(err); }
 
-        result.config = obj;
+          result.config = obj;
 
-        return res.status(200).send(result);
+          return res.status(200).send(result);
 
-      });
+        }
+      );
 
     });
 
@@ -198,17 +227,29 @@ router.route('/:containerId').get(bodyParser(), function (req, res, next) {
 
 
 
-router.route('/:containerId').delete(function (req, res, next) {
-  var container = docker.getContainer(req.params.containerId);
+router
+.route('/:containerId')
+.delete(function (req, res, next) {
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
-  removeInstance(container);
+    if (err) {
+      return next(err);
+    }
 
-  function removeInstance (container) {
+    instances.initConfigAndData({
+      appConfig: {
+        cleanupScript : manifest.cleanupScript
+      }
+    }, function (err) {
+      if (err) {
+        return next(err);
+      }
 
-    container.inspect(function (err, data) {
-      if (err) { return next(err); }
+      removeContainer(data.State.Running);
+    });
 
-      if (data.State.Running == true) {
+    function removeContainer (containerStatus) {
+      if (containerStatus == true) {
         container.stop(function (err, datas, cont) {
           if (err) { return next(err); }
 
@@ -218,43 +259,43 @@ router.route('/:containerId').delete(function (req, res, next) {
           });
         });
       }
-      else if (data.State.Running == false) {
+      else if (containerStatus == false) {
         container.remove(function (err, datas, cont) {
           if (err) { return next(err); }
         });
       }
 
-      removeManifest(err, data.Name);
-    });
-  }
+      removeManifest(data.Name);
+    }
 
-  function removeManifest (err, containerName) {
+    function removeManifest (containerName) {
 
-    if (err) { return res.status(500).send('' + err); }
-
-    var splittedName = containerName.split('/');
-    rimraf(cfg.dataInstancesPath + '/' + splittedName[1], function (err) {
-      if (err) { return next(err); }
-
-      rimraf(cfg.dataManifestsPath + '/' + splittedName[1] + '.json', function (err) {
+      var splittedName = containerName.split('/');
+      rimraf(cfg.dataInstancesPath + '/' + splittedName[1], function (err) {
         if (err) { return next(err); }
 
-        // When an instance is deleted, we call refreshInstances() to update the
-        // instances list cache and socket emit the updated list to all users.
-        instances.refreshInstances();
+        rimraf(cfg.dataManifestsPath + '/' + splittedName[1] + '.json', function (err) {
+          if (err) { return next(err); }
 
-        res.status(200).send('Removing done');
+          // When an instance is deleted, we call refreshInstances() to update the
+          // instances list cache and socket emit the updated list to all users.
+          instances.refreshInstances();
+
+          res.status(200).send('Removing done');
+        });
       });
-    });
-  }
+    }
+
+  });
+
 });
-
-
 
 /**
  * Route to create a new instance
  */
-router.route('').post(bodyParser(), function (req, res, next) {
+router
+.route('')
+.post(bodyParser(), function (req, res, next) {
 
   var technicalName = req.body.technicalName
     , longName = req.body.longName
@@ -305,9 +346,9 @@ router.route('').post(bodyParser(), function (req, res, next) {
   function createConfigFile(err) {
     if (err) { return next(err); }
 
-    fs.appendFile(cfg.dataInstancesPath + '/' + technicalName + '/config/config.json'
-      , '{}'
-      , readInstances
+    fs.appendFile(cfg.dataInstancesPath + '/' + technicalName + '/config/config.json',
+      '{}',
+      readInstances
     );
   }
 
@@ -360,7 +401,8 @@ router.route('').post(bodyParser(), function (req, res, next) {
 
         appConfig.longName = longName;
 
-        instances.initConfigAndData({ instanceDst: technicalName,
+        instances.initConfigAndData({
+          instanceDst: technicalName,
           appSrc: image,
           appConfig: appConfig }, function (err) {
           if (err) return next(err);
@@ -371,7 +413,7 @@ router.route('').post(bodyParser(), function (req, res, next) {
             publicUrl = 'http://' + technicalName + '.' + publicDomain;
           } else {
             publicUrl = 'http://'
-              + process.env.EZMASTER_PUBLIC_IP + ':' + appConfig.httpPort;
+            + process.env.EZMASTER_PUBLIC_IP + ':' + appConfig.httpPort;
             if (!process.env.EZMASTER_PUBLIC_IP) {
               publicUrl = 'http://127.0.0.1:' + appConfig.httpPort;
             }
@@ -390,17 +432,19 @@ router.route('').post(bodyParser(), function (req, res, next) {
           + '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
           + technicalName + '/config/config.json:' + appConfig.configPath + ' '
           + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
-                                  + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
+            + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
           + '--name ' + technicalName + ' ' + image;
 
           // and execute !
           exec(cmd, function (err, stdout, stderr) { refreshAndReturn(err, appConfig); });
 
           // creates the instance manifest
-          jsonfile.writeFile(cfg.dataManifestsPath + '/' + technicalName + '.json'
-            , appConfig, function (err) {
+          jsonfile.writeFile(cfg.dataManifestsPath + '/' + technicalName + '.json',
+            appConfig,
+            function (err) {
               if (err) { return next(err); }
-            });
+            }
+          );
         });
       });
 
@@ -439,18 +483,18 @@ router.route('').post(bodyParser(), function (req, res, next) {
 /**
  * Route to upload a file directly from the html upload form.
  */
-router.route('/:instanceId/data/')
+router
+.route('/:instanceId/data/')
 .post(bodyParser(), function (req, res, next) {
 
-  // Get freeDisk space.
-  udisk(function(err, info) {
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
-    if (err) { return new Error(err); }
+    if (err) { return next(err); }
 
-    // Examining the container.
-    var container = docker.getContainer(req.params.instanceId);
 
-    container.inspect(function (err, data) {
+
+    // Get freeDisk space.
+    udisk(function(err, info) {
 
       if (err) { return next(err); }
 
@@ -491,11 +535,11 @@ router.route('/:instanceId/data/')
 });
 
 
-router.route('/:instanceId/data/:filename').get(function (req, res, next) {
-  // Examining the container.
-  var container = docker.getContainer(req.params.instanceId);
+router
+.route('/:instanceId/data/:filename')
+.get(function (req, res, next) {
 
-  container.inspect(function goOn(err, data) {
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -519,14 +563,12 @@ router.route('/:instanceId/data/:filename').get(function (req, res, next) {
 /**
  * Route to get information on the data files from a specific instance.
  */
-router.route('/:instanceId/data').get(function (req, res, next) {
+router
+.route('/:instanceId/data')
+.get(function (req, res, next) {
 
-  // Examining the container.
-  var container = docker.getContainer(req.params.instanceId);
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
-  container.inspect(goOn);
-
-  function goOn(err, data) {
 
     if (err) { return next(err); }
 
@@ -584,39 +626,37 @@ router.route('/:instanceId/data').get(function (req, res, next) {
 
     });
 
-  }
+  });
 
 });
 
 
 
 // Route to delete a specific data file from a specific instance data folder.
-router.route('/:containerId/:fileName').delete(function (req, res, next) {
+router
+.route('/:containerId/:fileName')
+.delete(function (req, res, next) {
 
-  // Examining the container.
-  var container = docker.getContainer(req.params.containerId);
+  checkContainer(req.params.containerId, function(err, container, data, manifest) {
 
-  container.inspect(function (err, data) {
-
-    if (err) { return next(err); }
+    if (err) {
+      return next(err);
+    }
 
     // Split the instance name.
     var splittedName = data.Name.split('/');
 
     // Delete the file.
     // splittedName[1] is the instance technical name.
-    rimraf(
-      cfg.dataInstancesPath + '/' + splittedName[1] + '/data/' + req.params.fileName
-    , function (err) {
-
-      if (err) { return next(err); }
-
-      res.status(200).send('Data File Deleted.');
-
-    });
-
+    rimraf(cfg.dataInstancesPath + '/' + splittedName[1] + '/data/' + req.params.fileName,
+      function (err) {
+        if (err) {
+          return next(err);
+        }
+        res.status(200).send('Data File Deleted.');
+      }
+    );
   });
-
 });
 
 
