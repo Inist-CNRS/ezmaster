@@ -11,7 +11,7 @@
           <button type="button" class="fs-button close" aria-hidden="true" v-on:click="toggleFullscreen">
             <span class="glyphicon" v-bind:class="{ 'glyphicon-resize-small': fullscreen, 'glyphicon-resize-full': !fullscreen }" aria-hidden="true"></span>
           </button>
-          <h4 class="modal-title">Configuration</h4>
+          <h4 class="modal-title">Configuration <i v-show="refreshing" class="fa fa-refresh fa-spin fa-fw"></i></h4>
         </div>
 
         <div class="modal-body">
@@ -21,7 +21,10 @@
 
         <div class="modal-footer">
           <a class="btn btn-default" v-on:click="closeModal" data-dismiss="modal">Cancel</a>
-          <a id="buttonUpdate" class="btn btn-info button-right" :disabled="jsonError" v-on:click="updateConfig">Update</a>
+          <a id="buttonUpdate" class="btn btn-info" :disabled="jsonError || updating" v-on:click="updateConfig">
+            <i v-if="updating" class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+            <span v-else>Update</span>
+          </a>
         </div>
       </div>
     </div>
@@ -39,26 +42,12 @@
       return {
         jsonError: null,
         fullscreen: false,
-        updating: false
+        updating: false,
+        refreshing: false
       };
     },
     created: function () {
-      this.$http.get(`/-/v1/instances/${this.instanceId}`).then(result => {
-        editor = new JSONEditor(this.$refs.jsoneditor, {
-          mode: 'code',
-          onChange: () => {
-            try {
-              editor.get();
-              this.jsonError = null;
-            }
-            catch (e) {
-              this.jsonError = e;
-            }
-          }
-        });
-
-        editor.set(result.data.config);
-      });
+      this.refreshConfig();
     },
     methods: {
       closeModal: function () {
@@ -67,6 +56,30 @@
 
       toggleFullscreen: function () {
         this.fullscreen = !this.fullscreen;
+      },
+
+      refreshConfig: function () {
+        this.refreshing = true;
+
+        this.$http.get(`/-/v1/instances/${this.instanceId}`).then(result => {
+          editor = new JSONEditor(this.$refs.jsoneditor, {
+            mode: 'code',
+            onChange: () => {
+              try {
+                editor.get();
+                this.jsonError = null;
+              }
+              catch (e) {
+                this.jsonError = e;
+              }
+            }
+          });
+
+          this.refreshing = false;
+          editor.set(result.data.config);
+        }).catch(e => {
+          this.refreshing = false;
+        });
       },
 
       updateConfig: function () {
