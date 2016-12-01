@@ -27,7 +27,7 @@
 
                 <div class="col-md-9">
                   <select id="app" class="form-control">
-                    <option v-for="app in apps" :value='app.imageName'>{{ app.imageName }}</option>
+                    <option v-for="app in Store.applications" :value='app.imageName'>{{ app.imageName }}</option>
                   </select>
                 </div>
               </div>
@@ -94,6 +94,7 @@
 
   var publicDomain;
 
+  import Store from './store.js';
   export default {
 
     mounted () {
@@ -106,15 +107,6 @@
         var config = result.data;
         self.publicDomain = config.publicDomain;
         publicDomain = config.publicDomain;
-      }, console.error);
-
-      self.$http.get('/-/v1/app').then(result => {
-        self.apps = result.data.sort((app1, app2) => {
-          if (app1.imageName === app2.imageName) {
-            return 0;
-          }
-          return app1.imageName > app2.imageName ? -1 : 1;
-        });
       }, console.error);
 
       this.$watch('study', function (study) {
@@ -215,6 +207,7 @@
 
     data () {
       return {
+        Store,
         longName: '',
         project: '',
         version: '',
@@ -223,7 +216,6 @@
         urlPreview: '',
         messageErrorPull: '',
         publicDomain: '',
-        apps: [],
         codeErrorPull: '',
         invalid: false,
         fsIsAlmostFilled: true

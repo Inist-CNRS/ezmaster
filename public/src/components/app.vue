@@ -43,14 +43,29 @@ import Instances from './table.vue';
 import AddInstance from './add-instance.vue';
 import AddApp from './add-apps.vue';
 import Applications from './applications.vue';
+import Store from './store.js'
 
 export default {
   mounted: function () {
     const self = this;
+    self.refreshApplicationsList();
     self.$refs.addapps.$on('refreshApplicationsList', function (msg) {
-      self.$refs.appslist.refresh();
+      self.refreshApplicationsList();
     });
   },
+  methods: {
+    refreshApplicationsList: function () {
+      const self = this;
+      self.$http.get('/-/v1/app').then(function (result) {
+        self.Store.applications = result.data;
+      }, console.error);
+    }
+  },
+	data () {
+		return {
+			Store
+		}
+	},
   components: {
     InfosMachine,
     Instances,
