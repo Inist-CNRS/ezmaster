@@ -27,6 +27,10 @@ app.use('/-/v1/instances', require('./routes/v1-instances.js'));
 io.on('connection', function (socket) {
   cfg.socket = socket;
 });
+// start listening and forwarding docker events through websocket 
+require('./lib/docker-websocket.js').init(io);
+
+
 
 server.listen(cfg.EZMASTER_PORT, function () {
   console.info(kuler(cfg.package.name + ' ' + cfg.package.version + ' is listening.', 'olive'));
@@ -42,4 +46,3 @@ server.listen(cfg.EZMASTER_PORT, function () {
 var heartbeats = require('heartbeats');
 var heart = heartbeats.createHeart(1000);
 heart.createEvent(5, require('./lib/event-refresh-infos-machine.js'));
-heart.createEvent(2, require('./lib/event-refresh-instances.js'));

@@ -103,6 +103,10 @@
         // refresh the instances-table component.
         this.containers = beatInstances;
       });
+
+      socket.on('docker-event', function (evt) {
+        console.log('docker-event', evt.status, evt.technicalName);
+      });
     },
 
     methods: {
