@@ -106,7 +106,9 @@ router
       var manifest = manifests[data.Name.slice(1)];
 
       if (manifest === undefined) {
-        return next(new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')'));
+        return next(
+          new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')')
+        );
       }
 
       container.stop(function (err, datas, container) {
@@ -604,9 +606,9 @@ router
 
         // The Magic module allows to get the file Mime type.
         var magic = new Magic(mmm.MAGIC_MIME_TYPE);
-        magic.detectFile(dir+'/'+file, function(err, resu) {
-
-          if (err) throw err;
+        magic.detectFile(dir+'/'+file, handleFileMimeType);
+        function handleFileMimeType(err, resu) {
+          if (err) return res.status(500).send(err);
 
           nbFiles--;
 
@@ -619,8 +621,8 @@ router
           if (nbFiles == 0) {
             return res.status(200).send(results);
           }
+        }
 
-        });
 
       });
 
