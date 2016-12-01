@@ -619,8 +619,9 @@ router.route('/:containerId/:fileName').delete(function (req, res, next) {
 
 
 router.route('/:instanceId/logs').get((req, res, next) => {
-  var container = docker.getContainer(req.params.instanceId);
-  container.logs({ stdout: true }, (err, stream) => {
+  const container = docker.getContainer(req.params.instanceId);
+  const lineNb = req.query.tail || 1000;
+  container.logs({ stdout: true, tail: lineNb }, (err, stream) => {
     debug('logs', req.params.instanceId, err);
     if (err) {
       return res.status(err.statusCode).send(err.reason).end();
@@ -629,7 +630,6 @@ router.route('/:instanceId/logs').get((req, res, next) => {
       debug('chunk', chunk.toString());
       res.write(stripAnsi(chunk.toString()));
     });
-    // stream.pipe(res);
     stream.on('end', () => {
       debug('end');
       res.end();
