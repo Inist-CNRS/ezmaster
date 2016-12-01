@@ -489,7 +489,7 @@ router
 .route('/:instanceId/data/')
 .post(bodyParser(), function (req, res, next) {
 
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  checkContainer(req.params.instanceId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -541,7 +541,7 @@ router
 .route('/:instanceId/data/:filename')
 .get(function (req, res, next) {
 
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  checkContainer(req.params.instanceId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -569,7 +569,7 @@ router
 .route('/:instanceId/data')
 .get(function (req, res, next) {
 
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  checkContainer(req.params.instanceId, function(err, container, data, manifest) {
 
 
     if (err) { return next(err); }
