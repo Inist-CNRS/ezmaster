@@ -33,11 +33,7 @@
 
 
 <script>
-  /*global io*/
-
-  // Socket connection.
-  var socket = io();
-
+  import Store from './store.js';
   export default {
 
     mounted () {
@@ -51,7 +47,7 @@
 
       // Listen incoming messages typed as 'refreshInfosMachine' from the server.
       // Here the message comes from eventRefreshInfosMachine.js.
-      socket.on('refreshInfosMachine', function (infosMachineSocket) {
+      self.Store.socket.on('refreshInfosMachine', function (infosMachineSocket) {
         // Update variable 'infosMachine'.
         // This will automatically refresh the infosMachineTable component.
         self.infosMachine = infosMachineSocket;
@@ -64,6 +60,7 @@
 
     data () {
       return {
+		Store,
         infosMachine: {
           loadAverage: [0, 0, 0]
         },

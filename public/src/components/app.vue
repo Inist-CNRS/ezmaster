@@ -44,7 +44,6 @@ import AddInstance from './add-instance.vue';
 import AddApp from './add-apps.vue';
 import Applications from './applications.vue';
 import Store from './store.js';
-
 export default {
   mounted: function () {
     const self = this;

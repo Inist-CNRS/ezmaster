@@ -113,14 +113,11 @@
 
 <script>
   /* global JSONEditor, io*/
-  // Socket connection.
-
-  var socket = io();
   var optsEditor = {};
   var editor = new JSONEditor();
 
   import FileManagement from './file-management.vue';
-
+  import Store from './store.js';
   export default {
 
     mounted () {
@@ -139,7 +136,7 @@
 
       // Listen incoming messages typed as 'refreshInstances' from the server.
       // Here the message comes from eventRefreshInstances.js.
-      socket.on('refreshInstances', function (beatInstances) {
+      self.Store.socket.on('refreshInstances', function (beatInstances) {
         // Update variable 'containers' which will automatically
         // refresh the instances-table component.
         self.containers = beatInstances;
@@ -252,6 +249,7 @@
 
     data () {
       return {
+		Store,
         showFiles: false,
         sizeToDelete: '',
         technicalNameToDelete: '',

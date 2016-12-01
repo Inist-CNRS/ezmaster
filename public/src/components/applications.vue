@@ -53,7 +53,6 @@
 <script>
 
 import Store from './store.js';
-
 export default {
   methods: {
 

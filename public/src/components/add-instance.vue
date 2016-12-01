@@ -90,8 +90,6 @@
 
 <script>
   /* global io */
-  var socket = io();
-
   var publicDomain;
 
   import Store from './store.js';
@@ -142,7 +140,7 @@
         this.verif(this.technicalName);
       });
 
-      socket.on('refreshInfosMachine', function (infosMachineSocket) {
+      self.Store.socket.on('refreshInfosMachine', function (infosMachineSocket) {
         self.fsIsAlmostFilled = infosMachineSocket.fsIsAlmostFilled;
       });
     },

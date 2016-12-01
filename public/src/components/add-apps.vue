@@ -5,14 +5,14 @@
     <div class="modal fade" id="modal-add-image"  tabindex="-1" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
-          
+
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">×</button>
             <h4 class="modal-title">Add Application</h4>
           </div>
 
           <div class="modal-body">
-            <form novalidate id="add-image-form" name="Form" class="form-horizontal">              
+            <form novalidate id="add-image-form" name="Form" class="form-horizontal">
               <div class="form-group">
                 <label for="inputImageName" class="col-md-3 control-label">Application Name</label>
                 <div class="col-md-9">
@@ -88,7 +88,7 @@
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -97,7 +97,7 @@
 
 
 <script>
-
+import Store from './store.js';
 export default {
 
   mounted () {
@@ -106,7 +106,7 @@ export default {
     // enables the bootstrap component for tooltips
     $('#addImage [data-toggle="tooltip"]').tooltip();
 
-    socket.on('statusPull', function (infoPull) {
+    self.Store.socket.on('statusPull', function (infoPull) {
       self.statusPull = infoPull;
     });
 
@@ -115,7 +115,7 @@ export default {
       self.fullFsPercent = config.fullFsPercent;
     }, console.error);
 
-    socket.on('refreshInfosMachine', function (infosMachineSocket) {
+    self.Store.socket.on('refreshInfosMachine', function (infosMachineSocket) {
       // Update variable 'infosMachine'.
       // This will automatically refresh the infosMachineTable component.
       self.infosMachine = infosMachineSocket;
@@ -213,6 +213,7 @@ export default {
 
   data () {
     return {
+	  Store,
       imageName: '',
       imageTag: '',
       cacheImageVersions: {},
