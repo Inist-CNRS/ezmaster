@@ -40,8 +40,8 @@
               <li class="delete" :title="'Delete ' + item.technicalName"><span class="glyphicon glyphicon-trash text-warning action" v-on:click="deleteInstance(item.containerId)"></span></li>
               <li class="updateConfig" :title="'Edit settings of ' + item.technicalName"><span class="glyphicon glyphicon-cog text-primary action" v-on:click="displayConfig(item.containerId)"></span></li>
               <li v-show="item.dataPath" :title="'Upload data to ' + item.technicalName"><span class="glyphicon glyphicon-download-alt text-primary action" v-on:click="displayFiles(item.containerId)"></span></li>
-              <li :title="'Open ' + item.technicalName"><a :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running"><span class="glyphicon glyphicon-link"></span></a></li>
-              <li v-if="publicDomain != ''" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>
+              <li v-show="item.running" :title="'Open ' + item.technicalName"><a :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running"><span class="glyphicon glyphicon-link"></span></a></li>
+              <li v-show="publicDomain != '' && item.running" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>
               <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="_blank" :title="'See the logs of ' + item.technicalName"><span class="glyphicon glyphicon-file"></span></a></li>
             </ul>
           </td>
