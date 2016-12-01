@@ -26,7 +26,9 @@ var cfg = require('../lib/config.js')
   , mmm = require('mmmagic')
   , Magic = mmm.Magic
   , multer = require('multer')
-  , udisk = require('../lib/diskusage.js');
+  , udisk = require('../lib/diskusage.js')
+  , stripAnsi = require('strip-ansi')
+  ;
 jsonfile.spaces = 2;
 
 
@@ -624,7 +626,15 @@ router.route('/:instanceId/logs').get((req, res, next) => {
     if (err) {
       return res.status(err.statusCode).send(err.reason).end();
     }
-    stream.pipe(res);
+    stream.on('data', (chunk) => {
+      debug('chunk', chunk.toString());
+      res.write(stripAnsi(chunk.toString()));
+    });
+    // stream.pipe(res);
+    stream.on('end', () => {
+      debug('end');
+      res.end();
+    });
   });
 });
 
