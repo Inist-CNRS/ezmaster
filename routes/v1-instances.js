@@ -38,10 +38,10 @@ function checkContainer(containerId, cb) {
       return cb(err);
     }
     instances.getInstancesManifests(function(err, manifests) {
-      var manifest = manifests[data.Name.slice(1)]
+      var manifest = manifests[data.Name.slice(1)];
 
       if (manifest === undefined) {
-        return cb(new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')'))
+        return cb(new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')'));
       }
 
       cb(null, container, data, manifest);
@@ -103,10 +103,10 @@ router
     if (err) { return next(err); }
 
     instances.getInstancesManifests(function(err, manifests) {
-      var manifest = manifests[data.Name.slice(1)]
+      var manifest = manifests[data.Name.slice(1)];
 
       if (manifest === undefined) {
-        next(new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')'))
+        return next(new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')'));
       }
 
       container.stop(function (err, datas, container) {
