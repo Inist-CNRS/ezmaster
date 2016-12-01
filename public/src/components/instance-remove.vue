@@ -63,6 +63,7 @@
         this.$http.delete(`/-/v1/instances/${this.instance.containerId}`).then(result => {
           this.deleting = false;
           this.closeModal();
+          this.$emit('instance-deleted', this.instance.technicalName);
         }).catch(e => {
           this.deleting = false;
           console.error(e);
