@@ -52,12 +52,15 @@ export default {
     self.$refs.addapps.$on('refreshApplicationsList', function (msg) {
       self.refreshApplicationsList();
     });
+    self.$refs.appslist.$on('refreshApplicationsList', function (msg) {
+      self.refreshApplicationsList();
+    });
   },
   methods: {
     refreshApplicationsList: function () {
       const self = this;
       self.$http.get('/-/v1/app').then(function (result) {
-        self.Store.applications = result.data;
+        self.$set(Store, 'applications', result.data);
       }, console.error);
     }
   },

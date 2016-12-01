@@ -146,15 +146,18 @@ router.route('/').post(bodyParser(), function (req, res, next) {
 
 
 router.route('/:imageId').delete(function (req, res, next) {
-  debug('DELETE ', req.originalUrl);
 
   var name = new Buffer(req.params.imageId, 'base64').toString();
 
   var image = docker.getImage(name);
 
+  debug('DELETE ', name);
+
   image.remove(function (err, datas, cont) {
 
-    if (err) { return res.status(409).send('' + err); }
+    if (err) {
+      return res.status(500).send(err);
+    }
 
     var nameManifest = req.params.imageId;
 

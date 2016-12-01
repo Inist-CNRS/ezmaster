@@ -97,8 +97,6 @@
 
 
 <script>
-/* global io */
-var socket = io();
 
 export default {
 

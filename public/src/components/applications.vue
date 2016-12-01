@@ -76,9 +76,10 @@ export default {
 
       var name = new Buffer(self.imageToDelete).toString('base64');
       self.imageToDelete = '';
-      this.$http.delete('/-/v1/app/' + name).then(function (result) {
-        $('a.button-delete').removeAttr('disabled');
+      self.$http.delete('/-/v1/app/' + name).then(function (result) {
         self.$emit('refreshApplicationsList');
+        $('a.button-delete').removeAttr('disabled');
+        $('#modal-delete-image').modal('toggle')
       }, function (err) {
         $('a.button-delete').removeAttr('disabled');
         var msgDetails = (err && err.data && err.data.json) ? ('\n' + err.data.json.message) : '';
