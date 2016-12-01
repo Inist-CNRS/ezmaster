@@ -96,15 +96,8 @@
         this.publicDomain = config.publicDomain;
       }, console.error);
 
-      // Listen incoming messages typed as 'refreshInstances' from the server.
-      // Here the message comes from eventRefreshInstances.js.
-      this.Store.socket.on('refreshInstances', beatInstances => {
-        // Update variable 'containers' which will automatically
-        // refresh the instances-table component.
-        this.containers = beatInstances;
-      });
-
-      socket.on('docker-event', function (evt) {
+      // if an instance status changes, update the interface 
+      this.Store.socket.on('docker-event', function (evt) {
         console.log('docker-event', evt.status, evt.technicalName);
       });
     },
