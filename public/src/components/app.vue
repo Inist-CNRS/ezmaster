@@ -43,7 +43,7 @@ import Instances from './table.vue';
 import AddInstance from './add-instance.vue';
 import AddApp from './add-apps.vue';
 import Applications from './applications.vue';
-import Store from './store.js'
+import Store from './store.js';
 
 export default {
   mounted: function () {
@@ -61,11 +61,11 @@ export default {
       }, console.error);
     }
   },
-	data () {
-		return {
-			Store
-		}
-	},
+  data () {
+    return {
+      Store
+    };
+  },
   components: {
     InfosMachine,
     Instances,
