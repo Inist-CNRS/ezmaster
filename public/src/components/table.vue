@@ -57,6 +57,10 @@
 
   </table>
 
+  <p class="refresh" v-show="refreshing">
+    <i class="fa fa-refresh fa-spin fa-fw"></i> Refreshing...
+  </p>
+
   <Remover v-on:instance-deleted="deleteInstance"></Remover>
   <Config></Config>
   <FileManagement></FileManagement>
@@ -90,11 +94,7 @@
       Remover
     },
     mounted () {
-      // Call the route /-/v1/instances with a get wich get the instances list.
-      // Store the instances list into the variable containers used into the HTML with v-for.
-      this.$http.get('/-/v1/instances').then(result => {
-        this.containers = result.data;
-      }, console.error);
+      this.refreshInstanceList();
 
       this.$http.get('/-/v1/config').then(result => {
         var config = result.data;
@@ -112,6 +112,19 @@
     },
 
     methods: {
+      refreshInstanceList () {
+        this.refreshing = true;
+
+        // Call the route /-/v1/instances with a get wich get the instances list.
+        // Store the instances list into the variable containers used into the HTML with v-for.
+        this.$http.get('/-/v1/instances').then(result => {
+          this.containers = result.data;
+          this.refreshing = false;
+        }).catch(e => {
+          console.error(e);
+          this.refreshing = false;
+        });
+      },
 
       startInstance (instanceId) {
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
@@ -158,5 +171,8 @@
     margin: auto;
     margin-bottom: 2%;
     margin-top: 5%;
+  }
+  .refresh {
+    text-align: center;
   }
 </style>
