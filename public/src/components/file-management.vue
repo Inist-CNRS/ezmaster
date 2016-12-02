@@ -1,10 +1,10 @@
 <template>
   <!-- Modal Show Upload Data Files -->
-  <div class="modal" id="modal-upload-data" style="display: block">
-    <div class="modal-dialog">
+  <div class="fade modal" tabindex="-1" role="dialog" ref="modal">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" v-on:click="closeModal">&times;</span></button>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title">Instance files</h4>
         </div>
 
@@ -44,7 +44,7 @@
           <!-- File list -->
           <div class="panel panel-default">
             <div class="panel-heading">
-              <h3 class="panel-title">{{ files.length }} Data file(s)</h3>
+              <h3 class="panel-title">{{ files.length }} Data file(s) <i v-show="refreshing" class="fa fa-refresh fa-spin fa-fw"></i></h3>
             </div>
             <div class="panel-body">
 
@@ -65,11 +65,11 @@
                     <tbody>
                       <template v-for="file in files">
                         <tr>
-                          <td class="files-list-name-column"><a :href="'/-/v1/instances/' + instanceId + '/data/' + file.name">{{ file.name }}</a></td>
+                          <td class="files-list-name-column"><a :href="'/-/v1/instances/' + instance.containerId + '/data/' + file.name">{{ file.name }}</a></td>
                           <td>{{ file.size }}</td>
                           <td>{{ file.mimeType }}</td>
                           <td>
-                            <input type="button" value="Delete" class="btn btn-danger" v-on:click="deleteFile(file.name)">
+                            <input type="button" value="Delete" class="btn btn-xs btn-danger" v-on:click="deleteFile(file.name)">
                           </td>
                         </tr>
                       </template>
@@ -81,7 +81,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" v-on:click="closeModal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">Close</button>
         </div>
       </div>
     </div>
@@ -89,17 +89,20 @@
 </template>
 
 <script>
+  import eventHub from './event-hub.js';
+
   export default {
-    props: ['instance'],
     data () {
       return {
         freeSpaceExceeded: false,
         uploading: false,
+        refreshing: false,
         progress: 0,
         totalSize: 0,
         freeSpace: 0,
         formFiles: [],
-        files: []
+        files: [],
+        instance: null
       };
     },
     filters: {
@@ -116,18 +119,24 @@
         return (Math.round(value * 100 / (1024 * 1024 * 1024)) / 100).toString() + ' GB';
       }
     },
-    created: function () {
-      this.refreshFileList();
+    mounted () {
+      $(this.$refs.modal).on('show.bs.modal', e => {
+        this.clearFileInput();
+        this.refreshFileList();
+      });
+
+      eventHub.$on('openFileManagement', instance => {
+        this.instance = instance;
+        this.show();
+      });
     },
     methods: {
-      closeModal: function () {
-        this.clearFileInput();
-        this.$emit('close');
-      },
-      clearFileInput: function () {
+      show () { $(this.$refs.modal).modal('show'); },
+      hide () { $(this.$refs.modal).modal('hide'); },
+      clearFileInput () {
         this.$refs.fileInput.value = '';
       },
-      onChangeInputFile: function () {
+      onChangeInputFile () {
         // When the user choose a file.
 
         this.freeSpaceExceeded = false;
@@ -152,7 +161,7 @@
         });
       },
 
-      uploadFiles: function () {
+      uploadFiles () {
         if (!this.formFiles.length || this.freeSpaceExceeded) { return; }
 
         const url = `/-/v1/instances/${this.instance.containerId}/data/`;
@@ -181,7 +190,7 @@
         });
       },
 
-      deleteFile: function (fileName) {
+      deleteFile (fileName) {
         // Delete the file.
         this.$http.delete(`/-/v1/instances/${this.instance.containerId}/${fileName}`)
         .then(this.refreshFileList)
@@ -191,15 +200,20 @@
         });
       },
 
-      refreshFileList: function () {
-        // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get(`/-/v1/instances/${this.instance.containerId}/data`).then(function (result) {
-          this.files = [];
+      refreshFileList () {
+        this.files = [];
+        this.refreshing = true;
 
+        // Get information on formerly uploaded files for the concerned instance.
+        this.$http.get(`/-/v1/instances/${this.instance.containerId}/data`).then(result => {
           for (const filename in result.data) {
             this.files.push(result.data[filename]);
           }
-        }, console.error);
+          this.refreshing = false;
+        }).catch(e => {
+          console.error(e);
+          this.refreshing = false;
+        });
       }
     }
   };
