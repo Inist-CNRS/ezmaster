@@ -112,9 +112,9 @@
     display:inline;
   }
 
-
-  .infoMachineGroup .badge-warning {
-    background-color: #F72F0C;
+  .infoMachineGroup .badge-warning .badge {
+    background-color: #d15b47!important;
+    color: #fff!important;
   }
 
 </style>
