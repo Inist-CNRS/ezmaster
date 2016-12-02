@@ -13,19 +13,32 @@
   <div class="nav navbar-text navbar-right infoMachineGroup">
 
     <!-- LoadAverage -->
-    <div class="glyphicon glyphicon-tasks" data-toggle="tooltip" data-placement="bottom" :data-original-title="'Load average\n' + infosMachine.nbCPUs + 'CPUs'"></div>
-    <span class="badge1-1 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 1 minutes">{{ (infosMachine.loadAverage)[0] }}</span>
-    <span class="badge1-2 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 5 minutes">{{ (infosMachine.loadAverage)[1] }}</span>
-    <span class="badge1-3 badge" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 15 minutes">{{ (infosMachine.loadAverage)[2] }}</span>
-
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" :data-original-title="'Load average\n' + infosMachine.nbCPUs + 'CPUs'">
+      <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
+    </div>
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 1 minutes">
+      <span class="badge">{{ (infosMachine.loadAverage)[0] }}</span>
+    </div>
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 5 minutes">
+      <span class="badge">{{ (infosMachine.loadAverage)[1] }}</span>
+    </div>
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 15 minutes">
+      <span class="badge">{{ (infosMachine.loadAverage)[2] }}</span>
+    </div>
     <!-- RAM -->
-    <div class="glyphicon glyphicon-oil" data-toggle="tooltip" data-placement="bottom" data-original-title="RAM usage"></div>
-    <span class="badge2-1 badge" data-toggle="tooltip" data-placement="bottom" :data-original-title="'RAM\nTotal : ' + infosMachine.totalMemory + '\nFree : ' + infosMachine.freeMemory">{{ infosMachine.useMemoryPercentage }} %</span>
-
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="RAM usage">
+      <span  class="glyphicon glyphicon-oil" aria-hidden="true"></span>
+    </div>
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" :data-original-title="'RAM\nTotal : ' + infosMachine.totalMemory + '\nFree : ' + infosMachine.freeMemory">
+      <span class="badge">{{ infosMachine.useMemoryPercentage }} %</span>
+    </div>
     <!-- HDD -->
-    <div class="glyphicon glyphicon-hdd" data-toggle="tooltip" data-placement="bottom" data-original-title="HDD usage"></div>
-    <span class="badge3-1 badge" data-toggle="tooltip" data-placement="bottom" v-bind:class="{ 'badge-warning': infosMachine.fsIsAlmostFilled }" :data-original-title="'HDD\nTotal : ' + infosMachine.totalDisk + '\nFree : ' + infosMachine.freeDisk">{{ infosMachine.useDiskPercentage }} %</span>
-
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="HDD usage">
+      <span class="glyphicon glyphicon-hdd" aria-hidden="true"></span>
+    </div>
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" v-bind:class="{ 'badge-warning': infosMachine.fsIsAlmostFilled }" :data-original-title="'HDD\nTotal : ' + infosMachine.totalDisk + '\nFree : ' + infosMachine.freeDisk">
+      <span class="badge">{{ infosMachine.useDiskPercentage }} %</span>
+    </div>
   </div>
 
 
@@ -80,15 +93,18 @@
     padding-right: 10px;
   }
 
-  .infoMachineGroup .glyphicon {
-    margin-left: 20px;
-    margin-right: 3px;
+  .infoMachineGroup .infoMachineItem {
+    margin: 0px;
+    border: 0px;
+    padding-right: 5px;
+    padding-left: 5px;
     vertical-align: middle;
+    vertical-align: middle;
+    white-space: nowrap;
+    min-width: 30px;
+    display:inline;
   }
 
-  /*.infoMachineGroup .badge {
-    background-color: #015b90;
-  }*/
 
   .infoMachineGroup .badge-warning {
     background-color: #F72F0C;
