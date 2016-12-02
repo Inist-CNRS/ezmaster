@@ -16,13 +16,13 @@
     <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" :data-original-title="'Load average\n' + infosMachine.nbCPUs + 'CPUs'">
       <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
     </div>
-    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 1 minutes">
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 1 minutes" v-bind:class="{ 'badge-warning': (infosMachine.loadAverage)[0] > infosMachine.nbCPUs }">
       <span class="badge">{{ (infosMachine.loadAverage)[0] }}</span>
     </div>
-    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 5 minutes">
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 5 minutes" v-bind:class="{ 'badge-warning': (infosMachine.loadAverage)[1] > infosMachine.nbCPUs }">
       <span class="badge">{{ (infosMachine.loadAverage)[1] }}</span>
     </div>
-    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 15 minutes">
+    <div class="infoMachineItem" data-toggle="tooltip" data-placement="bottom" data-original-title="Load average over 15 minutes" v-bind:class="{ 'badge-warning': (infosMachine.loadAverage)[2] > infosMachine.nbCPUs }">
       <span class="badge">{{ (infosMachine.loadAverage)[2] }}</span>
     </div>
     <!-- RAM -->
