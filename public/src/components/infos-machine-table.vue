@@ -23,8 +23,11 @@
     <span class="badge2-1 badge" data-toggle="tooltip" data-placement="bottom" :data-original-title="'RAM\nTotal : ' + infosMachine.totalMemory + '\nFree : ' + infosMachine.freeMemory">{{ infosMachine.useMemoryPercentage }} %</span>
 
     <!-- HDD -->
-    <div class="glyphicon glyphicon-hdd" data-toggle="tooltip" data-placement="bottom" data-original-title="HDD usage"></div>
-    <span class="badge3-1 badge" data-toggle="tooltip" data-placement="bottom" v-bind:class="{ 'badge-warning': infosMachine.fsIsAlmostFilled }" :data-original-title="'HDD\nTotal : ' + infosMachine.totalDisk + '\nFree : ' + infosMachine.freeDisk">{{ infosMachine.useDiskPercentage }} %</span>
+    <div class="glyphicon glyphicon-hdd" data-toggle="tooltip" data-placement="bottom" data-original-title="Data HDD usage"></div>
+    <span class="badge3-1 badge" data-toggle="tooltip" data-placement="bottom" v-bind:class="{ 'badge-warning': infosMachine.diskApp && infosMachine.diskApp.fsIsAlmostFilled }" :data-original-title="'HDD\nTotal : ' + (infosMachine.diskApp && infosMachine.diskApp.totalDisk) + '\nFree : ' + (infosMachine.diskApp && infosMachine.diskApp.freeDisk)">{{ infosMachine.diskApp && infosMachine.diskApp.useDiskPercentage }} %</span>
+
+    <div class="glyphicon glyphicon-hdd" data-toggle="tooltip" data-placement="bottom" data-original-title="Docker HDD usage"></div>
+    <span class="badge3-1 badge" data-toggle="tooltip" data-placement="bottom" v-bind:class="{ 'badge-warning': infosMachine.diskDocker && infosMachine.diskDocker.fsIsAlmostFilled }" :data-original-title="'HDD\nTotal : ' + (infosMachine.diskDocker && infosMachine.diskDocker.totalDisk) + '\nFree : ' + (infosMachine.diskDocker && infosMachine.diskDocker.freeDisk)">{{ infosMachine.diskDocker && infosMachine.diskDocker.useDiskPercentage }} %</span>
 
   </div>
 
