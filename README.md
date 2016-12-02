@@ -9,7 +9,7 @@
 
 Administration of docker applications without any IT skills.
 
-![ezmaster demo](/doc/anim2.gif)
+![ezmaster demo](/doc/anim3.gif)
 
 ## Requirements
 
