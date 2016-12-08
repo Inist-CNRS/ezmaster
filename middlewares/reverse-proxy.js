@@ -70,7 +70,7 @@ module.exports = function (req, res, next) {
           instances[z].current = instances[z].technicalName.split('-');
           instances[z].current[2] = instances[z].current[2] === undefined
             ? 0 : Number(instances[z].current[2]);
-          if (Number.isNaN(instances[z].current[2])) {
+          if (Number.isNaN(Number.parseInt(instances[z].current[2]))) {
             instances[z].current[2] = 0;
           }
           return z;
