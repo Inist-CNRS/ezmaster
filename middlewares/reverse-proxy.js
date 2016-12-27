@@ -20,7 +20,7 @@ module.exports = function (req, res, next) {
 
   if (req.headers['x-forwarded-for'] && !cfg.publicDomain) {
     return next(new Error('It\'s strange, EZmaster is behind a reverse proxy ' +
-                          'but EZMASTER_PUBLIC_DOMAIN is not set'));
+                          'so EZMASTER_PUBLIC_DOMAIN should be set'));
   }
 
   // totaly skip the revese proxy if EZMASTER_PUBLIC_DOMAIN is not set
