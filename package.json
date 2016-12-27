@@ -10,7 +10,7 @@
     "start-nodemon": "nodemon -V index.js",
     "watch-js": "watch 'browserify -d public/src/main.js > public/dist/bundle.js && echo \"-> bundle.js written [$(date +%T)]\"' ./public/src/",
     "watch-less": "watch 'lessc public/less/*.less > public/dist/bundle.css && echo \"-> bundle.css written [$(date +%T)]\"' ./public/less/",
-    "lint": "eslint --ext=.js,.vue ./routes/ ./middlewares/ ./test/ ./lib/ ./public/src/",
+    "lint": "eslint --ext=.js,.vue ./index.js ./routes/ ./middlewares/ ./test/ ./lib/ ./public/src/",
     "test": "mocha",
     "bower": "bower install",
     "build": "npm run build-js && npm run build-css",
