@@ -105,7 +105,7 @@ module.exports = function (req, res, next) {
       // If the asked instance has been found.
       // We create the final URL and we go to it.
       if (found !== undefined) {
-        var url = 'http://' + finalUrlLeftPart + ':' + '3000';
+        var url = 'http://' + finalUrlLeftPart + ':' + instances[found].httpPort;
         proxy.web(req, res, { target: url });
         proxy.on('error', function(e) {
           console.error('reverseproxy#1.1.2', e);
