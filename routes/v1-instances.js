@@ -166,7 +166,7 @@ router
 
 
 /**
- * Check whether there is a manifest for the passed technicalName
+ * Check whether one instance exists or not from its passed technicalName
  * Returns OK when the manifest does not yet exist
  * Returns KO when the manifest already exist
  */
@@ -174,13 +174,13 @@ router
 .route('/verif/:technicalName')
 .get(bodyParser(), function (req, res, next) {
 
-  if (fileExists(cfg.dataManifestsPath + '/' + req.params.technicalName + '.json')
-    == false) {
-    res.status(200).send('OK');
-  }
-  else {
-    res.status(200).send('KO');
-  }
+  instances.getInstances(function (err, instances) {
+    if (err) return res.status(500).send(new Error(err));
+
+    return res.status(200).send(
+      Object.keys(instances).indexOf(req.params.technicalName) !== -1 ? 'KO' : 'OK'
+    );
+  });
 
 });
 
