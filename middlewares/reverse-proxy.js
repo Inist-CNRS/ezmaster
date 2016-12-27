@@ -35,28 +35,25 @@ module.exports = function (req, res, next) {
     if (err) { return new Error(err); }
 
     var host         = req.headers['host'];
-    var reqServer    = req.headers['x-forwarded-server'];
     var reqHost      = req.headers['x-forwarded-host'];
     var reqSubdomain = reqHost ? reqHost.split('.') : false;
 
     // Two way to activate the RP:
     // with an explicit "Host" header
-    // with the special X-Forwarded-* headers
+    // with the special X-Forwarded-Host headers
     // Makes the reverse proxy able to manage the HOST header.
     var isRpEnabled = {};
     isRpEnabled.byHost =
       cfg.publicDomain ?
       (host.slice(-cfg.publicDomain.length) === cfg.publicDomain) :
       false;
-    isRpEnabled.byXForwarded = reqSubdomain && (reqServer === cfg.publicDomain);
+    isRpEnabled.byXForwarded =
+      reqSubdomain && (reqHost.slice(-cfg.publicDomain.length) === cfg.publicDomain);
 
     // If Host header is used, we have to redefine reqSubdomain, reqHost and reqServer.
     if (isRpEnabled.byHost) {
-
       reqSubdomain = host.split('.');
       reqHost      = host;
-      reqServer    = host.split('.')[1] + '.' + host.split('.')[2] + '.' + host.split('.')[3];
-
     }
 
     // If isRpEnabled.
@@ -114,7 +111,7 @@ module.exports = function (req, res, next) {
         return;
       }
       // Else if the asked instance has not been found.
-      res.render('404', { title: 'No any app found :( !', path: '/', userName: req.user });
+      res.status(404).send('Instance not found');
     }
     // If not isRpEnabled.
     else {

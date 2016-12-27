@@ -7,6 +7,7 @@
 
 var cfg   = require('./lib/config.js');
 var kuler = require('kuler');
+var debug = require('debug')('ezmaster');
 
 var express = require('express');
 var app    = express();
