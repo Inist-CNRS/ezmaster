@@ -13,6 +13,7 @@ var express = require('express');
 var app    = express();
 var server = require('http').Server(app);
 var io     = require('socket.io')(server);
+var docker = require('./lib/docker.js');
 
 // load routes and middleware
 app.use(require('./middlewares/reverse-proxy.js'));
@@ -41,6 +42,11 @@ server.listen(cfg.EZMASTER_PORT, function () {
     console.info('EzMaster reverse proxy: ' +
                  kuler('http://*.' + cfg.publicDomain + '/', 'limegreen'));
   }
+  // initialize important docker stuff
+  // (without ezmaster_network instances cannot be created)
+  docker.createEzmasterNetwork(function () {
+    debug('EzMaster initialized ezmaster_network');
+  });
 });
 
 // periodical background task

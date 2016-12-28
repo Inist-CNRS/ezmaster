@@ -430,7 +430,7 @@ router
           + '-e EZMASTER_APPLICATION="' + image + '" '
           + '-e DEBUG '
           + '-e EZMASTER_PUBLIC_URL="' + publicUrl + '" '
-          + '--net=ezmaster_default --link ezmaster_db '
+          + '--net=ezmaster_network --link ezmaster_db '
           + '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
           + technicalName + '/config/config.json:' + appConfig.configPath + ' '
           + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
