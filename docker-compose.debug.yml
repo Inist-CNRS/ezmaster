@@ -34,6 +34,8 @@ services:
     depends_on:
       - ezmaster_db
     command: npm run start-debug
+    networks:
+      - eznetwork
 
   ezmaster_db:
     container_name: ezmaster_db
@@ -41,4 +43,9 @@ services:
     ports:
       - 27017:27017
     command: --smallfiles
+    networks:
+      - eznetwork
 
+networks:
+  eznetwork:
+    driver: bridge
