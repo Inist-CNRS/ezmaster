@@ -48,7 +48,7 @@ services:
   # about ezmaster apps and instances
   ezmaster_db:
     container_name: ezmaster_db
-    image: mongo:3.0.7
+    image: mongo:3.4.1
     command: --smallfiles
     # Restarts mongodb if the host server reboot
     restart: unless-stopped
