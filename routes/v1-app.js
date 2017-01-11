@@ -119,7 +119,7 @@ router.route('/').post(bodyParser(), function (req, res, next) {
 
       //If the ocntainer is not found, it's mean the pull has been stop
       //During the onImagePullProgress function, because there is not enough space on the disk
-      if (err) { return res.status(500).send('Not enough space on the disk'); }
+      if (err) { return res.status(500).send('Not enough space on the disk - ' + err); }
 
       var imageName = {
         'imageName' : imageToPull,
