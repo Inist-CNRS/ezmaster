@@ -31,24 +31,6 @@ var cfg = require('../lib/config.js')
 jsonfile.spaces = 2;
 
 
-function checkContainer(containerId, cb) {
-  var container = docker.getContainer(containerId);
-  container.inspect(function (err, data) {
-    if (err) {
-      return cb(err);
-    }
-    instances.getInstancesManifests(function(err, manifests) {
-      var manifest = manifests[data.Name.slice(1)];
-
-      if (manifest === undefined) {
-        return cb(new Error('No manifest for the given container ID (' + data.Name.slice(1) + ')'));
-      }
-
-      cb(null, container, data, manifest);
-    });
-  });
-}
-
 var express = require('express');
 var router = express.Router();
 
@@ -71,7 +53,7 @@ router.route('/')
 router.route('/start/:containerId')
 .put(bodyParser(), function (req, res, next) {
 
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -98,7 +80,7 @@ router
 .route('/stop/:containerId')
 .put(bodyParser(), function (req, res, next) {
 
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -133,7 +115,7 @@ router
 router
 .route('/config/:containerId')
 .put(bodyParser(), function (req, res, next) {
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -190,7 +172,7 @@ router
 .route('/:containerId')
 .get(bodyParser(), function (req, res, next) {
 
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -232,7 +214,7 @@ router
 router
 .route('/:containerId')
 .delete(function (req, res, next) {
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) {
       return next(err);
@@ -486,10 +468,10 @@ router
  * Route to upload a file directly from the html upload form.
  */
 router
-.route('/:instanceId/data/')
+.route('/:containerId/data/')
 .post(bodyParser(), function (req, res, next) {
 
-  checkContainer(req.params.instanceId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -538,10 +520,10 @@ router
 
 
 router
-.route('/:instanceId/data/:filename')
+.route('/:containerId/data/:filename')
 .get(function (req, res, next) {
 
-  checkContainer(req.params.instanceId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
 
@@ -566,10 +548,10 @@ router
  * Route to get information on the data files from a specific instance.
  */
 router
-.route('/:instanceId/data')
+.route('/:containerId/data')
 .get(function (req, res, next) {
 
-  checkContainer(req.params.instanceId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
 
     if (err) { return next(err); }
@@ -639,7 +621,7 @@ router
 .route('/:containerId/:fileName')
 .delete(function (req, res, next) {
 
-  checkContainer(req.params.containerId, function(err, container, data, manifest) {
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) {
       return next(err);
@@ -662,25 +644,30 @@ router
 });
 
 
-router.route('/:instanceId/logs').get((req, res, next) => {
-  const container = docker.getContainer(req.params.instanceId);
-  const lineNb = req.query.tail || 1000;
-  container.logs({ stdout: true, tail: lineNb }, (err, stream) => {
-    debug('logs', req.params.instanceId, err);
+router
+.route('/:containerId/logs')
+.get(function (req, res, next) {
+
+  instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
+
     if (err) {
-      return res.status(err.statusCode).send(err.reason).end();
+      return next(err);
     }
-    stream.on('data', (chunk) => {
-      debug('chunk', chunk.toString());
-      res.write(stripAnsi(chunk.toString()));
-    });
-    stream.on('end', () => {
-      debug('end');
-      res.end();
+
+    const lineNb = req.query.tail || 1000;
+    container.logs({ stdout: true, tail: lineNb }, (err, stream) => {
+      if (err) {
+        return res.status(err.statusCode).send(err.reason).end();
+      }
+      stream.on('data', (chunk) => {
+        res.write(stripAnsi(chunk.toString()));
+      });
+      stream.on('end', () => {
+        res.end();
+      });
     });
   });
 });
-
 
 
 module.exports = router;
