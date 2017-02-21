@@ -76,6 +76,9 @@
                     </tbody>
                 </table>
               </div>
+			  <div>
+			  <i class="fa fa-info-circle" aria-hidden="true"></i> You can also use <a :href="'dav://' + hostname  + '/dav:' + instance.technicalName ">Webdav URL</a>
+			  </div>
             </div>
           </div>
         </div>
@@ -102,7 +105,8 @@
         freeSpace: 0,
         formFiles: [],
         files: [],
-        instance: null
+        instance: { technicalName: null },
+        hostname: window.location.host
       };
     },
     filters: {
