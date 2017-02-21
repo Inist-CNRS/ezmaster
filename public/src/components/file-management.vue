@@ -76,11 +76,11 @@
                     </tbody>
                 </table>
               </div>
-			  <div>
-			  <i class="fa fa-info-circle" aria-hidden="true"></i> You can also use <a :href="'dav://' + hostname  + '/dav:' + instance.technicalName ">Webdav URL</a>
-			  </div>
             </div>
           </div>
+		  <div>
+			  <i class="fa fa-info-circle" aria-hidden="true"></i> You can also try to use <a :href="'dav://' + hostname  + '/wd--' + instance.technicalName ">Webdav URL</a>
+		  </div>
         </div>
 
         <div class="modal-footer">

@@ -28,8 +28,8 @@ app.use('/-/v1/instances', require('./routes/v1-instances.js'));
 
 app.use(function (req, res, next) {
 
-  if (req.url.search(/^\/dav:/) >= 0) {
-    var instanceId = req.url.match('dav:([^/]+)')[1];
+  if (req.url.search(/^\/wd--/) >= 0) {
+    var instanceId = req.url.match('wd--([^/]+)')[1];
 
     instances.checkInstance(instanceId, function(err, container, data, manifest) {
 
@@ -39,7 +39,7 @@ app.use(function (req, res, next) {
       debug('url', req.url);
       DAV.mount({
         node: cfg.dataInstancesPath + '/' + splittedName[1] + '/data',
-        mount: '/dav:' + instanceId,
+        mount: '/wd--' + instanceId,
         server: req.app,
         standalone: false
       }).exec(req, res);
@@ -59,7 +59,7 @@ app.use(function (req, res, next) {
 
 
 // load socket.io connections
-// TODO: gérer le multi-utilisateur car la on ne communique qu'au dernier client
+// penser à gérer le multi-utilisateur car la on ne communique qu'au dernier client
 io.on('connection', function (socket) {
   cfg.socket = socket;
 });
