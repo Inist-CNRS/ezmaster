@@ -62,7 +62,7 @@ module.exports = function (req, res, next) {
       var search = reqSubdomain[0].split('-');
 
       // Search the instance the user asked for.
-      var found = Object.keys(instances)
+      var technicalNameFound = Object.keys(instances)
         .map(function (z) {
           instances[z].current = instances[z].technicalName.split('-');
           instances[z].current[2] = instances[z].current[2] === undefined
@@ -92,17 +92,10 @@ module.exports = function (req, res, next) {
           return;
         }, undefined);
 
-      // We feed the variable used to create the final URL.
-      // This variable takes a different value if the Host header is used.
-      var finalUrlLeftPart = found;
-      if (isRpEnabled.byHost) {
-        finalUrlLeftPart = host.split('.')[0];
-      }
-
       // If the asked instance has been found.
       // We create the final URL and we go to it.
-      if (found !== undefined) {
-        var url = 'http://' + finalUrlLeftPart + ':' + instances[found].httpPort;
+      if (technicalNameFound !== undefined) {
+        var url = 'http://' + technicalNameFound + ':' + instances[technicalNameFound].httpPort;
         proxy.web(req, res, { target: url });
         proxy.on('error', function(e) {
           console.error('reverseproxy#1.1.2', e);
