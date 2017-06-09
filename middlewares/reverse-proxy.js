@@ -63,6 +63,9 @@ module.exports = function (req, res, next) {
 
       // Search the instance the user asked for.
       var technicalNameFound = Object.keys(instances)
+        .filter(function (z) {
+          return instances[z].running;
+        })
         .map(function (z) {
           instances[z].current = instances[z].technicalName.split('-');
           instances[z].current[2] = instances[z].current[2] === undefined
@@ -73,7 +76,7 @@ module.exports = function (req, res, next) {
           return z;
         })
         .sort(function (a, b) {
-          return instances[a].current[2] < instances[b].current[2];
+          return instances[b].current[2] - instances[a].current[2];
         })
         .filter(function (x) {
           return instances[x].current[0] === search[0] && instances[x].current[1] === search[1];
