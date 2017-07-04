@@ -406,6 +406,9 @@ router
           // prepare the command line to create and run the instance
           var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.httpPort+ ' '
           + '-e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT '
+          // Restart the instance unless it is explicitly stopped by ezmaster
+          // https://docs.docker.com/engine/admin/start-containers-automatically/
+          + (process.env.NODE_ENV === 'production' ? '--restart unless-stopped ' : '')
           + '-e EZMASTER_TECHNICAL_NAME="' + technicalName + '" '
           // eslint-disable-next-line quotes
           + '-e EZMASTER_LONG_NAME="' + longName.replace('"', "\\\"") + '" '
