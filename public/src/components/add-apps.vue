@@ -85,7 +85,6 @@
             </div>
             <div id="errorLoaderImages" class="loader">
               <span class="text-danger" id="errorLoaderAddImage">An error {{ codeErrorPull }} was received : {{ messageErrorPull }}.</span><br />
-              <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
           </div>
 
@@ -179,6 +178,7 @@ export default {
 
       self.isAdding = true;
       document.getElementById('loaderImage').style.display = 'block';
+      document.getElementById('errorLoaderImages').style.display = 'none';
 
       var formdata = {
         imageName: this.imageName,
@@ -194,8 +194,10 @@ export default {
           $('#modal-add-image').modal('hide');
           self.$emit('refreshApplicationsList');
         }
+        self.isAdding = false;
+        document.getElementById('loaderImage').style.display = 'none';
       }, function (error) {
-        self.isAdding = true;
+        self.isAdding = false;
         if (error) {
           this.codeErrorPull = error.status;
           this.messageErrorPull = error.data;
