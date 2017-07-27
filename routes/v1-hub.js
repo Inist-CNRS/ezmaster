@@ -22,6 +22,9 @@ router.route('/*').get(function (req, res, next) {
 
   request.get({
     url : url.format(originalUrl),
+  }).on('error', function (err) {
+    debug('Error when contacting ' + originalUrl.host + ' - ' + err);
+    return res.status(500).send(err);
   }).pipe(res);
 
 });
