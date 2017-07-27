@@ -176,9 +176,8 @@ You finally should have something like this:
 ### How to save the data and config of the instances ?
 
 If you want to save the config and the data of your instances:
-- you have to save the `applications`, `manifests` and `instances` files.
-- you also have to save the mongodb database on the address : `mongodb://ezmaster_db:27017`
-
+- you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
+- you also have to save the mongodb database contained in the ezmaster_db docker container: `docker exec -it ezmaster_db mongodump --quiet --archive=- > ezmaster_db_archive`
 
 
 ## Diagrams
