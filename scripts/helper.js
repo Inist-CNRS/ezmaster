@@ -42,7 +42,8 @@ module.exports.getLatestInstanceVersion = function (TECHNICAL_NAME, cb) {
           }
         }
       });
-      return cb && cb(null, Math.max(...versions));
+      const maxVersion = versions.length > 0 ? Math.max(...versions) : 0;
+      return cb && cb(null, maxVersion);
     });
 }
 
@@ -96,12 +97,12 @@ module.exports.downloadAndCreateLatestApplicationVersion = function (IMAGE_BASEN
                   IMAGE_LATEST_TAG,
                   function (err) {
                     if (err) return cb && cb(err);
-                    return cb && cb(null, 1);
+                    return cb && cb(null, IMAGE_NAME);
                   }
                 );
               } else {
                 console.log('ezmaster app already exists => ', IMAGE_NAME)
-                return cb && cb(null, 0);
+                return cb && cb(null, '');
               }
             });
 
