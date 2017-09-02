@@ -13,12 +13,14 @@ const TECHNICAL_NAME = process.env.TECHNICAL_NAME ? process.env.TECHNICAL_NAME :
 helper.downloadAndCreateLatestApplicationVersion(IMAGE_BASENAME, function (err, IMAGE_NAME) {
   if (!IMAGE_NAME) return;
   helper.getLatestInstanceVersion(TECHNICAL_NAME, function (err, version) {
-    helper.createNewInstance(
-      'Version ' + IMAGE_NAME,
-      TECHNICAL_NAME + '-' + (version+1),
-      IMAGE_NAME, function (err) {
-        console.log('Finished');
-      }
-    );
+    helper.getVersionComment(IMAGE_BASENAME, IMAGE_NAME.split(':')[1], function (err, versionComment) {
+      helper.createNewInstance(
+        versionComment ? versionComment : 'Version ' + IMAGE_NAME,
+        TECHNICAL_NAME + '-' + (version+1),
+        IMAGE_NAME, function (err) {
+          console.log('Finished');
+        }
+      );      
+    });
   });
 });
