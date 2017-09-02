@@ -152,46 +152,31 @@ module.exports.getInstanceFromTechnicalName = function (TECHNICAL_NAME, cb) {
       });
     }
   );
-
-  console.log('ezmaster app creating => ', imageBaseName + ':' + imageTag);
-  request.put('http://127.0.0.1:35267/-/v1/instances/config/7bb3a44ee4e6e43a59d52dc0f9501258818341dda59a9162f861f5fe52a06d07', { 
-      timeout: 120 * 1000, // 2 minutes
-      form: {
-        imageName: imageBaseName,
-        versionImage: imageTag,
-        imageHub:"",
-        username:"",
-        password:"",
-        email:""
-      }
-    }).on('end', function () {
-      console.log('ezmaster app created => ', imageBaseName + ':' + imageTag);
-      return cb && cb(null);
-    }).on('error', function (err) {
-      console.error('error', err);
-      return cb && cb(err);
-    });
 }
 
 module.exports.updateInstanceConfig = function (TECHNICAL_NAME, config, cb) {
-  // console.log('ezmaster updating instance config => ', TECHNICAL_NAME);
-  // request.put('http://127.0.0.1:35267/-/v1/instances/config/7bb3a44ee4e6e43a59d52dc0f9501258818341dda59a9162f861f5fe52a06d07', { 
-  //     timeout: 120 * 1000, // 2 minutes
-  //     form: {
-  //       imageName: imageBaseName,
-  //       versionImage: imageTag,
-  //       imageHub:"",
-  //       username:"",
-  //       password:"",
-  //       email:""
-  //     }
-  //   }).on('end', function () {
-  //     console.log('ezmaster app created => ', imageBaseName + ':' + imageTag);
-  //     return cb && cb(null);
-  //   }).on('error', function (err) {
-  //     console.error('error', err);
-  //     return cb && cb(err);
-  //   });
+  console.log('ezmaster updating instance config => ', TECHNICAL_NAME);
+  module.exports.getInstanceFromTechnicalName(TECHNICAL_NAME, function (err, instance) {
+    request.put('http://127.0.0.1:35267/-/v1/instances/config/' + instance.containerId, { 
+        timeout: 120 * 1000, // 2 minutes
+        json: { newConfig: config }
+      }).on('end', function () {
+        console.log('ezmaster instance config updated => ', TECHNICAL_NAME);
+        return cb && cb(null);
+      }).on('error', function (err) {
+        console.error('error', err);
+        return cb && cb(err);
+      });
+  });
+}
+
+module.exports.getInstanceDetailsFromTechnicalName = function (TECHNICAL_NAME, cb) {
+  module.exports.getInstanceFromTechnicalName(TECHNICAL_NAME, function (err, instance) {
+    request.get('http://127.0.0.1:35267/-/v1/instances/' + instance.containerId, function(err, response, details) {
+      details = JSON.parse(details);
+      return cb && cb(err, details);
+    });
+  });
 }
 
 

@@ -7,20 +7,34 @@
 
 var helper = require('./helper.js');
 
-const IMAGE_BASENAME = process.env.IMAGE_BASENAME ? process.env.IMAGE_BASENAME : "istex/istex-dl";
-const TECHNICAL_NAME = process.env.TECHNICAL_NAME ? process.env.TECHNICAL_NAME : "istex-dl";
+const IMAGE_BASENAME       = process.env.IMAGE_BASENAME ? process.env.IMAGE_BASENAME : "istex/istex-dl";
+const TECHNICAL_NAME       = process.env.TECHNICAL_NAME ? process.env.TECHNICAL_NAME : "istex-dl";
+const CONFIG_FROM_INSTANCE = process.env.CONFIG_FROM_INSTANCE ? process.env.CONFIG_FROM_INSTANCE    : "";
 
 helper.downloadAndCreateLatestApplicationVersion(IMAGE_BASENAME, function (err, IMAGE_NAME) {
   if (!IMAGE_NAME) return;
   helper.getLatestInstanceVersion(TECHNICAL_NAME, function (err, version) {
     helper.getVersionComment(IMAGE_BASENAME, IMAGE_NAME.split(':')[1], function (err, versionComment) {
+      const NEW_INSTANCE = TECHNICAL_NAME + '-' + (version+1);
       helper.createNewInstance(
         versionComment ? versionComment : 'Version ' + IMAGE_NAME,
-        TECHNICAL_NAME + '-' + (version+1),
+        NEW_INSTANCE,
         IMAGE_NAME, function (err) {
-          console.log('Finished');
+          // initialize config if necessary
+          if (CONFIG_FROM_INSTANCE) {
+            helper.getInstanceDetailsFromTechnicalName(CONFIG_FROM_INSTANCE, function (err, instanceDetails) {
+              helper.updateInstanceConfig(NEW_INSTANCE, instanceDetails.config, function (err) {
+                console.log('Finished');
+              });
+            });
+          } else {
+            console.log('Finished');
+          }
         }
-      );      
+      );
     });
   });
 });
+
+//helper.updateInstanceConfig("istex-dl-2", { lol: "stuff" });
+//helper.getInstanceDetailsFromTechnicalName("istex-dl-2", console.log);
