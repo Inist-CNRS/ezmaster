@@ -415,7 +415,7 @@ router
           + '-e EZMASTER_APPLICATION="' + image + '" '
           + '-e DEBUG '
           + '-e EZMASTER_PUBLIC_URL="' + publicUrl + '" '
-          + '--net=ezmaster_eznetwork --link ezmaster_db '
+          + '--net=ezmaster_eznetwork --link ezmaster_db --link ezmaster '
           + '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
           + technicalName + '/config/config.json:' + appConfig.configPath + ' '
           + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
