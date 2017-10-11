@@ -98,9 +98,11 @@ EXPOSE 3000
 # It will tell to ezmaster where is your web server (ex: port 3000),
 # where is your JSON configuration file,
 # and where is your data folder
+# "configType" value can be "json" or "text" depending on your config format
 RUN echo '{ \
   "httpPort": 3000, \
   "configPath": "/yourapp/config.json", \
+  "configType": "json", \
   "dataPath": "/yourapp/data/" \
 }' > /etc/ezmaster.json
 
