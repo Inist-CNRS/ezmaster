@@ -5,7 +5,7 @@ services:
 
   ezmaster:
     container_name: ezmaster
-    image: inistcnrs/ezmaster:3.7.4
+    image: inistcnrs/ezmaster:3.8.0
     links:
       - ezmaster_db
     volumes:
