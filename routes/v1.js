@@ -5,9 +5,7 @@
 var path = require('path')
   , basename = path.basename(__filename, '.js')
   , debug = require('debug')('ezmaster:' + basename)
-  , jsonfile = require('jsonfile')
   , udisk = require('../lib/diskusage.js');
-jsonfile.spaces = 2;
 
 
 var express = require('express');

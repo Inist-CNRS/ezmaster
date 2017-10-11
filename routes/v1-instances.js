@@ -12,7 +12,6 @@ var cfg = require('../lib/config.js')
   , filesize = require('filesize')
   , docker = require('../lib/docker.js').docker
   , exec = require('child_process').exec
-  , jsonfile = require('jsonfile')
   , mkdirp = require('mkdirp')
   , rimraf = require('rimraf')
   , fileExists = require('file-exists')
@@ -28,7 +27,6 @@ var cfg = require('../lib/config.js')
   , udisk = require('../lib/diskusage.js')
   , stripAnsi = require('strip-ansi')
   ;
-jsonfile.spaces = 2;
 
 
 var express = require('express');
@@ -110,7 +108,7 @@ router
 
 
 /**
- * Update a config.json of a specific instance
+ * Update a config.raw of a specific instance
  */
 router
 .route('/config/:containerId')
@@ -121,9 +119,14 @@ router
 
     var splittedName = data.Name.split('/');
 
-    jsonfile.writeFile(
-      cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.json',
-      req.body.newConfig, function (err) {
+    var newConfig = typeof req.body.newConfig === 'object' ?
+      JSON.stringify(req.body.newConfig, null, 2) :
+      req.body.newConfig;
+    debug('Update config for', splittedName[1], newConfig);
+
+    fs.writeFile(
+      cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.raw',
+      newConfig, function (err) {
 
         if (err) { return next(err); }
 
@@ -190,13 +193,13 @@ router
       result.size = filesize(size);
 
       // Get Configuration Information.
-      jsonfile.readFile(
-        cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.json',
+      fs.readFile(
+        cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.raw',
         function (err, obj) {
 
           if (err) { return next(err); }
 
-          result.config = obj;
+          result.config = '' + obj;
 
           return res.status(200).send(result);
 
@@ -329,8 +332,7 @@ router
 
   function createConfigFile(err) {
     if (err) { return next(err); }
-
-    fs.appendFile(cfg.dataInstancesPath + '/' + technicalName + '/config/config.json',
+    fs.appendFile(cfg.dataInstancesPath + '/' + technicalName + '/config/config.raw',
       '{}',
       readInstances
     );
@@ -417,7 +419,7 @@ router
           + '-e EZMASTER_PUBLIC_URL="' + publicUrl + '" '
           + '--net=ezmaster_eznetwork --link ezmaster_db --link ezmaster '
           + '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
-          + technicalName + '/config/config.json:' + appConfig.configPath + ' '
+          + technicalName + '/config/config.raw:' + appConfig.configPath + ' '
           + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
             + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
           + '--name ' + technicalName + ' ' + image;
@@ -426,8 +428,8 @@ router
           exec(cmd, function (err, stdout, stderr) { refreshAndReturn(err, appConfig); });
 
           // creates the instance manifest
-          jsonfile.writeFile(cfg.dataManifestsPath + '/' + technicalName + '.json',
-            appConfig,
+          fs.writeFile(cfg.dataManifestsPath + '/' + technicalName + '.json',
+            JSON.stringify(appConfig, null, 2),
             function (err) {
               if (err) { return next(err); }
             }

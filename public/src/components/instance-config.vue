@@ -49,20 +49,28 @@
       };
     },
     mounted () {
-      $(this.$refs.modal).on('show.bs.modal', e => {
-        this.refreshConfig();
-      });
-
       eventHub.$on('openConfig', instance => {
         this.instance = instance;
+        this.instance.jsonEditorMode =
+          (!this.instance.configType || this.instance.configType === 'json')
+          ? 'code'
+          : 'text';
+        editor.setMode(this.instance.jsonEditorMode);
+        this.refreshConfig(this.instance.jsonEditorMode);
         this.show();
       });
 
+      // https://github.com/josdejong/jsoneditor/blob/master/docs/api.md
       editor = new JSONEditor(this.$refs.jsoneditor, {
-        mode: 'code',
+        mode: 'code', // code or text but will be updated by this.instance.jsonEditorMode
         onChange: () => {
           try {
-            editor.get();
+            if (this.instance.jsonEditorMode === 'text') {
+              editor.getText();
+            }
+            else {
+              editor.get();
+            }
             this.jsonError = null;
           }
           catch (e) {
@@ -87,17 +95,16 @@
       refreshConfig () {
         this.refreshing = true;
         editor.set('loading configuration...');
-
         this.$http.get(`/-/v1/instances/${this.instance.containerId}`).then(result => {
           this.refreshing = false;
-          editor.set(result.data.config);
+          editor.setText(result.data.config);
         }).catch(e => {
           this.refreshing = false;
         });
       },
 
       updateConfig () {
-        const newConfig = editor.get();
+        const newConfig = this.instance.jsonEditorMode === 'code' ? editor.get() : editor.getText();
         const data = {
           newConfig: newConfig,
           newTitle: newConfig.title

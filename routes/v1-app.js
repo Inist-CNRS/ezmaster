@@ -8,12 +8,11 @@ var cfg = require('../lib/config.js')
   , debug = require('debug')('ezmaster:' + basename)
   , bodyParser = require('body-parser')
   , docker = require('../lib/docker.js').docker
-  , jsonfile = require('jsonfile')
+  , fs = require('fs')
   , rimraf = require('rimraf')
   , app = require('../lib/app.js')
   , moment = require('moment')
   , udisk = require('../lib/diskusage.js');
-jsonfile.spaces = 2;
 
 
 var express = require('express');
@@ -129,8 +128,8 @@ router.route('/').post(bodyParser(), function (req, res, next) {
 
       var nameManifest = new Buffer(imageToPull).toString('base64');
 
-      jsonfile.writeFile(cfg.dataApplicationsPath + '/' + nameManifest + '.json'
-      , imageName, function (err) {
+      fs.writeFile(cfg.dataApplicationsPath + '/' + nameManifest + '.json'
+      , JSON.stringify(imageName, null, 2), function (err) {
         if (err) {
           return res.status(500).send('' + err);
         }
