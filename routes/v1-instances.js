@@ -170,7 +170,9 @@ router
 });
 
 
-
+/**
+ * Retrieve the config of the given instance
+ */
 router
 .route('/:containerId')
 .get(bodyParser(), function (req, res, next) {
@@ -193,18 +195,17 @@ router
       result.size = filesize(size);
 
       // Get Configuration Information.
-      fs.readFile(
-        cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.raw',
-        function (err, obj) {
-
-          if (err) { return next(err); }
-
-          result.config = '' + obj;
-
-          return res.status(200).send(result);
-
+      var configRawPath = cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.raw';
+      fs.stat(configRawPath, function (err, stat) {
+        if (err) {
+          configRawPath = cfg.dataInstancesPath + '/' + splittedName[1] + '/config/config.json';
         }
-      );
+        fs.readFile(configRawPath, function (err, obj) {
+          if (err) { return next(err); }
+          result.config = '' + obj;
+          return res.status(200).send(result);
+        });
+      });
 
     });
 
