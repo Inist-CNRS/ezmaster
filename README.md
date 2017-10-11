@@ -193,3 +193,8 @@ If you want to save the config and the data of your instances:
 ![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
 
 
+## Changelog
+
+### ezmaster 3.8.0
+
+- ezmaster is able to support `text` or `json` configuration for instances (see configPath and configType)
