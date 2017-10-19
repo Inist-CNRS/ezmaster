@@ -45,7 +45,7 @@
               <li :title="'Edit settings of ' + item.technicalName"><span class="glyphicon glyphicon-cog text-primary action" v-on:click="displayConfig(item)"></span></li>
               <li v-show="item.dataPath" :title="'Upload data to ' + item.technicalName"><span class="glyphicon glyphicon-download-alt text-primary action" v-on:click="displayFiles(item)"></span></li>
               <li v-show="item.running" :title="'Open ' + item.technicalName"><a :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running"><span class="glyphicon glyphicon-link"></span></a></li>
-              <li v-show="publicDomain != '' && item.running" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>
+              <li v-show="publicDomain != '' && item.running" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target && item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>              
               <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="_blank" :title="'See the logs of ' + item.technicalName"><span class="glyphicon glyphicon-file"></span></a></li>
             </ul>
           </td>
