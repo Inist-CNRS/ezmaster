@@ -3,6 +3,10 @@ version: '2'
 
 services:
 
+
+
+
+
   # ezmaster:
   #   container_name: ezmaster
   #   image: inistcnrs/ezmaster:3.8.2
@@ -91,6 +95,22 @@ services:
     ports:
       - 35268:35268
     command: npm run start
+    networks:
+      - eznetwork
+
+
+  ezmaster-rp:
+    container_name: ezmaster-rp
+    image: inistcnrs/ezmaster-rp:3.8.2
+    build:
+      context: ./ezmaster-rp
+      args:
+        - http_proxy
+        - https_proxy
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
+    ports:
+      - 35267:80
     networks:
       - eznetwork
 
