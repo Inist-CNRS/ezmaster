@@ -46,7 +46,7 @@
               <li v-show="item.dataPath" :title="'Upload data to ' + item.technicalName"><span class="glyphicon glyphicon-download-alt text-primary action" v-on:click="displayFiles(item)"></span></li>
               <li v-show="item.running" :title="'Open ' + item.technicalName"><a :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running"><span class="glyphicon glyphicon-link"></span></a></li>
               <li v-show="publicDomain != '' && item.running" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target && item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>              
-              <li><a :href="'/-/v1/instances/' + item.technicalName + '/logs'" target="_blank" :title="'See the logs of ' + item.technicalName"><span class="glyphicon glyphicon-file"></span></a></li>
+              <li><a :href="'http://localhost:35269/-/v1/instances/' + item.technicalName + '/logs'" target="_blank" :title="'See the logs of ' + item.technicalName"><span class="glyphicon glyphicon-file"></span></a></li>
             </ul>
           </td>
         </tr>
@@ -96,7 +96,7 @@
     mounted () {
       this.refreshInstanceList();
 
-      this.$http.get('/-/v1/config').then(result => {
+      this.$http.get('http://localhost:35269/-/v1/config').then(result => {
         var config = result.data;
         this.publicDomain = config.publicDomain;
       }, console.error);
@@ -115,9 +115,9 @@
       refreshInstanceList () {
         this.refreshing = true;
 
-        // Call the route /-/v1/instances with a get wich get the instances list.
+        // Call the route http://localhost:35269/-/v1/instances with a get wich get the instances list.
         // Store the instances list into the variable containers used into the HTML with v-for.
-        this.$http.get('/-/v1/instances').then(result => {
+        this.$http.get('http://localhost:35269/-/v1/instances').then(result => {
           this.containers = result.data;
           this.refreshing = false;
         }).catch(e => {
@@ -130,12 +130,12 @@
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
         // button start > li > ul > td > tr > id="{{ item.description.Id }}"
-        this.$http.put(`/-/v1/instances/start/${instanceId}`).then(function (result) {
+        this.$http.put(`http://localhost:35269/-/v1/instances/start/${instanceId}`).then(function (result) {
         }, console.error);
       },
 
       stopInstance (instanceId) {
-        this.$http.put(`/-/v1/instances/stop/${instanceId}`).then(function (result) {
+        this.$http.put(`http://localhost:35269/-/v1/instances/stop/${instanceId}`).then(function (result) {
         }, console.error);
       },
 

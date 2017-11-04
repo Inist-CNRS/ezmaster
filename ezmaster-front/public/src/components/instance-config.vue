@@ -95,7 +95,7 @@
       refreshConfig () {
         this.refreshing = true;
         editor.set('loading configuration...');
-        this.$http.get(`/-/v1/instances/${this.instance.containerId}`).then(result => {
+        this.$http.get(`http://localhost:35269/-/v1/instances/${this.instance.containerId}`).then(result => {
           this.refreshing = false;
           editor.setText(result.data.config);
         }).catch(e => {
@@ -112,7 +112,7 @@
 
         this.updating = true;
 
-        this.$http.put(`/-/v1/instances/config/${this.instance.containerId}`, data).then(result => {
+        this.$http.put(`http://localhost:35269/-/v1/instances/config/${this.instance.containerId}`, data).then(result => {
           this.updating = false;
           this.hide();
         });

@@ -57,7 +57,7 @@
       fetchSize () {
         this.fetching = true;
 
-        this.$http.get(`/-/v1/instances/${this.instance.containerId}`).then(result => {
+        this.$http.get(`http://localhost:35269/-/v1/instances/${this.instance.containerId}`).then(result => {
           this.instanceSize = result.data.size;
 
           this.fetching = false;
@@ -70,7 +70,7 @@
       deleteInstance () {
         this.deleting = true;
 
-        this.$http.delete(`/-/v1/instances/${this.instance.containerId}`).then(result => {
+        this.$http.delete(`http://localhost:35269/-/v1/instances/${this.instance.containerId}`).then(result => {
           this.deleting = false;
           this.hide();
           this.$emit('instance-deleted', this.instance.technicalName);

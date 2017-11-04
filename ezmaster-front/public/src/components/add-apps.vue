@@ -109,7 +109,7 @@ export default {
       self.statusPull = infoPull;
     });
 
-    self.$http.get('/-/v1/config').then(function (result) {
+    self.$http.get('http://localhost:35269/-/v1/config').then(function (result) {
       var config = result.data;
       self.fullFsPercent = config.fullFsPercent;
     }, console.error);
@@ -134,7 +134,7 @@ export default {
       }
       self.isSearchingImages = true;
       self.applicationImages = [];
-      const url = `/-/v1/hub/search/repositories/?query=${self.imageName}&page=1&page_size=5`;
+      const url = `http://localhost:35269/-/v1/hub/search/repositories/?query=${self.imageName}&page=1&page_size=5`;
       self.applicationImages = [];
       self.$http.get(url).then((response) => {
         if (response.body && response.body.results && Array.isArray(response.body.results)) {
@@ -155,7 +155,7 @@ export default {
       self.isSearchingTags = true;
       self.applicationTags = [];
       if (self.imageName.search(/\w\/\w/) >= 0) {
-        const url = '/-/v1/hub/repositories/' + self.imageName.trim() + '/tags/?page=1&page_size=5';
+        const url = 'http://localhost:35269/-/v1/hub/repositories/' + self.imageName.trim() + '/tags/?page=1&page_size=5';
         self.applicationTags = [];
         self.$http.get(url).then((response) => {
           self.cacheImageVersions[self.imageName] = true;
@@ -189,7 +189,7 @@ export default {
         email: this.email
       };
 
-      this.$http.post('/-/v1/app', formdata).then(function (result) {
+      this.$http.post('http://localhost:35269/-/v1/app', formdata).then(function (result) {
         if (result.status === 200) {
           $('#modal-add-image').modal('hide');
           self.$emit('refreshApplicationsList');
