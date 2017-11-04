@@ -1,5 +1,7 @@
 #!/bin/sh -eux
 
+cp -f /etc/nginx/nginx.conf.orig /etc/nginx/nginx.conf
+
 # auth stuff
 if [ -n "${EZMASTER_USER:-}" ] && [ -n "${EZMASTER_PASSWORD:-}" ]; then
     htpasswd -bc /etc/nginx/webdavpasswd $EZMASTER_USER $EZMASTER_PASSWORD

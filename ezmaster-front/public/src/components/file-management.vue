@@ -79,7 +79,7 @@
             </div>
           </div>
 		  <div>
-			  <i class="fa fa-info-circle" aria-hidden="true"></i> You can also try to use <a :href="'dav://' + hostname  + '/wd--' + instance.technicalName ">Webdav URL</a>
+			  <i class="fa fa-info-circle" aria-hidden="true"></i> You can also try to use <a :href="'http://' + webdavHostname  + '/' + instance.technicalName + '/data/'" target="_blank">Webdav URL</a>
 		  </div>
         </div>
 
@@ -108,7 +108,7 @@
         formFiles: [],
         files: [],
         instance: { technicalName: null },
-        hostname: window.location.host
+        webdavHostname: window.location.hostname + ':35270'
       };
     },
     filters: {

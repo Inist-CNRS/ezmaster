@@ -87,7 +87,7 @@ services:
         - https_proxy
     volumes:
       - ./data/instances:/media
-      - ./ezmaster-webdav/nginx.conf:/etc/nginx/nginx.conf
+      - ./ezmaster-webdav/nginx.conf:/etc/nginx/nginx.conf.orig
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
