@@ -37,7 +37,7 @@ services:
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
-      - 35269:35267
+      - 35269:35269
     command: npm run start-debug
     networks:
       - eznetwork

@@ -3,8 +3,8 @@
 /*
   Test the reverse proxy with curl:
   curl --proxy "" -H "X-Forwarded-Host: a-a.lod-test.istex.fr"
-    -H "X-Forwarded-Server: lod-test.istex.fr" http://192.168.31.146:35267/index.html
-  curl --proxy "" -H "Host: a-a.lod-test.istex.fr" http://192.168.31.146:35267/index.html
+    -H "X-Forwarded-Server: lod-test.istex.fr" http://192.168.31.146:35269/index.html
+  curl --proxy "" -H "Host: a-a.lod-test.istex.fr" http://192.168.31.146:35269/index.html
 */
 
 var path      = require('path');
