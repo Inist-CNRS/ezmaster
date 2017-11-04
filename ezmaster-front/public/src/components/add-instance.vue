@@ -100,7 +100,7 @@
       // enables the bootstrap component for tooltips
       $('#addInstance [data-toggle="tooltip"]').tooltip();
 
-      self.$http.get('http://localhost:35269/-/v1/config').then(function (result) {
+      self.$http.get(this.Store.ezMasterAPI + '/-/v1/config').then(function (result) {
         var config = result.data;
         self.publicDomain = config.publicDomain;
         publicDomain = config.publicDomain;
@@ -148,7 +148,7 @@
 
       verif: function (technicalName) {
         var self = this;
-        this.$http.get('http://localhost:35269/-/v1/instances/verif/' + technicalName).then(function (result) {
+        this.$http.get(this.Store.ezMasterAPI + '/-/v1/instances/verif/' + technicalName).then(function (result) {
           if (result.data === 'OK') {
             self.invalid = false;
           }
@@ -186,7 +186,7 @@
           technicalName: this.technicalName,
           app: document.getElementById('app').value
         };
-        this.$http.post('http://localhost:35269/-/v1/instances', data).then(function (result) {
+        this.$http.post(this.Store.ezMasterAPI + '/-/v1/instances', data).then(function (result) {
           if (result.status === 200) { location.reload(); }
         }, function (error) {
           this.codeErrorPull = error.status;

@@ -65,7 +65,7 @@
                     <tbody>
                       <template v-for="file in files">
                         <tr>
-                          <td class="files-list-name-column"><a :href="'http://localhost:35269/-/v1/instances/' + instance.containerId + '/data/' + file.name">{{ file.name }}</a></td>
+                          <td class="files-list-name-column"><a :href="ezMasterAPI + '/-/v1/instances/' + instance.containerId + '/data/' + file.name">{{ file.name }}</a></td>
                           <td>{{ file.size }}</td>
                           <td>{{ file.mimeType }}</td>
                           <td>
@@ -93,10 +93,12 @@
 
 <script>
   import eventHub from './event-hub.js';
+  import Store from './store.js';
 
   export default {
     data () {
       return {
+        Store,
         freeSpaceExceeded: false,
         uploading: false,
         refreshing: false,
@@ -124,6 +126,8 @@
       }
     },
     mounted () {
+      this.ezMasterAPI = this.Store.ezMasterAPI;
+
       $(this.$refs.modal).on('show.bs.modal', e => {
         this.clearFileInput();
         this.refreshFileList();
@@ -147,7 +151,7 @@
 
         // Get information on total size allowed and free disk space.
         // Warn the user if a problem appears.
-        this.$http.get('http://localhost:35269/-/v1').then(result => {
+        this.$http.get(this.Store.ezMasterAPI + '/-/v1').then(result => {
           // We calculate the total size of selected files.
 
           this.totalSize = 0;
@@ -168,7 +172,7 @@
       uploadFiles () {
         if (!this.formFiles.length || this.freeSpaceExceeded) { return; }
 
-        const url = `http://localhost:35269/-/v1/instances/${this.instance.containerId}/data/`;
+        const url = `${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}/data/`;
         const form = new FormData();
 
         for (let i = 0; i < this.formFiles.length; i++) {
@@ -196,7 +200,7 @@
 
       deleteFile (fileName) {
         // Delete the file.
-        this.$http.delete(`http://localhost:35269/-/v1/instances/${this.instance.containerId}/${fileName}`)
+        this.$http.delete(`${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}/${fileName}`)
         .then(this.refreshFileList)
         .catch(e => {
           console.error(e);
@@ -209,7 +213,7 @@
         this.refreshing = true;
 
         // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get(`http://localhost:35269/-/v1/instances/${this.instance.containerId}/data`).then(result => {
+        this.$http.get(`${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}/data`).then(result => {
           for (const filename in result.data) {
             this.files.push(result.data[filename]);
           }

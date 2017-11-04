@@ -62,7 +62,7 @@ export default {
   methods: {
     refreshApplicationsList: function () {
       const self = this;
-      self.$http.get('http://localhost:35269/-/v1/app').then(function (result) {
+      self.$http.get(this.Store.ezMasterAPI + '/-/v1/app').then(function (result) {
         self.$set(Store, 'applications', result.data);
       }, console.error);
     }
