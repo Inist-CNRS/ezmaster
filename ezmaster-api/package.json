@@ -1,0 +1,49 @@
+{
+  "name": "ezmaster-api",
+  "version": "3.8.2",
+  "description": "ezmaster-api",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "start-debug": "npm-run-all --parallel start-nodemon",
+    "start-nodemon": "nodemon -V index.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "async": "^2.1.4",
+    "body-parser": "^1.15.2",
+    "debug": "^2.2.0",
+    "diskusage": "^0.1.5",
+    "docker-events": "^0.0.2",
+    "dockerode": "^2.3.0",
+    "express": "^4.14.0",
+    "file-exists": "^2.0.0",
+    "filesize": "^3.3.0",
+    "get-folder-size": "^1.0.0",
+    "glob": "^7.0.5",
+    "heartbeats": "^5.0.1",
+    "http-proxy": "^1.14.0",
+    "jsDAV": "^0.3.4",
+    "jsonfile": "^2.3.1",
+    "kuler": "0.0.0",
+    "lodash": "^4.13.1",
+    "memory-cache": "^0.1.6",
+    "mkdirp": "^0.5.1",
+    "mmmagic": "^0.4.5",
+    "moment": "^2.13.0",
+    "mongodb-querystring": "^1.0.3",
+    "multer": "^1.1.0",
+    "num-cpus": "^1.1.0",
+    "rc": "^1.1.6",
+    "rimraf": "^2.5.2",
+    "socket.io": "^1.4.8",
+    "sort-by": "^1.1.1",
+    "storage": "^0.2.0",
+    "strip-ansi": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2",
+    "npm-run-all": "^3.1.0"
+  }
+}

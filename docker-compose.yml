@@ -44,6 +44,17 @@ services:
     networks:
       - eznetwork
 
+  ezmaster-front:
+    container_name: ezmaster-front
+    image: inistcnrs/ezmaster-front:3.8.2
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
+    ports:
+      - 35268:80
+    networks:
+      - eznetwork
+
+
   # Mongodb used by ezmaster to store parameters, metadata etc...
   # about ezmaster apps and instances
   ezmaster_db:

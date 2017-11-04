@@ -20,15 +20,13 @@ install: ## install depedencies thanks to a dockerized npm install
 	@make chown
 
 build: ## build the docker inistcnrs/ezmaster image localy
-	@docker build -t inistcnrs/ezmaster --build-arg http_proxy --build-arg https_proxy .
+	@docker-compose -f ./docker-compose.debug.yml build 
 
-run-debug: ## run ezmaster in debug mode with dockerized nodejs and mongodb process
-	@docker-compose -f ./docker-compose.debug.yml up -d
-	@# attach to the ezmaster container in order to be able to stop it easily with CTRL+C
-	@docker attach ezmaster
+run-debug: ## run ezmaster in debug mode
+	@docker-compose -f ./docker-compose.debug.yml up
 
 run-prod: ## run ezmaster in production mode with the full dockerized image (see build)
-	@docker-compose -f ./docker-compose.yml up -d
+	@docker-compose -f ./docker-compose.yml up
 
 start-prod: ## start ezmaster production daemon (needs a first run-prod the first time)
 	@docker-compose -f ./docker-compose.yml start

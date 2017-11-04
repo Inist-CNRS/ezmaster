@@ -24,7 +24,6 @@ RUN npm install
 # copy the code source of ezmaster 
 # after dependencies installation
 COPY . /app
-RUN npm run build
 
 # instances, manifests and applications folders are volumes
 # because these data should be persistent

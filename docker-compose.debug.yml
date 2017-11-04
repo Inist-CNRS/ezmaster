@@ -3,23 +3,61 @@ version: '2'
 
 services:
 
-  ezmaster:
-    container_name: ezmaster
-    image: inistcnrs/ezmaster:3.8.2
-    links:
-      - ezmaster_db
+  # ezmaster:
+  #   container_name: ezmaster
+  #   image: inistcnrs/ezmaster:3.8.2
+  #   links:
+  #     - ezmaster_db
+  #   volumes:
+  #     - .:/app
+  #     - ./data/applications:/app/data/applications
+  #     - ./data/instances:/app/data/instances
+  #     - ./data/manifests:/app/data/manifests
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #   working_dir: /app
+  #   environment:
+  #     http_proxy:  ${http_proxy}
+  #     https_proxy: ${https_proxy}
+  #     no_proxy: ${no_proxy}
+  #     EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017"
+  #     EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
+  #     EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
+  #     EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
+  #     EZMASTER_PATH: ${PWD}
+  #     EZMASTER_FULL_FS_PERCENT: ${EZMASTER_FULL_FS_PERCENT}
+  #     NODE_ENV: "development"
+  #     DEBUG: ${DEBUG}
+  #   tty: true         # to have nice debug(...) outputs
+  #   stdin_open: true  # to be able to use CTRL+C to stop the debug
+  #   ports:
+  #     - 35267:35267
+  #   depends_on:
+  #     - ezmaster_db
+  #   command: npm run start-debug
+  #   networks:
+  #     - eznetwork
+
+  ezmaster-api:
+    container_name: ezmaster-api
+    image: inistcnrs/ezmaster-api:3.8.2
+    build:
+      context: ./ezmaster-api
+      args:
+        - http_proxy
+        - https_proxy
+    links: # to remove
+      - ezmaster_db # to remove
     volumes:
-      - .:/app
+      - ./ezmaster-api:/app
       - ./data/applications:/app/data/applications
       - ./data/instances:/app/data/instances
       - ./data/manifests:/app/data/manifests
       - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /app
     environment:
-      http_proxy:  ${http_proxy}
-      https_proxy: ${https_proxy}
-      no_proxy: ${no_proxy}
-      EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017"
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}      
+      EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017" # to remove
       EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
@@ -27,15 +65,35 @@ services:
       EZMASTER_FULL_FS_PERCENT: ${EZMASTER_FULL_FS_PERCENT}
       NODE_ENV: "development"
       DEBUG: ${DEBUG}
+      http_proxy:  ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
-      - 35267:35267
-    depends_on:
-      - ezmaster_db
+      - 35269:35267
     command: npm run start-debug
     networks:
       - eznetwork
+
+
+  ezmaster-front:
+    container_name: ezmaster-front
+    image: node:8.4.0
+    volumes:
+      - ./ezmaster-front:/app
+    working_dir: /app
+    environment:
+      NODE_ENV: "development"
+      DEBUG: ${DEBUG}
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
+    ports:
+      - 35268:35268
+    command: npm run start
+    networks:
+      - eznetwork
+
 
   ezmaster-webdav:
     container_name: ezmaster-webdav
@@ -44,7 +102,7 @@ services:
       context: ./ezmaster-webdav
       args:
         - http_proxy
-        - https_proxy    
+        - https_proxy
     volumes:
       - ./data/instances:/media
       - ./ezmaster-webdav/nginx.conf:/etc/nginx/nginx.conf
