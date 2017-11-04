@@ -25,6 +25,9 @@ build: ## build the docker inistcnrs/ezmaster image localy
 run-debug: ## run ezmaster in debug mode
 	@docker-compose -f ./docker-compose.debug.yml up
 
+kill: ## kill ezmaster running containers
+	@docker-compose -f ./docker-compose.debug.yml kill
+
 run-prod: ## run ezmaster in production mode with the full dockerized image (see build)
 	@docker-compose -f ./docker-compose.yml up
 
