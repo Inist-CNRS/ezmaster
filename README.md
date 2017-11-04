@@ -84,7 +84,7 @@ Then ezmaster is listening at http://127.0.0.1:35267/
 ### Dockerfile modifications
 
 - Your application must have a web server (mandatory).
-- Your application can use a json config and a data folder (optional)
+- Your application can use a json or text configuration file and a data folder (optional)
 
 For example your dockerfile could look like this one:
 ```shell
@@ -108,12 +108,6 @@ RUN echo '{ \
 
 # ...
 ```
-
-### MongoDB database (optional)
-
-If your application uses a mongodb database, your can use the ezmaster database.
-Regarding this, you just have to use the environment variable: ``EZMASTER_MONGODB_HOST_PORT``.
-This variable will contain something like this: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017).
 
 ### Dockerfile example of ezmasterized applications
 
@@ -180,20 +174,28 @@ You finally should have something like this:
 If you want to save the config and the data of your instances:
 - you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
 - you also have to save the mongodb database contained in the ezmaster_db docker container: `docker exec -it ezmaster_db mongodump --quiet --archive=- > ezmaster_db_archive`
+  (no more ezmaster_db in ezmaster ⩾ 4.0.0)
 
 
-## Diagrams
+## Architecture technique
 
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Technical_Environment.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Architecture.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
+[![architecture 4.0](https://docs.google.com/drawings/d/e/2PACX-1vTAlDhUXFEigSwBPsAUH16E2Eqkb2OIJ7H1BaKk_zLd3_RJn3bmTIqnWYvbwqPsJs76RCCjCcZqyjEc/pub?w=791&amp;h=573)](https://docs.google.com/drawings/d/1Z-2F4o5PTx4Fsk5eBps8tKvh5Pf79zsSGLHUXv1UA18/edit)
 
 
 ## Changelog
+
+### ezmaster 4.0.0
+
+- ezmaster backoffice and webdav access is now allowing login/password (env parameters are EZMASTER_USER and EZMASTER_PASSWORD)
+- Breaking changes
+  - ezmaster_db (mongodb) has been removed: your applications must handle their data itself
+  - instances web server are available as before on the port 35267
+    (but a rewritten reverse proxy is now handling this part)
+  - ezmaster backoffice is available on a new port: 35268
+  - ezmaster backoffice api is now splitted on a dedicated port: 35269
+  - webdav access is still available but on a new port: 35270
+- Migration guide
+  - Stop ... Start ... Do that ... Do that ...
 
 ### ezmaster 3.8.0
 
