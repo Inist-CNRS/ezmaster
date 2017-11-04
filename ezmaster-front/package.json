@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "start": "npm-run-all --parallel watch-js watch-less start-server",
-    "start-server": "http-server -p 35268 public/",
+    "start-server": "http-server -p 3000 --silent public/",
     "watch-js": "watch 'browserify -d public/src/main.js > public/dist/bundle.js && echo \"-> bundle.js written [$(date +%T)]\"' ./public/src/",
     "watch-less": "watch 'lessc public/less/*.less > public/dist/bundle.css && echo \"-> bundle.css written [$(date +%T)]\"' ./public/less/",
     "bower": "bower install",

@@ -13,13 +13,15 @@ var express = require('express');
 var app    = express();
 var server = require('http').Server(app);
 var io     = require('socket.io')(server);
-var cors   = require('cors');
+var cors      = require('cors');
+var basicAuth = require('basic-auth-connect');
 
 var instances = require('./lib/instances.js');
 var DAV       = require('jsDAV/lib/jsdav');
 
 // load routes and middleware
 app.use(cors()); // to allow ezmaster-front to call it from client side
+app.use(basicAuth(process.env.EZMASTER_USER, process.env.EZMASTER_PASSWORD));
 app.use(require('./middlewares/reverse-proxy.js'));
 app.use(express.static('public'));
 app.use('/-/v1/',          require('./routes/v1.js'));

@@ -28,10 +28,12 @@
 
 <script>
   import eventHub from './event-hub.js';
+  import Store from './store.js';
 
   export default {
     data () {
       return {
+        Store,
         fetching: false,
         deleting: false,
         instanceSize: null,

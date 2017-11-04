@@ -45,6 +45,29 @@ services:
 
   ezmaster-front:
     container_name: ezmaster-front
+    image: inistcnrs/ezmaster-front:3.8.2
+    build:
+      context: ./ezmaster-front
+      args:
+        - http_proxy
+        - https_proxy
+    environment:
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
+    volumes:
+      - ./ezmaster-front/nginx.debug.conf:/etc/nginx/nginx.conf.orig
+    links:
+      - ezmaster-api
+      - ezmaster-front-debug
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
+    ports:
+      - 35268:35268
+    networks:
+      - eznetwork
+
+  ezmaster-front-debug:
+    container_name: ezmaster-front-debug
     image: node:8.4.0
     volumes:
       - ./ezmaster-front:/app
@@ -54,8 +77,6 @@ services:
       DEBUG: ${DEBUG}
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
-    ports:
-      - 35268:35268
     command: npm run start
     networks:
       - eznetwork
@@ -96,14 +117,14 @@ services:
     networks:
       - eznetwork
 
-  ezmaster_db:
-    container_name: ezmaster_db
-    image: mongo:3.4.1
-    ports:
-      - 27017:27017
-    command: --smallfiles
-    networks:
-      - eznetwork
+  ezmaster_db: # to remove
+    container_name: ezmaster_db  # to remove
+    image: mongo:3.4.1  # to remove
+    ports: # to remove
+      - 27017:27017 # to remove
+    command: --smallfiles # to remove
+    networks: # to remove
+      - eznetwork # to remove
 
 networks:
   eznetwork:
