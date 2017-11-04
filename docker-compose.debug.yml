@@ -37,18 +37,22 @@ services:
     networks:
       - eznetwork
 
-  ezmaster_webdav:
-    container_name: ezmaster_webdav
-    build: ./docker-webdav
-    image: inistcnrs/ezmaster:3.8.2-webdav
+  ezmaster-webdav:
+    container_name: ezmaster-webdav
+    image: inistcnrs/ezmaster-webdav:3.8.2
+    build:
+      context: ./ezmaster-webdav
+      args:
+        - http_proxy
+        - https_proxy    
     volumes:
       - ./data/instances:/media
-      - ./docker-webdav/nginx.conf:/etc/nginx/nginx.conf
+      - ./ezmaster-webdav/nginx.conf:/etc/nginx/nginx.conf
     environment:
-      WEBDAV_USERNAME: ezmaster
-      WEBDAV_PASSWORD: ezmaster
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
     ports:
-      - 7000:8080
+      - 35270:8080
     networks:
       - eznetwork
 
