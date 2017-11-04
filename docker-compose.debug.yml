@@ -37,6 +37,20 @@ services:
     networks:
       - eznetwork
 
+  ezmaster_webdav:
+    container_name: ezmaster_webdav
+    build: ./docker-webdav
+    image: inistcnrs/ezmaster:3.8.2-webdav
+    volumes:
+      - ./data/instances:/media
+    environment:
+      WEBDAV_USERNAME: ezmaster
+      WEBDAV_PASSWORD: ezmaster
+    ports:
+      - 7000:8080
+    networks:
+      - eznetwork
+
   ezmaster_db:
     container_name: ezmaster_db
     image: mongo:3.4.1
