@@ -43,6 +43,7 @@ services:
     image: inistcnrs/ezmaster:3.8.2-webdav
     volumes:
       - ./data/instances:/media
+      - ./docker-webdav/nginx.conf:/etc/nginx/nginx.conf
     environment:
       WEBDAV_USERNAME: ezmaster
       WEBDAV_PASSWORD: ezmaster
