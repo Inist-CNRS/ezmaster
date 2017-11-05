@@ -186,7 +186,7 @@ If you want to save the config and the data of your instances:
   (ezmaster_db has been removed since ezmaster ⩾ 4.0.0)
 
 
-## Architecture technique
+## Technical architecture
 
 [![architecture 4.0](https://docs.google.com/drawings/d/e/2PACX-1vTAlDhUXFEigSwBPsAUH16E2Eqkb2OIJ7H1BaKk_zLd3_RJn3bmTIqnWYvbwqPsJs76RCCjCcZqyjEc/pub?w=791&amp;h=573)](https://docs.google.com/drawings/d/1Z-2F4o5PTx4Fsk5eBps8tKvh5Pf79zsSGLHUXv1UA18/edit)
 
