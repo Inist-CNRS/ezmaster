@@ -11,3 +11,4 @@ COPY nginx.conf /etc/nginx/nginx.conf.orig
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 35270

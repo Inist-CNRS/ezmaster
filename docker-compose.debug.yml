@@ -87,6 +87,9 @@ services:
       args:
         - http_proxy
         - https_proxy
+    volumes:
+      - ./ezmaster-rp/index.html:/app/public/index.html
+      - ./ezmaster-rp/nginx.conf:/etc/nginx/nginx.conf
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
@@ -110,7 +113,7 @@ services:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
     ports:
-      - 35270:8080
+      - 35270:35270
     networks:
       - eznetwork
 

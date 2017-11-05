@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ezMaster Reverse Proxy</title>
+</head>
+<body>
+  <h1>ezMaster Reverse Proxy</h1>
+
+  <p>This ezMaster service is used to give access to all the ezmaster instances web servers.</p>
+
+  <p>
+    You can also access to the ezMaster API:
+    <a id="ezmaster-api" href="">/-/v1/</a>
+  </p>
+  <script>
+    document.getElementById('ezmaster-api').href = location.protocol + '//' + location.hostname + ':35269' + '/-/v1/';
+  </script>
+
+  <p>
+    You can also access to the ezMaster web interface (for human):
+    <a id="ezmaster-front" href="">ezMaster backoffice</a>
+  </p>
+  <script>
+    document.getElementById('ezmaster-front').href = location.protocol + '//' + location.hostname + ':35268' + '/';
+  </script>
+
+</body>
+</html>
