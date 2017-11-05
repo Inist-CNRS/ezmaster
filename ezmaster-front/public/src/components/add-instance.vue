@@ -148,7 +148,8 @@
 
       verif: function (technicalName) {
         var self = this;
-        this.$http.get(this.Store.ezMasterAPI + '/-/v1/instances/verif/' + technicalName).then(function (result) {
+        this.$http.get(this.Store.ezMasterAPI + '/-/v1/instances/verif/' + technicalName)
+        .then(function (result) {
           if (result.data === 'OK') {
             self.invalid = false;
           }

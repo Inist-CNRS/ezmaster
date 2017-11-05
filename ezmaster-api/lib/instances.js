@@ -373,13 +373,13 @@ module.exports.checkInstance = function (containerId, cb) {
 
 
 /**
- * Generates all the Nginx instances config and alias instances config 
+ * Generates all the Nginx instances config and alias instances config
  * this function is called every time a new instance is created (see docker-websocket.js)
  */
 module.exports.generateAllRPNginxConfig = function (cb) {
   let self = this;
   debug('generateAllRPNginxConfig started');
-  // cleanup the Nginx conf 
+  // cleanup the Nginx conf
   self.cleanupAllRPNginxConfig(function (err) {
     if (err) {
       debug('generateAllRPNginxConfig finished', err);
@@ -391,9 +391,9 @@ module.exports.generateAllRPNginxConfig = function (cb) {
       if (err) {
         debug('generateAllRPNginxConfig finished', err);
         return cb && cb(err);
-      }        
+      }
 
-      // sort the instances by number in order to 
+      // sort the instances by number in order to
       // implement the reverse proxy aliase feature
       // ex input: [ 'a-b-5', 'o-p-6', 'a-b-3', 'o-p-8', 'a-b', 'o-p-4', 'a-b-4' ]
       // ex output : [ 'a-b-3', 'a-b-4', 'a-b-5', 'o-p-4', 'o-p-6', 'o-p-8', 'a-b' ]
@@ -403,16 +403,19 @@ module.exports.generateAllRPNginxConfig = function (cb) {
         if (item1.length <= 2 || item2.length <= 2) return 1;
         if (item1[0] === item2[0] && item1[1] === item2[1]) {
           return parseInt(item1[2]) < parseInt(item2[2]) ? 1 : -1;
-        } else {
-          return 1;
         }
+        return 1;
       }).reverse();
 
       // generate all the instances reverseproxy configurations (nginx)
       async.eachSeries(orderedTechnicalNames, (oneTechnicalName, cbNext) => {
         // do not generate config for none running instances
         if (!instances[oneTechnicalName].running) return cbNext(null);
-        self.createRPNginxConfig(oneTechnicalName, instances[oneTechnicalName].httpPort, true, cbNext);        
+        self.createRPNginxConfig(
+          oneTechnicalName,
+          instances[oneTechnicalName].httpPort,
+          true, cbNext
+        );
       }, (err) => {
         if (err) {
           debug('generateAllRPNginxConfig finished', err);
@@ -431,10 +434,10 @@ module.exports.generateAllRPNginxConfig = function (cb) {
 
 
 /**
- * Generates the raw nginx config file 
+ * Generates the raw nginx config file
  * it uses technicalName and httpPort parameters to instanciate from a config template
  * if createAlias is true, it also creates the alias config of the instance ex:
- * techName = "my-blog-4" ==> techNameAlias = "my-blog" 
+ * techName = "my-blog-4" ==> techNameAlias = "my-blog"
  */
 module.exports.createRPNginxConfig = function (technicalName, httpPort, createAlias, cb) {
 

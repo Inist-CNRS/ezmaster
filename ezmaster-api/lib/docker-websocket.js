@@ -53,7 +53,7 @@ module.exports.init = function (io) {
       }
 
       // tell the client something appends to an instance
-      io.sockets.emit('docker-event', message);      
+      io.sockets.emit('docker-event', message);
     }
   }
 

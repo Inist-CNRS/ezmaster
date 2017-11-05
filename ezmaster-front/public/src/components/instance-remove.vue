@@ -59,7 +59,9 @@
       fetchSize () {
         this.fetching = true;
 
-        this.$http.get(`${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}`).then(result => {
+        this.$http.get(
+          `${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}`
+        ).then(result => {
           this.instanceSize = result.data.size;
 
           this.fetching = false;
@@ -72,7 +74,9 @@
       deleteInstance () {
         this.deleting = true;
 
-        this.$http.delete(`${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}`).then(result => {
+        this.$http.delete(
+          `${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}`
+        ).then(result => {
           this.deleting = false;
           this.hide();
           this.$emit('instance-deleted', this.instance.technicalName);

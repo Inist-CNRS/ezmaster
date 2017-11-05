@@ -134,7 +134,8 @@ export default {
       }
       self.isSearchingImages = true;
       self.applicationImages = [];
-      const url = `${this.Store.ezMasterAPI}/-/v1/hub/search/repositories/?query=${self.imageName}&page=1&page_size=5`;
+      let url = `${this.Store.ezMasterAPI}/-/v1/hub/search/repositories/`;
+      url += `?query=${self.imageName}&page=1&page_size=5`;
       self.applicationImages = [];
       self.$http.get(url).then((response) => {
         if (response.body && response.body.results && Array.isArray(response.body.results)) {
@@ -155,7 +156,8 @@ export default {
       self.isSearchingTags = true;
       self.applicationTags = [];
       if (self.imageName.search(/\w\/\w/) >= 0) {
-        const url = this.Store.ezMasterAPI + '/-/v1/hub/repositories/' + self.imageName.trim() + '/tags/?page=1&page_size=5';
+        const url = this.Store.ezMasterAPI + '/-/v1/hub/repositories/' + self.imageName.trim() +
+          '/tags/?page=1&page_size=5';
         self.applicationTags = [];
         self.$http.get(url).then((response) => {
           self.cacheImageVersions[self.imageName] = true;

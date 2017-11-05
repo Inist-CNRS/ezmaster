@@ -5,7 +5,6 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext=.js,.vue ./ezmaster-api/index.js ./ezmaster-api/routes/ ./ezmaster-api/middlewares/ ./test/ ./ezmaster-api/lib/ ./ezmaster-front/public/src/",
-    "test": "mocha",
     "insertversion": "sed -i \"s#\\(image: inistcnrs/ezmaster:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml && sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" ezmaster-front/public/index.html",
     "preversion": "npm run lint",
     "version": "npm run insertversion && git add ezmaster-front/public/index.html docker-compose*.yml",
@@ -32,16 +31,12 @@
     }
   ],
   "license": "MIT",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "chai": "^3.5.0",
     "eslint": "^3.7.1",
     "eslint-config-vue": "^2.0.1",
     "eslint-plugin-html": "^1.5.3",
     "eslint-plugin-vue": "^1.0.0",
-    "husky": "^0.11.9",
-    "mocha": "^3.1.0",
-    "supertest": "^2.0.0"
+    "husky": "^0.11.9"
   }
 }

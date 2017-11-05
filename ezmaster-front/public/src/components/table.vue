@@ -117,8 +117,9 @@
       refreshInstanceList () {
         this.refreshing = true;
 
-        // Call the route http://localhost:35269/-/v1/instances with a get wich get the instances list.
-        // Store the instances list into the variable containers used into the HTML with v-for.
+        // Call the route http://localhost:35269/-/v1/instances with a get wich
+        // get the instances list. Store the instances list into the variable
+        // containers used into the HTML with v-for.
         this.$http.get(this.Store.ezMasterAPI + '/-/v1/instances').then(result => {
           this.containers = result.data;
           this.refreshing = false;
@@ -132,12 +133,16 @@
         // event.path[4].id go up 4 times in the HTML tree to get the id of the reached element.
         // Here, the instance id.
         // button start > li > ul > td > tr > id="{{ item.description.Id }}"
-        this.$http.put(`${this.Store.ezMasterAPI}/-/v1/instances/start/${instanceId}`).then(function (result) {
+        this.$http.put(
+          `${this.Store.ezMasterAPI}/-/v1/instances/start/${instanceId}`
+        ).then(function (result) {
         }, console.error);
       },
 
       stopInstance (instanceId) {
-        this.$http.put(`${this.Store.ezMasterAPI}/-/v1/instances/stop/${instanceId}`).then(function (result) {
+        this.$http.put(
+          `${this.Store.ezMasterAPI}/-/v1/instances/stop/${instanceId}`
+        ).then(function (result) {
         }, console.error);
       },
 

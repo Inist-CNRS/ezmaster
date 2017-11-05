@@ -200,7 +200,9 @@
 
       deleteFile (fileName) {
         // Delete the file.
-        this.$http.delete(`${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}/${fileName}`)
+        this.$http.delete(
+          `${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}/${fileName}`
+        )
         .then(this.refreshFileList)
         .catch(e => {
           console.error(e);
@@ -213,7 +215,9 @@
         this.refreshing = true;
 
         // Get information on formerly uploaded files for the concerned instance.
-        this.$http.get(`${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}/data`).then(result => {
+        this.$http.get(
+          `${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}/data`
+        ).then(result => {
           for (const filename in result.data) {
             this.files.push(result.data[filename]);
           }

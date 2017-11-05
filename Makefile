@@ -45,12 +45,6 @@ npm: ## npm wrapper. example: make npm install --save mongodb-querystring
 	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm $(filter-out $@,$(MAKECMDGOALS))
 	@make chown
 
-test: ## run ezmaster unit tests
-	@docker-compose -f ./docker-compose.debug.yml exec ezmaster npm test
-
-coverage: ## run istanbul to have how much % of the ezmaster code is covered by tests
-	@docker-compose -f ./docker-compose.debug.yml exec ezmaster ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec
-
 lint: ## checks the coding rules (in a dockerized process)
 	@docker run -it --rm -v $$(pwd):/app -w /app -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm run lint
 

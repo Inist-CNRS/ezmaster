@@ -97,7 +97,9 @@
       refreshConfig () {
         this.refreshing = true;
         editor.set('loading configuration...');
-        this.$http.get(`${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}`).then(result => {
+        this.$http.get(
+          `${this.Store.ezMasterAPI}/-/v1/instances/${this.instance.containerId}`
+        ).then(result => {
           this.refreshing = false;
           editor.setText(result.data.config);
         }).catch(e => {
@@ -114,7 +116,9 @@
 
         this.updating = true;
 
-        this.$http.put(`${this.Store.ezMasterAPI}/-/v1/instances/config/${this.instance.containerId}`, data).then(result => {
+        this.$http.put(
+          `${this.Store.ezMasterAPI}/-/v1/instances/config/${this.instance.containerId}`, data
+        ).then(result => {
           this.updating = false;
           this.hide();
         });

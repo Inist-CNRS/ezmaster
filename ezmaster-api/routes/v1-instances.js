@@ -423,7 +423,7 @@ router
           + technicalName + '/config/config.raw:' + appConfig.configPath + ' '
           + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
             + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
-          + '--label ezmasterInstance=1 ' // used to know it's an instance when listening docker events
+          + '--label ezmasterInstance=1 ' // tells it's an instance when listening docker events
           + '--name ' + technicalName + ' ' + image;
 
           // store some extra things into manifest

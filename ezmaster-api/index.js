@@ -23,7 +23,7 @@ app.use(cors()); // to allow ezmaster-front to call it from client side
 
 // to secure the API
 if (process.env.EZMASTER_USER !== '' && process.env.EZMASTER_PASSWORD !== '') {
-  app.use(basicAuth(process.env.EZMASTER_USER, process.env.EZMASTER_PASSWORD));  
+  app.use(basicAuth(process.env.EZMASTER_USER, process.env.EZMASTER_PASSWORD));
 }
 
 // connect static ressources located in public folder
@@ -56,7 +56,8 @@ server.listen(cfg.EZMASTER_PORT, function () {
     // initialize ezmaster-rp nginx config
     instances.generateAllRPNginxConfig(function (err) {
       console.info('ezmaster-rp (instances reverse proxy): ' +
-                   kuler('http://*.' + cfg.publicDomain + '/  ==>  http://' + cfg.publicIP + ':35267/', 'limegreen'));
+        kuler('http://*.' + cfg.publicDomain + '/' +
+              '  ==>  http://' + cfg.publicIP + ':35267/', 'limegreen'));
     });
   }
 });
