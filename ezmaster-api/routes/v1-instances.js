@@ -426,6 +426,10 @@ router
           + '--label ezmasterInstance=1 ' // used to know it's an instance when listening docker events
           + '--name ' + technicalName + ' ' + image;
 
+          // store some extra things into manifest
+          // useful for future upgrading stuff
+          appConfig.dockerCmdForCreation       = cmd;
+          appConfig.ezmasterVersionForCreation = cfg.package.version;
 
           // creates the instance manifest
           fs.writeFile(
