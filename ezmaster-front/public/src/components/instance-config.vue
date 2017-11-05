@@ -35,12 +35,14 @@
   /* global JSONEditor */
 
   import eventHub from './event-hub.js';
+  import Store from './store.js';
 
   let editor;
 
   export default {
     data () {
       return {
+        Store,
         jsonError: null,
         fullscreen: false,
         updating: false,
