@@ -22,12 +22,16 @@ Administration of docker applications without any IT skills.
 To configure ezmaster, setup these environment variables before running ezmaster:
 
 ```shell
+# The user/password used to secure the ezmaster backoffice
+# Default is none
+export EZMASTER_USER="ezmaster"
+export EZMASTER_PASSWORD="changeme"
+
 # The server IP where ezmaster is installed
 # it will be used by the "Access" button to join instances on specific ports
 # (one port for one instance, see EZMASTER_FREE_PORT_RANGE)
 # Default is "127.0.0.1"
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
-
 
 # The ports range ezmaster is allowed to use to expose instances internal web
 # address (revelant when reverse proxy is disabled)
@@ -63,6 +67,8 @@ export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
+export EZMASTER_USER="ezmaster"
+export EZMASTER_PASSWORD="changeme"
 docker-compose up -d
 
 # then ezmaster is listening at http://<Your ezmaster server IP>:35267
@@ -187,16 +193,28 @@ If you want to save the config and the data of your instances:
 
 - ezmaster backoffice and webdav access is now allowing login/password (env parameters are EZMASTER_USER and EZMASTER_PASSWORD)
 - Breaking changes
-  - ezmaster_db (mongodb) has been removed: your applications must handle their data itself
-  - instances web server are available as before on the port 35267
-    (but a rewritten reverse proxy is now handling this part)
-  - ezmaster backoffice is available on a new port: 35268
-  - ezmaster backoffice api is now splitted on a dedicated port: 35269
-  - webdav access is still available but on a new port: 35270
   - docker and docker-compose need to be upgraded to docker >= 17.09.0 and docker-compose >= 1.17.0
+  - ezmaster_db (mongodb) has been removed: your applications must handle their data itself
+  - ezmaster backoffice is available on a new port: 35268
+  - ezmaster  api is now splitted on a dedicated port: 35269
+  - webdav access is still available but on a new port: 35270
+  - instances are available as before through a reverse proxy on the port 35267
+    (but a rewritten reverse proxy based on nginx is now handling this feature)
 - Migration guide
-  - upgrade the host to docker >= 17.09.0 and docker-compose >= 1.17.0
-  - Stop ... Start ... Do that ... Do that ...
+  - be sure your ezmaster is in the version 3.8.x
+
+  - stop ezmaster and upgrade the host to docker >= 17.09.0 and docker-compose >= 1.17.0
+
+  - download and run the upgrade script (it will patch the docker container of the ezmaster instances):
+
+    ```shell
+    cd ezmaster/
+    wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/scripts/upgrade-3.8-to-4.0
+    chmod +x upgrade-3.8-to-4.0
+    sudo EZMASTER_DATA_PATH=./data ./upgrade-3.8-to-4.0
+    ```
+
+  - install the new ezmaster as usual
 
 ### ezmaster 3.8.0
 
