@@ -1,71 +1,98 @@
-# ezmaster docker-compose.yml dedicated to production
+# ezmaster docker-compose dedicated for production
 version: '3.4'
 
 services:
 
-  # This is the nodejs application in charge of the web server
-  # displaying the IHM and providing REST routes.
-  # It uses the dockerhub autobuild ezmaster images:
-  # https://hub.docker.com/r/inistcnrs/ezmaster/
-  ezmaster:
-    container_name: ezmaster
-    image: inistcnrs/ezmaster:3.8.2
-    links:
-      - ezmaster_db
+  ezmaster-api:
+    container_name: ezmaster-api
+    image: inistcnrs/ezmaster-api:3.8.2
+    volumes:
     volumes:
       - ./data/applications:/app/data/applications
       - ./data/instances:/app/data/instances
       - ./data/manifests:/app/data/manifests
       - /var/run/docker.sock:/var/run/docker.sock
+      - ezmaster-rp-nginx-data:/etc/nginx/conf.d/
     environment:
       http_proxy:  ${http_proxy}
       https_proxy: ${https_proxy}
       no_proxy: ${no_proxy}
       NODE_ENV: "production"
-      EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017"
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}      
       EZMASTER_PUBLIC_IP: ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE: ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
       EZMASTER_FULL_FS_PERCENT: ${EZMASTER_FULL_FS_PERCENT}
       DEBUG: ${DEBUG}
-    working_dir: /app
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
-      - 35267:35267
-    depends_on:
-      - ezmaster_db
-    # Restarts ezmaster when the host server reboot
-    # or if ezmaster nodejs process crashes. NodeJS crashe
-    # appends at first startup because it needs time for mongodb
-    # to initialize. (this option replaces the usual forever or pm2 stuff)
-    restart: unless-stopped
+      - 35269:35269
     networks:
       - eznetwork
+    # Restarts ezmaster when the host server reboot
+    # or if ezmaster nodejs process crashes.
+    restart: unless-stopped
 
   ezmaster-front:
     container_name: ezmaster-front
     image: inistcnrs/ezmaster-front:3.8.2
+    environment:
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
+    links:
+      - ezmaster-api
+    volumes:
+      - ./logs/ezmaster-front-error.log:/var/log/nginx/error.log
+      - ./logs/ezmaster-front-access.log:/var/log/nginx/access.log
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
-      - 35268:80
+      - 35268:35268
     networks:
       - eznetwork
-
-
-  # Mongodb used by ezmaster to store parameters, metadata etc...
-  # about ezmaster apps and instances
-  ezmaster_db:
-    container_name: ezmaster_db
-    image: mongo:3.4.1
-    command: --smallfiles
-    # Restarts mongodb if the host server reboot
     restart: unless-stopped
+
+  ezmaster-rp:
+    container_name: ezmaster-rp
+    image: inistcnrs/ezmaster-rp:3.8.2
+    volumes:
+      - ./logs/ezmaster-rp-error.log:/var/log/nginx/error.log
+      - ./logs/ezmaster-rp-access.log:/var/log/nginx/access.log
+      - ezmaster-rp-nginx-data:/etc/nginx/conf.d/
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
+    ports:
+      - 35267:80
     networks:
       - eznetwork
+    restart: unless-stopped
+
+
+  ezmaster-webdav:
+    container_name: ezmaster-webdav
+    image: inistcnrs/ezmaster-webdav:3.8.2
+    volumes:
+      - ./logs/ezmaster-webdav-error.log:/var/log/nginx/error.log
+      - ./logs/ezmaster-webdav-access.log:/var/log/nginx/access.log
+      - ./data/instances:/media
+    environment:
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
+    ports:
+      - 35270:35270
+    networks:
+      - eznetwork
+    restart: unless-stopped
 
 networks:
   eznetwork:
     driver: bridge
+
+# shared volume used to exchange nginx
+# vhost config for dynamic ezmaster's instances
+volumes:
+  ezmaster-rp-nginx-data:
+
