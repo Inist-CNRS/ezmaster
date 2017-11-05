@@ -25,8 +25,6 @@ cfg.freePortRange = cfg.EZMASTER_FREE_PORT_RANGE || '49152-60000';
 cfg.publicIP      = cfg.EZMASTER_PUBLIC_IP || '127.0.0.1';
 cfg.port          = cfg.EZMASTER_PORT || 35269;
 cfg.publicDomain  = cfg.EZMASTER_PUBLIC_DOMAIN || '';
-cfg.mongoHostPort = cfg.EZMASTER_MONGODB_HOST_PORT;
-cfg.connectionURI = 'mongodb://' + cfg.mongoHostPort + '/ezmaster';
 
 cfg.dataInstancesPath    = path.join(__dirname, '/../data/instances');
 cfg.dataManifestsPath    = path.join(__dirname, '/../data/manifests');

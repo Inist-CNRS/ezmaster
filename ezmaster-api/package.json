@@ -34,7 +34,6 @@
     "mkdirp": "^0.5.1",
     "mmmagic": "^0.4.5",
     "moment": "^2.13.0",
-    "mongodb-querystring": "^1.0.3",
     "multer": "^1.1.0",
     "num-cpus": "^1.1.0",
     "rc": "^1.1.6",

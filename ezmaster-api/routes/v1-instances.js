@@ -408,7 +408,7 @@ router
 
           // prepare the command line to create and run the instance
           var cmd = 'docker run -dt -p ' + portMax + ':' + appConfig.httpPort+ ' '
-          + '-e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT '
+          + '-e http_proxy -e https_proxy -e no_proxy '
           // Restart the instance unless it is explicitly stopped by ezmaster
           // https://docs.docker.com/engine/admin/start-containers-automatically/
           + (process.env.NODE_ENV === 'production' ? '--restart unless-stopped ' : '')
@@ -418,7 +418,7 @@ router
           + '-e EZMASTER_APPLICATION="' + image + '" '
           + '-e DEBUG '
           + '-e EZMASTER_PUBLIC_URL="' + publicUrl + '" '
-          + '--net=ezmaster_eznetwork --link ezmaster_db --link ezmaster '
+          + '--net=ezmaster_eznetwork --link ezmaster-api '
           + '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
           + technicalName + '/config/config.raw:' + appConfig.configPath + ' '
           + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
