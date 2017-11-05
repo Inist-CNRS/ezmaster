@@ -19,17 +19,28 @@ var basicAuth = require('basic-auth-connect');
 var instances = require('./lib/instances.js');
 var DAV       = require('jsDAV/lib/jsdav');
 
-// load routes and middleware
+
 app.use(cors()); // to allow ezmaster-front to call it from client side
-app.use(basicAuth(process.env.EZMASTER_USER, process.env.EZMASTER_PASSWORD));
-app.use(require('./middlewares/reverse-proxy.js'));
+
+// to secure the API
+if (process.env.EZMASTER_USER !== '' && process.env.EZMASTER_PASSWORD !== '') {
+  app.use(basicAuth(process.env.EZMASTER_USER, process.env.EZMASTER_PASSWORD));  
+}
+
+// connect static ressources located in public folder
 app.use(express.static('public'));
+
+// connect the reverse proxy stuff (to be removed in ezmaster 4.0)
+app.use(require('./middlewares/reverse-proxy.js'));
+
+// connect the API routes
 app.use('/-/v1/',          require('./routes/v1.js'));
 app.use('/-/v1/config',    require('./routes/v1-config.js'));
 app.use('/-/v1/app',       require('./routes/v1-app.js'));
 app.use('/-/v1/hub',       require('./routes/v1-hub.js'));
 app.use('/-/v1/instances', require('./routes/v1-instances.js'));
 
+// connect the webdav stuff (to be removed in ezmaster 4.0)
 app.use(function (req, res, next) {
 
   if (req.url.search(/^\/wd--/) >= 0) {
