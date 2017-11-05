@@ -65,7 +65,7 @@ services:
 
   ezmaster-front-debug:
     container_name: ezmaster-front-debug
-    image: node:8.4.0
+    image: node:8.9.0
     volumes:
       - ./ezmaster-front:/app
     working_dir: /app
