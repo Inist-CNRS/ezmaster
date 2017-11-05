@@ -29,9 +29,6 @@ if (process.env.EZMASTER_USER !== '' && process.env.EZMASTER_PASSWORD !== '') {
 // connect static ressources located in public folder
 app.use(express.static('public'));
 
-// connect the reverse proxy stuff (to be removed in ezmaster 4.0)
-app.use(require('./middlewares/reverse-proxy.js'));
-
 // connect the API routes
 app.use('/-/v1/',          require('./routes/v1.js'));
 app.use('/-/v1/config',    require('./routes/v1-config.js'));
