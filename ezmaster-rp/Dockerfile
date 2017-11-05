@@ -8,8 +8,9 @@ RUN apt-get -y update && apt-get -y install vim curl
 COPY ./entrypoint.sh /
 COPY ./nginx.conf    /etc/nginx/nginx.conf
 COPY ./index.html    /app/public/
+COPY ./ezmaster-instance-nginx.conf.tpl /etc/nginx/conf.d/
+RUN rm /etc/nginx/conf.d/default.conf
 
-CMD nginx -g 'daemon off;'
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 35267
