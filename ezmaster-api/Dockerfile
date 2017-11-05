@@ -3,11 +3,10 @@ FROM node:8.4.0
 # install the docker and docker-compose client inside this image
 # ezmaster uses it to manage the app instances
 # (to upgrade see https://hub.docker.com/_/docker/)
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.12.3
-ENV DOCKER_SHA256 626601deb41d9706ac98da23f673af6c0d4631c4d194a677a9a1a07d7219fa0f
+ENV DOCKER_VERSION 17.09.0-ce
+ENV DOCKER_SHA256 a9e90a73c3cdfbf238f148e1ec0eaff5eb181f92f35bdd938fd7dab18e1c4647
 RUN set -x \
-  && curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION.tgz" -o docker.tgz \
+  && curl -fL -o docker.tgz "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz" \
   && echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
   && tar -xzvf docker.tgz \
   && mv docker/* /usr/local/bin/ \
