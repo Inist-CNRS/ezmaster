@@ -28,7 +28,16 @@ run-debug: ## run ezmaster in debug mode
 kill: ## kill ezmaster running containers
 	@docker-compose -f ./docker-compose.debug.yml kill
 
-run-prod: ## run ezmaster in production mode with the full dockerized image (see build)
+setup-prod: ## create folder needed for prod running
+	@mkdir -p logs/
+	@touch logs/ezmaster-webdav-access.log logs/ezmaster-webdav-error.log
+	@touch logs/ezmaster-front-access.log logs/ezmaster-front-error.log
+	@touch logs/ezmaster-rp-access.log logs/ezmaster-rp-error.log
+	@mkdir -p data/istances/
+	@mkdir -p data/manifests/
+	@mkdir -p data/applications/
+
+run-prod: setup-prod ## run ezmaster in production mode with the full dockerized image (see build)
 	@docker-compose -f ./docker-compose.yml up
 
 start-prod: ## start ezmaster production daemon (needs a first run-prod the first time)
