@@ -41,14 +41,20 @@ module.exports.init = function (io) {
     message = Object.assign(message, { technicalName: message.Actor.Attributes.name });
 
     // ignore docker containers not listed as an ezmaster instance
-    instances.getInstancesManifests(function (err, iList) {
-      if (!err && iList[message.technicalName]) {
-        io.sockets.emit('docker-event', message);
+    if (message.Actor.Attributes.ezmasterInstance) {
+
+      // refresh the nginx reverse proxy config (ezmaster-rp)
+      // if a container is started, stopped or destroyed
+      if (['start', 'stop', 'destroy'].indexOf(message.status) !== -1) {
+        // When an instance appears or disapears, we call refreshInstances() to update the
+        // instances list cache and socket emit the updated list to all users.
+        instances.refreshInstances();
+        instances.generateAllRPNginxConfig();
       }
-      // else {
-      //   debug('Unknown docker container skipped: ', message.technicalName, message.id);
-      // }
-    });
+
+      // tell the client something appends to an instance
+      io.sockets.emit('docker-event', message);      
+    }
   }
 
 };

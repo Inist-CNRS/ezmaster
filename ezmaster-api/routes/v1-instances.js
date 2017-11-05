@@ -423,30 +423,26 @@ router
           + technicalName + '/config/config.raw:' + appConfig.configPath + ' '
           + (appConfig.dataPath ? '-v ' + process.env.EZMASTER_PATH + '/data/instances/'
             + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
+          + '--label ezmasterInstance=1 ' // used to know it's an instance when listening docker events
           + '--name ' + technicalName + ' ' + image;
 
-          // and execute the docker run !
-          exec(cmd, function (err, stdout, stderr) {
-            if (err) { return next(err); }
 
-            // creates the instance manifest
-            fs.writeFile(
-              cfg.dataManifestsPath + '/' + technicalName + '.json',
-              JSON.stringify(appConfig, null, 2),
-              function (err) {
+          // creates the instance manifest
+          fs.writeFile(
+            cfg.dataManifestsPath + '/' + technicalName + '.json',
+            JSON.stringify(appConfig, null, 2),
+            function (err) {
+              if (err) { return next(err); }
+              instances.refreshInstances();
+
+              // and execute the docker run !
+              exec(cmd, function (err, stdout, stderr) {
                 if (err) { return next(err); }
-                // When an instance is created, we call refreshInstances() to update the
-                // instances list cache and socket emit the updated list to all users.
-                instances.refreshInstances();
-                // create the reverse proxy config for this new instance
-                instances.generateAllRPNginxConfig(function (err) {
-                  if (err) { return next(err); }
-                  return res.status(200).send('Instance technicalName created');              
-                });
-              }
-            );
+                return res.status(200).send('Instance technicalName created');
+              });
+            }
+          );
 
-          });
 
         });
       });

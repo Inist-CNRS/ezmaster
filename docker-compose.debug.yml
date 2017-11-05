@@ -91,6 +91,7 @@ services:
         - https_proxy
     volumes:
       - ./ezmaster-rp/index.html:/app/public/index.html
+      - ./ezmaster-rp/entrypoint.sh:/entrypoint.sh
       - ./ezmaster-rp/nginx.conf:/etc/nginx/nginx.conf
       - ./ezmaster-rp/ezmaster-instance-nginx.conf.tpl:/etc/nginx/conf.d/ezmaster-instance-nginx.conf.tpl
       - ezmaster-rp-nginx-data:/etc/nginx/conf.d/

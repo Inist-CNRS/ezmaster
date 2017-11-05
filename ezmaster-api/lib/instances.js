@@ -374,17 +374,24 @@ module.exports.checkInstance = function (containerId, cb) {
 
 /**
  * Generates all the Nginx instances config and alias instances config 
- * this function is called every time a new instance is created
+ * this function is called every time a new instance is created (see docker-websocket.js)
  */
 module.exports.generateAllRPNginxConfig = function (cb) {
   let self = this;
-  // todo: cleanup the Nginx conf 
+  debug('generateAllRPNginxConfig started');
+  // cleanup the Nginx conf 
   self.cleanupAllRPNginxConfig(function (err) {
-    if (err) return cb(err);
+    if (err) {
+      debug('generateAllRPNginxConfig finished', err);
+      return cb && cb(err);
+    }
 
     // then create all the nginx config for every ezmaster instances
     self.getInstances(function (err, instances) {
-      if (err) return cb(err);
+      if (err) {
+        debug('generateAllRPNginxConfig finished', err);
+        return cb && cb(err);
+      }        
 
       // sort the instances by number in order to 
       // implement the reverse proxy aliase feature
@@ -403,11 +410,19 @@ module.exports.generateAllRPNginxConfig = function (cb) {
 
       // generate all the instances reverseproxy configurations (nginx)
       async.eachSeries(orderedTechnicalNames, (oneTechnicalName, cbNext) => {
+        // do not generate config for none running instances
+        if (!instances[oneTechnicalName].running) return cbNext(null);
         self.createRPNginxConfig(oneTechnicalName, instances[oneTechnicalName].httpPort, true, cbNext);        
       }, (err) => {
-        if (err) return cb(err);
-        // then reload ngnix and returns (call cb)
-        return self.reloadNginxRP(cb);
+        if (err) {
+          debug('generateAllRPNginxConfig finished', err);
+          return cb && cb(err);
+        }
+        // then reload ngnix and returns success
+        return self.reloadNginxRP(function (err) {
+          debug('generateAllRPNginxConfig finished', err);
+          return cb && cb(err);
+        });
       });
     });
   }); // cleanupAllRPNginxConfig
