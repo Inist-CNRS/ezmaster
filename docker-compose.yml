@@ -1,5 +1,5 @@
 # ezmaster docker-compose.yml dedicated to production
-version: '2'
+version: '3.4'
 
 services:
 

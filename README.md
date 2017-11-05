@@ -13,8 +13,8 @@ Administration of docker applications without any IT skills.
 
 ## Requirements
 
-- [Docker](https://docs.docker.com/engine/installation/) (Version >= 1.12)
-- [Docker Compose](https://docs.docker.com/compose/install/) (Version >= 1.7)
+- [Docker](https://docs.docker.com/engine/installation/) (Version >= 17.09.0)
+- [Docker Compose](https://docs.docker.com/compose/install/) (Version >= 1.17.0)
 - For developments: [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and Make
 
 ## Environment variables
@@ -193,7 +193,9 @@ If you want to save the config and the data of your instances:
   - ezmaster backoffice is available on a new port: 35268
   - ezmaster backoffice api is now splitted on a dedicated port: 35269
   - webdav access is still available but on a new port: 35270
+  - docker and docker-compose need to be upgraded to docker >= 17.09.0 and docker-compose >= 1.17.0
 - Migration guide
+  - upgrade the host to docker >= 17.09.0 and docker-compose >= 1.17.0
   - Stop ... Start ... Do that ... Do that ...
 
 ### ezmaster 3.8.0
