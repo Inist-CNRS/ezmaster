@@ -2,7 +2,7 @@ sudo: required
 services:
   - docker
 env:
-  DOCKER_COMPOSE_VERSION: 1.9.0
+  DOCKER_COMPOSE_VERSION: 1.17.0
 before_install:
   # docker-compose upgrade
   - sudo rm -f /usr/local/bin/docker-compose
@@ -14,16 +14,14 @@ before_install:
   - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
   - sudo apt-get -y install docker-ce
-  # ezmaster install (for make test)
-  - make install
-  # ezmaster server must be alive background before making test
+  # build an run as in prod refgpec
   - make build
-  - docker-compose -f ./docker-compose.debug.yml up --force-recreate -d
-  # to show some logs if the server do not start correctly
+  - docker-compose -f ./docker-compose.yml up -d
   - sleep 120 ; docker-compose logs
 script:
-  - make test
-after_script:
-  - docker-compose logs
+  - docker-compose ps
+  # just test there is 4 running containers, that is not a lot but that's already it!
+  - NB_CONTAINERS=$(docker-compose ps | grep " Up " | wc -l)
+  - test $NB_CONTAINERS = 4
 notifications:
   slack: 'inist-dpi:53Jp5iUZeRidSGZn0TukMSKo#activity'
