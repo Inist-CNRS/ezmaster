@@ -426,15 +426,25 @@ router
           + '--name ' + technicalName + ' ' + image;
 
           // and execute !
-          exec(cmd, function (err, stdout, stderr) { refreshAndReturn(err, appConfig); });
+          exec(cmd, function (err, stdout, stderr) {
+            if (err) { return next(err); }
 
-          // creates the instance manifest
-          fs.writeFile(cfg.dataManifestsPath + '/' + technicalName + '.json',
-            JSON.stringify(appConfig, null, 2),
-            function (err) {
-              if (err) { return next(err); }
-            }
-          );
+            // creates the instance manifest
+            fs.writeFile(
+              cfg.dataManifestsPath + '/' + technicalName + '.json',
+              JSON.stringify(appConfig, null, 2),
+              function (err) {
+                if (err) { return next(err); }
+
+                // When an instance is created, we call refreshInstances() to update the
+                // instances list cache and socket emit the updated list to all users.
+                instances.refreshInstances();
+                return res.status(200).send('Instance created');              
+              }
+            );
+
+          });
+
         });
       });
 
@@ -455,16 +465,6 @@ router
     return checkContainer();
   }
 
-
-  function refreshAndReturn(err, appConfig) {
-    if (err) { return next(err); }
-
-    // When an instance is created, we call refreshInstances() to update the
-    // instances list cache and socket emit the updated list to all users.
-    instances.refreshInstances();
-
-    return res.status(200).send('Instance created');
-  }
 
 }); // End of the route.
 
