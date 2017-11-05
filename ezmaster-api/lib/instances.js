@@ -438,18 +438,20 @@ module.exports.generateAllRPNginxConfig = function (cb) {
  */
 module.exports.createRPNginxConfig = function (technicalName, httpPort, createAlias, cb) {
 
+  const serverName = technicalName + (cfg.publicDomain ? '.' + cfg.publicDomain : '');
   let cmd =
       'cat /etc/nginx/conf.d/ezmaster-instance-nginx.conf.tpl | '
-    + 'sed "s#EZMASTER_RP_INSTANCE_SERVER_NAME#' + technicalName + '#g" | '
+    + 'sed "s#EZMASTER_RP_INSTANCE_SERVER_NAME#' + serverName + '#g" | '
     + 'sed "s#EZMASTER_RP_INSTANCE_HOST#' + technicalName + '#g" | '
     + 'sed "s#EZMASTER_RP_INSTANCE_PORT#' + httpPort + '#g" '
     + '> /etc/nginx/conf.d/' + technicalName + '.conf';
 
   if (createAlias && technicalName.split('-').length > 2) {
     const technicalNameAlias = technicalName.split('-')[0] + '-' + technicalName.split('-')[1];
+    const serverNameAlias = technicalNameAlias + (cfg.publicDomain ? '.' + cfg.publicDomain : '');
     cmd += ' ; '
     + 'cat /etc/nginx/conf.d/ezmaster-instance-nginx.conf.tpl | '
-    + 'sed "s#EZMASTER_RP_INSTANCE_SERVER_NAME#' + technicalNameAlias + '#g" | '
+    + 'sed "s#EZMASTER_RP_INSTANCE_SERVER_NAME#' + serverNameAlias + '#g" | '
     + 'sed "s#EZMASTER_RP_INSTANCE_HOST#' + technicalName + '#g" | '
     + 'sed "s#EZMASTER_RP_INSTANCE_PORT#' + httpPort + '#g" '
     + '> /etc/nginx/conf.d/' + technicalNameAlias + '.conf';
