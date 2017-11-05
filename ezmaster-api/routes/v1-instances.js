@@ -425,7 +425,7 @@ router
             + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
           + '--name ' + technicalName + ' ' + image;
 
-          // and execute !
+          // and execute the docker run !
           exec(cmd, function (err, stdout, stderr) {
             if (err) { return next(err); }
 
@@ -435,11 +435,14 @@ router
               JSON.stringify(appConfig, null, 2),
               function (err) {
                 if (err) { return next(err); }
-
                 // When an instance is created, we call refreshInstances() to update the
                 // instances list cache and socket emit the updated list to all users.
                 instances.refreshInstances();
-                return res.status(200).send('Instance created');              
+                // create the reverse proxy config for this new instance
+                instances.generateAllRPNginxConfig(function (err) {
+                  if (err) { return next(err); }
+                  return res.status(200).send('Instance technicalName created');              
+                });
               }
             );
 

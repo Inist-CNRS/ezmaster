@@ -1,9 +1,9 @@
 
 server {
   listen 80;
-  server_name EZMASTER_INSTANCE_TECHNICAL_NAME;
+  server_name EZMASTER_RP_INSTANCE_SERVER_NAME;
 
   location / {
-    proxy_pass http://EZMASTER_INSTANCE_TECHNICAL_NAME:EZMASTER_INSTANCE_HTTP_PORT;
+    proxy_pass http://EZMASTER_RP_INSTANCE_HOST:EZMASTER_RP_INSTANCE_PORT;
   }
 }

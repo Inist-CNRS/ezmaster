@@ -372,4 +372,100 @@ module.exports.checkInstance = function (containerId, cb) {
 };
 
 
+/**
+ * Generates all the Nginx instances config and alias instances config 
+ * this function is called every time a new instance is created
+ */
+module.exports.generateAllRPNginxConfig = function (cb) {
+  let self = this;
+  // todo: cleanup the Nginx conf 
+  self.cleanupAllRPNginxConfig(function (err) {
+    if (err) return cb(err);
 
+    // then create all the nginx config for every ezmaster instances
+    self.getInstances(function (err, instances) {
+      if (err) return cb(err);
+
+      // sort the instances by number in order to 
+      // implement the reverse proxy aliase feature
+      // ex input: [ 'a-b-5', 'o-p-6', 'a-b-3', 'o-p-8', 'a-b', 'o-p-4', 'a-b-4' ]
+      // ex output : [ 'a-b-3', 'a-b-4', 'a-b-5', 'o-p-4', 'o-p-6', 'o-p-8', 'a-b' ]
+      const orderedTechnicalNames = Object.keys(instances).sort(function (item1, item2) {
+        item1 = item1.split('-');
+        item2 = item2.split('-');
+        if (item1.length <= 2 || item2.length <= 2) return 1;
+        if (item1[0] === item2[0] && item1[1] === item2[1]) {
+          return parseInt(item1[2]) < parseInt(item2[2]) ? 1 : -1;
+        } else {
+          return 1;
+        }
+      }).reverse();
+
+      // generate all the instances reverseproxy configurations (nginx)
+      async.eachSeries(orderedTechnicalNames, (oneTechnicalName, cbNext) => {
+        self.createRPNginxConfig(oneTechnicalName, instances[oneTechnicalName].httpPort, true, cbNext);        
+      }, (err) => {
+        if (err) return cb(err);
+        // then reload ngnix and returns (call cb)
+        return self.reloadNginxRP(cb);
+      });
+    });
+  }); // cleanupAllRPNginxConfig
+
+};
+
+
+/**
+ * Generates the raw nginx config file 
+ * it uses technicalName and httpPort parameters to instanciate from a config template
+ * if createAlias is true, it also creates the alias config of the instance ex:
+ * techName = "my-blog-4" ==> techNameAlias = "my-blog" 
+ */
+module.exports.createRPNginxConfig = function (technicalName, httpPort, createAlias, cb) {
+
+  let cmd =
+      'cat /etc/nginx/conf.d/ezmaster-instance-nginx.conf.tpl | '
+    + 'sed "s#EZMASTER_RP_INSTANCE_SERVER_NAME#' + technicalName + '#g" | '
+    + 'sed "s#EZMASTER_RP_INSTANCE_HOST#' + technicalName + '#g" | '
+    + 'sed "s#EZMASTER_RP_INSTANCE_PORT#' + httpPort + '#g" '
+    + '> /etc/nginx/conf.d/' + technicalName + '.conf';
+
+  if (createAlias && technicalName.split('-').length > 2) {
+    const technicalNameAlias = technicalName.split('-')[0] + '-' + technicalName.split('-')[1];
+    cmd += ' ; '
+    + 'cat /etc/nginx/conf.d/ezmaster-instance-nginx.conf.tpl | '
+    + 'sed "s#EZMASTER_RP_INSTANCE_SERVER_NAME#' + technicalNameAlias + '#g" | '
+    + 'sed "s#EZMASTER_RP_INSTANCE_HOST#' + technicalName + '#g" | '
+    + 'sed "s#EZMASTER_RP_INSTANCE_PORT#' + httpPort + '#g" '
+    + '> /etc/nginx/conf.d/' + technicalNameAlias + '.conf';
+  }
+
+  debug('createRPNginxConfig', cmd);
+
+  exec(cmd, function (err, stdout, stderr) {
+    if (err) return cb(err);
+    return cb(null);
+  });
+};
+
+/**
+ * Remove all the nginx config
+ */
+module.exports.cleanupAllRPNginxConfig = function (cb) {
+  let cmd = 'rm -f /etc/nginx/conf.d/*.conf';
+  exec(cmd, function (err, stdout, stderr) {
+    if (err) return cb(err);
+    return cb(null);
+  });
+};
+
+/**
+ * Reload nginx daemon (it will take into account all the config)
+ */
+module.exports.reloadNginxRP = function (cb) {
+  let cmd = 'docker exec ezmaster-rp /etc/init.d/nginx reload';
+  exec(cmd, function (err, stdout, stderr) {
+    if (err) return cb(err);
+    return cb(null);
+  });
+};
