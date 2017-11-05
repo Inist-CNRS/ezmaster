@@ -51,8 +51,12 @@ require('./lib/docker-websocket.js').init(io);
 
 server.listen(cfg.EZMASTER_PORT, function () {
   console.info(kuler(cfg.package.name + ' ' + cfg.package.version + ' is listening.', 'olive'));
-  console.info('EzMaster backoffice:    ' +
-               kuler('http://' + cfg.publicIP + ':' + cfg.EZMASTER_PORT + '/', 'limegreen'));
+  console.info('EzMaster IHM:    ' +
+               kuler('http://' + cfg.publicIP + ':35268/', 'limegreen'));
+  console.info('EzMaster API:    ' +
+               kuler('http://' + cfg.publicIP + ':35269/-/v1/', 'limegreen'));
+  console.info('EzMaster Webdav: ' +
+               kuler('http://' + cfg.publicIP + ':35270/', 'limegreen'));
   if (cfg.publicDomain) {
     console.info('EzMaster reverse proxy: ' +
                  kuler('http://*.' + cfg.publicDomain + '/', 'limegreen'));
