@@ -5,7 +5,7 @@ services:
 
   ezmaster-api:
     container_name: ezmaster-api
-    image: inistcnrs/ezmaster-api:3.8.2
+    image: inistcnrs/ezmaster:3.8.2-api
     links:
       - ezmaster_db
     volumes:
@@ -39,7 +39,7 @@ services:
 
   ezmaster-front:
     container_name: ezmaster-front
-    image: inistcnrs/ezmaster-front:3.8.2
+    image: inistcnrs/ezmaster:3.8.2-front
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
@@ -58,7 +58,7 @@ services:
 
   ezmaster-rp:
     container_name: ezmaster-rp
-    image: inistcnrs/ezmaster-rp:3.8.2
+    image: inistcnrs/ezmaster:3.8.2-rp
     volumes:
       - ./logs/ezmaster-rp-error.log:/var/log/nginx/error.log
       - ./logs/ezmaster-rp-access.log:/var/log/nginx/access.log
@@ -74,7 +74,7 @@ services:
 
   ezmaster-webdav:
     container_name: ezmaster-webdav
-    image: inistcnrs/ezmaster-webdav:3.8.2
+    image: inistcnrs/ezmaster:3.8.2-webdav
     volumes:
       - ./logs/ezmaster-webdav-error.log:/var/log/nginx/error.log
       - ./logs/ezmaster-webdav-access.log:/var/log/nginx/access.log

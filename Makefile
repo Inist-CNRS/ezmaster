@@ -19,7 +19,7 @@ install: ## install depedencies thanks to a dockerized npm install
 	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm install
 	@make chown
 
-build: ## build the docker inistcnrs/ezmaster image localy
+build: ## build the docker inistcnrs/ezmaster images localy
 	@docker-compose -f ./docker-compose.debug.yml build 
 
 run-debug: ## run ezmaster in debug mode
