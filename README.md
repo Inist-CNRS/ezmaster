@@ -75,7 +75,7 @@ export EZMASTER_USER="ezmaster"
 export EZMASTER_PASSWORD="changeme"
 docker-compose up -d
 
-# then ezmaster is listening at http://<Your ezmaster server IP>:35267
+# then ezmaster is listening at http://<Your ezmaster server IP>:35268
 # and the instances can be accessed at http://<tech-name>.lod-test.istex.fr
 ```
 
@@ -87,7 +87,7 @@ make install                   # installs npm dependencies
 make build                     # builds the docker image used byt docker-compose.debug.yml
 DEBUG=ezmaster* make run-debug # starts ezmaster in debug mode (CTRL+C to quit)
 ```
-Then ezmaster is listening at http://127.0.0.1:35267/
+Then ezmaster is listening at http://127.0.0.1:35268/
 
 ## Ezmasterizing an application
 
@@ -154,7 +154,7 @@ to this instance:
 ### How to test your first ezmaster application ? 
 
 - Add the application
-  - Open ezmaster web interface: http://<Your ezmaster server IP>:35267
+  - Open ezmaster web interface: http://<Your ezmaster server IP>:35268
   - Click the "Applications" tab, and "Add Application" button
   - Then write the name of the application ``inistcnrs/ezvis`` and its version ``6.8.6``
   - And click on "Create" and wait for the pull (it can take several minutes)
