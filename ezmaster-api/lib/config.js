@@ -26,6 +26,11 @@ cfg.publicIP      = cfg.EZMASTER_PUBLIC_IP || '127.0.0.1';
 cfg.port          = cfg.EZMASTER_PORT || 35269;
 cfg.publicDomain  = cfg.EZMASTER_PUBLIC_DOMAIN || '';
 
+
+// ezmaster_db will be deprecated (removed) in ezmaster v5
+cfg.mongoHostPort = cfg.EZMASTER_MONGODB_HOST_PORT;
+cfg.connectionURI = 'mongodb://' + cfg.mongoHostPort + '/ezmaster';
+
 cfg.dataInstancesPath    = path.join(__dirname, '/../data/instances');
 cfg.dataManifestsPath    = path.join(__dirname, '/../data/manifests');
 cfg.dataApplicationsPath = path.join(__dirname, '/../data/applications');

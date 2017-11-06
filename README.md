@@ -132,6 +132,7 @@ RUN echo '{ \
 When ezmaster launches your application, it provides few environment variables
 to this instance:
 
+- `EZMASTER_MONGODB_HOST_PORT`: (will be deprecated in ezmaster v5), ex: `ezmaster_db:27017`
 - `EZMASTER_TECHNICAL_NAME`: the identifier of the instance within ezmaster (ex: `myapp-usage-1`)
 - `EZMASTER_LONG_NAME`: a free label for the instance (ex: `This instance is used for the customer C, and maintained by Matt`)
 - `EZMASTER_APPLICATION`: the complete tag of your application's docker image (ex: `inistcnrs/ezmaster-hexo:1.0.3`)
@@ -183,7 +184,7 @@ You finally should have something like this:
 If you want to save the config and the data of your instances:
 - you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
 - you also have to save the mongodb database contained in the ezmaster_db docker container: `docker exec -it ezmaster_db mongodump --quiet --archive=- > ezmaster_db_archive`
-  (ezmaster_db has been removed since ezmaster ⩾ 4.0.0)
+  (ezmaster_db will be deprecated in ezmaster ⩾ v5)
 
 
 ## Technical architecture
@@ -198,7 +199,6 @@ If you want to save the config and the data of your instances:
 - ezmaster backoffice and webdav access is now allowing login/password (env parameters are EZMASTER_USER and EZMASTER_PASSWORD)
 - Breaking changes
   - docker and docker-compose need to be upgraded to docker >= 17.09.0 and docker-compose >= 1.17.0
-  - ezmaster_db (mongodb) has been removed: your applications must handle their data itself
   - ezmaster backoffice is available on a new port: 35268
   - ezmaster  api is now splitted on a dedicated port: 35269
   - webdav access is still available but on a new port: 35270

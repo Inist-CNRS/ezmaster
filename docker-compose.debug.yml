@@ -11,6 +11,8 @@ services:
       args:
         - http_proxy
         - https_proxy
+    links: # will be deprecated in ezmaster v5
+      - ezmaster_db # will be deprecated in ezmaster v5
     volumes:
       - ./ezmaster-api:/app
       - ./data/applications:/app/data/applications
@@ -22,6 +24,7 @@ services:
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}      
+      EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017" # will be deprecated in ezmaster v5
       EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
@@ -120,6 +123,15 @@ services:
       - 35270:35270
     networks:
       - eznetwork
+
+  ezmaster_db: # will be deprecated in ezmaster v5
+    container_name: ezmaster_db  # will be deprecated in ezmaster v5
+    image: mongo:3.4.1  # will be deprecated in ezmaster v5
+    ports: # will be deprecated in ezmaster v5
+      - 27017:27017 # will be deprecated in ezmaster v5
+    command: --smallfiles # will be deprecated in ezmaster v5
+    networks: # will be deprecated in ezmaster v5
+      - eznetwork # will be deprecated in ezmaster v5
 
 networks:
   eznetwork:

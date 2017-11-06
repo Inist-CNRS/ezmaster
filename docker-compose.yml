@@ -6,7 +6,8 @@ services:
   ezmaster-api:
     container_name: ezmaster-api
     image: inistcnrs/ezmaster-api:3.8.2
-    volumes:
+    links:
+      - ezmaster_db
     volumes:
       - ./data/applications:/app/data/applications
       - ./data/instances:/app/data/instances
@@ -86,6 +87,19 @@ services:
     networks:
       - eznetwork
     restart: unless-stopped
+
+  # Mongodb used by ezmaster to store parameters, metadata etc...
+  # about ezmaster apps and instances
+  # it will be deprecated (removed) in ezmaster v5
+  ezmaster_db:
+    container_name: ezmaster_db
+    image: mongo:3.4.1
+    command: --smallfiles
+    # Restarts mongodb if the host server reboot
+    restart: unless-stopped
+    networks:
+      - eznetwork
+
 
 networks:
   eznetwork:
