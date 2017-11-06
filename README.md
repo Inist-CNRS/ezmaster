@@ -13,8 +13,8 @@ Administration of docker applications without any IT skills.
 
 ## Requirements
 
-- [Docker](https://docs.docker.com/engine/installation/) (Version >= 17.09.0)
-- [Docker Compose](https://docs.docker.com/compose/install/) (Version >= 1.17.0)
+- [Docker](https://docs.docker.com/engine/installation/) (Version ⩾ 17.09.0)
+- [Docker Compose](https://docs.docker.com/compose/install/) (Version ⩾ 1.17.0)
 - For developments: [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and Make
 
 ## Environment variables
@@ -23,7 +23,7 @@ To configure ezmaster, setup these environment variables before running ezmaster
 
 ```shell
 # The user/password used to secure the ezmaster backoffice
-# Default is none
+# Default is none (not filled)
 export EZMASTER_USER="ezmaster"
 export EZMASTER_PASSWORD="changeme"
 
@@ -76,6 +76,7 @@ export EZMASTER_PASSWORD="changeme"
 docker-compose up -d
 
 # then ezmaster is listening at http://<Your ezmaster server IP>:35268
+# and publicly available on http://ezmaster.lod-test.istex.fr (protected by login/pwd)
 # and the instances can be accessed at http://<tech-name>.lod-test.istex.fr
 ```
 
@@ -196,7 +197,11 @@ If you want to save the config and the data of your instances:
 
 ### ezmaster 4.0.0
 
-- ezmaster backoffice and webdav access is now allowing login/password (env parameters are EZMASTER_USER and EZMASTER_PASSWORD)
+- Login/password feature is now available to protect ezmaster backoffice and webdav (env parameters are ``EZMASTER_USER`` and ``EZMASTER_PASSWORD``)
+
+- EzMaster backoffice is now available publicly (with login/pwd) when ``EZMASTER_PUBLIC_DOMAIN``, ``EZMASTER_USER``, and ``EZMASTER_PASSWORD`` are filled.
+  Access exemple: http://ezmaster.mywebsite.com (if ``EZMASTER_PUBLIC_DOMAIN="mywebsite.com"``)
+
 - Breaking changes
   - docker and docker-compose need to be upgraded to docker >= 17.09.0 and docker-compose >= 1.17.0
   - ezmaster backoffice is available on a new port: 35268
@@ -204,6 +209,7 @@ If you want to save the config and the data of your instances:
   - webdav access is still available but on a new port: 35270
   - instances are available as before through a reverse proxy on the port 35267
     (but a rewritten reverse proxy based on nginx is now handling this feature)
+
 - Migration guide
   - be sure your ezmaster is in the version 3.8.x
 

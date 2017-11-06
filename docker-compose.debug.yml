@@ -96,6 +96,7 @@ services:
       - ./ezmaster-rp/entrypoint.sh:/entrypoint.sh
       - ./ezmaster-rp/nginx.conf:/etc/nginx/nginx.conf
       - ./ezmaster-rp/ezmaster-instance-nginx.conf.tpl:/etc/nginx/ezmaster-instance-nginx.conf.tpl
+      - ./ezmaster-rp/ezmaster-public-nginx.conf.tpl:/etc/nginx/ezmaster-public-nginx.conf.tpl
       - ezmaster-rp-nginx-data:/etc/nginx/conf.d/
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug

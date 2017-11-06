@@ -48,6 +48,10 @@ server.listen(cfg.EZMASTER_PORT, function () {
   console.info(kuler(cfg.package.name + ' ' + cfg.package.version + ' is listening.', 'olive'));
   console.info('ezmaster-front (backoffice IHM):       ' +
                kuler('http://' + cfg.publicIP + ':35268/', 'limegreen'));
+  if (cfg.publicDomain && cfg.EZMASTER_USER && cfg.EZMASTER_PASSWORD) {
+    console.info('     or publicly available here:       ' +
+      kuler('http://ezmaster.' + cfg.publicDomain + '/', 'limegreen'));
+  }
   console.info('ezmaster-api:                          ' +
                kuler('http://' + cfg.publicIP + ':35269/-/v1/', 'limegreen'));
   console.info('ezmaster-webdav:                       ' +

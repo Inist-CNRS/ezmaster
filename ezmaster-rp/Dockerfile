@@ -9,6 +9,7 @@ COPY ./entrypoint.sh /
 COPY ./nginx.conf    /etc/nginx/nginx.conf
 COPY ./index.html    /app/public/
 COPY ./ezmaster-instance-nginx.conf.tpl /etc/nginx/
+COPY ./ezmaster-public-nginx.conf.tpl /etc/nginx/
 RUN rm /etc/nginx/conf.d/default.conf
 
 ENTRYPOINT ["/entrypoint.sh"]

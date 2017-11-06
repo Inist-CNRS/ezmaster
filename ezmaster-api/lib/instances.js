@@ -386,48 +386,58 @@ module.exports.generateAllRPNginxConfig = function (cb) {
       return cb && cb(err);
     }
 
-    // then create all the nginx config for every ezmaster instances
-    self.getInstances(function (err, instances) {
+    // then create the ezmaster public access nginx config
+    self.createEzMasterPublicRPNginxConfig(function (err) {
       if (err) {
-        debug('generateAllRPNginxConfig finished', err);
+        debug('createEzMasterPublicRPNginxConfig error', err);
         return cb && cb(err);
       }
 
-      // sort the instances by number in order to
-      // implement the reverse proxy aliase feature
-      // ex input: [ 'a-b-5', 'o-p-6', 'a-b-3', 'o-p-8', 'a-b', 'o-p-4', 'a-b-4' ]
-      // ex output : [ 'a-b-3', 'a-b-4', 'a-b-5', 'o-p-4', 'o-p-6', 'o-p-8', 'a-b' ]
-      const orderedTechnicalNames = Object.keys(instances).sort(function (item1, item2) {
-        item1 = item1.split('-');
-        item2 = item2.split('-');
-        if (item1.length <= 2 || item2.length <= 2) return 1;
-        if (item1[0] === item2[0] && item1[1] === item2[1]) {
-          return parseInt(item1[2]) < parseInt(item2[2]) ? 1 : -1;
-        }
-        return 1;
-      }).reverse();
-
-      // generate all the instances reverseproxy configurations (nginx)
-      async.eachSeries(orderedTechnicalNames, (oneTechnicalName, cbNext) => {
-        // do not generate config for none running instances
-        if (!instances[oneTechnicalName].running) return cbNext(null);
-        self.createRPNginxConfig(
-          oneTechnicalName,
-          instances[oneTechnicalName].httpPort,
-          true, cbNext
-        );
-      }, (err) => {
+      // then create all the nginx config for every ezmaster instances
+      self.getInstances(function (err, instances) {
         if (err) {
           debug('generateAllRPNginxConfig finished', err);
           return cb && cb(err);
         }
-        // then reload ngnix and returns success
-        return self.reloadNginxRP(function (err) {
-          debug('generateAllRPNginxConfig finished', err);
-          return cb && cb(err);
+
+        // sort the instances by number in order to
+        // implement the reverse proxy aliase feature
+        // ex input: [ 'a-b-5', 'o-p-6', 'a-b-3', 'o-p-8', 'a-b', 'o-p-4', 'a-b-4' ]
+        // ex output : [ 'a-b-3', 'a-b-4', 'a-b-5', 'o-p-4', 'o-p-6', 'o-p-8', 'a-b' ]
+        const orderedTechnicalNames = Object.keys(instances).sort(function (item1, item2) {
+          item1 = item1.split('-');
+          item2 = item2.split('-');
+          if (item1.length <= 2 || item2.length <= 2) return 1;
+          if (item1[0] === item2[0] && item1[1] === item2[1]) {
+            return parseInt(item1[2]) < parseInt(item2[2]) ? 1 : -1;
+          }
+          return 1;
+        }).reverse();
+
+        // generate all the instances reverseproxy configurations (nginx)
+        async.eachSeries(orderedTechnicalNames, (oneTechnicalName, cbNext) => {
+          // do not generate config for none running instances
+          if (!instances[oneTechnicalName].running) return cbNext(null);
+          self.createRPNginxConfig(
+            oneTechnicalName,
+            instances[oneTechnicalName].httpPort,
+            true, cbNext
+          );
+        }, (err) => {
+          if (err) {
+            debug('generateAllRPNginxConfig finished', err);
+            return cb && cb(err);
+          }
+          // then reload ngnix and returns success
+          return self.reloadNginxRP(function (err) {
+            debug('generateAllRPNginxConfig finished', err);
+            return cb && cb(err);
+          });
         });
       });
-    });
+
+    }); // createEzMasterPublicRPNginxConfig
+
   }); // cleanupAllRPNginxConfig
 
 };
@@ -461,6 +471,31 @@ module.exports.createRPNginxConfig = function (technicalName, httpPort, createAl
   }
 
   debug('createRPNginxConfig', cmd);
+
+  exec(cmd, function (err, stdout, stderr) {
+    if (err) return cb(err);
+    return cb(null);
+  });
+};
+
+/**
+ * Generates the ezmaster public access nginx config file if necessary
+ */
+module.exports.createEzMasterPublicRPNginxConfig = function (cb) {
+
+  // skip ezmaster public access reverse proxy creation
+  // if no password or no public domain
+  if (!cfg.publicDomain || !cfg.EZMASTER_USER || !cfg.EZMASTER_PASSWORD) {
+    debug('createEzMasterPublicRPNginxConfig skipped');
+    return cb(null);
+  }
+
+  let cmd =
+      'cat /etc/nginx/conf.d/ezmaster-public-nginx.conf.tpl | '
+    + 'sed "s#EZMASTER_PUBLIC_DOMAIN#' + cfg.publicDomain + '#g" '
+    + '> /etc/nginx/conf.d/ezmaster.conf';
+
+  debug('createEzMasterPublicRPNginxConfig', cmd);
 
   exec(cmd, function (err, stdout, stderr) {
     if (err) return cb(err);
