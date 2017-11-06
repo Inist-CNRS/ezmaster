@@ -11,7 +11,8 @@
     "preversion": "npm run lint",
     "version": "npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package.json ezmaster-front/package.json docker-compose*.yml",
     "postversion": "git push && git push --tags",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "postinstall": "cd ezmaster-api/ ; npm i --unsafe-perm ; cd ../ezmaster-front/ ; npm i --unsafe-perm"
   },
   "keywords": [
     "docker",
