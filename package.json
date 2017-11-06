@@ -7,9 +7,9 @@
     "lint": "eslint --ext=.js,.vue ./ezmaster-api/index.js ./ezmaster-api/routes/ ./ezmaster-api/middlewares/ ./test/ ./ezmaster-api/lib/ ./ezmaster-front/public/src/",
     "insertversion:docker": "sed -i \"s#\\(image: inistcnrs/ezmaster-[a-z]\\+:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
     "insertversion:index": "sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html",
-    "insertversion:package": "sed -i \"s#\\(\\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" ezmaster-front/package.json ezmaster-api/package.json",
+    "insertversion:package": "sed -i \"s#^\\(  \\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" ezmaster-front/package*.json ezmaster-api/package*.json",
     "preversion": "npm run lint",
-    "version": "npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package.json ezmaster-front/package.json docker-compose*.yml",
+    "version": "npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package*.json ezmaster-front/package*.json docker-compose*.yml",
     "postversion": "git push && git push --tags",
     "precommit": "npm run lint",
     "postinstall": "cd ezmaster-api/ ; npm i --unsafe-perm ; cd ../ezmaster-front/ ; npm i --unsafe-perm"
