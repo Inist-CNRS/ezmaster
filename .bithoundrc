@@ -1,7 +1,7 @@
 {
   "ignore": [
     "**/node_modules/**",
-    "public/libs/**",
+    "ezmaster-front/public/libs/**",
     "**/ie10-viewport-bug-workaround.js",
     "**/ie-emulation-modes-warning.js",
     "**/ie8-responsive-file-warning.js"
