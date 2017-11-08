@@ -197,35 +197,60 @@ If you want to save the config and the data of your instances:
 
 ### ezmaster 4.0.0
 
-- Login/password feature is now available to protect ezmaster backoffice and webdav (env parameters are ``EZMASTER_USER`` and ``EZMASTER_PASSWORD``)
+* Login/password feature is now available to protect ezmaster backoffice and webdav (env parameters are ``EZMASTER_USER`` and ``EZMASTER_PASSWORD``)
 
-- EzMaster backoffice is now available publicly (with login/pwd) when ``EZMASTER_PUBLIC_DOMAIN``, ``EZMASTER_USER``, and ``EZMASTER_PASSWORD`` are filled.
+* EzMaster backoffice is now available publicly (with login/pwd) when ``EZMASTER_PUBLIC_DOMAIN``, ``EZMASTER_USER``, and ``EZMASTER_PASSWORD`` are filled.
   Access exemple: http://ezmaster.mywebsite.com (if ``EZMASTER_PUBLIC_DOMAIN="mywebsite.com"``)
 
-- Breaking changes
-  - docker and docker-compose need to be upgraded to docker >= 17.09.0 and docker-compose >= 1.17.0
-  - ezmaster backoffice is available on a new port: 35268
-  - ezmaster  api is now splitted on a dedicated port: 35269
-  - webdav access is still available but on a new port: 35270
-  - instances are available as before through a reverse proxy on the port 35267
-    (but a rewritten reverse proxy based on nginx is now handling this feature)
+Breaking changes:
+  
+* docker and docker-compose need to be upgraded to docker >= 17.09.0 and docker-compose >= 1.17.0
+* ezmaster backoffice is available on a new port: 35268
+* ezmaster  api is now splitted on a dedicated port: 35269
+* webdav access is still available but on a new port: 35270
+* instances are available as before through a reverse proxy on the port 35267
+  (but a rewritten reverse proxy based on nginx is now handling this feature)
 
-- Migration guide
-  - be sure your ezmaster is in the version 3.8.x
+Migration guide:
 
-  - stop ezmaster and upgrade the host to docker >= 17.09.0 and docker-compose >= 1.17.0
+* be sure your ezmaster is in the version 3.8.x
+* stop ezmaster and upgrade the host to docker >= 17.09.0 and docker-compose >= 1.17.0
+* download and run the upgrade script (it will patch the docker container of the ezmaster instances):
 
-  - download and run the upgrade script (it will patch the docker container of the ezmaster instances):
+  ```shell
+  cd ezmaster/
+  wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/scripts/upgrade-3.8-to-4.0
+  chmod +x upgrade-3.8-to-4.0
+  sudo EZMASTER_DATA_PATH=./data ./upgrade-3.8-to-4.0
+  ```
 
-    ```shell
-    cd ezmaster/
-    wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/scripts/upgrade-3.8-to-4.0
-    chmod +x upgrade-3.8-to-4.0
-    sudo EZMASTER_DATA_PATH=./data ./upgrade-3.8-to-4.0
-    ```
-
-  - install the new ezmaster as usual
+* install the new ezmaster as usual
 
 ### ezmaster 3.8.0
 
 - ezmaster is able to support `text` or `json` configuration for instances (see configPath and configType)
+
+### ezmaster 3.5.1
+
+Breaking changes:
+
+* ezmaster is now running on a dedicated docker network 
+* ezmaster instances are now taking the httpPort into the ``manifests/my-instance.json``
+
+Migration guide
+
+* after the new ezmaster version is installed and started, you have to connect all the existing ezmaster instances to the new ezmaster docker network this way:
+  
+  ```shell
+  EZMASTER_INSTANCE="lodex-ezark-1" # this is an example, please adapt to your instance name
+  docker network disconnect ezmaster_default $EZMASTER_INSTANCE
+  docker network connect ezmaster_eznetwork $EZMASTER_INSTANCE
+  ```
+
+* check your instances manifest in ``data/manifests/*.json`` and add the "httpPort" key/value if not already existing. The value of the httpPort can be requested from the given ezmaster application with this shell command:
+  
+  ```shell
+  EZMASTER_APPLICATION="inistcnrs/refgpec-api:1.0.8" # this is an example, please adapt to your application name
+  docker run -it --rm --entrypoint="/bin/cat" $EZMASTER_APPLICATION /etc/ezmaster.json
+  ```
+
