@@ -16,19 +16,28 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
 endif
 
 install: ## install depedencies thanks to a dockerized npm install
-	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.4.0 npm install
+	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm install --unsafe-perm
 	@make chown
 
-build: ## build the docker inistcnrs/ezmaster image localy
-	@docker build -t inistcnrs/ezmaster --build-arg http_proxy --build-arg https_proxy .
+build: ## build the docker inistcnrs/ezmaster images localy
+	@docker-compose -f ./docker-compose.debug.yml build 
 
-run-debug: ## run ezmaster in debug mode with dockerized nodejs and mongodb process
-	@docker-compose -f ./docker-compose.debug.yml up -d
-	@# attach to the ezmaster container in order to be able to stop it easily with CTRL+C
-	@docker attach ezmaster
+setup-folders: # create folder needed for logs and data
+	@mkdir -p logs/ezmaster-front/
+	@mkdir -p logs/ezmaster-webdav/
+	@mkdir -p logs/ezmaster-rp/instances/
+	@mkdir -p data/instances/
+	@mkdir -p data/manifests/
+	@mkdir -p data/applications/
 
-run-prod: ## run ezmaster in production mode with the full dockerized image (see build)
-	@docker-compose -f ./docker-compose.yml up -d
+run-debug: setup-folders ## run ezmaster in debug mode
+	@docker-compose -f ./docker-compose.debug.yml up
+
+kill: ## kill ezmaster running containers
+	@docker-compose -f ./docker-compose.debug.yml kill
+
+run-prod: setup-folders ## run ezmaster in production mode with the full dockerized image (see build)
+	@docker-compose -f ./docker-compose.yml up
 
 start-prod: ## start ezmaster production daemon (needs a first run-prod the first time)
 	@docker-compose -f ./docker-compose.yml start
@@ -38,20 +47,14 @@ stop-prod: ## stop ezmaster production daemon
 
 # makefile rule used to keep current user's unix rights on the docker mounted files
 chown:
-	@test ! -d $$(pwd)/node_modules || docker run -it --rm -v $$(pwd):/app node:8.4.0 chown -R $$(id -u):$$(id -g) /app/
+	@test ! -d $$(pwd)/node_modules || docker run -it --rm -v $$(pwd):/app node:8.9.0 chown -R $$(id -u):$$(id -g) /app/
 
 npm: ## npm wrapper. example: make npm install --save mongodb-querystring
-	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.4.0 npm $(filter-out $@,$(MAKECMDGOALS))
+	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm $(filter-out $@,$(MAKECMDGOALS))
 	@make chown
 
-test: ## run ezmaster unit tests
-	@docker-compose -f ./docker-compose.debug.yml exec ezmaster npm test
-
-coverage: ## run istanbul to have how much % of the ezmaster code is covered by tests
-	@docker-compose -f ./docker-compose.debug.yml exec ezmaster ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec
-
 lint: ## checks the coding rules (in a dockerized process)
-	@docker run -it --rm -v $$(pwd):/app -w /app -e NODE_ENV -e http_proxy -e https_proxy node:8.4.0 npm run lint
+	@docker run -it --rm -v $$(pwd):/app -w /app -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm run lint
 
 clean: ## remove node_modules and temp files
 	@rm -Rf ./node_modules/ ./npm-debug.log

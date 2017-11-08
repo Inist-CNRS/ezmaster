@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8" />
+    <title>EzMaster</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <link href="/favicon.ico" rel="icon" />
+
+    <!-- Bootstrap core CSS + Font-Awesome -->
+    <link href="/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/libs/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link href="/libs/jsoneditor/dist/jsoneditor.css" rel="stylesheet" type="text/css" />
+    <script src="/libs/jsoneditor/dist/jsoneditor.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="/dist/bundle.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+
+  <body>
+    <div id="content">
+      <App></App>
+    </div>
+
+
+    <footer class="ezfooter">
+      <hr>
+      <div class="col-lg-12">
+        <div class="col-md-8">
+          <p class="muted pull-left">
+            <a href="https://github.com/Inist-CNRS/ezmaster">EzMaster</a> version 3.8.2
+          </p>
+        </div>
+        <div class="col-md-4">
+          <p class="muted pull-right">
+
+            <a href="https://trello.com/b/GCu64gDf/ezmaster-suivi-du-projet"><img src="/img/trello_20x20.png" alt="french trello board" /></a>
+            <a href="https://github.com/Inist-CNRS/ezmaster"><img src="/img/github_20x20.png" alt="ezmaster source code" /></a>
+            <a href="https://twitter.com/inist_ezmaster"><img src="https://img.shields.io/twitter/follow/inist_ezmaster.svg?style=social&amp;label=Follow" alt="Ezmaster tweets" /></a>
+
+          </p>
+        </div>
+      </div>
+    </footer>
+
+
+    <!--
+      Get the socket.io.js script.
+      It is automatically provided by the nodeJS server thanks to the socket.io module.
+      It allows to manage communication with the server from client side.
+    -->
+    <script src="/libs/socket.io-client/dist/socket.io.js"></script>
+
+    <!-- Bootstrap core JavaScript
+         Placed at the end of the document so the pages load faster -->
+    <script src="/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="/dist/bundle.js"></script>
+
+  </body>
+</html>

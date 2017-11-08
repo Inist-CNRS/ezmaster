@@ -1,25 +1,30 @@
 # ezmaster docker-compose dedicated for development
-version: '2'
+version: '3.4'
 
 services:
 
-  ezmaster:
-    container_name: ezmaster
-    image: inistcnrs/ezmaster:3.8.2
-    links:
-      - ezmaster_db
+  ezmaster-api:
+    container_name: ezmaster-api
+    image: inistcnrs/ezmaster:3.8.2-api
+    build:
+      context: ./ezmaster-api
+      args:
+        - http_proxy
+        - https_proxy
+    links: # will be deprecated in ezmaster v5
+      - ezmaster_db # will be deprecated in ezmaster v5
     volumes:
-      - .:/app
+      - ./ezmaster-api:/app
       - ./data/applications:/app/data/applications
       - ./data/instances:/app/data/instances
       - ./data/manifests:/app/data/manifests
       - /var/run/docker.sock:/var/run/docker.sock
+      - ezmaster-rp-nginx-data:/etc/nginx/conf.d/
     working_dir: /app
     environment:
-      http_proxy:  ${http_proxy}
-      https_proxy: ${https_proxy}
-      no_proxy: ${no_proxy}
-      EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017"
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}      
+      EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017" # will be deprecated in ezmaster v5
       EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
@@ -27,25 +32,117 @@ services:
       EZMASTER_FULL_FS_PERCENT: ${EZMASTER_FULL_FS_PERCENT}
       NODE_ENV: "development"
       DEBUG: ${DEBUG}
+      http_proxy:  ${http_proxy}
+      https_proxy: ${https_proxy}
+      no_proxy: ${no_proxy}
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
-      - 35267:35267
-    depends_on:
-      - ezmaster_db
+      - 35269:35269
     command: npm run start-debug
     networks:
       - eznetwork
 
-  ezmaster_db:
-    container_name: ezmaster_db
-    image: mongo:3.4.1
+
+  ezmaster-front:
+    container_name: ezmaster-front
+    image: inistcnrs/ezmaster:3.8.2-front
+    build:
+      context: ./ezmaster-front
+      args:
+        - http_proxy
+        - https_proxy
+    environment:
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
+    volumes:
+      - ./ezmaster-front/nginx.debug.conf:/etc/nginx/nginx.conf.orig
+      - ./logs/ezmaster-front/:/var/log/nginx/ezmaster-front/
+    links:
+      - ezmaster-api
+      - ezmaster-front-debug
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
-      - 27017:27017
-    command: --smallfiles
+      - 35268:35268
     networks:
       - eznetwork
+
+  ezmaster-front-debug:
+    container_name: ezmaster-front-debug
+    image: node:8.9.0
+    volumes:
+      - ./ezmaster-front:/app
+    working_dir: /app
+    environment:
+      NODE_ENV: "development"
+      DEBUG: ${DEBUG}
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
+    command: npm run start
+    networks:
+      - eznetwork
+
+
+  ezmaster-rp:
+    container_name: ezmaster-rp
+    image: inistcnrs/ezmaster:3.8.2-rp
+    build:
+      context: ./ezmaster-rp
+      args:
+        - http_proxy
+        - https_proxy
+    volumes:
+      - ./logs/ezmaster-rp/:/var/log/nginx/ezmaster-rp/
+      - ./ezmaster-rp/nginx.conf:/etc/nginx/nginx.conf
+      - ./ezmaster-rp/index.html:/app/public/index.html
+      - ./ezmaster-rp/entrypoint.sh:/entrypoint.sh
+      - ./ezmaster-rp/ezmaster-instance-nginx.conf.tpl:/etc/nginx/ezmaster-instance-nginx.conf.tpl
+      - ./ezmaster-rp/ezmaster-front-nginx.conf.tpl:/etc/nginx/ezmaster-front-nginx.conf.tpl
+      - ./ezmaster-rp/ezmaster-webdav-nginx.conf.tpl:/etc/nginx/ezmaster-webdav-nginx.conf.tpl
+      - ezmaster-rp-nginx-data:/etc/nginx/conf.d/
+    tty: true         # to have nice debug(...) outputs
+    stdin_open: true  # to be able to use CTRL+C to stop the debug
+    ports:
+      - 35267:80
+    networks:
+      - eznetwork
+
+
+  ezmaster-webdav:
+    container_name: ezmaster-webdav
+    image: inistcnrs/ezmaster:3.8.2-webdav
+    build:
+      context: ./ezmaster-webdav
+      args:
+        - http_proxy
+        - https_proxy
+    volumes:
+      - ./logs/ezmaster-webdav/:/var/log/nginx/ezmaster-webdav/
+      - ./data/instances:/media
+      - ./ezmaster-webdav/nginx.conf:/etc/nginx/nginx.conf.orig
+    environment:
+      EZMASTER_USER: ${EZMASTER_USER}
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
+    ports:
+      - 35270:35270
+    networks:
+      - eznetwork
+
+  ezmaster_db: # will be deprecated in ezmaster v5
+    container_name: ezmaster_db  # will be deprecated in ezmaster v5
+    image: mongo:3.4.1  # will be deprecated in ezmaster v5
+    ports: # will be deprecated in ezmaster v5
+      - 27017:27017 # will be deprecated in ezmaster v5
+    command: --smallfiles # will be deprecated in ezmaster v5
+    networks: # will be deprecated in ezmaster v5
+      - eznetwork # will be deprecated in ezmaster v5
 
 networks:
   eznetwork:
     driver: bridge
+
+# shared volume used to exchange nginx
+# vhost config for dynamic ezmaster's instances
+volumes:
+  ezmaster-rp-nginx-data:

@@ -13,8 +13,8 @@ Administration of docker applications without any IT skills.
 
 ## Requirements
 
-- [Docker](https://docs.docker.com/engine/installation/) (Version >= 1.12)
-- [Docker Compose](https://docs.docker.com/compose/install/) (Version >= 1.7)
+- [Docker](https://docs.docker.com/engine/installation/) (Version ⩾ 17.09.0)
+- [Docker Compose](https://docs.docker.com/compose/install/) (Version ⩾ 1.17.0)
 - For developments: [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and Make
 
 ## Environment variables
@@ -22,12 +22,16 @@ Administration of docker applications without any IT skills.
 To configure ezmaster, setup these environment variables before running ezmaster:
 
 ```shell
+# The user/password used to secure the ezmaster backoffice
+# Default is none (not filled)
+export EZMASTER_USER="ezmaster"
+export EZMASTER_PASSWORD="changeme"
+
 # The server IP where ezmaster is installed
 # it will be used by the "Access" button to join instances on specific ports
 # (one port for one instance, see EZMASTER_FREE_PORT_RANGE)
 # Default is "127.0.0.1"
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
-
 
 # The ports range ezmaster is allowed to use to expose instances internal web
 # address (revelant when reverse proxy is disabled)
@@ -57,15 +61,19 @@ export EZMASTER_FULL_FS_PERCENT=80
 ```shell
 mkdir ./ezmaster && cd ezmaster
 mkdir -p ./data/applications ./data/instances ./data/manifests
+mkdir -p ./logs/ezmaster-front/ ./logs/ezmaster-rp/instances/ ./logs/ezmaster-webdav/
 
 wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
+export EZMASTER_USER="ezmaster"
+export EZMASTER_PASSWORD="changeme"
 docker-compose up -d
 
-# then ezmaster is listening at http://<Your ezmaster server IP>:35267
+# then ezmaster is listening at http://<Your ezmaster server IP>:35268
+# and publicly available on http://ezmaster.lod-test.istex.fr (protected by login/pwd)
 # and the instances can be accessed at http://<tech-name>.lod-test.istex.fr
 ```
 
@@ -77,14 +85,14 @@ make install                   # installs npm dependencies
 make build                     # builds the docker image used byt docker-compose.debug.yml
 DEBUG=ezmaster* make run-debug # starts ezmaster in debug mode (CTRL+C to quit)
 ```
-Then ezmaster is listening at http://127.0.0.1:35267/
+Then ezmaster is listening at http://127.0.0.1:35268/
 
 ## Ezmasterizing an application
 
 ### Dockerfile modifications
 
 - Your application must have a web server (mandatory).
-- Your application can use a json config and a data folder (optional)
+- Your application can use a json or text configuration file and a data folder (optional)
 
 For example your dockerfile could look like this one:
 ```shell
@@ -109,12 +117,6 @@ RUN echo '{ \
 # ...
 ```
 
-### MongoDB database (optional)
-
-If your application uses a mongodb database, your can use the ezmaster database.
-Regarding this, you just have to use the environment variable: ``EZMASTER_MONGODB_HOST_PORT``.
-This variable will contain something like this: ``ezmaster_db:27017`` (it means that mongodb host is ezmaster_db and mongodb port is 27017).
-
 ### Dockerfile example of ezmasterized applications
 
 - ezvis Dockerfile: https://github.com/madec-project/ezvis/blob/master/Dockerfile
@@ -128,7 +130,7 @@ This variable will contain something like this: ``ezmaster_db:27017`` (it means 
 When ezmaster launches your application, it provides few environment variables
 to this instance:
 
-- `EZMASTER_MONGODB_HOST_PORT`: (see above), ex: `ezmaster_db:27017`
+- `EZMASTER_MONGODB_HOST_PORT`: (will be deprecated in ezmaster v5), ex: `ezmaster_db:27017`
 - `EZMASTER_TECHNICAL_NAME`: the identifier of the instance within ezmaster (ex: `myapp-usage-1`)
 - `EZMASTER_LONG_NAME`: a free label for the instance (ex: `This instance is used for the customer C, and maintained by Matt`)
 - `EZMASTER_APPLICATION`: the complete tag of your application's docker image (ex: `inistcnrs/ezmaster-hexo:1.0.3`)
@@ -151,7 +153,7 @@ to this instance:
 ### How to test your first ezmaster application ? 
 
 - Add the application
-  - Open ezmaster web interface: http://<Your ezmaster server IP>:35267
+  - Open ezmaster web interface: http://<Your ezmaster server IP>:35268
   - Click the "Applications" tab, and "Add Application" button
   - Then write the name of the application ``inistcnrs/ezvis`` and its version ``6.8.6``
   - And click on "Create" and wait for the pull (it can take several minutes)
@@ -180,21 +182,73 @@ You finally should have something like this:
 If you want to save the config and the data of your instances:
 - you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
 - you also have to save the mongodb database contained in the ezmaster_db docker container: `docker exec -it ezmaster_db mongodump --quiet --archive=- > ezmaster_db_archive`
+  (ezmaster_db will be deprecated in ezmaster ⩾ v5)
 
 
-## Diagrams
+## Technical architecture
 
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Technical_Environment.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Architecture.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/a83d22094a3c78cac94b8b5acc59d178871472f9/doc/Ezmaster_Main_Interactions.jpg)
-
-![alt tag](https://github.com/Inist-CNRS/ezmaster/blob/e648517de1edfdb07fcc4df36a2da0b3a93ce53b/doc/Ezmaster_Network.jpg)
+[![architecture 4.0](https://docs.google.com/drawings/d/e/2PACX-1vTAlDhUXFEigSwBPsAUH16E2Eqkb2OIJ7H1BaKk_zLd3_RJn3bmTIqnWYvbwqPsJs76RCCjCcZqyjEc/pub?w=791&amp;h=573)](https://docs.google.com/drawings/d/1Z-2F4o5PTx4Fsk5eBps8tKvh5Pf79zsSGLHUXv1UA18/edit)
 
 
 ## Changelog
 
+### ezmaster 4.0.0
+
+* Login/password feature is now available to protect ezmaster backoffice and webdav (env parameters are ``EZMASTER_USER`` and ``EZMASTER_PASSWORD``)
+
+* EzMaster backoffice and webdav access are now publicly available (with login/pwd) when ``EZMASTER_PUBLIC_DOMAIN``, ``EZMASTER_USER``, and ``EZMASTER_PASSWORD`` are filled.
+  Backoffice access exemple: http://ezmaster.mywebsite.com (if ``EZMASTER_PUBLIC_DOMAIN="mywebsite.com"``)
+  Webdav access exemple: http://webdav.mywebsite.com
+
+Breaking changes:
+  
+* docker and docker-compose need to be upgraded to docker >= 17.09.0 and docker-compose >= 1.17.0
+* ezmaster backoffice is available on a new port: 35268
+* ezmaster  api is now splitted on a dedicated port: 35269
+* webdav access is still available but on a new port: 35270
+* instances are available as before through a reverse proxy on the port 35267
+  (but a rewritten reverse proxy based on nginx is now handling this feature)
+
+Migration guide:
+
+* be sure your ezmaster is in the version 3.8.x
+* stop ezmaster and upgrade the host to docker >= 17.09.0 and docker-compose >= 1.17.0
+* download and run the upgrade script (it will patch the docker container of the ezmaster instances):
+
+  ```shell
+  cd ezmaster/
+  wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/scripts/upgrade-3.8-to-4.0
+  chmod +x upgrade-3.8-to-4.0
+  sudo EZMASTER_DATA_PATH=./data ./upgrade-3.8-to-4.0
+  ```
+
+* install the new ezmaster as usual
+
 ### ezmaster 3.8.0
 
 - ezmaster is able to support `text` or `json` configuration for instances (see configPath and configType)
+
+### ezmaster 3.5.1
+
+Breaking changes:
+
+* ezmaster is now running on a dedicated docker network 
+* ezmaster instances are now taking the httpPort into the ``manifests/my-instance.json``
+
+Migration guide
+
+* after the new ezmaster version is installed and started, you have to connect all the existing ezmaster instances to the new ezmaster docker network this way:
+  
+  ```shell
+  EZMASTER_INSTANCE="lodex-ezark-1" # this is an example, please adapt to your instance name
+  docker network disconnect ezmaster_default $EZMASTER_INSTANCE
+  docker network connect ezmaster_eznetwork $EZMASTER_INSTANCE
+  ```
+
+* check your instances manifest in ``data/manifests/*.json`` and add the "httpPort" key/value if not already existing. The value of the httpPort can be requested from the given ezmaster application with this shell command:
+  
+  ```shell
+  EZMASTER_APPLICATION="inistcnrs/refgpec-api:1.0.8" # this is an example, please adapt to your application name
+  docker run -it --rm --entrypoint="/bin/cat" $EZMASTER_APPLICATION /etc/ezmaster.json
+  ```
+

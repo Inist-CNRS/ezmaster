@@ -1,0 +1,57 @@
+#!/bin/bash
+
+EZMASTER_DATA_PATH=${EZMASTER_DATA_PATH:-"../data"}
+if [ ! -d $EZMASTER_DATA_PATH/instances ]; then
+  echo "Error: EZMASTER_DATA_PATH is not correct ($EZMASTER_DATA_PATH)"
+  exit 1
+fi
+if [ ! -d $EZMASTER_DATA_PATH/manifests ]; then
+  echo "Error: EZMASTER_DATA_PATH is not correct ($EZMASTER_DATA_PATH)"
+  exit 1
+fi
+if [ ! -d $EZMASTER_DATA_PATH/applications ]; then
+  echo "Error: EZMASTER_DATA_PATH is not correct ($EZMASTER_DATA_PATH)"
+  exit 1
+fi
+
+
+if [ "$(which jq)" == "" ]; then
+  echo "Error: jq tool is needed by this script (apt-get install jq)"
+  exit 1
+fi
+
+if [ "$(whoami)" != "root" ]; then
+  echo "Error: this script need root privilege because it needs to stop/start docker daemon"
+  exit 1
+fi
+
+for EZMASTER_INSTANCE in $(ls $EZMASTER_DATA_PATH/instances)
+do
+    if [ "$(docker inspect --format='{{.Config.Labels.ezmasterInstance}}' $EZMASTER_INSTANCE)" == "1" ]; then
+    echo "Label ezmasterInstance=1 is already set on $EZMASTER_INSTANCE"
+    continue
+  else
+    EZMASTER_CONTAINER_ID=$(docker inspect --format='{{.Id}}' $EZMASTER_INSTANCE)
+    EZMASTER_CONTAINERS_TO_LABELIZE="$EZMASTER_CONTAINERS_TO_LABELIZE $EZMASTER_CONTAINER_ID"
+  fi
+done
+
+if [ "$EZMASTER_CONTAINERS_TO_LABELIZE" != "" ]; then
+  echo "Stopping Docker (because files in /var/lib/docker will be modified)"
+  /etc/init.d/docker stop
+fi
+
+for EZMASTER_CONTAINER_ID in $EZMASTER_CONTAINERS_TO_LABELIZE 
+do
+  echo "Adding the label ezmasterInstance=1 to container: $EZMASTER_CONTAINER_ID"
+
+  EZMASTER_CONTAINER_CONF="/var/lib/docker/containers/$EZMASTER_CONTAINER_ID/config.v2.json"
+  jq -cM '.Config.Labels.ezmasterInstance = "1"' $EZMASTER_CONTAINER_CONF > /tmp/config.v2.json
+  cat /tmp/config.v2.json > $EZMASTER_CONTAINER_CONF
+done
+
+if [ "$EZMASTER_CONTAINERS_TO_LABELIZE" != "" ]; then
+  echo "Starting Docker"
+  sleep 1
+  /etc/init.d/docker start
+fi
