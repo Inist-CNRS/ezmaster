@@ -7,4 +7,7 @@ rm -f /etc/nginx/conf.d/*.conf
 cp -f /etc/nginx/ezmaster-instance-nginx.conf.tpl /etc/nginx/conf.d/ 
 cp -f /etc/nginx/ezmaster-public-nginx.conf.tpl   /etc/nginx/conf.d/ 
 
+# create log folder if necessary
+mkdir -p /var/log/nginx/ezmaster-rp/instances/
+
 exec "$@"

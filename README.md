@@ -61,10 +61,7 @@ export EZMASTER_FULL_FS_PERCENT=80
 ```shell
 mkdir ./ezmaster && cd ezmaster
 mkdir -p ./data/applications ./data/instances ./data/manifests
-mkdir -p ./logs
-touch ./logs/ezmaster-webdav-access.log ./logs/ezmaster-webdav-error.log
-touch ./logs/ezmaster-front-access.log ./logs/ezmaster-front-error.log
-touch ./logs/ezmaster-rp-access.log ./logs/ezmaster-rp-error.log
+mkdir -p ./logs/ezmaster-front/ ./logs/ezmaster-rp/instances/ ./logs/ezmaster-webdav/
 
 wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"

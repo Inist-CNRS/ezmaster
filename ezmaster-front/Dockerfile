@@ -23,6 +23,8 @@ COPY --from=build-deps /app/public/index.html  /app/public/index.html
 COPY --from=build-deps /app/public/favicon.ico /app/public/favicon.ico
 
 COPY ./nginx.prod.conf /etc/nginx/nginx.conf.orig
+RUN mkdir -p /var/log/nginx/ezmaster-front/
+RUN chmod go+rwX -R /var /run
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/entrypoint.sh"]

@@ -46,8 +46,7 @@ services:
     links:
       - ezmaster-api
     volumes:
-      - ./logs/ezmaster-front-error.log:/var/log/nginx/error.log
-      - ./logs/ezmaster-front-access.log:/var/log/nginx/access.log
+      - ./logs/ezmaster-front/:/var/log/nginx/ezmaster-front/
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
     ports:
@@ -60,8 +59,7 @@ services:
     container_name: ezmaster-rp
     image: inistcnrs/ezmaster:3.8.2-rp
     volumes:
-      - ./logs/ezmaster-rp-error.log:/var/log/nginx/error.log
-      - ./logs/ezmaster-rp-access.log:/var/log/nginx/access.log
+      - ./logs/ezmaster-rp/:/var/log/nginx/ezmaster-rp/
       - ezmaster-rp-nginx-data:/etc/nginx/conf.d/
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
@@ -76,8 +74,7 @@ services:
     container_name: ezmaster-webdav
     image: inistcnrs/ezmaster:3.8.2-webdav
     volumes:
-      - ./logs/ezmaster-webdav-error.log:/var/log/nginx/error.log
-      - ./logs/ezmaster-webdav-access.log:/var/log/nginx/access.log
+      - ./logs/ezmaster-webdav/:/var/log/nginx/ezmaster-webdav/
       - ./data/instances:/media
     environment:
       EZMASTER_USER: ${EZMASTER_USER}

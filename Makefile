@@ -22,22 +22,21 @@ install: ## install depedencies thanks to a dockerized npm install
 build: ## build the docker inistcnrs/ezmaster images localy
 	@docker-compose -f ./docker-compose.debug.yml build 
 
-run-debug: ## run ezmaster in debug mode
+setup-folders: # create folder needed for logs and data
+	@mkdir -p logs/ezmaster-front/
+	@mkdir -p logs/ezmaster-webdav/
+	@mkdir -p logs/ezmaster-rp/instances/
+	@mkdir -p data/istances/
+	@mkdir -p data/manifests/
+	@mkdir -p data/applications/
+
+run-debug: setup-folders ## run ezmaster in debug mode
 	@docker-compose -f ./docker-compose.debug.yml up
 
 kill: ## kill ezmaster running containers
 	@docker-compose -f ./docker-compose.debug.yml kill
 
-setup-prod: ## create folder needed for prod running
-	@mkdir -p logs/
-	@touch logs/ezmaster-webdav-access.log logs/ezmaster-webdav-error.log
-	@touch logs/ezmaster-front-access.log logs/ezmaster-front-error.log
-	@touch logs/ezmaster-rp-access.log logs/ezmaster-rp-error.log
-	@mkdir -p data/istances/
-	@mkdir -p data/manifests/
-	@mkdir -p data/applications/
-
-run-prod: setup-prod ## run ezmaster in production mode with the full dockerized image (see build)
+run-prod: setup-folders ## run ezmaster in production mode with the full dockerized image (see build)
 	@docker-compose -f ./docker-compose.yml up
 
 start-prod: ## start ezmaster production daemon (needs a first run-prod the first time)

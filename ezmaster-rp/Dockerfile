@@ -11,6 +11,8 @@ COPY ./index.html    /app/public/
 COPY ./ezmaster-instance-nginx.conf.tpl /etc/nginx/
 COPY ./ezmaster-public-nginx.conf.tpl /etc/nginx/
 RUN rm /etc/nginx/conf.d/default.conf
+RUN mkdir -p /var/log/nginx/ezmaster-rp/instances/
+RUN chmod go+rwX -R /var /run
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
