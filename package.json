@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext=.js,.vue ./ezmaster-api/index.js ./ezmaster-api/routes/ ./ezmaster-api/middlewares/ ./test/ ./ezmaster-api/lib/ ./ezmaster-front/public/src/",
-    "insertversion:docker": "sed -i \"s#\\(image: inistcnrs/ezmaster-[a-z]\\+:\\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" docker-compose*.yml",
+    "insertversion:docker": "sed -i \"s#\\(image: inistcnrs/ezmaster:\\)\\([\\.a-z0-9]\\+\\)\\(-[a-z]\\+\\)#\\1${npm_package_version}\\3#g\" docker-compose*.yml",
     "insertversion:index": "sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html",
     "insertversion:package": "sed -i \"s#^\\(  \\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" ezmaster-front/package*.json ezmaster-api/package*.json",
     "preversion": "npm run lint",
