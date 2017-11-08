@@ -26,7 +26,7 @@ setup-folders: # create folder needed for logs and data
 	@mkdir -p logs/ezmaster-front/
 	@mkdir -p logs/ezmaster-webdav/
 	@mkdir -p logs/ezmaster-rp/instances/
-	@mkdir -p data/istances/
+	@mkdir -p data/instances/
 	@mkdir -p data/manifests/
 	@mkdir -p data/applications/
 
