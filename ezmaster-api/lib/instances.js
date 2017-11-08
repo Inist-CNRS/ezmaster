@@ -479,7 +479,7 @@ module.exports.createRPNginxConfig = function (technicalName, httpPort, createAl
 };
 
 /**
- * Generates the ezmaster public access nginx config file if necessary
+ * Generates the ezmaster (front and webdav) public access nginx config file if necessary
  */
 module.exports.createEzMasterPublicRPNginxConfig = function (cb) {
 
@@ -491,9 +491,13 @@ module.exports.createEzMasterPublicRPNginxConfig = function (cb) {
   }
 
   let cmd =
-      'cat /etc/nginx/conf.d/ezmaster-public-nginx.conf.tpl | '
+      'cat /etc/nginx/conf.d/ezmaster-front-nginx.conf.tpl | '
     + 'sed "s#EZMASTER_PUBLIC_DOMAIN#' + cfg.publicDomain + '#g" '
-    + '> /etc/nginx/conf.d/ezmaster.conf';
+    + '> /etc/nginx/conf.d/ezmaster-front.conf';
+  cmd +=
+      ' ; cat /etc/nginx/conf.d/ezmaster-webdav-nginx.conf.tpl | '
+    + 'sed "s#EZMASTER_PUBLIC_DOMAIN#' + cfg.publicDomain + '#g" '
+    + '> /etc/nginx/conf.d/ezmaster-webdav.conf';
 
   debug('createEzMasterPublicRPNginxConfig', cmd);
 

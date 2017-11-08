@@ -5,7 +5,8 @@
 rm -f /etc/nginx/conf.d/*.conf
 # copy the last version of the templates
 cp -f /etc/nginx/ezmaster-instance-nginx.conf.tpl /etc/nginx/conf.d/ 
-cp -f /etc/nginx/ezmaster-public-nginx.conf.tpl   /etc/nginx/conf.d/ 
+cp -f /etc/nginx/ezmaster-front-nginx.conf.tpl    /etc/nginx/conf.d/ 
+cp -f /etc/nginx/ezmaster-webdav-nginx.conf.tpl   /etc/nginx/conf.d/ 
 
 # create log folder if necessary
 mkdir -p /var/log/nginx/ezmaster-rp/instances/

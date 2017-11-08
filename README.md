@@ -196,8 +196,9 @@ If you want to save the config and the data of your instances:
 
 * Login/password feature is now available to protect ezmaster backoffice and webdav (env parameters are ``EZMASTER_USER`` and ``EZMASTER_PASSWORD``)
 
-* EzMaster backoffice is now available publicly (with login/pwd) when ``EZMASTER_PUBLIC_DOMAIN``, ``EZMASTER_USER``, and ``EZMASTER_PASSWORD`` are filled.
-  Access exemple: http://ezmaster.mywebsite.com (if ``EZMASTER_PUBLIC_DOMAIN="mywebsite.com"``)
+* EzMaster backoffice and webdav access are now publicly available (with login/pwd) when ``EZMASTER_PUBLIC_DOMAIN``, ``EZMASTER_USER``, and ``EZMASTER_PASSWORD`` are filled.
+  Backoffice access exemple: http://ezmaster.mywebsite.com (if ``EZMASTER_PUBLIC_DOMAIN="mywebsite.com"``)
+  Webdav access exemple: http://webdav.mywebsite.com
 
 Breaking changes:
   

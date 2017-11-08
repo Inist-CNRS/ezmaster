@@ -4,13 +4,17 @@ FROM nginx:1.13.3
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update && apt-get -y install vim curl
 
-# nginx config
 COPY ./entrypoint.sh /
 COPY ./nginx.conf    /etc/nginx/nginx.conf
 COPY ./index.html    /app/public/
-COPY ./ezmaster-instance-nginx.conf.tpl /etc/nginx/
-COPY ./ezmaster-public-nginx.conf.tpl /etc/nginx/
+
+# nginx config
 RUN rm /etc/nginx/conf.d/default.conf
+COPY ./ezmaster-instance-nginx.conf.tpl /etc/nginx/
+COPY ./ezmaster-front-nginx.conf.tpl    /etc/nginx/
+COPY ./ezmaster-webdav-nginx.conf.tpl   /etc/nginx/
+
+# nginx logs
 RUN mkdir -p /var/log/nginx/ezmaster-rp/instances/
 RUN chmod go+rwX -R /var /run
 
