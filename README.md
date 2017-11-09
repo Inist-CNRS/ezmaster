@@ -154,12 +154,12 @@ to this instance:
 - Add the application
   - Open ezmaster web interface: http://<Your ezmaster server IP>:35268
   - Click the "Applications" tab, and "Add Application" button
-  - Then write the name of the application ``inistcnrs/ezvis`` and its version ``6.8.6``
+  - Then write the name of the application ``inistcnrs/ezvis`` and its version ``6.8.13``
   - And click on "Create" and wait for the pull (it can take several minutes)
 
 - Add the instance
   - Click on the "Instances" tab
-  - Then click on "Add Instances" and choose ``inistcnrs/ezvis:6.8.6`` in the dropdown list
+  - Then click on "Add Instances" and choose ``inistcnrs/ezvis:6.8.13`` in the dropdown list
   - Enter "My first app" in the LongName field
   - Enter "myapp" in the first TechnicalName field, and "demo" in the second part
   - And click on "Create"
