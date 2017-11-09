@@ -12,9 +12,6 @@ RUN mkdir -p /usr/local/apache2/var/
 RUN chmod ugo+rwx /usr/local/apache2/var/
 RUN chmod -R ugo+rwx /usr/local/apache2/htdocs/
 
-#RUN mkdir /var/log/nginx/ezmaster-webdav/
-#RUN chmod go+rwX -R /var /run
-
 ENTRYPOINT ["/entrypoint.sh"]
 CMD [ "httpd-foreground" ]
 EXPOSE 35271

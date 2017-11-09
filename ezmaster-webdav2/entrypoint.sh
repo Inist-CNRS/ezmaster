@@ -15,10 +15,10 @@ sed -i 's%^#LoadModule auth_digest_module modules/mod_auth_digest.so%LoadModule 
 sed -i 's%^#Include conf/extra/httpd-dav.conf%Include conf/extra/httpd-dav.conf%g' \
     /usr/local/apache2/conf/httpd.conf
 
-# file write stuff
+# where webdav date will be written
 chmod -R ugo+rwx /usr/local/apache2/htdocs/
 
-# auth stuff
+# authentication stuff enabled or disabled
 if [ -n "${EZMASTER_USER:-}" ] && [ -n "${EZMASTER_PASSWORD:-}" ]; then
   # generates the login/mdp password file
   digest="$( printf "%s:%s:%s" "$EZMASTER_USER" "DAV-upload" "$EZMASTER_PASSWORD" | 
@@ -33,4 +33,5 @@ else
     > /usr/local/apache2/conf/extra/httpd-dav.conf
 fi
 
+# exec the CMD (see Dockerfile)
 exec "$@"
