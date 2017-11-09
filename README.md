@@ -46,6 +46,11 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # On the following example, if we have a "abc-def-4" (tech name) instance, then
 # it will be joinable at this URL: http://abc-def-4.lod-test.istex.fr
 # Tech. name is the prefix used and concatenated to the public domain
+# 
+# If EZMASTER_PUBLIC_DOMAIN, EZMASTER_USER and EZMASTER_PASSWORD are filled 
+# it enables two features:
+# 1) ezmaster backoffice will be publicaly accessible http://ezmaster.lod-test.istex.fr
+# 1) a webdav endpoint will be publicaly accessible http://webdav.lod-test.istex.fr
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 
 # The maximum total free space percent of the disk for avoiding saturation.
