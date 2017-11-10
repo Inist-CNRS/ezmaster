@@ -1,14 +1,37 @@
 #!/bin/sh -eux
 
-cp -f /etc/nginx/nginx.conf.orig /etc/nginx/nginx.conf
+# remove port 80 adjust to 35270
+sed -i 's%Listen 80%Listen 35270%g' /usr/local/apache2/conf/httpd.conf
 
-# auth stuff
+# enable webdav modules for apache2
+sed -i 's%^#LoadModule dav_module modules/mod_dav.so%LoadModule dav_module modules/mod_dav.so%g' \
+    /usr/local/apache2/conf/httpd.conf
+sed -i 's%^#LoadModule dav_fs_module modules/mod_dav_fs.so%LoadModule dav_fs_module modules/mod_dav_fs.so%g' \
+    /usr/local/apache2/conf/httpd.conf
+sed -i 's%^#LoadModule dav_lock_module modules/mod_dav_lock.so%LoadModule dav_lock_module modules/mod_dav_lock.so%g' \
+    /usr/local/apache2/conf/httpd.conf
+sed -i 's%^#LoadModule auth_digest_module modules/mod_auth_digest.so%LoadModule auth_digest_module modules/mod_auth_digest.so%g' \
+    /usr/local/apache2/conf/httpd.conf
+sed -i 's%^#Include conf/extra/httpd-dav.conf%Include conf/extra/httpd-dav.conf%g' \
+    /usr/local/apache2/conf/httpd.conf
+
+# where webdav date will be written
+chmod -R ugo+rwx /usr/local/apache2/htdocs/
+
+# authentication stuff enabled or disabled
 if [ -n "${EZMASTER_USER:-}" ] && [ -n "${EZMASTER_PASSWORD:-}" ]; then
-    htpasswd -bc /etc/nginx/webdavpasswd $EZMASTER_USER $EZMASTER_PASSWORD
+  # generates the login/mdp password file
+  digest="$( printf "%s:%s:%s" "$EZMASTER_USER" "DAV-upload" "$EZMASTER_PASSWORD" | 
+             md5sum | awk '{print $1}' )"
+  printf "%s:%s:%s\n" "$EZMASTER_USER" "DAV-upload" "$digest" > "/usr/local/apache2/user.passwd"
+  cp -f /usr/local/apache2/conf/extra/httpd-dav.conf.orig \
+        /usr/local/apache2/conf/extra/httpd-dav.conf
 else
-    echo "No htpasswd config done"
-    sed -i 's%auth_basic "Restricted";% %g' /etc/nginx/nginx.conf
-    sed -i 's%auth_basic_user_file webdavpasswd;% %g' /etc/nginx/nginx.conf
+  echo "Disable webdav authentication stuff"
+  grep -v -E "AuthType|AuthName|AuthUserFile|AuthDigestProvider|LimitExcept|Require user" \
+    /usr/local/apache2/conf/extra/httpd-dav.conf.orig \
+    > /usr/local/apache2/conf/extra/httpd-dav.conf
 fi
 
-exec gosu root "$@"
+# exec the CMD (see Dockerfile)
+exec "$@"

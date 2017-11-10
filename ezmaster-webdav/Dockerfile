@@ -1,15 +1,17 @@
-FROM ubuntu:16.04
+FROM httpd:2.4.29
 
-RUN apt-get update \
- && apt-get install -yq --no-install-recommends nginx-extras gosu apache2-utils \
- && rm -rf /var/lib/apt/lists/*
+# vim for debug
+# apache2-utils for htpasswd tool
+RUN apt-get update && apt-get install -yq --no-install-recommends vim apache2-utils
 
 COPY entrypoint.sh /
-COPY nginx.conf /etc/nginx/nginx.conf.orig
+COPY httpd-dav.conf.orig /usr/local/apache2/conf/extra/httpd-dav.conf.orig
 
-RUN mkdir /var/log/nginx/ezmaster-webdav/
-RUN chmod go+rwX -R /var /run
+# webdav lock file and data folder 
+RUN mkdir -p /usr/local/apache2/var/
+RUN chmod ugo+rwx /usr/local/apache2/var/
+RUN chmod -R ugo+rwx /usr/local/apache2/htdocs/
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "httpd-foreground" ]
 EXPOSE 35270

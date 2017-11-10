@@ -108,7 +108,7 @@ services:
     networks:
       - eznetwork
 
-  # webdav access point for ezmaster's instances data folder (using nginx)
+  # webdav access point for ezmaster's instances data folder (using apache2)
   ezmaster-webdav:
     container_name: ezmaster-webdav
     image: inistcnrs/ezmaster:4.0.1-webdav
@@ -118,36 +118,15 @@ services:
         - http_proxy
         - https_proxy
     volumes:
-      - ./logs/ezmaster-webdav/:/var/log/nginx/ezmaster-webdav/
-      - ./data/instances:/media
-      - ./ezmaster-webdav/nginx.conf:/etc/nginx/nginx.conf.orig
-    environment:
-      EZMASTER_USER: ${EZMASTER_USER}
-      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
-    ports:
-      - 35270:35270
-    networks:
-      - eznetwork
-
-  # webdav access point for ezmaster's instances data folder (using apache2)
-  ezmaster-webdav2:
-    container_name: ezmaster-webdav2
-    image: inistcnrs/ezmaster:4.0.1-webdav2
-    build:
-      context: ./ezmaster-webdav2
-      args:
-        - http_proxy
-        - https_proxy
-    volumes:
       - ./logs/ezmaster-webdav/:/var/log/apache2/
-      - ./ezmaster-webdav2/entrypoint.sh:/entrypoint.sh
-      - ./ezmaster-webdav2/httpd-dav.conf.orig:/usr/local/apache2/conf/extra/httpd-dav.conf.orig
+      - ./ezmaster-webdav/entrypoint.sh:/entrypoint.sh
+      - ./ezmaster-webdav/httpd-dav.conf.orig:/usr/local/apache2/conf/extra/httpd-dav.conf.orig
       - ./data/instances/:/usr/local/apache2/htdocs/
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
     ports:
-      - 35271:35271
+      - 35270:35270
     networks:
       - eznetwork
 
