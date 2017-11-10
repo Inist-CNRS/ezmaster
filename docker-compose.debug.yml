@@ -118,10 +118,10 @@ services:
         - http_proxy
         - https_proxy
     volumes:
+      - ./data/instances/:/usr/local/apache2/htdocs/
       - ./logs/ezmaster-webdav/:/var/log/apache2/
       - ./ezmaster-webdav/entrypoint.sh:/entrypoint.sh
       - ./ezmaster-webdav/httpd-dav.conf.orig:/usr/local/apache2/conf/extra/httpd-dav.conf.orig
-      - ./data/instances/:/usr/local/apache2/htdocs/
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}

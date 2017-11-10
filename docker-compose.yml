@@ -69,13 +69,13 @@ services:
       - eznetwork
     restart: unless-stopped
 
-
+  # webdav access point for ezmaster's instances data folder (using apache2)
   ezmaster-webdav:
     container_name: ezmaster-webdav
     image: inistcnrs/ezmaster:4.0.1-webdav
     volumes:
-      - ./logs/ezmaster-webdav/:/var/log/nginx/ezmaster-webdav/
-      - ./data/instances:/media
+      - ./data/instances/:/usr/local/apache2/htdocs/
+      - ./logs/ezmaster-webdav/:/var/log/apache2/
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
