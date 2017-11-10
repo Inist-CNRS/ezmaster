@@ -11,7 +11,8 @@ server {
     # max file upload size should be in sync with ezmaster-webdav/nginx.conf
     client_max_body_size 500M;
 
-    proxy_pass http://ezmaster-webdav:35270;
+    proxy_pass http://ezmaster-webdav:35270/;
+    proxy_redirect off;
   }
 
 }
