@@ -18,6 +18,10 @@ sed -i 's%^#Include conf/extra/httpd-dav.conf%Include conf/extra/httpd-dav.conf%
 # where webdav date will be written
 chmod -R ugo+rwx /usr/local/apache2/htdocs/
 
+# log stuff
+sed -i 's%/proc/self/fd/2%/var/log/apache2/error.log%g'  /usr/local/apache2/conf/httpd.conf
+sed -i 's%/proc/self/fd/1%/var/log/apache2/access.log%g' /usr/local/apache2/conf/httpd.conf
+
 # authentication stuff enabled or disabled
 if [ -n "${EZMASTER_USER:-}" ] && [ -n "${EZMASTER_PASSWORD:-}" ]; then
   # generates the login/mdp password file

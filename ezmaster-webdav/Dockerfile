@@ -7,6 +7,10 @@ RUN apt-get update && apt-get install -yq --no-install-recommends vim apache2-ut
 COPY entrypoint.sh /
 COPY httpd-dav.conf.orig /usr/local/apache2/conf/extra/httpd-dav.conf.orig
 
+# webdav logs
+RUN mkdir -p /var/lib/apache2/
+RUN touch /var/lib/apache2/access.log /var/lib/apache2/error.log
+
 # webdav lock file and data folder 
 RUN mkdir -p /usr/local/apache2/var/
 RUN chmod ugo+rwx /usr/local/apache2/var/
