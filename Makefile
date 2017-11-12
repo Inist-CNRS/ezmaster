@@ -36,7 +36,7 @@ run-debug: setup-folders ## run ezmaster in debug mode
 kill: ## kill ezmaster running containers
 	@docker-compose -f ./docker-compose.debug.yml kill
 
-rm: ## remove ezmaster containers event if they are running
+rm: ## remove ezmaster containers even if they are running
 	@docker-compose -f ./docker-compose.debug.yml rm -f
 
 run-prod: setup-folders ## run ezmaster in production mode with the full dockerized image (see build)
