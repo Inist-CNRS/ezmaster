@@ -112,7 +112,7 @@ router
  */
 router
 .route('/config/:containerId')
-.put(bodyParser(), function (req, res, next) {
+.put(bodyParser({ limit: '100mb' }), function (req, res, next) {
   instances.checkInstance(req.params.containerId, function(err, container, data, manifest) {
 
     if (err) { return next(err); }
