@@ -228,6 +228,10 @@ Migration guide:
 
 * install the new ezmaster as usual
 
+### ezmaster 3.8.3
+
+- ezmaster instance's config file size can now be upper than 100kb (limit is now 100mb)
+
 ### ezmaster 3.8.0
 
 - ezmaster is able to support `text` or `json` configuration for instances (see configPath and configType)
