@@ -292,6 +292,7 @@ router
     , study = req.body.study
     , version = req.body.version
     ;
+  debug('Creating an instance:', technicalName, longName, image);
 
   if (/^[a-z0-9]+$/.test(project) == false && project != '' && project != null) {
     return res.status(400).send('Enter a valid project name');
@@ -326,6 +327,7 @@ router
 
   function makeDataDirectory(err) {
     if (err) { return next(err); }
+    debug('Creating an instance: makeDataDirectory', technicalName);
 
     mkdirp(cfg.dataInstancesPath + '/' + technicalName + '/data/', createConfigFile);
   }
@@ -333,6 +335,7 @@ router
 
   function createConfigFile(err) {
     if (err) { return next(err); }
+    debug('Creating an instance: createConfigFile', technicalName);
     fs.appendFile(cfg.dataInstancesPath + '/' + technicalName + '/config/config.raw',
       '{}',
       readInstances
@@ -342,6 +345,7 @@ router
 
   function readInstances(err) {
     if (err) { return next(err); }
+    debug('Creating an instance: readInstances', technicalName);
 
     instancesArray = fs.readdirSync(cfg.dataInstancesPath);
 
@@ -351,6 +355,7 @@ router
 
   function createInstance(err, containersList) {
     if (err) { return next(err); }
+    debug('Creating an instance: createInstance', technicalName);
 
     containers = containersList;
 
@@ -362,6 +367,7 @@ router
 
   function checkContainer() {
     var element = containers.pop();
+    debug('Creating an instance: checkContainer', element && element.Names[0], technicalName);
 
     if (element) {
       var splittedName = element.Names[0].split('/');
@@ -385,6 +391,7 @@ router
       //   data: /myapp/data/
       // }
       app.readEzmasterAppConfig(image, function (err, appConfig) {
+        debug('Creating an instance: readEzmasterAppConfig', appConfig, technicalName);
 
         appConfig.longName = longName;
 
@@ -393,6 +400,7 @@ router
           appSrc: image,
           appConfig: appConfig }, function (err) {
           if (err) return next(err);
+          debug('Creating an instance: initConfigAndData done', technicalName);
 
           var publicDomain = cfg.publicDomain;
           var publicUrl;
@@ -425,6 +433,8 @@ router
             + technicalName + '/data/:' + appConfig.dataPath + ' ' : '')
           + '--label ezmasterInstance=1 ' // tells it's an instance for docker events listening
           + '--name ' + technicalName + ' ' + image;
+
+          debug('Creating an instance: ', cmd);
 
           // store some extra things into manifest
           // useful for future upgrading stuff

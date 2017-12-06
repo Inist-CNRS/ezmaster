@@ -289,7 +289,9 @@ module.exports.getInstanceInternalIp = function (techName, cb) {
 module.exports.initConfigAndData = function (params, cb) {
   module.exports.initConfig(params, function (err) {
     if (err) return cb(err);
+    debug('Instance initConfigAndData: initConfig done');
     module.exports.initData(params, function (err) {
+      debug('Instance initConfigAndData: initData done', err);
       return cb(err);
     });
   });
@@ -315,8 +317,10 @@ module.exports.initConfig = function (params, cb) {
 module.exports.initData = function (params, cb) {
   // check the data folder is not empty before doing anything
   if (!params.appConfig.dataPath) return cb(null);
-  exec('docker run --rm --entrypoint "/bin/ls" ' + params.appSrc
-    + ' ' + params.appConfig.dataPath,
+  let cmd = 'docker run --rm --entrypoint "/bin/ls" ' + params.appSrc
+    + ' ' + params.appConfig.dataPath;
+  debug('Instance initData1: ', cmd);
+  exec(cmd,
     function (err, stdout, stderr) {
       // data folder is empty or doesnot exists, skip this step
       if (err || stdout == '') return cb(null);
@@ -325,12 +329,14 @@ module.exports.initData = function (params, cb) {
       // example:
       // docker run --rm -w /blog/source/_posts --entrypoint "/bin/tar" \
       //  inistcnrs/ezmaster-hexo:latest cf - \ -C /blog/source/_posts . | tar vxf -
-      exec('docker run --rm --entrypoint "/bin/tar" ' + params.appSrc
-        + ' cf - -C ' + params.appConfig.dataPath + ' . | tar vxf -', {
-          cwd: cfg.dataInstancesPath + '/' + params.instanceDst + '/data/'
-        }, function (err, stdout, stderr) {
-          return cb(err);
-        });
+      let cmd = 'docker run --rm --entrypoint "/bin/tar" ' + params.appSrc
+        + ' cf - -C ' + params.appConfig.dataPath + ' . | tar vxf -';
+      debug('Instance initData2: ', cmd);
+      exec(cmd, {
+        cwd: cfg.dataInstancesPath + '/' + params.instanceDst + '/data/'
+      }, function (err, stdout, stderr) {
+        return cb(err);
+      });
     }
   );
 };
