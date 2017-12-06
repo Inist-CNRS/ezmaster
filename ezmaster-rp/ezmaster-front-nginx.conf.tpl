@@ -11,6 +11,13 @@ server {
     proxy_pass http://ezmaster-front:35268;
   }
 
+  location /socket.io/ {
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_pass http://ezmaster-front:35268;
+  }
+
   # Block nginx from serving .git directories
   location ~ /\.git {
     deny all;
