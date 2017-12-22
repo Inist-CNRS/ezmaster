@@ -1,6 +1,12 @@
 #!/bin/bash
 
+DOCKER_VAR_LIB_PATH=${DOCKER_VAR_LIB_PATH:-"/var/lib/docker"}
 EZMASTER_DATA_PATH=${EZMASTER_DATA_PATH:-"../data"}
+
+if [ ! -d $DOCKER_VAR_LIB_PATH ]; then
+  echo "Error: DOCKER_VAR_LIB_PATH does not exists ($DOCKER_VAR_LIB_PATH)"
+  exit 1
+fi
 if [ ! -d $EZMASTER_DATA_PATH/instances ]; then
   echo "Error: EZMASTER_DATA_PATH is not correct ($EZMASTER_DATA_PATH)"
   exit 1
@@ -37,7 +43,7 @@ do
 done
 
 if [ "$EZMASTER_CONTAINERS_TO_LABELIZE" != "" ]; then
-  echo "Stopping Docker (because files in /var/lib/docker will be modified)"
+  echo "Stopping Docker (because files in $DOCKER_VAR_LIB_PATH will be modified)"
   /etc/init.d/docker stop
 fi
 
@@ -45,7 +51,7 @@ for EZMASTER_CONTAINER_ID in $EZMASTER_CONTAINERS_TO_LABELIZE
 do
   echo "Adding the label ezmasterInstance=1 to container: $EZMASTER_CONTAINER_ID"
 
-  EZMASTER_CONTAINER_CONF="/var/lib/docker/containers/$EZMASTER_CONTAINER_ID/config.v2.json"
+  EZMASTER_CONTAINER_CONF="$DOCKER_VAR_LIB_PATH/containers/$EZMASTER_CONTAINER_ID/config.v2.json"
   jq -cM '.Config.Labels.ezmasterInstance = "1"' $EZMASTER_CONTAINER_CONF > /tmp/config.v2.json
   cat /tmp/config.v2.json > $EZMASTER_CONTAINER_CONF
 done
