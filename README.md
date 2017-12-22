@@ -223,7 +223,7 @@ Migration guide:
   cd ezmaster/
   wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/scripts/upgrade-3.8-to-4.0
   chmod +x upgrade-3.8-to-4.0
-  sudo EZMASTER_DATA_PATH=./data ./upgrade-3.8-to-4.0
+  sudo DOCKER_VAR_LIB_PATH=/var/lib/docker EZMASTER_DATA_PATH=./data ./upgrade-3.8-to-4.0
   ```
 
 * install the new ezmaster as usual
