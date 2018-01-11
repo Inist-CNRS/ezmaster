@@ -52,6 +52,7 @@ do
   echo "Adding the label ezmasterInstance=1 to container: $EZMASTER_CONTAINER_ID"
 
   EZMASTER_CONTAINER_CONF="$DOCKER_VAR_LIB_PATH/containers/$EZMASTER_CONTAINER_ID/config.v2.json"
+  cp $EZMASTER_CONTAINER_CONF ${EZMASTER_CONTAINER_CONF}.bak
   jq -c '.Config.Labels.ezmasterInstance = "1"' $EZMASTER_CONTAINER_CONF > /tmp/config.v2.json
   cat /tmp/config.v2.json > $EZMASTER_CONTAINER_CONF
 done
