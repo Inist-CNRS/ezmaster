@@ -50,7 +50,8 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # If EZMASTER_PUBLIC_DOMAIN, EZMASTER_USER and EZMASTER_PASSWORD are filled 
 # it enables two features:
 # 1) ezmaster backoffice will be publicaly accessible http://ezmaster.lod-test.istex.fr
-# 1) a webdav endpoint will be publicaly accessible http://webdav.lod-test.istex.fr
+# 2) a webdav endpoint will be publicaly accessible http://webdav.lod-test.istex.fr
+# Warning: do not forget to add the don't forget to add the ``ProxyPreserveHost On`` apache2 configuration on your front reverse proxy
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 
 # The maximum total free space percent of the disk for avoiding saturation.
@@ -227,6 +228,7 @@ Migration guide:
   ```
 
 * install the new ezmaster as usual
+* don't forget to add the ``ProxyPreserveHost On`` apache2 configuration on your front reverse proxy if you are using the ``EZMASTER_PUBLIC_DOMAIN`` feature
 
 ### ezmaster 3.8.3
 
