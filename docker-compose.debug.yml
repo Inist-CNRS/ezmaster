@@ -3,6 +3,22 @@ version: '3.4'
 
 services:
 
+  # container used to simulate a big frontal reverse proxy
+  # (not used in prod)
+  ezmaster-debug-public-rp:
+    container_name: ezmaster-debug-public-rp
+    build:
+      context: ./ezmaster-debug-public-rp
+      args:
+        - http_proxy
+        - https_proxy
+    links:
+      - ezmaster-rp
+    ports:
+      - 80:80
+    networks:
+      - eznetwork
+
   ezmaster-api:
     container_name: ezmaster-api
     image: inistcnrs/ezmaster:4.0.5-api
