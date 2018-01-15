@@ -5,7 +5,7 @@ services:
 
   ezmaster-api:
     container_name: ezmaster-api
-    image: inistcnrs/ezmaster:4.0.6-api
+    image: inistcnrs/ezmaster:4.0.7-api
     links:
       - ezmaster_db
     volumes:
@@ -40,7 +40,7 @@ services:
 
   ezmaster-front:
     container_name: ezmaster-front
-    image: inistcnrs/ezmaster:4.0.6-front
+    image: inistcnrs/ezmaster:4.0.7-front
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
@@ -58,7 +58,7 @@ services:
 
   ezmaster-rp:
     container_name: ezmaster-rp
-    image: inistcnrs/ezmaster:4.0.6-rp
+    image: inistcnrs/ezmaster:4.0.7-rp
     volumes:
       - ./logs/ezmaster-rp/:/var/log/nginx/ezmaster-rp/
       - ezmaster-rp-nginx-data:/etc/nginx/conf.d/
@@ -73,7 +73,7 @@ services:
   # webdav access point for ezmaster's instances data folder (using apache2)
   ezmaster-webdav:
     container_name: ezmaster-webdav
-    image: inistcnrs/ezmaster:4.0.6-webdav
+    image: inistcnrs/ezmaster:4.0.7-webdav
     volumes:
       - ./data/instances/:/usr/local/apache2/htdocs/
       - ./logs/ezmaster-webdav/:/var/log/apache2/
