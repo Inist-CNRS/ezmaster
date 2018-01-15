@@ -217,7 +217,7 @@ Breaking changes:
 Migration guide:
 
 * be sure your ezmaster is in the version 3.8.x
-* stop ezmaster and upgrade the host to docker >= 17.09.0 and docker-compose >= 1.17.0
+* stop ezmaster and upgrade the host to docker >= 17.05.0 and docker-compose >= 1.17.0
 * download and run the upgrade script (it will patch the docker container of the ezmaster instances):
 
   ```shell
