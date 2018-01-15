@@ -58,6 +58,9 @@ export default {
     self.$refs.appslist.$on('refreshApplicationsList', function (msg) {
       self.refreshApplicationsList();
     });
+    self.$http.get(this.Store.ezMasterAPI + '/-/v1/config').then(function (result) {
+      self.$set(Store, 'config', result.data);
+    }, console.error);
   },
   methods: {
     refreshApplicationsList: function () {

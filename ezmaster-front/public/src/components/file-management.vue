@@ -134,6 +134,9 @@
       });
 
       eventHub.$on('openFileManagement', instance => {
+        if (this.Store.config.publicDomain) {
+          this.webdavHostname = 'http://webdav.' + this.Store.config.publicDomain;
+        }
         this.instance = instance;
         this.show();
       });
