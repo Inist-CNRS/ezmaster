@@ -207,7 +207,7 @@ If you want to save the config and the data of your instances:
 
 Breaking changes:
   
-* docker and docker-compose need to be upgraded to docker >= 17.09.0 and docker-compose >= 1.17.0
+* docker and docker-compose need to be upgraded to docker >= 17.05.0 and docker-compose >= 1.17.0
 * ezmaster backoffice is available on a new port: 35268
 * ezmaster  api is now splitted on a dedicated port: 35269
 * webdav access is still available but on a new port: 35270
