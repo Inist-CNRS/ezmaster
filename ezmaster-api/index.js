@@ -56,6 +56,10 @@ server.listen(cfg.EZMASTER_PORT, function () {
                kuler('http://' + cfg.publicIP + ':35269/-/v1/', 'limegreen'));
   console.info('ezmaster-webdav:                       ' +
                kuler('http://' + cfg.publicIP + ':35270/', 'limegreen'));
+  if (cfg.publicDomain && cfg.EZMASTER_USER && cfg.EZMASTER_PASSWORD) {
+    console.info('     or publicly available here:       ' +
+      kuler('http://webdav.' + cfg.publicDomain + '/', 'limegreen'));
+  }
   if (cfg.publicDomain) {
     // initialize ezmaster-rp nginx config
     instances.generateAllRPNginxConfig(function (err) {
