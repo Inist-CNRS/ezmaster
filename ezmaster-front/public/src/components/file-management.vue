@@ -79,7 +79,7 @@
             </div>
           </div>
 		  <div>
-			  <i class="fa fa-info-circle" aria-hidden="true"></i> You can also try to use <a :href="'http://' + webdavHostname  + '/' + instance.technicalName + '/data/'" target="_blank">Webdav URL</a>
+			  <i class="fa fa-info-circle" aria-hidden="true"></i> You can also try to use <a :href="webdavHostname  + '/' + instance.technicalName + '/data/'" target="_blank">Webdav URL</a>
 		  </div>
         </div>
 
