@@ -2,6 +2,7 @@ DavLockDB "/usr/local/apache2/var/DavLock"
 
 <Directory "/usr/local/apache2/htdocs/">
   DirectoryIndex disabled
+  DirectorySlash Off
   Dav On
 
   # webdav authentication stuff
