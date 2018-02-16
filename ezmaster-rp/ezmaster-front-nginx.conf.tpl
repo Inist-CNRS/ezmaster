@@ -8,6 +8,9 @@ server {
   error_log   /var/log/nginx/ezmaster-rp/ezmaster-front.error.log   warn;
 
   location / {
+    # max file upload size
+    client_max_body_size 500M;
+
     proxy_pass http://ezmaster-front:35268;
   }
 
