@@ -329,9 +329,15 @@ router
     if (err) { return next(err); }
     debug('Creating an instance: makeDataDirectory', technicalName);
 
-    mkdirp(cfg.dataInstancesPath + '/' + technicalName + '/data/', createConfigFile);
+    mkdirp(cfg.dataInstancesPath + '/' + technicalName + '/data/', chmodDataDirectory);
   }
 
+  function chmodDataDirectory(err) {
+    if (err) { return next(err); }
+    debug('Creating an instance: chmodDataDirectory', technicalName);
+
+    fs.chmod(cfg.dataInstancesPath + '/' + technicalName + '/data/', 0o777, createConfigFile);
+  }
 
   function createConfigFile(err) {
     if (err) { return next(err); }
