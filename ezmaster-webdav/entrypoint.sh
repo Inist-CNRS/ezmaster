@@ -1,4 +1,4 @@
-#!/bin/sh -eux
+#!/bin/bash -eux
 
 # remove port 80 adjust to 35270
 sed -i 's%Listen 80%Listen 35270%g' /usr/local/apache2/conf/httpd.conf
@@ -15,8 +15,10 @@ sed -i 's%^#LoadModule auth_digest_module modules/mod_auth_digest.so%LoadModule 
 sed -i 's%^#Include conf/extra/httpd-dav.conf%Include conf/extra/httpd-dav.conf%g' \
     /usr/local/apache2/conf/httpd.conf
 
-# where webdav date will be written
-chmod -R ugo+rwx /usr/local/apache2/htdocs/
+# where webdav data will be written
+if [ "${DATA_FOLDER_NO_CHMOD:-}" == "" ] || [ "${DATA_FOLDER_NO_CHMOD:-}" == "0" ]; then
+  chmod -R ugo+rwx /usr/local/apache2/htdocs/
+fi
 
 # log stuff
 mkdir -p /var/log/apache2/
