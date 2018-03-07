@@ -19,6 +19,7 @@ sed -i 's%^#Include conf/extra/httpd-dav.conf%Include conf/extra/httpd-dav.conf%
 chmod -R ugo+rwx /usr/local/apache2/htdocs/
 
 # log stuff
+mkdir -p /var/log/apache2/
 sed -i 's%/proc/self/fd/2%/var/log/apache2/error.log%g'  /usr/local/apache2/conf/httpd.conf
 sed -i 's%/proc/self/fd/1%/var/log/apache2/access.log%g' /usr/local/apache2/conf/httpd.conf
 
