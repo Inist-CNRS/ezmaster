@@ -197,6 +197,10 @@ If you want to save the config and the data of your instances:
 
 ## Changelog
 
+### ezmaster 4.1.0
+
+- ezmaster-webdav docker image is now usable as a standalone image. A classic usecase is to quickly and easily share a given folder to a windows user.
+
 ### ezmaster 4.0.0
 
 * Login/password feature is now available to protect ezmaster backoffice and webdav (env parameters are ``EZMASTER_USER`` and ``EZMASTER_PASSWORD``)
@@ -206,7 +210,7 @@ If you want to save the config and the data of your instances:
   Webdav access exemple: http://webdav.mywebsite.com
 
 Breaking changes:
-  
+
 * docker and docker-compose need to be upgraded to docker >= 17.05.0 and docker-compose >= 1.17.0
 * ezmaster backoffice is available on a new port: 35268
 * ezmaster  api is now splitted on a dedicated port: 35269
@@ -248,7 +252,7 @@ Breaking changes:
 Migration guide
 
 * after the new ezmaster version is installed and started, you have to connect all the existing ezmaster instances to the new ezmaster docker network this way:
-  
+
   ```shell
   EZMASTER_INSTANCE="lodex-ezark-1" # this is an example, please adapt to your instance name
   docker network disconnect ezmaster_default $EZMASTER_INSTANCE
@@ -256,7 +260,7 @@ Migration guide
   ```
 
 * check your instances manifest in ``data/manifests/*.json`` and add the "httpPort" key/value if not already existing. The value of the httpPort can be requested from the given ezmaster application with this shell command:
-  
+
   ```shell
   EZMASTER_APPLICATION="inistcnrs/refgpec-api:1.0.8" # this is an example, please adapt to your application name
   docker run -it --rm --entrypoint="/bin/cat" $EZMASTER_APPLICATION /etc/ezmaster.json
