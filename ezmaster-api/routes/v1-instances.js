@@ -458,7 +458,9 @@ router
               // and execute the docker run !
               exec(cmd, function (err, stdout, stderr) {
                 if (err) { return next(err); }
-                return res.status(200).send('Instance technicalName created');
+                fs.chmod(cfg.dataInstancesPath + '/' + technicalName + '/data/', 0o777, function() {
+                  return res.status(200).send('Instance technicalName created');
+                });
               });
             }
           );
