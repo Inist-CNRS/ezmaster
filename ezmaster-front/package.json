@@ -4,6 +4,7 @@
   "description": "ezmaster-front",
   "private": true,
   "scripts": {
+    "prestart": "mkdir -p public/dist/",
     "start": "npm-run-all --parallel watch-js watch-less start-server",
     "start-server": "http-server -p 3000 --silent public/",
     "watch-js": "watch 'browserify -d public/src/main.js > public/dist/bundle.js && echo \"-> bundle.js written [$(date +%T)]\"' ./public/src/",
