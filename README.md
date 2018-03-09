@@ -43,6 +43,11 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # (it allows to access instances through a wildcard public domain)
 # Default is empty and it means the reverse proxy feature is disabled
 #
+# It you enable this feature, do not forget to configure your front reverse proxy
+# on this access point: http://<ezmaster-server-host>:35267
+# Warning: don't forget to add this apache2 configuration on your front reverse proxy
+#          ProxyPreserveHost On
+#
 # On the following example, if we have a "abc-def-4" (tech name) instance, then
 # it will be joinable at this URL: http://abc-def-4.lod-test.istex.fr
 # Tech. name is the prefix used and concatenated to the public domain
@@ -51,8 +56,6 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # it enables two features:
 # 1) ezmaster backoffice will be publicaly accessible http://ezmaster.lod-test.istex.fr
 # 2) a webdav endpoint will be publicaly accessible http://webdav.lod-test.istex.fr
-# Warning: don't forget to add this apache2 configuration on your front reverse proxy
-#          ProxyPreserveHost On
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 
 # The maximum total free space percent of the disk for avoiding saturation.
