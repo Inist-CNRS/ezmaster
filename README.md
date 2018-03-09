@@ -51,7 +51,8 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # it enables two features:
 # 1) ezmaster backoffice will be publicaly accessible http://ezmaster.lod-test.istex.fr
 # 2) a webdav endpoint will be publicaly accessible http://webdav.lod-test.istex.fr
-# Warning: do not forget to add the don't forget to add the ``ProxyPreserveHost On`` apache2 configuration on your front reverse proxy
+# Warning: don't forget to add this apache2 configuration on your front reverse proxy
+#          ProxyPreserveHost On
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 
 # The maximum total free space percent of the disk for avoiding saturation.
