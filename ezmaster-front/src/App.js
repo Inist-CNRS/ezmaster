@@ -13,6 +13,14 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+        <div>
+
+{/* to test font-awesome with reactjs */}
+<i className="fa fa-user fa-4x"></i>
+&nbsp;
+<i className="fa fa-github-square fa-4x"></i>
+
+        </div>
       </div>
     );
   }
