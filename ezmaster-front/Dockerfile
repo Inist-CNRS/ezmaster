@@ -4,7 +4,7 @@ WORKDIR /app/
 COPY ./package.json /app/
 RUN npm install
 COPY . /app
-RUN mkdir -p /app/public/dist
+RUN mkdir -p /app/build
 RUN npm run build
 
 # -------------------
@@ -16,11 +16,7 @@ FROM nginx:1.13.3
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get -y update && apt-get -y install vim curl apache2-utils
 
-COPY --from=build-deps /app/public/dist /app/public/dist
-COPY --from=build-deps /app/public/img  /app/public/img
-COPY --from=build-deps /app/public/libs /app/public/libs
-COPY --from=build-deps /app/public/index.html  /app/public/index.html
-COPY --from=build-deps /app/public/favicon.ico /app/public/favicon.ico
+COPY --from=build-deps /app/build /app/public
 
 COPY ./nginx.prod.conf /etc/nginx/nginx.conf.orig
 RUN mkdir -p /var/log/nginx/ezmaster-front/
