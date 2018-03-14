@@ -1,0 +1,32 @@
+.ezmaster-action {
+  font-size: 1.6rem;
+  padding: 0 2px 0 2px;
+  margin: 0px;
+}
+.ezmaster-action i {
+  vertical-align: top;
+}
+.ezmaster-action-stop {
+  color: #d8a2a0;
+}
+.ezmaster-action-play {
+  color: #488749;
+}
+.ezmaster-action-trash {
+  color: #be9754;
+}
+.ezmaster-action-cog {
+  color: #47aae8;
+}
+.ezmaster-action-upload {
+  color: #47aae8;
+}
+.ezmaster-action-link {
+  color: #47aae8;
+}
+.ezmaster-action-globe {
+  color: #47aae8;
+}
+.ezmaster-action-file {
+  color: #47aae8;
+}
