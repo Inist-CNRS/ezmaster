@@ -11,15 +11,12 @@
     "reactstrap": "^5.0.0-beta.2"
   },
   "scripts": {
-    "start":
-      "npm run sed:clearConsole.js && npm run sed:WebpackDevServerUtils.js && react-scripts start",
+    "start": "npm run sed:clearConsole.js && npm run sed:WebpackDevServerUtils.js && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "sed:clearConsole.js":
-      "sed -i 's#^function clearConsole() {$#function clearConsole() { return;#g' ./node_modules/react-dev-utils/clearConsole.js",
-    "sed:WebpackDevServerUtils.js":
-      "sed -i 's#^function printInstructions(appName, urls, useYarn) {$#function printInstructions(appName, urls, useYarn) { return;#g' ./node_modules/react-dev-utils/WebpackDevServerUtils.js"
+    "sed:clearConsole.js": "sed -i 's#^function clearConsole() {$#function clearConsole() { return;#g' ./node_modules/react-dev-utils/clearConsole.js",
+    "sed:WebpackDevServerUtils.js": "sed -i 's#^function printInstructions(appName, urls, useYarn) {$#function printInstructions(appName, urls, useYarn) { return;#g' ./node_modules/react-dev-utils/WebpackDevServerUtils.js"
   },
   "devDependencies": {}
 }

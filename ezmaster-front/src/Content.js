@@ -32,9 +32,9 @@ class Content extends Component {
           </tr>
         </thead>
         <tbody>
-          <EzMasterInstanceRow />
-          <EzMasterInstanceRow />
-          <EzMasterInstanceRow />
+          <EzMasterInstanceRow technicalName="dpi-project-1" />
+          <EzMasterInstanceRow technicalName="dpi-project-2" />
+          <EzMasterInstanceRow technicalName="dpi-project-3" />
         </tbody>
       </Table>
     );
