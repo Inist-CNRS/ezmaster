@@ -3,10 +3,12 @@
   "version": "4.1.1",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.0.0",
     "font-awesome": "^4.7.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts": "1.1.1"
+    "react-scripts": "1.1.1",
+    "reactstrap": "^5.0.0-beta.2"
   },
   "scripts": {
     "start": "npm run sed:clearConsole.js && npm run sed:WebpackDevServerUtils.js && react-scripts start",
