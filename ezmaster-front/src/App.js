@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from            './logo.svg';
 import './App.css';
 import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
@@ -13,7 +13,7 @@ class App extends Component {
       popoverOpen: false
     };
   }
-  
+
   toggle() {
     this.setState({
       popoverOpen: !this.state.popoverOpen
