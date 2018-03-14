@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import logo from            './logo.svg';
-import './App.css';
-import { Button, Popover, PopoverHeader, PopoverBody } from 'reactstrap';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { Button, Popover, PopoverHeader, PopoverBody } from "reactstrap";
 
 class App extends Component {
-  
   constructor(props) {
     super(props);
 
@@ -34,18 +33,24 @@ class App extends Component {
           <Button id="Popover1" onClick={this.toggle}>
             Launch Popover
           </Button>
-          <Popover placement="bottom" isOpen={this.state.popoverOpen} target="Popover1" toggle={this.toggle}>
+          <Popover
+            placement="bottom"
+            isOpen={this.state.popoverOpen}
+            target="Popover1"
+            toggle={this.toggle}
+          >
             <PopoverHeader>Popover Title</PopoverHeader>
-            <PopoverBody>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</PopoverBody>
+            <PopoverBody>
+              Sed posuere consectetur est at lobortis. Aenean eu leo quam.
+              Pellentesque ornare sem lacinia quam venenatis vestibulum.
+            </PopoverBody>
           </Popover>
         </div>
         <div>
-
-{/* to test font-awesome with reactjs */}
-<i className="fa fa-user fa-4x"></i>
-&nbsp;
-<i className="fa fa-github-square fa-4x"></i>
-
+          {/* to test font-awesome with reactjs */}
+          <i className="fa fa-user fa-4x" />
+          &nbsp;
+          <i className="fa fa-github-square fa-4x" />
         </div>
       </div>
     );
