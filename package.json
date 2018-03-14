@@ -4,23 +4,21 @@
   "description": "Administration of docker applications without any IT skills",
   "private": true,
   "scripts": {
-    "insertversion:readme":
-      "sed -i \"s#\\(ezmaster/\\)\\([\\.a-z0-9]\\+\\)\\(/docker-compose\\)#\\1${npm_package_version}$3\\3#g\" README.md",
-    "insertversion:docker":
-      "sed -i \"s#\\(inistcnrs/ezmaster:\\)\\([\\.a-z0-9]\\+\\)\\(-[a-z]\\+\\)#\\1${npm_package_version}\\3#g\" docker-compose*.yml ezmaster-webdav/README.md",
-    "insertversion:index":
-      "sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html",
-    "insertversion:package":
-      "sed -i \"s#^\\(  \\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" ezmaster-front/package*.json ezmaster-api/package*.json",
+    "insertversion:readme": "sed -i \"s#\\(ezmaster/\\)\\([\\.a-z0-9]\\+\\)\\(/docker-compose\\)#\\1${npm_package_version}$3\\3#g\" README.md",
+    "insertversion:docker": "sed -i \"s#\\(inistcnrs/ezmaster:\\)\\([\\.a-z0-9]\\+\\)\\(-[a-z]\\+\\)#\\1${npm_package_version}\\3#g\" docker-compose*.yml ezmaster-webdav/README.md",
+    "insertversion:index": "sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html",
+    "insertversion:package": "sed -i \"s#^\\(  \\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" ezmaster-front/package*.json ezmaster-api/package*.json",
     "preversion": "npm run prettier",
-    "version":
-      "npm run insertversion:readme && npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add README.md ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package*.json ezmaster-front/package*.json docker-compose*.yml ezmaster-webdav/README.md",
+    "version": "npm run insertversion:readme && npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add README.md ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package*.json ezmaster-front/package*.json docker-compose*.yml ezmaster-webdav/README.md",
     "postversion": "git push && git push --tags",
     "precommit": "lint-staged",
-    "postinstall":
-      "cd ezmaster-api/ ; npm i --unsafe-perm ; cd ../ezmaster-front/ ; npm i --unsafe-perm"
+    "postinstall": "cd ezmaster-api/ ; npm i --unsafe-perm ; cd ../ezmaster-front/ ; npm i --unsafe-perm"
   },
-  "keywords": ["docker", "ihm", "gui"],
+  "keywords": [
+    "docker",
+    "ihm",
+    "gui"
+  ],
   "contributors": [
     {
       "name": "Stéphane Gully",
@@ -38,7 +36,10 @@
   "license": "MIT",
   "dependencies": {},
   "lint-staged": {
-    "*.{js,css,md,jsx}": ["prettier --write", "git add"]
+    "*.{js,css,md,jsx}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "devDependencies": {
     "eslint": "^3.7.1",
@@ -47,7 +48,6 @@
     "eslint-plugin-vue": "^1.0.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1",
-    "pretty-quick": "^1.4.1"
+    "prettier": "^1.11.1"
   }
 }
