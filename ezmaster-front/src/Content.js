@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from "reactstrap";
 import { Table } from "reactstrap";
-import { Badge } from "reactstrap";
-import { Button } from "reactstrap";
 import "./Content.css";
 import EzMasterInstanceRow from "./EzMasterInstanceRow.js";
 
