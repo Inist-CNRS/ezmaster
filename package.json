@@ -16,7 +16,7 @@
     "version":
       "npm run insertversion:readme && npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add README.md ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package*.json ezmaster-front/package*.json docker-compose*.yml ezmaster-webdav/README.md",
     "postversion": "git push && git push --tags",
-    "precommit": "pretty-quick --staged",
+    "precommit": "lint-staged",
     "postinstall":
       "cd ezmaster-api/ ; npm i --unsafe-perm ; cd ../ezmaster-front/ ; npm i --unsafe-perm"
   },
@@ -38,7 +38,7 @@
   "license": "MIT",
   "dependencies": {},
   "lint-staged": {
-    "*.{js,json,css,md,jsx}": ["prettier --write", "git add"]
+    "*.{js,css,md,jsx}": ["prettier --write", "git add"]
   },
   "devDependencies": {
     "eslint": "^3.7.1",
