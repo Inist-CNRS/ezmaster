@@ -1,32 +1,32 @@
-.ezmaster-action {
+.ezmaster-a {
   font-size: 1.6rem;
   padding: 0 2px 0 2px;
   margin: 0px;
 }
-.ezmaster-action i {
+.ezmaster-a i {
   vertical-align: top;
 }
-.ezmaster-action-stop {
+.ezmaster-a-stop {
   color: #d8a2a0;
 }
-.ezmaster-action-play {
+.ezmaster-a-play {
   color: #488749;
 }
-.ezmaster-action-trash {
+.ezmaster-a-trash {
   color: #be9754;
 }
-.ezmaster-action-cog {
+.ezmaster-a-cog {
   color: #47aae8;
 }
-.ezmaster-action-upload {
+.ezmaster-a-upload {
   color: #47aae8;
 }
-.ezmaster-action-link {
+.ezmaster-a-link {
   color: #47aae8;
 }
-.ezmaster-action-globe {
+.ezmaster-a-globe {
   color: #47aae8;
 }
-.ezmaster-action-file {
+.ezmaster-a-file {
   color: #47aae8;
 }
