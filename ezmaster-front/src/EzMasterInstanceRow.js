@@ -22,48 +22,56 @@ class EzMasterInstanceRow extends Component {
         <td>
           <EzMasterInstanceRowAction
             technicalName={this.props.technicalName}
+            dataFolderSize={Math.random() * 5000}
             action="stop-circle"
             tooltip={"Stop " + this.props.technicalName}
           />
 
           <EzMasterInstanceRowAction
             technicalName={this.props.technicalName}
+            dataFolderSize={Math.random() * 5000}
             action="play-circle"
             tooltip={"Start " + this.props.technicalName}
           />
 
           <EzMasterInstanceRowAction
             technicalName={this.props.technicalName}
+            dataFolderSize={Math.random() * 5000}
             action="trash"
             tooltip={"Delete " + this.props.technicalName}
           />
 
           <EzMasterInstanceRowAction
             technicalName={this.props.technicalName}
+            dataFolderSize={Math.random() * 5000}
             action="cog"
             tooltip={"Edit settings of " + this.props.technicalName}
           />
 
           <EzMasterInstanceRowAction
             technicalName={this.props.technicalName}
+            dataFolderSize={Math.random() * 5000}
             action="upload"
             tooltip={"Upload data to " + this.props.technicalName}
           />
 
           <EzMasterInstanceRowAction
             technicalName={this.props.technicalName}
+            dataFolderSize={Math.random() * 5000}
             action="link"
             tooltip={"Open the " + this.props.technicalName + " internal URL"}
           />
 
           <EzMasterInstanceRowAction
             technicalName={this.props.technicalName}
+            dataFolderSize={Math.random() * 5000}
             action="globe"
             tooltip={"Open the " + this.props.technicalName + " public URL"}
           />
 
           <EzMasterInstanceRowAction
             technicalName={this.props.technicalName}
+            dataFolderSize={Math.random() * 5000}
             action="file"
             tooltip={"See the logs of " + this.props.technicalName}
           />
