@@ -8,6 +8,7 @@ import brace from "brace";
 import "brace/mode/json";
 import "brace/mode/text";
 import "brace/ext/searchbox";
+import "brace/theme/github";
 
 import "./InstanceBtnSettings.css";
 
@@ -19,7 +20,7 @@ class InstanceBtnSettings extends Component {
       modalIsFS: false,
       code: ""
     };
-
+    this.currentCode = "";
     this.toggleIsOpen = this.toggleIsOpen.bind(this);
     this.toggleIsFS = this.toggleIsFS.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
@@ -33,21 +34,27 @@ class InstanceBtnSettings extends Component {
 
   toggleIsFS() {
     this.setState({
-      modalIsFS: !this.state.modalIsFS
+      modalIsFS: !this.state.modalIsFS,
+      code: this.currentCode
     });
 
     // need also to resize the ACE editor of it will truncate the text
+    // we also re-focus to the edit area
     setImmediate(
       function() {
         this.refs[this.props.instance.technicalName + "-ace"].editor.resize();
+        this.refs[this.props.instance.technicalName + "-ace"].editor.focus();
       }.bind(this)
     );
   }
 
   onCodeChange(newValue) {
-    this.setState({
-      code: newValue
-    });
+    // Do not store the new value in the store now because it will
+    // re-render the react component and it will generates stranges error
+    // in the ace editor.
+    // This is why we use the currentCode temp variable and push it in
+    // the store just when switching to fullscreen (because re-render will occurs).
+    this.currentCode = newValue;
   }
 
   render() {
