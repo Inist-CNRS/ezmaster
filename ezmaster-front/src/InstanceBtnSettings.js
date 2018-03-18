@@ -106,7 +106,9 @@ class InstanceBtnSettings extends Component {
               className="modal-fullscreen-btn"
             >
               <i
-                className={"fa fa-expand"}
+                className={
+                  "fa " + (this.state.modalIsFS ? "fa-compress" : "fa-expand")
+                }
                 id={this.props.instance.technicalName + "-settings-fs"}
               />
             </Button>
@@ -117,10 +119,10 @@ class InstanceBtnSettings extends Component {
               Edit the configuration in fullscreen mode.
             </UncontrolledTooltip>
             <Button color="primary" onClick={this.toggleIsOpen}>
-              XXXX
+              Update
             </Button>{" "}
             <Button color="secondary" onClick={this.toggleIsOpen}>
-              YYY
+              Cancel
             </Button>
           </ModalFooter>
         </Modal>
