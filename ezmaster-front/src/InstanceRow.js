@@ -2,16 +2,16 @@ import React, { Component } from "react";
 
 import { Badge } from "reactstrap";
 
-import "./EzMasterInstanceRow.css";
-import EzMasterInstanceTrashBtn from "./EzMasterInstanceTrashBtn.js";
-import EzMasterInstanceStartStopBtn from "./EzMasterInstanceStartStopBtn.js";
-import EzMasterInstanceSettingsBtn from "./EzMasterInstanceSettingsBtn.js";
-import EzMasterInstanceUploadBtn from "./EzMasterInstanceUploadBtn.js";
-import EzMasterInstancePrivLinkBtn from "./EzMasterInstancePrivLinkBtn.js";
-import EzMasterInstancePubLinkBtn from "./EzMasterInstancePubLinkBtn.js";
-import EzMasterInstanceLogsBtn from "./EzMasterInstanceLogsBtn.js";
+import "./InstanceRow.css";
+import InstanceTrashBtn from "./InstanceTrashBtn.js";
+import InstanceStartStopBtn from "./InstanceStartStopBtn.js";
+import InstanceSettingsBtn from "./InstanceSettingsBtn.js";
+import InstanceUploadBtn from "./InstanceUploadBtn.js";
+import InstancePrivLinkBtn from "./InstancePrivLinkBtn.js";
+import InstancePubLinkBtn from "./InstancePubLinkBtn.js";
+import InstanceLogsBtn from "./InstanceLogsBtn.js";
 
-class EzMasterInstanceRow extends Component {
+class InstanceRow extends Component {
   render() {
     return (
       <tr>
@@ -26,43 +26,43 @@ class EzMasterInstanceRow extends Component {
           <Badge color="success">Running</Badge>
         </td>
         <td>
-          <EzMasterInstanceStartStopBtn
+          <InstanceStartStopBtn
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceTrashBtn
+          <InstanceTrashBtn
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceSettingsBtn
+          <InstanceSettingsBtn
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceUploadBtn
+          <InstanceUploadBtn
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstancePrivLinkBtn
+          <InstancePrivLinkBtn
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstancePubLinkBtn
+          <InstancePubLinkBtn
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceLogsBtn
+          <InstanceLogsBtn
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
@@ -73,4 +73,4 @@ class EzMasterInstanceRow extends Component {
   }
 }
 
-export default EzMasterInstanceRow;
+export default InstanceRow;

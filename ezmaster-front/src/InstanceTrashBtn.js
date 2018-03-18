@@ -4,9 +4,9 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import prettyBytes from "pretty-bytes";
 
-import "./EzMasterInstanceTrashBtn.css";
+import "./InstanceTrashBtn.css";
 
-class EzMasterInstanceTrashBtn extends Component {
+class InstanceTrashBtn extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -74,4 +74,4 @@ class EzMasterInstanceTrashBtn extends Component {
   }
 }
 
-export default EzMasterInstanceTrashBtn;
+export default InstanceTrashBtn;

@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
-import "./EzMasterInstanceLogsBtn.css";
+import "./InstanceLogsBtn.css";
 
-class EzMasterInstanceLogsBtn extends Component {
+class InstanceLogsBtn extends Component {
   constructor(props) {
     super(props);
   }
@@ -33,4 +33,4 @@ class EzMasterInstanceLogsBtn extends Component {
   }
 }
 
-export default EzMasterInstanceLogsBtn;
+export default InstanceLogsBtn;

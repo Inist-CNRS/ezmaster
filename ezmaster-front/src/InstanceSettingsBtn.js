@@ -3,9 +3,9 @@ import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
-import "./EzMasterInstanceUploadBtn.css";
+import "./InstanceSettingsBtn.css";
 
-class EzMasterInstanceUploadBtn extends Component {
+class InstanceSettingsBtn extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,37 +26,37 @@ class EzMasterInstanceUploadBtn extends Component {
       <div className={this.props.className}>
         <Button
           color="link"
-          className={this.props.classNameBtn + " ezmaster-a-upload"}
+          className={this.props.classNameBtn + " ezmaster-a-cog"}
           onClick={this.toggleModal}
         >
           <i
-            className={"fa fa-upload"}
-            id={this.props.instance.technicalName + "-upload"}
+            className={"fa fa-cog"}
+            id={this.props.instance.technicalName + "-cog"}
           />
         </Button>
 
         <Modal isOpen={this.state.modalIsOpen} toggle={this.toggleModal}>
-          <ModalHeader toggle={this.toggleModal}>Hello2</ModalHeader>
-          <ModalBody>TODO2</ModalBody>
+          <ModalHeader toggle={this.toggleModal}>Hello</ModalHeader>
+          <ModalBody>TODO</ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.toggleModal}>
-              XXXX2
+              XXXX
             </Button>{" "}
             <Button color="secondary" onClick={this.toggleModal}>
-              YYY2
+              YYY
             </Button>
           </ModalFooter>
         </Modal>
 
         <UncontrolledTooltip
           placement="top"
-          target={this.props.instance.technicalName + "-upload"}
+          target={this.props.instance.technicalName + "-cog"}
         >
-          Upload data to <code>{this.props.instance.technicalName}</code>
+          Edit settings of <code>{this.props.instance.technicalName}</code>
         </UncontrolledTooltip>
       </div>
     );
   }
 }
 
-export default EzMasterInstanceUploadBtn;
+export default InstanceSettingsBtn;

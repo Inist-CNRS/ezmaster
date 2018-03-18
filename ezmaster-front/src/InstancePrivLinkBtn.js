@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
-import "./EzMasterInstancePrivLinkBtn.css";
+import "./InstancePrivLinkBtn.css";
 
-class EzMasterInstancePrivLinkBtn extends Component {
+class InstancePrivLinkBtn extends Component {
   constructor(props) {
     super(props);
   }
@@ -34,4 +34,4 @@ class EzMasterInstancePrivLinkBtn extends Component {
   }
 }
 
-export default EzMasterInstancePrivLinkBtn;
+export default InstancePrivLinkBtn;

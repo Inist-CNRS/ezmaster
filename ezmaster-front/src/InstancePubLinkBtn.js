@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
-import "./EzMasterInstancePubLinkBtn.css";
+import "./InstancePubLinkBtn.css";
 
-class EzMasterInstancePubLinkBtn extends Component {
+class InstancePubLinkBtn extends Component {
   constructor(props) {
     super(props);
   }
@@ -34,4 +34,4 @@ class EzMasterInstancePubLinkBtn extends Component {
   }
 }
 
-export default EzMasterInstancePubLinkBtn;
+export default InstancePubLinkBtn;

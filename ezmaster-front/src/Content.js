@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
 import "./Content.css";
-import EzMasterInstanceRow from "./EzMasterInstanceRow.js";
+import InstanceRow from "./InstanceRow.js";
 
 class Content extends Component {
   render() {
@@ -23,7 +23,7 @@ class Content extends Component {
 
     const instancesRows = [];
     instances.forEach(function(instance) {
-      instancesRows.push(<EzMasterInstanceRow instance={instance} />);
+      instancesRows.push(<InstanceRow instance={instance} />);
     });
 
     return (
