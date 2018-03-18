@@ -1,0 +1,12 @@
+.ezmaster-a {
+  display: inline-block;
+}
+
+.ezmaster-a-btn {
+  font-size: 1.6rem;
+  padding: 0 2px 0 2px;
+  margin: 0px;
+}
+.ezmaster-a-btn i {
+  vertical-align: top;
+}

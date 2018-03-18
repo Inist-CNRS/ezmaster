@@ -3,7 +3,13 @@ import React, { Component } from "react";
 import { Badge } from "reactstrap";
 
 import "./EzMasterInstanceRow.css";
-import EzMasterInstanceRowAction from "./EzMasterInstanceRowAction.js";
+import EzMasterInstanceTrashBtn from "./EzMasterInstanceTrashBtn.js";
+import EzMasterInstanceStartStopBtn from "./EzMasterInstanceStartStopBtn.js";
+import EzMasterInstanceSettingsBtn from "./EzMasterInstanceSettingsBtn.js";
+import EzMasterInstanceUploadBtn from "./EzMasterInstanceUploadBtn.js";
+import EzMasterInstancePrivLinkBtn from "./EzMasterInstancePrivLinkBtn.js";
+import EzMasterInstancePubLinkBtn from "./EzMasterInstancePubLinkBtn.js";
+import EzMasterInstanceLogsBtn from "./EzMasterInstanceLogsBtn.js";
 
 class EzMasterInstanceRow extends Component {
   render() {
@@ -20,56 +26,46 @@ class EzMasterInstanceRow extends Component {
           <Badge color="success">Running</Badge>
         </td>
         <td>
-          <EzMasterInstanceRowAction
+          <EzMasterInstanceStartStopBtn
             instance={this.props.instance}
-            action="stop-circle"
-            tooltip={"Stop " + this.props.instance.technicalName}
+            className="ezmaster-a"
+            classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceRowAction
+          <EzMasterInstanceTrashBtn
             instance={this.props.instance}
-            action="play-circle"
-            tooltip={"Start " + this.props.instance.technicalName}
+            className="ezmaster-a"
+            classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceRowAction
+          <EzMasterInstanceSettingsBtn
             instance={this.props.instance}
-            action="trash"
-            tooltip={"Delete " + this.props.instance.technicalName}
+            className="ezmaster-a"
+            classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceRowAction
+          <EzMasterInstanceUploadBtn
             instance={this.props.instance}
-            action="cog"
-            tooltip={"Edit settings of " + this.props.instance.technicalName}
+            className="ezmaster-a"
+            classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceRowAction
+          <EzMasterInstancePrivLinkBtn
             instance={this.props.instance}
-            action="upload"
-            tooltip={"Upload data to " + this.props.instance.technicalName}
+            className="ezmaster-a"
+            classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceRowAction
+          <EzMasterInstancePubLinkBtn
             instance={this.props.instance}
-            action="link"
-            tooltip={
-              "Open the " + this.props.instance.technicalName + " internal URL"
-            }
+            className="ezmaster-a"
+            classNameBtn="ezmaster-a-btn"
           />
 
-          <EzMasterInstanceRowAction
+          <EzMasterInstanceLogsBtn
             instance={this.props.instance}
-            action="globe"
-            tooltip={
-              "Open the " + this.props.instance.technicalName + " public URL"
-            }
-          />
-
-          <EzMasterInstanceRowAction
-            instance={this.props.instance}
-            action="file"
-            tooltip={"See the logs of " + this.props.instance.technicalName}
+            className="ezmaster-a"
+            classNameBtn="ezmaster-a-btn"
           />
         </td>
       </tr>
