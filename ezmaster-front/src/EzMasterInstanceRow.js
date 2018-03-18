@@ -11,7 +11,7 @@ class EzMasterInstanceRow extends Component {
       <tr>
         <td>Les projets du DPI</td>
         <td>
-          <a href="">all-projects-5</a>
+          <a href="">{this.props.instance.technicalName}</a>
         </td>
         <td>2018/03/05 14:46:05</td>
         <td>inistcnrs/lodex:8.18.0</td>
@@ -21,59 +21,55 @@ class EzMasterInstanceRow extends Component {
         </td>
         <td>
           <EzMasterInstanceRowAction
-            technicalName={this.props.technicalName}
-            dataFolderSize={Math.random() * 5000}
+            instance={this.props.instance}
             action="stop-circle"
-            tooltip={"Stop " + this.props.technicalName}
+            tooltip={"Stop " + this.props.instance.technicalName}
           />
 
           <EzMasterInstanceRowAction
-            technicalName={this.props.technicalName}
-            dataFolderSize={Math.random() * 5000}
+            instance={this.props.instance}
             action="play-circle"
-            tooltip={"Start " + this.props.technicalName}
+            tooltip={"Start " + this.props.instance.technicalName}
           />
 
           <EzMasterInstanceRowAction
-            technicalName={this.props.technicalName}
-            dataFolderSize={Math.random() * 5000}
+            instance={this.props.instance}
             action="trash"
-            tooltip={"Delete " + this.props.technicalName}
+            tooltip={"Delete " + this.props.instance.technicalName}
           />
 
           <EzMasterInstanceRowAction
-            technicalName={this.props.technicalName}
-            dataFolderSize={Math.random() * 5000}
+            instance={this.props.instance}
             action="cog"
-            tooltip={"Edit settings of " + this.props.technicalName}
+            tooltip={"Edit settings of " + this.props.instance.technicalName}
           />
 
           <EzMasterInstanceRowAction
-            technicalName={this.props.technicalName}
-            dataFolderSize={Math.random() * 5000}
+            instance={this.props.instance}
             action="upload"
-            tooltip={"Upload data to " + this.props.technicalName}
+            tooltip={"Upload data to " + this.props.instance.technicalName}
           />
 
           <EzMasterInstanceRowAction
-            technicalName={this.props.technicalName}
-            dataFolderSize={Math.random() * 5000}
+            instance={this.props.instance}
             action="link"
-            tooltip={"Open the " + this.props.technicalName + " internal URL"}
+            tooltip={
+              "Open the " + this.props.instance.technicalName + " internal URL"
+            }
           />
 
           <EzMasterInstanceRowAction
-            technicalName={this.props.technicalName}
-            dataFolderSize={Math.random() * 5000}
+            instance={this.props.instance}
             action="globe"
-            tooltip={"Open the " + this.props.technicalName + " public URL"}
+            tooltip={
+              "Open the " + this.props.instance.technicalName + " public URL"
+            }
           />
 
           <EzMasterInstanceRowAction
-            technicalName={this.props.technicalName}
-            dataFolderSize={Math.random() * 5000}
+            instance={this.props.instance}
             action="file"
-            tooltip={"See the logs of " + this.props.technicalName}
+            tooltip={"See the logs of " + this.props.instance.technicalName}
           />
         </td>
       </tr>

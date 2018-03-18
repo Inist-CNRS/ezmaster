@@ -5,6 +5,27 @@ import EzMasterInstanceRow from "./EzMasterInstanceRow.js";
 
 class Content extends Component {
   render() {
+    // fake ezmaster instances data
+    const instances = [
+      {
+        technicalName: "dpi-project-1",
+        dataFolderSize: Math.random() * 5000
+      },
+      {
+        technicalName: "dpi-project-2",
+        dataFolderSize: Math.random() * 5000
+      },
+      {
+        technicalName: "dpi-project-3",
+        dataFolderSize: Math.random() * 5000
+      }
+    ];
+
+    const instancesRows = [];
+    instances.forEach(function(instance) {
+      instancesRows.push(<EzMasterInstanceRow instance={instance} />);
+    });
+
     return (
       // <Container>
       //   <Row>
@@ -28,11 +49,7 @@ class Content extends Component {
             <th>Actions</th>
           </tr>
         </thead>
-        <tbody>
-          <EzMasterInstanceRow technicalName="dpi-project-1" />
-          <EzMasterInstanceRow technicalName="dpi-project-2" />
-          <EzMasterInstanceRow technicalName="dpi-project-3" />
-        </tbody>
+        <tbody>{instancesRows}</tbody>
       </Table>
     );
   }

@@ -32,26 +32,30 @@ class EzMasterInstanceRowAction extends Component {
         >
           <i
             className={"fa fa-" + this.props.action}
-            id={this.props.technicalName + "-" + this.props.action}
+            id={this.props.instance.technicalName + "-" + this.props.action}
           />
         </Button>
         {this.props.action == "trash" && (
           <Modal isOpen={this.state.modalTrash} toggle={this.toggleTrash}>
             <ModalHeader toggle={this.toggleTrash}>
-              Confirm you want to delete <code>{this.props.technicalName}</code>
+              Confirm you want to delete{" "}
+              <code>{this.props.instance.technicalName}</code>
             </ModalHeader>
             <ModalBody>
               You are going to delete the{" "}
-              <code>{this.props.technicalName}</code> instance.<br />
+              <code>{this.props.instance.technicalName}</code> instance.<br />
               It represents{" "}
-              <strong>{prettyBytes(this.props.dataFolderSize)}</strong> of data.
+              <strong>
+                {prettyBytes(this.props.instance.dataFolderSize)}
+              </strong>{" "}
+              of data.
               <br />
               <br />
               Are you sure?
             </ModalBody>
             <ModalFooter>
               <Button color="primary" onClick={this.toggleTrash}>
-                Yes delete {this.props.technicalName}
+                Yes delete {this.props.instance.technicalName}
               </Button>{" "}
               <Button color="secondary" onClick={this.toggleTrash}>
                 Cancel
@@ -61,7 +65,7 @@ class EzMasterInstanceRowAction extends Component {
         )}
         <UncontrolledTooltip
           placement="top"
-          target={this.props.technicalName + "-" + this.props.action}
+          target={this.props.instance.technicalName + "-" + this.props.action}
         >
           {this.props.tooltip}
         </UncontrolledTooltip>
