@@ -9,3 +9,8 @@
   font-size: 10rem;
   color: #47aae8;
 }
+
+/* hide the filter bar in the file list modal */
+.ezmaster-instance-filelist input {
+  display: none !important;
+}
