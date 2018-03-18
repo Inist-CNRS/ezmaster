@@ -35,6 +35,7 @@ class EzMasterInstanceRowAction extends Component {
             id={this.props.instance.technicalName + "-" + this.props.action}
           />
         </Button>
+
         {this.props.action == "trash" && (
           <Modal isOpen={this.state.modalTrash} toggle={this.toggleTrash}>
             <ModalHeader toggle={this.toggleTrash}>
@@ -63,6 +64,7 @@ class EzMasterInstanceRowAction extends Component {
             </ModalFooter>
           </Modal>
         )}
+
         <UncontrolledTooltip
           placement="top"
           target={this.props.instance.technicalName + "-" + this.props.action}
