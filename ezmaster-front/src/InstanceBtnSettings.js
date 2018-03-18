@@ -3,9 +3,9 @@ import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
-import "./InstanceSettingsBtn.css";
+import "./InstanceBtnSettings.css";
 
-class InstanceSettingsBtn extends Component {
+class InstanceBtnSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,4 +59,4 @@ class InstanceSettingsBtn extends Component {
   }
 }
 
-export default InstanceSettingsBtn;
+export default InstanceBtnSettings;

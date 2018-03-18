@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
-import "./InstanceStartStopBtn.css";
+import "./InstanceBtnStartStop.css";
 
-class InstanceStartStopBtn extends Component {
+class InstanceBtnStartStop extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -76,4 +76,4 @@ class InstanceStartStopBtn extends Component {
   }
 }
 
-export default InstanceStartStopBtn;
+export default InstanceBtnStartStop;

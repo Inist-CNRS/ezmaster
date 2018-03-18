@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
-import "./InstancePrivLinkBtn.css";
+import "./InstanceBtnPrivLink.css";
 
-class InstancePrivLinkBtn extends Component {
+class InstanceBtnPrivLink extends Component {
   constructor(props) {
     super(props);
   }
@@ -34,4 +34,4 @@ class InstancePrivLinkBtn extends Component {
   }
 }
 
-export default InstancePrivLinkBtn;
+export default InstanceBtnPrivLink;

@@ -3,13 +3,13 @@ import React, { Component } from "react";
 import { Badge } from "reactstrap";
 
 import "./InstanceRow.css";
-import InstanceTrashBtn from "./InstanceTrashBtn.js";
-import InstanceStartStopBtn from "./InstanceStartStopBtn.js";
-import InstanceSettingsBtn from "./InstanceSettingsBtn.js";
-import InstanceUploadBtn from "./InstanceUploadBtn.js";
-import InstancePrivLinkBtn from "./InstancePrivLinkBtn.js";
-import InstancePubLinkBtn from "./InstancePubLinkBtn.js";
-import InstanceLogsBtn from "./InstanceLogsBtn.js";
+import InstanceBtnTrash from "./InstanceBtnTrash.js";
+import InstanceBtnStartStop from "./InstanceBtnStartStop.js";
+import InstanceBtnSettings from "./InstanceBtnSettings.js";
+import InstanceBtnUpload from "./InstanceBtnUpload.js";
+import InstanceBtnPrivLink from "./InstanceBtnPrivLink.js";
+import InstanceBtnPubLink from "./InstanceBtnPubLink.js";
+import InstanceBtnLogs from "./InstanceBtnLogs.js";
 
 class InstanceRow extends Component {
   render() {
@@ -26,43 +26,43 @@ class InstanceRow extends Component {
           <Badge color="success">Running</Badge>
         </td>
         <td>
-          <InstanceStartStopBtn
+          <InstanceBtnStartStop
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <InstanceTrashBtn
+          <InstanceBtnTrash
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <InstanceSettingsBtn
+          <InstanceBtnSettings
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <InstanceUploadBtn
+          <InstanceBtnUpload
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <InstancePrivLinkBtn
+          <InstanceBtnPrivLink
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <InstancePubLinkBtn
+          <InstanceBtnPubLink
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
-          <InstanceLogsBtn
+          <InstanceBtnLogs
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
