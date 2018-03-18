@@ -67,7 +67,7 @@ class InstanceTrashBtn extends Component {
           placement="top"
           target={this.props.instance.technicalName + "-trash"}
         >
-          Delete {this.props.instance.technicalName}
+          Delete <code>{this.props.instance.technicalName}</code>
         </UncontrolledTooltip>
       </div>
     );
