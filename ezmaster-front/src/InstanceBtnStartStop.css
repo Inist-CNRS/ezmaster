@@ -4,3 +4,8 @@
 .ezmaster-a-play-circle {
   color: #488749;
 }
+
+.ezmaster-startstop .fa-spinner {
+  transition: all 20s linear;
+  transform: rotate(3000deg);
+}

@@ -36,11 +36,14 @@ class InstanceBtnStartStop extends Component {
           disabled={this.state.btnDisabled}
           color="link"
           className={
+            "ezmaster-startstop" +
+            " " +
             this.props.classNameBtn +
             " " +
-            (this.state.instanceStarted
-              ? "ezmaster-a-play-circle"
-              : "ezmaster-a-stop-circle")
+            (!this.state.btnDisabled &&
+              (this.state.instanceStarted
+                ? "ezmaster-a-play-circle"
+                : "ezmaster-a-stop-circle"))
           }
           onClick={this.toggleStatus}
         >
@@ -48,7 +51,11 @@ class InstanceBtnStartStop extends Component {
             className={
               "fa" +
               " " +
-              (this.state.instanceStarted ? "fa-play-circle" : "fa-stop-circle")
+              (this.state.btnDisabled
+                ? "fa-spinner"
+                : this.state.instanceStarted
+                  ? "fa-play-circle"
+                  : "fa-stop-circle")
             }
             id={this.props.instance.technicalName + "-startstop"}
           />
