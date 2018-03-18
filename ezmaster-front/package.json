@@ -9,6 +9,8 @@
     "react": "^16.2.0",
     "react-ace": "^5.9.0",
     "react-dom": "^16.2.0",
+    "react-dropzone": "^4.2.9",
+    "react-keyed-file-browser": "^1.2.7",
     "react-monaco-editor": "^0.13.0",
     "react-scripts": "1.1.1",
     "reactstrap": "^5.0.0-beta.2"

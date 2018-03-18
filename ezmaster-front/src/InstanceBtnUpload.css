@@ -1,3 +1,11 @@
 .ezmaster-a-upload {
   color: #47aae8;
 }
+
+.ezmaster-instance-dropzone {
+  text-align: center;
+}
+.ezmaster-instance-dropzone .fa-cloud-upload {
+  font-size: 10rem;
+  color: #47aae8;
+}
