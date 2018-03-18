@@ -9,6 +9,10 @@
   font-size: 1.5rem;
 }
 
+.modal-dialog {
+  max-width: 1200px !important;
+}
+
 .modal-fullscreen {
   border: 1px solid red;
 }
@@ -18,7 +22,7 @@
   height: 100%;
   margin: 0;
   padding: 0;
-  max-width: 100%;
+  max-width: 100% !important;
 }
 
 .modal-fullscreen .modal-content {
@@ -29,7 +33,7 @@
 
 .ace_editor {
   width: 100%;
-  height: 450px;
+  height: 550px;
 }
 .modal-dialog.modal-fullscreen {
   margin: 0;
