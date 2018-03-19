@@ -14,34 +14,46 @@ import {
   DropdownItem
 } from "reactstrap";
 
+import logoImage from "./logo.svg";
+
 class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      burgerIsOpen: false
+    };
+    this.toggleBurger = this.toggleBurger.bind(this);
+  }
+  toggleBurger() {
+    this.setState({
+      burgerIsOpen: !this.state.burgerIsOpen
+    });
+  }
+
   render() {
     return (
       <header>
         <Navbar color="faded" light expand="md">
-          <NavbarBrand href="/">EzMaster</NavbarBrand>
-          <NavbarToggler />
-          <Collapse isOpen={false} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink href="/components/">Components</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">
-                  Github
+          <NavbarBrand href="/">
+            <img src={logoImage} alt="EzMaster" height="40px" />
+          </NavbarBrand>
+          <NavbarToggler onClick={this.toggleBurger} />
+          <Collapse isOpen={this.state.burgerIsOpen} navbar>
+            <Nav navbar>
+              <NavItem active={true}>
+                <NavLink active={true} href="/instances/">
+                  Instances
                 </NavLink>
               </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Options
-                </DropdownToggle>
-                <DropdownMenu>
-                  <DropdownItem>Option 1</DropdownItem>
-                  <DropdownItem>Option 2</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
+              <NavItem>
+                <NavLink href="/applications/">Applications</NavLink>
+              </NavItem>
+            </Nav>
+            <Nav className="ml-auto" navbar>
+              <NavItem>cpu</NavItem>
+              <NavItem>mem</NavItem>
+              <NavItem>disk</NavItem>
             </Nav>
           </Collapse>
         </Navbar>
