@@ -10,6 +10,7 @@ import InstanceBtnUpload from "./InstanceBtnUpload.js";
 import InstanceBtnPrivLink from "./InstanceBtnPrivLink.js";
 import InstanceBtnPubLink from "./InstanceBtnPubLink.js";
 import InstanceBtnLogs from "./InstanceBtnLogs.js";
+import InstanceBadgeStatus from "./InstanceBadgeStatus.js";
 
 class InstanceRow extends Component {
   render() {
@@ -22,8 +23,7 @@ class InstanceRow extends Component {
         <td>2018/03/05 14:46:05</td>
         <td>inistcnrs/lodex:8.18.0</td>
         <td>
-          <Badge color="danger">Stopped</Badge>
-          <Badge color="success">Running</Badge>
+          <InstanceBadgeStatus instance={this.props.instance} />
         </td>
         <td>
           <InstanceBtnStartStop

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
+import classnames from "classnames";
 
 import "./InstanceBtnStartStop.css";
 
@@ -8,8 +9,8 @@ class InstanceBtnStartStop extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      instanceStarted: false,
-      btnDisabled: false
+      instanceStarted: this.props.instance.status == "started",
+      btnDisabled: this.props.instance.status === undefined
     };
 
     this.toggleStatus = this.toggleStatus.bind(this);
@@ -35,28 +36,24 @@ class InstanceBtnStartStop extends Component {
         <Button
           disabled={this.state.btnDisabled}
           color="link"
-          className={
-            "ezmaster-startstop" +
-            " " +
-            this.props.classNameBtn +
-            " " +
-            (!this.state.btnDisabled &&
-              (this.state.instanceStarted
-                ? "ezmaster-a-play-circle"
-                : "ezmaster-a-stop-circle"))
-          }
+          className={classnames(this.props.classNameBtn, {
+            "ezmaster-startstop": true,
+            "ezmaster-a-play-circle":
+              !this.state.btnDisabled && this.state.instanceStarted,
+            "ezmaster-a-stop-circle":
+              !this.state.btnDisabled && !this.state.instanceStarted
+          })}
           onClick={this.toggleStatus}
         >
           <i
-            className={
-              "fa" +
-              " " +
-              (this.state.btnDisabled
-                ? "fa-spinner"
-                : this.state.instanceStarted
-                  ? "fa-play-circle"
-                  : "fa-stop-circle")
-            }
+            className={classnames({
+              fa: true,
+              "fa-spinner": this.state.btnDisabled,
+              "fa-play-circle":
+                !this.state.btnDisabled && this.state.instanceStarted,
+              "fa-stop-circle":
+                !this.state.btnDisabled && !this.state.instanceStarted
+            })}
             id={this.props.instance.technicalName + "-startstop"}
           />
         </Button>

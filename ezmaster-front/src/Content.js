@@ -9,15 +9,18 @@ class Content extends Component {
     const instances = [
       {
         technicalName: "dpi-project-1",
-        dataFolderSize: Math.random() * 5000
+        dataFolderSize: Math.random() * 5000,
+        status: "started"
       },
       {
         technicalName: "dpi-project-2",
-        dataFolderSize: Math.random() * 5000
+        dataFolderSize: Math.random() * 5000,
+        status: "stopped"
       },
       {
         technicalName: "dpi-project-3",
-        dataFolderSize: Math.random() * 5000
+        dataFolderSize: Math.random() * 5000,
+        status: undefined
       }
     ];
 
