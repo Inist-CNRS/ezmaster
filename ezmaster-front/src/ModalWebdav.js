@@ -12,7 +12,11 @@ class ModalWebdav extends Component {
 
   render() {
     return (
-      <Modal isOpen={this.props.modalIsOpen} toggle={this.props.toggle}>
+      <Modal
+        isOpen={this.props.modalIsOpen}
+        toggle={this.props.toggle}
+        className="ezmaster-modal-webdav"
+      >
         <ModalHeader toggle={this.props.toggle}>BLA BLA 1</ModalHeader>
         <ModalBody>BLA BLA 2</ModalBody>
         <ModalFooter>

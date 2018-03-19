@@ -22,3 +22,7 @@
 .ezmaster-instance-filelist input {
   display: none !important;
 }
+
+.ezmaster-modal-upload.modal-dialog {
+  max-width: 1000px !important;
+}

@@ -63,6 +63,7 @@ class InstanceBtnUpload extends Component {
         <Modal
           isOpen={this.state.modalIsOpenUpload}
           toggle={this.toggleModalUpload}
+          className="ezmaster-modal-upload"
         >
           <ModalHeader toggle={this.toggleModalUpload}>
             Upload data to <code>{this.props.instance.technicalName}</code>
