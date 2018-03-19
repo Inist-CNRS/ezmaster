@@ -1,3 +1,10 @@
 .ezmaster-modal-webdav.modal-dialog {
-  max-width: 800px !important;
+  max-width: 1000px !important;
+}
+
+.ezmaster-modal-webdav .tab-content {
+  margin-top: 30px;
+}
+.ezmaster-modal-webdav img {
+  border: 1px solid grey;
 }

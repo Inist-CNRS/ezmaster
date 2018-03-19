@@ -146,6 +146,7 @@ class InstanceBtnUpload extends Component {
         </UncontrolledTooltip>
 
         <ModalWebdav
+          instance={this.props.instance}
           modalIsOpen={this.state.modalIsOpenWebdav}
           toggle={this.toggleModalWebdav}
         />

@@ -3,13 +3,29 @@ import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import { Container, Row, Col } from "reactstrap";
+import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
+import classnames from "classnames";
 
 import windowsDrive from "./ModalWebdav-windows-drive.png";
+import ubuntuDrive from "./ModalWebdav-ubuntu-drive.png";
 import "./ModalWebdav.css";
 
 class ModalWebdav extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      activeTab: "tab-windows"
+    };
+    this.toggleTab = this.toggleTab.bind(this);
+  }
+
+  toggleTab(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
   }
 
   render() {
@@ -19,50 +35,98 @@ class ModalWebdav extends Component {
         toggle={this.props.toggle}
         className="ezmaster-modal-webdav"
       >
-        <ModalHeader toggle={this.props.toggle}>BLA BLA 1</ModalHeader>
+        <ModalHeader toggle={this.props.toggle}>
+          Setup the <code>{this.props.instance.technicalName}</code> webdav
+          network share
+        </ModalHeader>
         <ModalBody>
-          <Container>
-            <Row>
-              <Col>
-                <h3>Webdav and windows</h3>
-                <ListGroup>
-                  <ListGroupItem>1. Create a new network drive</ListGroupItem>
-                  <ListGroupItem>
-                    2. As shown on the screenshot on the right, copy paste the
-                    folowing webdav URL into the "Dossier" field.
-                    <br />
-                    <code>http://vp-dpi.intra.inist.fr:23556/</code>
-                  </ListGroupItem>
-                  <ListGroupItem>coucou</ListGroupItem>
-                </ListGroup>
-              </Col>
-              <Col>
-                <img src={windowsDrive} width="300px" />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <hr />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <h3>Webdav and ubuntu</h3>
-                <ListGroup>
-                  <ListGroupItem>1. Open your file explorer</ListGroupItem>
-                  <ListGroupItem>
-                    2. Type CTRL+L and enter this URL in the input field
-                    <br />
-                    <code>dav://vp-dpi.intra.inist.fr:23556/</code>
-                  </ListGroupItem>
-                  <ListGroupItem>coucou</ListGroupItem>
-                </ListGroup>
-              </Col>
-              <Col>
-                <img src={windowsDrive} width="300px" />
-              </Col>
-            </Row>
-          </Container>
+          <Nav tabs>
+            <NavItem>
+              <NavLink
+                className={classnames({
+                  active: this.state.activeTab === "tab-windows"
+                })}
+                onClick={() => {
+                  this.toggleTab("tab-windows");
+                }}
+              >
+                Windows desktop
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({
+                  active: this.state.activeTab === "tab-ubuntu"
+                })}
+                onClick={() => {
+                  this.toggleTab("tab-ubuntu");
+                }}
+              >
+                Ubuntu desktop
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <TabContent activeTab={this.state.activeTab}>
+            <TabPane tabId="tab-windows">
+              <Row>
+                <Col>
+                  <p>
+                    Here are the steps to connect the Webdav network drive of{" "}
+                    <code>{this.props.instance.technicalName}</code> on your
+                    local windows desktop.
+                  </p>
+                  <ListGroup>
+                    <ListGroupItem>
+                      1. Create a new network drive: right click on your file
+                      explorer.
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      2. As shown on the screenshot on the right, copy paste the
+                      folowing webdav URL into the "Dossier" field.
+                      <br />
+                      <code>http://vp-dpi.intra.inist.fr:23556/</code>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      3. Click on "Terminer", enter the ezmaster login/password
+                      and enjoy, and enjoy: you will be able to add/remove files
+                    </ListGroupItem>
+                  </ListGroup>
+                </Col>
+                <Col>
+                  <img src={windowsDrive} width="500px" />
+                </Col>
+              </Row>
+            </TabPane>
+
+            <TabPane tabId="tab-ubuntu">
+              <Row>
+                <Col>
+                  <p>
+                    Here are the steps to connect the Webdav network drive of{" "}
+                    <code>{this.props.instance.technicalName}</code> on your
+                    local ubuntu desktop.
+                  </p>
+                  <ListGroup>
+                    <ListGroupItem>1. Open your file explorer</ListGroupItem>
+                    <ListGroupItem>
+                      2. Type CTRL+L and enter this URL in the input field (see
+                      the screenshot)
+                      <br />
+                      <code>dav://vp-dpi.intra.inist.fr:23556/</code>
+                    </ListGroupItem>
+                    <ListGroupItem>
+                      3. Validate with the enter key, enter the ezmaster
+                      login/password, and enjoy: you will be able to add/remove
+                      files
+                    </ListGroupItem>
+                  </ListGroup>
+                </Col>
+                <Col>
+                  <img src={ubuntuDrive} width="500px" />
+                </Col>
+              </Row>
+            </TabPane>
+          </TabContent>
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={this.props.toggle}>
