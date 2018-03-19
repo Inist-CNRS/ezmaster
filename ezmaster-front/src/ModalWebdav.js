@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { UncontrolledTooltip } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
 
+import windowsDrive from "./ModalWebdav-windows-drive.png";
 import "./ModalWebdav.css";
 
 class ModalWebdav extends Component {
@@ -18,7 +19,22 @@ class ModalWebdav extends Component {
         className="ezmaster-modal-webdav"
       >
         <ModalHeader toggle={this.props.toggle}>BLA BLA 1</ModalHeader>
-        <ModalBody>BLA BLA 2</ModalBody>
+        <ModalBody>
+          <Container>
+            <Row>
+              <Col>Windows bla bla</Col>
+              <Col>
+                <img src={windowsDrive} width="300px" />
+              </Col>
+            </Row>
+            <Row>
+              <Col>Ubuntu bla bla</Col>
+              <Col>
+                <img src={windowsDrive} />
+              </Col>
+            </Row>
+          </Container>
+        </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={this.props.toggle}>
             Close
