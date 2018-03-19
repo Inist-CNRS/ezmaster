@@ -16,6 +16,10 @@ import {
 
 import logoImage from "./logo.svg";
 
+import InfoMachine from "./InfoMachine.js";
+
+import { Badge } from "reactstrap";
+
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -50,11 +54,8 @@ class Header extends Component {
                 <NavLink href="/applications/">Applications</NavLink>
               </NavItem>
             </Nav>
-            <Nav className="ml-auto" navbar>
-              <NavItem>cpu</NavItem>
-              <NavItem>mem</NavItem>
-              <NavItem>disk</NavItem>
-            </Nav>
+
+            <InfoMachine className="ml-auto" />
           </Collapse>
         </Navbar>
       </header>
