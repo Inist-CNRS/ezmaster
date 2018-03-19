@@ -29,7 +29,7 @@ class InfoMachine extends Component {
     return (
       <Nav className={this.props.className} navbar>
         <NavItem>
-          <i className="mr-2 align-middle fa fa-server" />
+          <i className="ml-2 mr-2 align-middle fa fa-server" />
           <Badge
             className="mr-2"
             color={

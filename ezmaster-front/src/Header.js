@@ -46,12 +46,18 @@ class Header extends Component {
           <Collapse isOpen={this.state.burgerIsOpen} navbar>
             <Nav navbar>
               <NavItem active={true}>
-                <NavLink active={true} href="/instances/">
+                <NavLink
+                  active={true}
+                  href="/instances/"
+                  className="ezmaster-menu"
+                >
                   Instances
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/applications/">Applications</NavLink>
+                <NavLink href="/applications/" className="ezmaster-menu">
+                  Applications
+                </NavLink>
               </NavItem>
             </Nav>
 

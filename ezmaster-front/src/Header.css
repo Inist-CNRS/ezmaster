@@ -4,9 +4,15 @@ header {
 
 header .navbar {
   padding: 0px;
-  background-color: #aaa;
+  background: linear-gradient(#04519b, #044687 60%, #033769);
+  color: #ffffff !important;
+}
+
+header .navbar .nav-item .ezmaster-menu {
+  color: #ffffff !important;
+  padding: 15px;
 }
 
 header .navbar .nav-item.active {
-  background-color: #666;
+  background-color: #022f5a;
 }

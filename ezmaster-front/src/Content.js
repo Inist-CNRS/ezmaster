@@ -41,7 +41,11 @@ class Content extends Component {
       //   </Row>
       // </Container>
 
-      <Table striped={true} responsive={true}>
+      <Table
+        striped={true}
+        responsive={true}
+        className="ezmaster-instance-content"
+      >
         <thead>
           <tr>
             <th>Long Name</th>
