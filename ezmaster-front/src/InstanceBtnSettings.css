@@ -2,22 +2,18 @@
   color: #47aae8;
 }
 
-.modal-fullscreen-btn {
+.ezmaster-modal-settings.modal-dialog {
+  max-width: 1200px !important;
+}
+
+.ezmaster-modal-settings .modal-fullscreen-btn {
   position: absolute;
   left: 10px;
   bottom: 10px;
   font-size: 1.5rem;
 }
 
-.modal-dialog {
-  max-width: 1200px !important;
-}
-
-.modal-fullscreen {
-  border: 1px solid red;
-}
-
-.modal-fullscreen.modal-dialog {
+.ezmaster-modal-settings.modal-fullscreen.modal-dialog {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -25,22 +21,17 @@
   max-width: 100% !important;
 }
 
-.modal-fullscreen .modal-content {
+.ezmaster-modal-settings.modal-fullscreen .modal-content {
   height: auto;
   min-height: 100%;
   border-radius: 0;
 }
 
-.ace_editor {
+.ezmaster-modal-settings .ace_editor {
   width: 100%;
   height: 550px;
 }
-.modal-dialog.modal-fullscreen {
-  margin: 0;
-  margin-right: auto;
-  margin-left: auto;
-  width: 100%;
-}
-.modal-fullscreen .ace_editor {
+
+.ezmaster-modal-settings.modal-fullscreen .ace_editor {
   height: calc(100vh - 180px);
 }

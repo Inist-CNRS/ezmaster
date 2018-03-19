@@ -3,6 +3,7 @@ import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { Container, Row, Col } from "reactstrap";
+import ModalWebdav from "./ModalWebdav.js";
 
 import Dropzone from "react-dropzone";
 
@@ -16,16 +17,23 @@ class InstanceBtnUpload extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalIsOpen: false,
+      modalIsOpenUpload: false,
+      modalIsOpenWebdav: false,
       files: []
     };
 
-    this.toggleModal = this.toggleModal.bind(this);
+    this.toggleModalUpload = this.toggleModalUpload.bind(this);
+    this.toggleModalWebdav = this.toggleModalWebdav.bind(this);
   }
 
-  toggleModal() {
+  toggleModalUpload() {
     this.setState({
-      modalIsOpen: !this.state.modalIsOpen
+      modalIsOpenUpload: !this.state.modalIsOpenUpload
+    });
+  }
+  toggleModalWebdav() {
+    this.setState({
+      modalIsOpenWebdav: !this.state.modalIsOpenWebdav
     });
   }
 
@@ -44,7 +52,7 @@ class InstanceBtnUpload extends Component {
         <Button
           color="link"
           className={this.props.classNameBtn + " ezmaster-a-upload"}
-          onClick={this.toggleModal}
+          onClick={this.toggleModalUpload}
         >
           <i
             className={"fa fa-upload"}
@@ -52,8 +60,11 @@ class InstanceBtnUpload extends Component {
           />
         </Button>
 
-        <Modal isOpen={this.state.modalIsOpen} toggle={this.toggleModal}>
-          <ModalHeader toggle={this.toggleModal}>
+        <Modal
+          isOpen={this.state.modalIsOpenUpload}
+          toggle={this.toggleModalUpload}
+        >
+          <ModalHeader toggle={this.toggleModalUpload}>
             Upload data to <code>{this.props.instance.technicalName}</code>
           </ModalHeader>
           <ModalBody>
@@ -73,14 +84,20 @@ class InstanceBtnUpload extends Component {
                   </Dropzone>
                 </Col>
                 <Col className="ezmaster-instance-webdav">
-                  <div className="btn btn-link">
+                  <div
+                    className="btn btn-link"
+                    onClick={this.toggleModalWebdav}
+                  >
                     <i className={"fa fa-folder-open"} />
                   </div>
                   <br />
-                  <Button color="primary" className="modal-webdav-btn">
+                  <Button
+                    color="primary"
+                    className="modal-webdav-btn"
+                    onClick={this.toggleModalWebdav}
+                  >
                     Upload file with Webdav
                   </Button>
-                  <div>through a network drive.</div>
                 </Col>
               </Row>
 
@@ -114,7 +131,7 @@ class InstanceBtnUpload extends Component {
             </Container>
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.toggleModal}>
+            <Button color="secondary" onClick={this.toggleModalUpload}>
               Close
             </Button>
           </ModalFooter>
@@ -126,6 +143,11 @@ class InstanceBtnUpload extends Component {
         >
           Upload data to <code>{this.props.instance.technicalName}</code>
         </UncontrolledTooltip>
+
+        <ModalWebdav
+          modalIsOpen={this.state.modalIsOpenWebdav}
+          toggle={this.toggleModalWebdav}
+        />
       </div>
     );
   }

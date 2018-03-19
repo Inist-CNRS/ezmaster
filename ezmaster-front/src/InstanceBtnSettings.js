@@ -74,7 +74,11 @@ class InstanceBtnSettings extends Component {
         <Modal
           isOpen={this.state.modalIsOpen}
           toggle={this.toggleIsOpen}
-          className={this.state.modalIsFS ? "modal-fullscreen" : ""}
+          className={
+            this.state.modalIsFS
+              ? "ezmaster-modal-settings modal-fullscreen"
+              : "ezmaster-modal-settings"
+          }
         >
           <ModalHeader toggle={this.toggleIsOpen}>
             Edit the <code>{this.props.instance.technicalName}</code>{" "}
