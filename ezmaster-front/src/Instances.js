@@ -5,8 +5,24 @@ import { Button } from "reactstrap";
 
 import "./Instances.css";
 import InstanceRow from "./InstanceRow.js";
+import ModalAddInstance from "./ModalAddInstance.js";
 
 class Instances extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      modalAddInstanceIsOpen: false
+    };
+    this.toggleModalAddInstance = this.toggleModalAddInstance.bind(this);
+  }
+
+  toggleModalAddInstance() {
+    this.setState({
+      modalAddInstanceIsOpen: !this.state.modalAddInstanceIsOpen
+    });
+  }
+
   render() {
     // fake ezmaster instances data
     const instances = [
@@ -66,9 +82,17 @@ class Instances extends Component {
         </Row>
         <Row>
           <Col>
-            <Button className="ml-2 ezmaster-instances-add" color="primary">
+            <Button
+              className="ml-2 ezmaster-instances-add"
+              color="primary"
+              onClick={this.toggleModalAddInstance}
+            >
               Add instance
             </Button>
+            <ModalAddInstance
+              modalIsOpen={this.state.modalAddInstanceIsOpen}
+              toggle={this.toggleModalAddInstance}
+            />
           </Col>
         </Row>
       </div>
