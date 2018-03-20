@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import "./Content.css";
+import "./Instances.css";
 import InstanceRow from "./InstanceRow.js";
 
-class Content extends Component {
+class Instances extends Component {
   render() {
     // fake ezmaster instances data
     const instances = [
@@ -62,4 +62,4 @@ class Content extends Component {
   }
 }
 
-export default Content;
+export default Instances;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import Header from "./Header.js";
-import Content from "./Content.js";
+import Instances from "./Instances.js";
 import Footer from "./Footer.js";
 
 class App extends Component {
@@ -12,7 +12,7 @@ class App extends Component {
           <Header />
         </div>
         <div className="AppContent">
-          <Content />
+          <Instances />
         </div>
         <div className="AppFooter">
           <Footer />
