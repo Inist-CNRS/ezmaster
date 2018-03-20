@@ -48,9 +48,9 @@ class Content extends Component {
       >
         <thead>
           <tr>
-            <th>Long Name</th>
-            <th>Technical Name</th>
-            <th>Creation Date</th>
+            <th>Long name</th>
+            <th>Technical name</th>
+            <th>Creation date</th>
             <th>Application</th>
             <th>Status</th>
             <th>Actions</th>
