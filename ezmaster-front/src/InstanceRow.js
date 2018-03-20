@@ -30,7 +30,7 @@ class InstanceRow extends Component {
             placement="right"
             target={this.props.instance.technicalName + "-creationDate"}
           >
-            This instance has been exactly created on{" "}
+            This instance has been created exactly on{" "}
             <code>{this.props.instance.creationDate}</code>
           </UncontrolledTooltip>
         </td>
