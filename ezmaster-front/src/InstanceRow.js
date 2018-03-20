@@ -17,7 +17,7 @@ class InstanceRow extends Component {
   render() {
     return (
       <tr>
-        <td>Les projets du DPI</td>
+        <td>{this.props.instance.longName}</td>
         <td>
           <a href="">{this.props.instance.technicalName}</a>
         </td>
@@ -34,7 +34,7 @@ class InstanceRow extends Component {
             <code>{this.props.instance.creationDate}</code>
           </UncontrolledTooltip>
         </td>
-        <td>inistcnrs/lodex:8.18.0</td>
+        <td>{this.props.instance.application}</td>
         <td>
           <InstanceBadgeStatus instance={this.props.instance} />
         </td>
