@@ -13,6 +13,7 @@ class App extends Component {
           <Header />
         </div>
         <div className="AppContent">
+          {/* by default / url is redirecting to the instances tab */}
           <Redirect path="/" to="/instances/" />
           <Route path="/instances/" component={Instances} />
         </div>
