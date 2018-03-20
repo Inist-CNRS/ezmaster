@@ -44,7 +44,7 @@ class Instances extends Component {
       <Table
         striped={true}
         responsive={true}
-        className="ezmaster-instance-content"
+        className="ezmaster-instances-content"
       >
         <thead>
           <tr>
