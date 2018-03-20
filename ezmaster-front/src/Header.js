@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { LinkContainer } from "react-router-bootstrap";
+
 import "./Header.css";
 import {
   Collapse,
@@ -46,18 +48,22 @@ class Header extends Component {
           <Collapse isOpen={this.state.burgerIsOpen} navbar>
             <Nav navbar>
               <NavItem active={true}>
-                <NavLink
-                  active={true}
-                  href="/instances/"
-                  className="ezmaster-menu"
-                >
-                  Instances
-                </NavLink>
+                <LinkContainer to="/instances/">
+                  <NavLink
+                    active={true}
+                    href="/instances/"
+                    className="ezmaster-menu"
+                  >
+                    Instances
+                  </NavLink>
+                </LinkContainer>
               </NavItem>
               <NavItem>
-                <NavLink href="/applications/" className="ezmaster-menu">
-                  Applications
-                </NavLink>
+                <LinkContainer to="/applications/">
+                  <NavLink className="ezmaster-menu" href="/applications/">
+                    Applications
+                  </NavLink>
+                </LinkContainer>
               </NavItem>
             </Nav>
 
