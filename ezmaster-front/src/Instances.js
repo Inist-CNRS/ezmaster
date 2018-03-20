@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
+import { Container, Row, Col } from "reactstrap";
+import { Button } from "reactstrap";
+
 import "./Instances.css";
 import InstanceRow from "./InstanceRow.js";
 
@@ -39,34 +42,36 @@ class Instances extends Component {
     });
 
     return (
-      // <Container>
-      //   <Row>
-      //     <Col>
-      //       {/* to test font-awesome with reactjs */}
-      //       <i className="fa fa-user fa-4x" />
-      //       &nbsp;
-      //       <i className="fa fa-github-square fa-4x" />
-      //     </Col>
-      //   </Row>
-      // </Container>
-
-      <Table
-        striped={true}
-        responsive={true}
-        className="ezmaster-instances-content"
-      >
-        <thead>
-          <tr>
-            <th>Long name</th>
-            <th>Technical name</th>
-            <th>Creation date</th>
-            <th>Application</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>{instancesRows}</tbody>
-      </Table>
+      <div className="ezmaster-instances">
+        <Row>
+          <Col>
+            <Table
+              striped={true}
+              responsive={true}
+              className="ezmaster-instances-table"
+            >
+              <thead>
+                <tr>
+                  <th>Long name</th>
+                  <th>Technical name</th>
+                  <th>Creation date</th>
+                  <th>Application</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>{instancesRows}</tbody>
+            </Table>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Button className="ml-2 ezmaster-instances-add" color="primary">
+              Add instance
+            </Button>
+          </Col>
+        </Row>
+      </div>
     );
   }
 }

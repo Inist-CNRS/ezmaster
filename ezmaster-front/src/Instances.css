@@ -1,32 +1,36 @@
-.ezmaster-instances-content {
+.ezmaster-instances-table {
   color: #616161;
+}
+
+.ezmaster-instances-add {
+  font-size: 1.5rem;
 }
 
 /* Responsive table,
    see https://bootsnipp.com/snippets/featured/no-more-tables-respsonsive-table */
 @media only screen and (max-width: 800px) {
   /* Force table to not be like tables anymore */
-  .ezmaster-instances-content table,
-  .ezmaster-instances-content thead,
-  .ezmaster-instances-content tbody,
-  .ezmaster-instances-content th,
-  .ezmaster-instances-content td,
-  .ezmaster-instances-content tr {
+  .ezmaster-instances-table table,
+  .ezmaster-instances-table thead,
+  .ezmaster-instances-table tbody,
+  .ezmaster-instances-table th,
+  .ezmaster-instances-table td,
+  .ezmaster-instances-table tr {
     display: block;
   }
 
   /* Hide table headers (but not display: none;, for accessibility) */
-  .ezmaster-instances-content thead tr {
+  .ezmaster-instances-table thead tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
   }
 
-  .ezmaster-instances-content tr {
+  .ezmaster-instances-table tr {
     border: 1px solid #ccc;
   }
 
-  .ezmaster-instances-content td {
+  .ezmaster-instances-table td {
     /* Behave  like a "row" */
     border: none;
     border-bottom: 1px solid #eee;
