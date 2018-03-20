@@ -17,7 +17,7 @@ class InstanceBadgeStatus extends Component {
 
   render() {
     return (
-      <div>
+      <div className="ezmaster-instance-status">
         {!this.state.instanceIntermediateStatus &&
           this.state.instanceStarted && <Badge color="success">Running</Badge>}
         {!this.state.instanceIntermediateStatus &&

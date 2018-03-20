@@ -10,3 +10,9 @@
 .ezmaster-a-btn i {
   vertical-align: top;
 }
+
+@media only screen and (max-width: 800px) {
+  .ezmaster-a i {
+    font-size: 2.8rem;
+  }
+}
