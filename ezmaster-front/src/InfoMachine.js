@@ -50,6 +50,7 @@ class InfoMachine extends Component {
           />
           <UncontrolledTooltip
             placement="bottom"
+            autohide={false}
             target="ezmaster-im-loadaverage"
           >
             Load average ({this.props.nbCpu} CPUs)
@@ -69,6 +70,7 @@ class InfoMachine extends Component {
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
+            autohide={false}
             target="ezmaster-im-loadaverage-1m"
           >
             Load average over 1 minute
@@ -88,6 +90,7 @@ class InfoMachine extends Component {
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
+            autohide={false}
             target="ezmaster-im-loadaverage-5m"
           >
             Load average over 5 minutes
@@ -107,6 +110,7 @@ class InfoMachine extends Component {
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
+            autohide={false}
             target="ezmaster-im-loadaverage-15m"
           >
             Load average over 15 minutes
@@ -118,7 +122,11 @@ class InfoMachine extends Component {
             className="mr-2 align-middle fa fa-microchip"
             id="ezmaster-im-ram"
           />
-          <UncontrolledTooltip placement="bottom" target="ezmaster-im-ram">
+          <UncontrolledTooltip
+            placement="bottom"
+            autohide={false}
+            target="ezmaster-im-ram"
+          >
             RAM usage
           </UncontrolledTooltip>
 
@@ -135,6 +143,7 @@ class InfoMachine extends Component {
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
+            autohide={false}
             target="ezmaster-im-ram-usage"
           >
             <div>Total: {prettyBytes(this.props.totalRAM)}</div>
@@ -148,7 +157,11 @@ class InfoMachine extends Component {
             className="mr-2 align-middle fa fa-save"
             id="ezmaster-im-hdd-data"
           />
-          <UncontrolledTooltip placement="bottom" target="ezmaster-im-hdd-data">
+          <UncontrolledTooltip
+            placement="bottom"
+            autohide={false}
+            target="ezmaster-im-hdd-data"
+          >
             Data HDD usage
           </UncontrolledTooltip>
           <Badge
@@ -164,6 +177,7 @@ class InfoMachine extends Component {
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
+            autohide={false}
             target="ezmaster-im-hdd-data-usage"
           >
             <div>Total: {prettyBytes(this.props.totalDataHDD)}</div>
@@ -179,6 +193,7 @@ class InfoMachine extends Component {
           />
           <UncontrolledTooltip
             placement="bottom"
+            autohide={false}
             target="ezmaster-im-hdd-docker"
           >
             Data HDD usage
@@ -196,6 +211,7 @@ class InfoMachine extends Component {
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
+            autohide={false}
             target="ezmaster-im-hdd-docker-usage"
           >
             <div>Total: {prettyBytes(this.props.totalDockerHDD)}</div>

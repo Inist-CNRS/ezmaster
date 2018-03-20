@@ -10,16 +10,19 @@ class Instances extends Component {
       {
         technicalName: "dpi-project-1",
         dataFolderSize: Math.random() * 5000,
+        creationDate: "2018/03/05 14:46:05",
         status: "started"
       },
       {
         technicalName: "dpi-project-2",
         dataFolderSize: Math.random() * 5000,
+        creationDate: "2018/03/03 14:46:05",
         status: "stopped"
       },
       {
         technicalName: "dpi-project-3",
         dataFolderSize: Math.random() * 5000,
+        creationDate: "2017/03/05 14:46:05",
         status: undefined
       }
     ];

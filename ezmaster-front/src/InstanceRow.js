@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-
+import moment from "moment";
 import { Badge } from "reactstrap";
+import { UncontrolledTooltip } from "reactstrap";
 
 import "./InstanceRow.css";
 import InstanceBtnTrash from "./InstanceBtnTrash.js";
@@ -20,7 +21,19 @@ class InstanceRow extends Component {
         <td>
           <a href="">{this.props.instance.technicalName}</a>
         </td>
-        <td>2018/03/05 14:46:05</td>
+        <td>
+          <span id={this.props.instance.technicalName + "-creationDate"}>
+            {moment(this.props.instance.creationDate).fromNow()}
+          </span>
+          <UncontrolledTooltip
+            autohide={false}
+            placement="right"
+            target={this.props.instance.technicalName + "-creationDate"}
+          >
+            This instance has been exactly created on{" "}
+            <code>{this.props.instance.creationDate}</code>
+          </UncontrolledTooltip>
+        </td>
         <td>inistcnrs/lodex:8.18.0</td>
         <td>
           <InstanceBadgeStatus instance={this.props.instance} />
