@@ -23,7 +23,13 @@ class InstanceBadgeStatus extends Component {
         {!this.state.instanceIntermediateStatus &&
           !this.state.instanceStarted && <Badge color="danger">Stopped</Badge>}
         {this.state.instanceIntermediateStatus && (
-          <Badge color="secondary">...</Badge>
+          <Badge color="secondary">
+            {this.state.instanceStarted ? (
+              <span>Stopping</span>
+            ) : (
+              <span>Starting</span>
+            )}
+          </Badge>
         )}
       </div>
     );
