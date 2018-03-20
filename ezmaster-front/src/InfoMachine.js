@@ -41,7 +41,7 @@ class InfoMachine extends Component {
 
   render() {
     return (
-      <Nav className={this.props.className} navbar>
+      <Nav className={this.props.className + " ezmaster-im"} navbar>
         <NavItem className="ml-3">
           {/* LOAD AVERAGE */}
           <i
@@ -154,7 +154,7 @@ class InfoMachine extends Component {
         {/* DATA HDD */}
         <NavItem className="ml-3">
           <i
-            className="mr-2 align-middle fa fa-save"
+            className="mr-2 align-middle fa fa-database"
             id="ezmaster-im-hdd-data"
           />
           <UncontrolledTooltip
@@ -188,7 +188,7 @@ class InfoMachine extends Component {
         {/* DOCKER HDD */}
         <NavItem className="ml-3">
           <i
-            className="mr-2 align-middle fa fa-save"
+            className="mr-2 align-middle fa fa-database"
             id="ezmaster-im-hdd-docker"
           />
           <UncontrolledTooltip
@@ -196,7 +196,7 @@ class InfoMachine extends Component {
             autohide={false}
             target="ezmaster-im-hdd-docker"
           >
-            Data HDD usage
+            Docker HDD usage
           </UncontrolledTooltip>
           <Badge
             className="mr-2"
