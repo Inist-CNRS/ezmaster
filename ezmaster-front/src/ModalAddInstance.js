@@ -1,10 +1,20 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  FormText,
+  FormFeedback
+} from "reactstrap";
 import { Row, Col } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { UncontrolledTooltip } from "reactstrap";
+import { Alert } from "reactstrap";
 
 import "./ModalAddInstance.css";
 
@@ -13,6 +23,58 @@ class ModalAddInstance extends Component {
     modalIsOpen: false,
     toggle: function() {}
   };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      errorLongName: "",
+      errorApplication: "",
+      errorTechnicalName: ""
+    };
+
+    this.handleChangeLongName = this.handleChangeLongName.bind(this);
+    this.handleChangeApplication = this.handleChangeApplication.bind(this);
+    this.handleChangeTechnicalName = this.handleChangeTechnicalName.bind(this);
+  }
+
+  handleChangeLongName(e) {
+    if (!e.target.value) {
+      this.setState({
+        errorLongName: "The long name field is required."
+      });
+    } else {
+      this.setState({
+        errorLongName: ""
+      });
+    }
+  }
+
+  handleChangeApplication(e) {
+    console.log("handleChangeApplication", e.target.value);
+    // if (!e.target.value) {
+    //   this.setState({
+    //     errorLongName: 'The long name field is required.'
+    //   });
+    // } else {
+    //   this.setState({
+    //     errorLongName: ''
+    //   });
+    // }
+  }
+
+  handleChangeTechnicalName(e) {
+    console.log("handleChangeTechnicalName", e.target.value);
+    // if (!e.target.value) {
+    //   this.setState({
+    //     errorLongName: 'The long name field is required.'
+    //   });
+    // } else {
+    //   this.setState({
+    //     errorLongName: ''
+    //   });
+    // }
+  }
 
   render() {
     return (
@@ -27,41 +89,56 @@ class ModalAddInstance extends Component {
         <ModalBody>
           <Form>
             <FormGroup>
-              <LinkContainer to="/applications/">
-                <Button
-                  color="link"
-                  className="emai-add-application float-right"
-                >
-                  <i className="fa fa-download" />
-                </Button>
-              </LinkContainer>
-              <UncontrolledTooltip
-                placement="top"
-                target=".emai-add-application"
-              >
-                Your application is not in the list? you can download another.
-              </UncontrolledTooltip>
-
               <Label for="emai-application">Application</Label>
-              <Input
-                type="select"
-                name="emai-application"
-                id="emai-application"
-              >
-                <option>select an application…</option>
-                <option>inistcnrs/lodex:8.18.0</option>
-                <option>inistcnrs/ezmaster-webserver:4.1.0</option>
-              </Input>
+              <InputGroup>
+                <Input
+                  type="select"
+                  name="emai-application"
+                  id="emai-application"
+                >
+                  <option value="">select an application…</option>
+                  <option value="inistcnrs/lodex:8.18.0">
+                    inistcnrs/lodex:8.18.0
+                  </option>
+                  <option value="inistcnrs/ezmaster-webserver:4.1.0">
+                    inistcnrs/ezmaster-webserver:4.1.0
+                  </option>
+                </Input>
+
+                <InputGroupAddon addonType="append">
+                  <LinkContainer to="/applications/">
+                    <Button color="secondary" className="emai-add-application">
+                      <i className="fa fa-download" />
+                    </Button>
+                  </LinkContainer>
+                  <UncontrolledTooltip
+                    placement="top"
+                    target=".emai-add-application"
+                  >
+                    Your application is not in the list? you can download
+                    another.
+                  </UncontrolledTooltip>
+                </InputGroupAddon>
+              </InputGroup>
+              {this.state.errorApplication && (
+                <Alert color="danger" className="rounded-0">
+                  {this.state.errorApplication}
+                </Alert>
+              )}
             </FormGroup>
 
             <FormGroup>
               <Label for="emai-longname">Long name</Label>
               <Input
                 type="text"
-                name="text"
+                name="emai-longname"
                 id="emai-longname"
-                placeholder="A free text, human-readable…"
+                invalid={this.state.errorLongName}
+                onChange={this.handleChangeLongName}
+                onBlur={this.handleChangeLongName}
               />
+              <FormFeedback invalid>This field is required</FormFeedback>
+              <FormText>A free text, human-readable…</FormText>
             </FormGroup>
 
             <FormGroup>
@@ -76,33 +153,47 @@ class ModalAddInstance extends Component {
                     type="text"
                     name="emai-tn-p"
                     id="emai-technicalname"
-                    placeholder="project…"
+                    invalid
                   />
-                </Col>
+                  <FormFeedback>This field is required.</FormFeedback>
+                  <FormFeedback>
+                    It should contains only lowercase and alpha-numeric
+                    characters.
+                  </FormFeedback>
+                </Col>{" "}
+                -
                 <Col>
-                  <Input
-                    type="text"
-                    name="emai-tn-s"
-                    id="emai-tn-s"
-                    placeholder="study…"
-                  />
-                </Col>
+                  <Input type="text" name="emai-tn-s" id="emai-tn-s" invalid />
+                  <FormFeedback>This field is required.</FormFeedback>
+                  <FormFeedback>
+                    It should contains only lowercase and alpha-numeric
+                    characters.
+                  </FormFeedback>
+                </Col>{" "}
+                -
                 <Col>
-                  <Input
-                    type="number"
-                    name="emai-tn-v"
-                    min="1"
-                    placeholder="1…"
-                  />
+                  <Input type="number" name="emai-tn-v" min="1" />
                 </Col>
               </Row>
+              <FormText>
+                The technical name is used to identify the instance and to
+                access the instance on the web. The first part could be a
+                project, the second a study, and the last must be a positive
+                number or could be empty.
+              </FormText>
+
+              {this.state.errorTechnicalName && (
+                <Alert color="danger" className="rounded-0">
+                  {this.state.errorTechnicalName}
+                </Alert>
+              )}
             </FormGroup>
 
             <FormGroup>
               <Label for="emai-preview">Instance URL preview</Label>
               <Input
                 type="text"
-                readonly="readonly"
+                readOnly
                 id="emai-preview"
                 placeholder="Generated URL…"
               />
