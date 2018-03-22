@@ -28,52 +28,52 @@ class ModalAddInstance extends Component {
     super(props);
 
     this.state = {
-      errorLongName: "",
-      errorApplication: "",
-      errorTechnicalName: ""
+      errorRequiredLongName: false,
+      errorRequiredApplication: false,
+      errorRequiredTechnicalName1: false,
+      errorSyntaxTechnicalName1: false,
+      errorRequiredTechnicalName2: false,
+      errorSyntaxTechnicalName2: false
     };
 
     this.handleChangeLongName = this.handleChangeLongName.bind(this);
     this.handleChangeApplication = this.handleChangeApplication.bind(this);
-    this.handleChangeTechnicalName = this.handleChangeTechnicalName.bind(this);
+    this.handleChangeTechnicalName1 = this.handleChangeTechnicalName1.bind(
+      this
+    );
+    this.handleChangeTechnicalName2 = this.handleChangeTechnicalName2.bind(
+      this
+    );
   }
 
   handleChangeLongName(e) {
-    if (!e.target.value) {
-      this.setState({
-        errorLongName: "The long name field is required."
-      });
-    } else {
-      this.setState({
-        errorLongName: ""
-      });
-    }
+    this.setState({
+      errorRequiredLongName: e.target.value == ""
+    });
   }
 
   handleChangeApplication(e) {
-    console.log("handleChangeApplication", e.target.value);
-    // if (!e.target.value) {
-    //   this.setState({
-    //     errorLongName: 'The long name field is required.'
-    //   });
-    // } else {
-    //   this.setState({
-    //     errorLongName: ''
-    //   });
-    // }
+    console.log("EEEEEEEEEEEEE", e.target.value);
+    this.setState({
+      errorRequiredApplication: e.target.value == ""
+    });
   }
 
-  handleChangeTechnicalName(e) {
-    console.log("handleChangeTechnicalName", e.target.value);
-    // if (!e.target.value) {
-    //   this.setState({
-    //     errorLongName: 'The long name field is required.'
-    //   });
-    // } else {
-    //   this.setState({
-    //     errorLongName: ''
-    //   });
-    // }
+  handleChangeTechnicalName1(e) {
+    this.setState({
+      errorRequiredTechnicalName1: e.target.value == "",
+      errorSyntaxTechnicalName1: !RegExp("^[a-z0-9]*$", "g").test(
+        e.target.value
+      )
+    });
+  }
+  handleChangeTechnicalName2(e) {
+    this.setState({
+      errorRequiredTechnicalName2: e.target.value == "",
+      errorSyntaxTechnicalName2: !RegExp("^[a-z0-9]*$", "g").test(
+        e.target.value
+      )
+    });
   }
 
   render() {
@@ -95,6 +95,9 @@ class ModalAddInstance extends Component {
                   type="select"
                   name="emai-application"
                   id="emai-application"
+                  onChange={this.handleChangeApplication}
+                  onBlur={this.handleChangeApplication}
+                  invalid={this.state.errorRequiredApplication}
                 >
                   <option value="">select an application…</option>
                   <option value="inistcnrs/lodex:8.18.0">
@@ -104,7 +107,6 @@ class ModalAddInstance extends Component {
                     inistcnrs/ezmaster-webserver:4.1.0
                   </option>
                 </Input>
-
                 <InputGroupAddon addonType="append">
                   <LinkContainer to="/applications/">
                     <Button color="secondary" className="emai-add-application">
@@ -120,11 +122,13 @@ class ModalAddInstance extends Component {
                   </UncontrolledTooltip>
                 </InputGroupAddon>
               </InputGroup>
-              {this.state.errorApplication && (
-                <Alert color="danger" className="rounded-0">
-                  {this.state.errorApplication}
-                </Alert>
+              {this.state.errorRequiredApplication && (
+                <FormText color="danger">This field is required.</FormText>
               )}
+              <FormText>
+                Choose an application in the list or start downloading the one
+                you want.
+              </FormText>
             </FormGroup>
 
             <FormGroup>
@@ -133,18 +137,20 @@ class ModalAddInstance extends Component {
                 type="text"
                 name="emai-longname"
                 id="emai-longname"
-                invalid={this.state.errorLongName}
+                invalid={this.state.errorRequiredLongName}
                 onChange={this.handleChangeLongName}
                 onBlur={this.handleChangeLongName}
               />
-              <FormFeedback invalid>This field is required</FormFeedback>
-              <FormText>A free text, human-readable…</FormText>
+              {this.state.errorRequiredLongName && (
+                <FormFeedback>This field is required.</FormFeedback>
+              )}
+              <FormText>A free text, a title, human-readable…</FormText>
             </FormGroup>
 
             <FormGroup>
               <Row>
                 <Col>
-                  <Label for="emai-technicalname">Technical name</Label>
+                  <Label for="emai-tn-p">Technical name</Label>
                 </Col>
               </Row>
               <Row>
@@ -152,23 +158,46 @@ class ModalAddInstance extends Component {
                   <Input
                     type="text"
                     name="emai-tn-p"
-                    id="emai-technicalname"
-                    invalid
+                    id="emai-tn-p"
+                    onChange={this.handleChangeTechnicalName1}
+                    onBlur={this.handleChangeTechnicalName1}
+                    invalid={
+                      this.state.errorRequiredTechnicalName1 ||
+                      this.state.errorSyntaxTechnicalName1
+                    }
                   />
-                  <FormFeedback>This field is required.</FormFeedback>
-                  <FormFeedback>
-                    It should contains only lowercase and alpha-numeric
-                    characters.
-                  </FormFeedback>
+                  {this.state.errorRequiredTechnicalName1 && (
+                    <FormFeedback>This field is required.</FormFeedback>
+                  )}
+                  {this.state.errorSyntaxTechnicalName1 && (
+                    <FormFeedback>
+                      It should contains only lowercase and alpha-numeric
+                      characters.
+                    </FormFeedback>
+                  )}
                 </Col>{" "}
                 -
                 <Col>
-                  <Input type="text" name="emai-tn-s" id="emai-tn-s" invalid />
-                  <FormFeedback>This field is required.</FormFeedback>
-                  <FormFeedback>
-                    It should contains only lowercase and alpha-numeric
-                    characters.
-                  </FormFeedback>
+                  <Input
+                    type="text"
+                    name="emai-tn-s"
+                    id="emai-tn-s"
+                    onChange={this.handleChangeTechnicalName2}
+                    onBlur={this.handleChangeTechnicalName2}
+                    invalid={
+                      this.state.errorRequiredTechnicalName2 ||
+                      this.state.errorSyntaxTechnicalName2
+                    }
+                  />
+                  {this.state.errorRequiredTechnicalName2 && (
+                    <FormFeedback>This field is required.</FormFeedback>
+                  )}
+                  {this.state.errorSyntaxTechnicalName2 && (
+                    <FormFeedback>
+                      It should contains only lowercase and alpha-numeric
+                      characters.
+                    </FormFeedback>
+                  )}
                 </Col>{" "}
                 -
                 <Col>
