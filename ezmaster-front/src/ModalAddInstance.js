@@ -14,6 +14,7 @@ import {
 import { Row, Col } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { UncontrolledTooltip } from "reactstrap";
+import latinize from "latinize";
 
 import "./ModalAddInstance.css";
 
@@ -145,7 +146,7 @@ class ModalAddInstance extends Component {
    * used to change a string to a valid technicalName subset
    */
   normalizeTNString(str) {
-    return str
+    return latinize(str)
       .toLowerCase()
       .replace(RegExp("[^a-z0-9]", "g"), "")
       .substring(0, 30);
