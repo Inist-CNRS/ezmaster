@@ -14,7 +14,6 @@ import {
 import { Row, Col } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { UncontrolledTooltip } from "reactstrap";
-import { Alert } from "reactstrap";
 
 import "./ModalAddInstance.css";
 
@@ -29,6 +28,7 @@ class ModalAddInstance extends Component {
     super(props);
 
     this.state = {
+      application: "",
       longName: "",
       technicalName1: "",
       technicalName1Auto: "",
@@ -41,7 +41,8 @@ class ModalAddInstance extends Component {
       errorRequiredTechnicalName1: false,
       errorSyntaxTechnicalName1: false,
       errorRequiredTechnicalName2: false,
-      errorSyntaxTechnicalName2: false
+      errorSyntaxTechnicalName2: false,
+      errorExistsTechnicalName: false
     };
 
     this.handleChangeLongName = this.handleChangeLongName.bind(this);
@@ -55,9 +56,7 @@ class ModalAddInstance extends Component {
     this.handleChangeTechnicalName3 = this.handleChangeTechnicalName3.bind(
       this
     );
-    this.generateTechnicalNameFromLongName = this.generateTechnicalNameFromLongName.bind(
-      this
-    );
+    this.generateTechnicalName = this.generateTechnicalName.bind(this);
   }
 
   handleChangeLongName(e) {
@@ -65,77 +64,80 @@ class ModalAddInstance extends Component {
       errorRequiredLongName: e.target.value == "",
       longName: e.target.value
     };
-
-    this.setState({
-      ...newState,
-      ...this.generateTechnicalNameFromLongName(e.target.value)
-    });
+    this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
   }
 
   handleChangeApplication(e) {
     this.setState({
-      errorRequiredApplication: e.target.value == ""
+      errorRequiredApplication: e.target.value == "",
+      application: e.target.value
     });
   }
 
   handleChangeTechnicalName1(e) {
+    e.target.value = this.normalizeTNString(e.target.value);
     let newState = {
-      errorRequiredTechnicalName1: e.target.value == "",
+      errorRequiredTechnicalName1:
+        e.target.value == "" && !this.state.technicalName1Auto,
       errorSyntaxTechnicalName1: !RegExp("^[a-z0-9]*$", "g").test(
         e.target.value
-      )
+      ),
+      technicalName1: e.target.value
     };
-    newState.technicalName1 = e.target.value;
-    newState.technicalName =
-      newState.technicalName1 +
-      "-" +
-      this.state.technicalName2 +
-      (this.state.technicalName3 ? "-" + this.state.technicalName3 : "");
-    this.setState(newState);
+    this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
   }
   handleChangeTechnicalName2(e) {
+    e.target.value = this.normalizeTNString(e.target.value);
     let newState = {
-      errorRequiredTechnicalName2: e.target.value == "",
+      errorRequiredTechnicalName2:
+        e.target.value == "" && !this.state.technicalName2Auto,
       errorSyntaxTechnicalName2: !RegExp("^[a-z0-9]*$", "g").test(
         e.target.value
-      )
+      ),
+      technicalName2: e.target.value
     };
-    newState.technicalName2 = e.target.value;
-    newState.technicalName =
-      this.state.technicalName1 +
-      "-" +
-      newState.technicalName2 +
-      (this.state.technicalName3 ? "-" + this.state.technicalName3 : "");
-    this.setState(newState);
+    this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
   }
   handleChangeTechnicalName3(e) {
     let newState = {};
     newState.technicalName3 = e.target.value;
-    newState.technicalName =
-      this.state.technicalName1 +
-      "-" +
-      this.state.technicalName2 +
-      (newState.technicalName3 ? "-" + newState.technicalName3 : "");
-    this.setState(newState);
+    this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
   }
 
-  generateTechnicalNameFromLongName(longName) {
-    let longNameArray = longName.split(" ");
+  generateTechnicalName(oldState) {
+    let longNameArray = oldState.longName ? oldState.longName.split(" ") : [];
     let newState = {
-      ...this.state,
-      technicalName1Auto: !this.state.technicalName1
-        ? longNameArray[0] ? longNameArray[0] : ""
-        : "",
-      technicalName2Auto: !this.state.technicalName2
-        ? longNameArray[1] ? longNameArray[1] : ""
-        : ""
+      ...oldState,
+      technicalName1Auto: this.normalizeTNString(
+        !oldState.technicalName1
+          ? longNameArray[0] ? longNameArray[0] : ""
+          : ""
+      ),
+      technicalName2Auto: this.normalizeTNString(
+        !oldState.technicalName2
+          ? longNameArray[1] ? longNameArray[1] : ""
+          : ""
+      )
     };
     newState.technicalName =
       (newState.technicalName1 || newState.technicalName1Auto) +
       "-" +
       (newState.technicalName2 || newState.technicalName2Auto) +
       (newState.technicalName3 ? "-" + newState.technicalName3 : "");
+
+    newState.errorExistsTechnicalName = Math.random() > 0.5; // TODO: change this
+
     return newState;
+  }
+
+  /**
+   * used to change a string to a valid technicalName subset
+   */
+  normalizeTNString(str) {
+    return str
+      .toLowerCase()
+      .replace(RegExp("[^a-z0-9]", "g"), "")
+      .substring(0, 30);
   }
 
   render() {
@@ -157,6 +159,7 @@ class ModalAddInstance extends Component {
                   type="select"
                   name="emai-application"
                   id="emai-application"
+                  value={this.state.application}
                   onChange={this.handleChangeApplication}
                   onBlur={this.handleChangeApplication}
                   invalid={this.state.errorRequiredApplication}
@@ -199,9 +202,11 @@ class ModalAddInstance extends Component {
                 type="text"
                 name="emai-longname"
                 id="emai-longname"
+                value={this.state.longName}
                 invalid={this.state.errorRequiredLongName}
                 onChange={this.handleChangeLongName}
                 onBlur={this.handleChangeLongName}
+                maxLength={250}
               />
               {this.state.errorRequiredLongName && (
                 <FormFeedback>This field is required.</FormFeedback>
@@ -221,6 +226,7 @@ class ModalAddInstance extends Component {
                     type="text"
                     name="emai-tn-p"
                     id="emai-tn-p"
+                    maxLength={30}
                     value={
                       this.state.technicalName1 || this.state.technicalName1Auto
                     }
@@ -247,6 +253,7 @@ class ModalAddInstance extends Component {
                     type="text"
                     name="emai-tn-s"
                     id="emai-tn-s"
+                    maxLength={30}
                     value={
                       this.state.technicalName2 || this.state.technicalName2Auto
                     }
@@ -278,18 +285,18 @@ class ModalAddInstance extends Component {
                   />
                 </Col>
               </Row>
+              {this.state.errorExistsTechnicalName && (
+                <FormText color="danger">
+                  The technical name <code>{this.state.technicalName}</code>{" "}
+                  already exists, please choose another one.
+                </FormText>
+              )}
               <FormText>
                 The technical name is used to identify the instance and to
                 access the instance on the web. The first part could be a
                 project, the second a study, and the last must be a positive
                 number or could be empty.
               </FormText>
-
-              {this.state.errorTechnicalName && (
-                <Alert color="danger" className="rounded-0">
-                  {this.state.errorTechnicalName}
-                </Alert>
-              )}
             </FormGroup>
 
             {this.props.publicDomain && (
