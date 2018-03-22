@@ -29,8 +29,11 @@ class ModalAddInstance extends Component {
     super(props);
 
     this.state = {
-      technicalName1: "___",
-      technicalName2: "___",
+      longName: "",
+      technicalName1: "",
+      technicalName1Auto: "",
+      technicalName2: "",
+      technicalName2Auto: "",
       technicalName3: "",
       technicalName: "___-___",
       errorRequiredLongName: false,
@@ -52,16 +55,24 @@ class ModalAddInstance extends Component {
     this.handleChangeTechnicalName3 = this.handleChangeTechnicalName3.bind(
       this
     );
+    this.generateTechnicalNameFromLongName = this.generateTechnicalNameFromLongName.bind(
+      this
+    );
   }
 
   handleChangeLongName(e) {
+    let newState = {
+      errorRequiredLongName: e.target.value == "",
+      longName: e.target.value
+    };
+
     this.setState({
-      errorRequiredLongName: e.target.value == ""
+      ...newState,
+      ...this.generateTechnicalNameFromLongName(e.target.value)
     });
   }
 
   handleChangeApplication(e) {
-    console.log("EEEEEEEEEEEEE", e.target.value);
     this.setState({
       errorRequiredApplication: e.target.value == ""
     });
@@ -106,6 +117,25 @@ class ModalAddInstance extends Component {
       this.state.technicalName2 +
       (newState.technicalName3 ? "-" + newState.technicalName3 : "");
     this.setState(newState);
+  }
+
+  generateTechnicalNameFromLongName(longName) {
+    let longNameArray = longName.split(" ");
+    let newState = {
+      ...this.state,
+      technicalName1Auto: !this.state.technicalName1
+        ? longNameArray[0] ? longNameArray[0] : ""
+        : "",
+      technicalName2Auto: !this.state.technicalName2
+        ? longNameArray[1] ? longNameArray[1] : ""
+        : ""
+    };
+    newState.technicalName =
+      (newState.technicalName1 || newState.technicalName1Auto) +
+      "-" +
+      (newState.technicalName2 || newState.technicalName2Auto) +
+      (newState.technicalName3 ? "-" + newState.technicalName3 : "");
+    return newState;
   }
 
   render() {
@@ -191,6 +221,9 @@ class ModalAddInstance extends Component {
                     type="text"
                     name="emai-tn-p"
                     id="emai-tn-p"
+                    value={
+                      this.state.technicalName1 || this.state.technicalName1Auto
+                    }
                     onChange={this.handleChangeTechnicalName1}
                     onBlur={this.handleChangeTechnicalName1}
                     invalid={
@@ -214,6 +247,9 @@ class ModalAddInstance extends Component {
                     type="text"
                     name="emai-tn-s"
                     id="emai-tn-s"
+                    value={
+                      this.state.technicalName2 || this.state.technicalName2Auto
+                    }
                     onChange={this.handleChangeTechnicalName2}
                     onBlur={this.handleChangeTechnicalName2}
                     invalid={
