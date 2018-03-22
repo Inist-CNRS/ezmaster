@@ -1,3 +1,8 @@
 .ezmaster-modal-add-instance.modal-dialog {
   max-width: 800px !important;
 }
+
+#emai-preview {
+  font-size: 1.5rem;
+  font-family: monospace;
+}

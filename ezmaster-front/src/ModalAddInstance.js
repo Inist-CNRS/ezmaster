@@ -21,6 +21,7 @@ import "./ModalAddInstance.css";
 class ModalAddInstance extends Component {
   static defaultProps = {
     modalIsOpen: false,
+    publicDomain: "monsite.fr",
     toggle: function() {}
   };
 
@@ -28,6 +29,10 @@ class ModalAddInstance extends Component {
     super(props);
 
     this.state = {
+      technicalName1: "___",
+      technicalName2: "___",
+      technicalName3: "",
+      technicalName: "___-___",
       errorRequiredLongName: false,
       errorRequiredApplication: false,
       errorRequiredTechnicalName1: false,
@@ -42,6 +47,9 @@ class ModalAddInstance extends Component {
       this
     );
     this.handleChangeTechnicalName2 = this.handleChangeTechnicalName2.bind(
+      this
+    );
+    this.handleChangeTechnicalName3 = this.handleChangeTechnicalName3.bind(
       this
     );
   }
@@ -60,20 +68,44 @@ class ModalAddInstance extends Component {
   }
 
   handleChangeTechnicalName1(e) {
-    this.setState({
+    let newState = {
       errorRequiredTechnicalName1: e.target.value == "",
       errorSyntaxTechnicalName1: !RegExp("^[a-z0-9]*$", "g").test(
         e.target.value
       )
-    });
+    };
+    newState.technicalName1 = e.target.value;
+    newState.technicalName =
+      newState.technicalName1 +
+      "-" +
+      this.state.technicalName2 +
+      (this.state.technicalName3 ? "-" + this.state.technicalName3 : "");
+    this.setState(newState);
   }
   handleChangeTechnicalName2(e) {
-    this.setState({
+    let newState = {
       errorRequiredTechnicalName2: e.target.value == "",
       errorSyntaxTechnicalName2: !RegExp("^[a-z0-9]*$", "g").test(
         e.target.value
       )
-    });
+    };
+    newState.technicalName2 = e.target.value;
+    newState.technicalName =
+      this.state.technicalName1 +
+      "-" +
+      newState.technicalName2 +
+      (this.state.technicalName3 ? "-" + this.state.technicalName3 : "");
+    this.setState(newState);
+  }
+  handleChangeTechnicalName3(e) {
+    let newState = {};
+    newState.technicalName3 = e.target.value;
+    newState.technicalName =
+      this.state.technicalName1 +
+      "-" +
+      this.state.technicalName2 +
+      (newState.technicalName3 ? "-" + newState.technicalName3 : "");
+    this.setState(newState);
   }
 
   render() {
@@ -201,7 +233,13 @@ class ModalAddInstance extends Component {
                 </Col>{" "}
                 -
                 <Col>
-                  <Input type="number" name="emai-tn-v" min="1" />
+                  <Input
+                    type="number"
+                    name="emai-tn-v"
+                    min="1"
+                    onChange={this.handleChangeTechnicalName3}
+                    onBlur={this.handleChangeTechnicalName3}
+                  />
                 </Col>
               </Row>
               <FormText>
@@ -218,15 +256,44 @@ class ModalAddInstance extends Component {
               )}
             </FormGroup>
 
-            <FormGroup>
-              <Label for="emai-preview">Instance URL preview</Label>
-              <Input
-                type="text"
-                readOnly
-                id="emai-preview"
-                placeholder="Generated URL…"
-              />
-            </FormGroup>
+            {this.props.publicDomain && (
+              <FormGroup>
+                <Label for="emai-preview">
+                  URL preview of the instance web access point
+                </Label>
+
+                <InputGroup>
+                  <InputGroupAddon addonType="append">
+                    <Button
+                      color="secondary"
+                      className="emai-preview-icon"
+                      onClick={function() {}}
+                    >
+                      <i className="fa fa-globe" />
+                    </Button>
+                    <UncontrolledTooltip
+                      placement="bottom"
+                      target=".emai-preview-icon"
+                    >
+                      This public URL will be the one to use to access your
+                      instance. Create the instance and try the URL.
+                    </UncontrolledTooltip>
+                  </InputGroupAddon>
+                  <Input
+                    type="text"
+                    id="emai-preview"
+                    readOnly
+                    placeholder="Generated URL…"
+                    value={
+                      "http://" +
+                      this.state.technicalName +
+                      "." +
+                      this.props.publicDomain
+                    }
+                  />
+                </InputGroup>
+              </FormGroup>
+            )}
           </Form>
         </ModalBody>
         <ModalFooter>
