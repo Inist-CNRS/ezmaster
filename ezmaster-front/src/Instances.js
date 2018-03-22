@@ -87,7 +87,7 @@ class Instances extends Component {
               color="primary"
               onClick={this.toggleModalAddInstance}
             >
-              Add instance
+              <i className="fa fa-plus-circle" /> Add instance
             </Button>
             <ModalAddInstance
               modalIsOpen={this.state.modalAddInstanceIsOpen}
