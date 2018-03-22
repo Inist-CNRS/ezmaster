@@ -287,8 +287,8 @@ class ModalAddInstance extends Component {
               </Row>
               {this.state.errorExistsTechnicalName && (
                 <FormText color="danger">
-                  The technical name <code>{this.state.technicalName}</code>{" "}
-                  already exists, please choose another one.
+                  Technical name "{this.state.technicalName}" already exists,
+                  please choose another one.
                 </FormText>
               )}
               <FormText>
