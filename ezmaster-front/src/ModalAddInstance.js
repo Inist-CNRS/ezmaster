@@ -57,11 +57,22 @@ class ModalAddInstance extends Component {
       this
     );
     this.generateTechnicalName = this.generateTechnicalName.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
+  }
+
+  handleCreate() {
+    setTimeout(
+      function() {
+        console.log("STATE", this.state);
+        this.props.toggle();
+      }.bind(this),
+      1000
+    );
   }
 
   handleChangeLongName(e) {
     let newState = {
-      errorRequiredLongName: e.target.value == "",
+      errorRequiredLongName: e.target.value === "",
       longName: e.target.value
     };
     this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
@@ -69,7 +80,7 @@ class ModalAddInstance extends Component {
 
   handleChangeApplication(e) {
     this.setState({
-      errorRequiredApplication: e.target.value == "",
+      errorRequiredApplication: e.target.value === "",
       application: e.target.value
     });
   }
@@ -78,7 +89,7 @@ class ModalAddInstance extends Component {
     e.target.value = this.normalizeTNString(e.target.value);
     let newState = {
       errorRequiredTechnicalName1:
-        e.target.value == "" && !this.state.technicalName1Auto,
+        e.target.value === "" && !this.state.technicalName1Auto,
       errorSyntaxTechnicalName1: !RegExp("^[a-z0-9]*$", "g").test(
         e.target.value
       ),
@@ -90,7 +101,7 @@ class ModalAddInstance extends Component {
     e.target.value = this.normalizeTNString(e.target.value);
     let newState = {
       errorRequiredTechnicalName2:
-        e.target.value == "" && !this.state.technicalName2Auto,
+        e.target.value === "" && !this.state.technicalName2Auto,
       errorSyntaxTechnicalName2: !RegExp("^[a-z0-9]*$", "g").test(
         e.target.value
       ),
@@ -343,7 +354,7 @@ class ModalAddInstance extends Component {
           <Button color="secondary" onClick={this.props.toggle}>
             Cancel
           </Button>
-          <Button color="primary" onClick={this.props.toggle}>
+          <Button color="primary" onClick={this.handleCreate}>
             Create
           </Button>
         </ModalFooter>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import { Container, Row, Col } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import { Button } from "reactstrap";
 
 import "./Instances.css";

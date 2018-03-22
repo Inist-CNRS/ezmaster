@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 
-import "./Header.css";
 import {
   Collapse,
   Navbar,
@@ -9,18 +8,12 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
+  NavLink
 } from "reactstrap";
 
+import "./Header.css";
 import logoImage from "./logo.svg";
-
 import InfoMachine from "./InfoMachine.js";
-
-import { Badge } from "reactstrap";
 
 class Header extends Component {
   constructor(props) {

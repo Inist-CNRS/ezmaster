@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 
 import { Badge } from "reactstrap";
-import { Progress } from "reactstrap";
 import "./InstanceBadgeStatus.css";
 
 class InstanceBadgeStatus extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      instanceStarted: this.props.instance.status == "started",
+      instanceStarted: this.props.instance.status === "started",
       instanceIntermediateStatus: this.props.instance.status === undefined
     };
 

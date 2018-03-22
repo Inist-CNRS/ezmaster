@@ -5,10 +5,6 @@ import { UncontrolledTooltip } from "reactstrap";
 import "./InstanceBtnPubLink.css";
 
 class InstanceBtnPubLink extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className={this.props.className}>

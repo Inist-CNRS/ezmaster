@@ -5,10 +5,6 @@ import { UncontrolledTooltip } from "reactstrap";
 import "./InstanceBtnLogs.css";
 
 class InstanceBtnLogs extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className={this.props.className}>

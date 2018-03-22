@@ -4,7 +4,6 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
 import AceEditor from "react-ace";
-import brace from "brace";
 import "brace/mode/json";
 import "brace/mode/text";
 import "brace/ext/searchbox";

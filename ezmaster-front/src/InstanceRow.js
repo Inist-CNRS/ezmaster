@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import moment from "moment";
-import { Badge } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 
 import "./InstanceRow.css";

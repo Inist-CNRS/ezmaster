@@ -9,7 +9,7 @@ class InstanceBtnStartStop extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      instanceStarted: this.props.instance.status == "started",
+      instanceStarted: this.props.instance.status === "started",
       btnDisabled: this.props.instance.status === undefined
     };
 

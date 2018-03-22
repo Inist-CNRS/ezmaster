@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { ListGroup, ListGroupItem } from "reactstrap";
-import { Container, Row, Col } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import classnames from "classnames";
 
@@ -93,7 +93,7 @@ class ModalWebdav extends Component {
                   </ListGroup>
                 </Col>
                 <Col>
-                  <img src={windowsDrive} width="500px" />
+                  <img src={windowsDrive} width="500px" alt="" />
                 </Col>
               </Row>
             </TabPane>
@@ -122,7 +122,7 @@ class ModalWebdav extends Component {
                   </ListGroup>
                 </Col>
                 <Col>
-                  <img src={ubuntuDrive} width="500px" />
+                  <img src={ubuntuDrive} width="500px" alt="" />
                 </Col>
               </Row>
             </TabPane>
