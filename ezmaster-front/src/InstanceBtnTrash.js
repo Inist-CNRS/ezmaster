@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
-import prettyBytes from "pretty-bytes";
+import { prettyBytes } from "./helpers.js";
 
 import "./InstanceBtnTrash.css";
 

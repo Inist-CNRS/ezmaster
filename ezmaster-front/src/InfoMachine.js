@@ -4,7 +4,7 @@ import { Nav, NavItem } from "reactstrap";
 
 import { Badge } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
-import prettyBytes from "pretty-bytes";
+import { prettyBytes } from "./helpers.js";
 
 class InfoMachine extends Component {
   static defaultProps = {
