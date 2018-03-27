@@ -4,6 +4,7 @@ import "./App.css";
 import Header from "./Header.js";
 import Instances from "./Instances.js";
 import Footer from "./Footer.js";
+import ModalLoading from "./ModalLoading.js";
 
 class App extends Component {
   render() {
@@ -28,6 +29,7 @@ class App extends Component {
         <div className="AppFooter">
           <Footer />
         </div>
+        <ModalLoading modalIsOpen={true} />
       </div>
     );
   }
