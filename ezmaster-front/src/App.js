@@ -15,7 +15,10 @@ class App extends Component {
         <div className="AppContent">
           {/* by default / url is redirecting to the instances tab */}
           <Redirect path="/" to="/instances/" />
-          <Route path="/instances/" component={Instances} />
+          <Route
+            path="/instances/"
+            component={() => <Instances config={this.props.config} />}
+          />
         </div>
         <div className="AppFooter">
           <Footer />

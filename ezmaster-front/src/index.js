@@ -7,9 +7,17 @@ import "font-awesome/css/font-awesome.min.css";
 import "./index.css";
 import App from "./App";
 
-ReactDOM.render(
-  <Router>
-    <App />
-  </Router>,
-  document.getElementById("root")
-);
+import ModelConfig from "./ModelConfig.js";
+
+let modelConfig = new ModelConfig();
+modelConfig.subscribe(render);
+
+function render() {
+  ReactDOM.render(
+    <Router>
+      <App config={modelConfig.data} />
+    </Router>,
+    document.getElementById("root")
+  );
+}
+render();

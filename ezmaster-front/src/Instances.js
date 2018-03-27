@@ -10,7 +10,6 @@ import ModalAddInstance from "./ModalAddInstance.js";
 class Instances extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       modalAddInstanceIsOpen: false
     };
@@ -90,6 +89,7 @@ class Instances extends Component {
               <i className="fa fa-plus-circle" /> Add instance
             </Button>
             <ModalAddInstance
+              config={this.props.config}
               modalIsOpen={this.state.modalAddInstanceIsOpen}
               toggle={this.toggleModalAddInstance}
             />
