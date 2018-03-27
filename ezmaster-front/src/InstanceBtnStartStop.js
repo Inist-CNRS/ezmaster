@@ -10,7 +10,7 @@ class InstanceBtnStartStop extends Component {
     super(props);
     this.state = {
       instanceStarted: this.props.instance.status === "started",
-      btnDisabled: this.props.instance.status === undefined
+      btnDisabled: !this.props.instance.status
     };
 
     this.toggleStatus = this.toggleStatus.bind(this);

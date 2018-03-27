@@ -8,7 +8,7 @@ class InstanceBadgeStatus extends Component {
     super(props);
     this.state = {
       instanceStarted: this.props.instance.status === "started",
-      instanceIntermediateStatus: this.props.instance.status === undefined
+      instanceIntermediateStatus: !this.props.instance.status
     };
 
     //this.toggleStatus = this.toggleStatus.bind(this);
