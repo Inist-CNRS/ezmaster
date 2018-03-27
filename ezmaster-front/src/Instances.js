@@ -23,37 +23,11 @@ class Instances extends Component {
   }
 
   render() {
-    // fake ezmaster instances data
-    const instances = [
-      {
-        longName: "Les projets du DPI",
-        technicalName: "dpi-project-1",
-        application: "inistcnrs/lodex:8.18.0",
-        dataFolderSize: Math.random() * 5000,
-        creationDate: "2018/03/05 14:46:05",
-        status: "started"
-      },
-      {
-        longName: "Les projets du DLP",
-        technicalName: "dpi-project-2",
-        application: "inistcnrs/lodex:8.18.0",
-        dataFolderSize: Math.random() * 5000,
-        creationDate: "2018/03/03 14:46:05",
-        status: "stopped"
-      },
-      {
-        longName: "Les projets du DAI",
-        technicalName: "dpi-project-3",
-        application: "inistcnrs/lodex:8.18.0",
-        dataFolderSize: Math.random() * 5000,
-        creationDate: "2017/03/05 14:46:05",
-        status: undefined
-      }
-    ];
-
     const instancesRows = [];
-    instances.forEach(function(instance) {
-      instancesRows.push(<InstanceRow instance={instance} />);
+    this.props.instances.forEach(function(instance) {
+      instancesRows.push(
+        <InstanceRow key={instance.technicalName} instance={instance} />
+      );
     });
 
     return (

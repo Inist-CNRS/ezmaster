@@ -17,7 +17,12 @@ class App extends Component {
           <Redirect path="/" to="/instances/" />
           <Route
             path="/instances/"
-            component={() => <Instances config={this.props.config} />}
+            component={() => (
+              <Instances
+                config={this.props.config}
+                instances={this.props.instances}
+              />
+            )}
           />
         </div>
         <div className="AppFooter">

@@ -8,14 +8,18 @@ import "./index.css";
 import App from "./App";
 
 import ModelConfig from "./ModelConfig.js";
+import ModelInstances from "./ModelInstances.js";
 
 let modelConfig = new ModelConfig();
+let modelInstances = new ModelInstances();
+
 modelConfig.subscribe(render);
+modelInstances.subscribe(render);
 
 function render() {
   ReactDOM.render(
     <Router>
-      <App config={modelConfig.data} />
+      <App config={modelConfig.data} instances={modelInstances.data} />
     </Router>,
     document.getElementById("root")
   );
