@@ -35,46 +35,56 @@ class InstanceRow extends Component {
         </td>
         <td>{this.props.instance.application}</td>
         <td>
-          <InstanceBadgeStatus instance={this.props.instance} />
+          <InstanceBadgeStatus
+            config={this.props.config}
+            instance={this.props.instance}
+          />
         </td>
         <td>
           <InstanceBtnStartStop
+            config={this.props.config}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
           <InstanceBtnTrash
+            config={this.props.config}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
           <InstanceBtnSettings
+            config={this.props.config}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
           <InstanceBtnUpload
+            config={this.props.config}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
           <InstanceBtnPrivLink
+            config={this.props.config}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
           <InstanceBtnPubLink
+            config={this.props.config}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
           />
 
           <InstanceBtnLogs
+            config={this.props.config}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"

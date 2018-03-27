@@ -23,10 +23,15 @@ class Instances extends Component {
   }
 
   render() {
+    const self = this;
     const instancesRows = [];
     this.props.instances.forEach(function(instance) {
       instancesRows.push(
-        <InstanceRow key={instance.technicalName} instance={instance} />
+        <InstanceRow
+          config={self.props.config}
+          key={instance.technicalName}
+          instance={instance}
+        />
       );
     });
 
