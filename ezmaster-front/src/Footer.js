@@ -3,6 +3,10 @@ import { UncontrolledTooltip } from "reactstrap";
 import "./Footer.css";
 
 class Footer extends Component {
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+    return false;
+  }
+
   render() {
     return (
       <footer>
