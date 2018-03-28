@@ -1,0 +1,46 @@
+.ezmaster-ml-data i {
+  font-size: 1.3rem;
+}
+
+.ezmaster-ml-data i.fa-spinner {
+  animation: ezmaster-ml-spinner 2s linear infinite;
+}
+
+@keyframes ezmaster-ml-spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ezmaster-ml-bouncing-loader {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0.1;
+    transform: translateY(-1rem);
+  }
+}
+.ezmaster-ml .bouncing-loader {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+.ezmaster-ml .bouncing-loader > div {
+  width: 1rem;
+  height: 1rem;
+  margin: 2rem 0.2rem;
+  background: #8385aa;
+  border-radius: 50%;
+  animation: ezmaster-ml-bouncing-loader 0.6s infinite alternate;
+}
+.ezmaster-ml .bouncing-loader > div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.ezmaster-ml .bouncing-loader > div:nth-child(3) {
+  animation-delay: 0.4s;
+}
