@@ -44,6 +44,7 @@ services:
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
+      EZMASTER_UPLOAD_MAX_BODY_SIZE: ${EZMASTER_UPLOAD_MAX_BODY_SIZE}
     links:
       - ezmaster-api
     volumes:
@@ -59,6 +60,8 @@ services:
   ezmaster-rp:
     container_name: ezmaster-rp
     image: inistcnrs/ezmaster:4.1.1-rp
+    environment:
+      EZMASTER_UPLOAD_MAX_BODY_SIZE: ${EZMASTER_UPLOAD_MAX_BODY_SIZE}
     volumes:
       - ./logs/ezmaster-rp/:/var/log/nginx/ezmaster-rp/
       - ezmaster-rp-nginx-data:/etc/nginx/conf.d/
