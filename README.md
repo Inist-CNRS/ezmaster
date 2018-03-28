@@ -61,6 +61,10 @@ export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 # The maximum total free space percent of the disk for avoiding saturation.
 # Default value is 80%.
 export EZMASTER_FULL_FS_PERCENT=80
+
+# The maximum upload size of on file
+# Default value is 500M (means 500 Megabytes)
+export EZMASTER_UPLOAD_MAX_BODY_SIZE="500M"
 ```
 
 
