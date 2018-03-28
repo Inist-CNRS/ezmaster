@@ -205,6 +205,11 @@ If you want to save the config and the data of your instances:
 
 ## Changelog
 
+### ezmaster 4.2.0
+
+- EZMASTER_UPLOAD_MAX_BODY_SIZE env parameter is now available. Use it to change the maximum upload size of on file (webdav or backoffice upload). Its default value is 500M
+  See http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size for information where this parameter is used.
+
 ### ezmaster 4.1.0
 
 - ezmaster-webdav docker image is now usable as a standalone image. A classic usecase is to quickly and easily share a given folder to a windows user.
