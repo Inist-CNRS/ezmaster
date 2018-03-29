@@ -8,21 +8,23 @@ let ModelInstances = function(options) {
   self.initializing = true;
   self.ajaxLoading = true;
 
-  axios
-    .get("/fakeapi/instances.json")
-    .then(response => {
-      // data comming from AJAX request (ezmaster instances stuff)
-      self.data = response.data;
+  setTimeout(function() {
+    axios
+      .get("/fakeapi/instances.json")
+      .then(response => {
+        // data comming from AJAX request (ezmaster instances stuff)
+        self.data = response.data;
 
-      self.initializing = false;
-      self.ajaxLoading = false;
-      self.inform();
-    })
-    .catch(err => {
-      console.log("ModelInstances error", err);
-      self.ajaxLoading = false;
-      self.inform();
-    });
+        self.initializing = false;
+        self.ajaxLoading = false;
+        self.inform();
+      })
+      .catch(err => {
+        console.log("ModelInstances error", err);
+        self.ajaxLoading = false;
+        self.inform();
+      });
+  }, Math.random() * 3000);
 };
 
 ModelInstances.prototype.subscribe = function(onChange) {

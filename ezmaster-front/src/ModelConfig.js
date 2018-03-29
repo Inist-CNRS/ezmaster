@@ -24,7 +24,7 @@ let ModelConfig = function(options) {
         self.ajaxLoading = false;
         self.inform();
       });
-  }, 1000);
+  }, Math.random() * 3000);
 };
 
 ModelConfig.prototype.subscribe = function(onChange) {
