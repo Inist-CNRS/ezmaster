@@ -26,7 +26,6 @@ class Instances extends Component {
     const self = this;
     const instancesRows = [];
     Object.keys(self.props.instances.data).forEach(function(technicalName) {
-      console.log("tnnnn", technicalName, self.props.instances.data);
       const instance = self.props.instances.data[technicalName];
       instancesRows.push(
         <InstanceRow
