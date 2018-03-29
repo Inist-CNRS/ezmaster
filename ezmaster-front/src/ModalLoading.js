@@ -9,30 +9,45 @@ import "./ModalLoading.css";
 
 class ModalLoading extends Component {
   static defaultProps = {
-    modalIsOpen: false,
-    toggle: function() {}
+    modalIsOpen: false
   };
 
   constructor(props) {
     super(props);
-
     this.state = {
-      data1: Math.random() > 0.5,
-      data2: Math.random() > 0.5,
-      data3: Math.random() > 0.5
+      modalIsOpen: this.props.modalIsOpen,
+      dataLoadingCompleted: false
     };
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState({ modalIsOpen: false });
   }
 
   render() {
+    let self = this;
+
+    // do not close the modal just after the data loading is completed
+    // wait 1 second so that the user is happy to see data are loaded
+    if (
+      !this.modalCloseTimeout &&
+      !this.props.config.ajaxLoading &&
+      !this.props.instances.ajaxLoading
+    ) {
+      this.setState({ dataLoadingCompleted: true });
+      this.modalCloseTimeout = setTimeout(function() {
+        self.setState({ modalIsOpen: false });
+      }, 1000);
+    }
+
     return (
       <Modal
-        isOpen={this.props.modalIsOpen}
-        toggle={this.props.toggle}
+        isOpen={this.state.modalIsOpen}
+        toggle={this.toggle}
         className="ezmaster-ml"
       >
-        <ModalHeader toggle={this.props.toggle}>
-          Loading EzMaster's data
-        </ModalHeader>
+        <ModalHeader toggle={this.toggle}>Loading EzMaster's data</ModalHeader>
 
         <ModalBody>
           <Row>
@@ -46,7 +61,10 @@ class ModalLoading extends Component {
                   <Badge pill className="ezmaster-ml-data1">
                     <i
                       className={
-                        "fa " + (this.state.data1 ? "fa-check" : "fa-spinner")
+                        "fa " +
+                        (this.props.config.ajaxLoading
+                          ? "fa-spinner"
+                          : "fa-check")
                       }
                     />
                   </Badge>
@@ -56,7 +74,10 @@ class ModalLoading extends Component {
                   <Badge pill className="ezmaster-ml-data2">
                     <i
                       className={
-                        "fa " + (this.state.data2 ? "fa-check" : "fa-spinner")
+                        "fa " +
+                        (this.props.instances.ajaxLoading
+                          ? "fa-spinner"
+                          : "fa-check")
                       }
                     />
                   </Badge>
@@ -77,11 +98,20 @@ class ModalLoading extends Component {
           </Row>
         </ModalBody>
         <ModalFooter>
-          <div className="bouncing-loader">
-            <div />
-            <div />
-            <div />
-          </div>
+          {!this.state.dataLoadingCompleted && (
+            <div className="bouncing-loader">
+              <div />
+              <div />
+              <div />
+            </div>
+          )}
+          {this.state.dataLoadingCompleted && (
+            <div className="text-center">
+              <i className="fa fa-thumbs-up" />
+              &nbsp;&nbsp;&nbsp;EzMaster is ready&nbsp;&nbsp;&nbsp;
+              <i className="fa fa-thumbs-up" />
+            </div>
+          )}
         </ModalFooter>
       </Modal>
     );

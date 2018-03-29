@@ -29,7 +29,11 @@ class App extends Component {
         <div className="AppFooter">
           <Footer />
         </div>
-        <ModalLoading modalIsOpen={true} />
+        <ModalLoading
+          modalIsOpen={true}
+          config={this.props.config}
+          instances={this.props.instances}
+        />
       </div>
     );
   }

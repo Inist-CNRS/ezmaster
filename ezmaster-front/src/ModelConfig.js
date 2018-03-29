@@ -8,21 +8,23 @@ let ModelConfig = function(options) {
   self.initializing = true;
   self.ajaxLoading = true;
 
-  axios
-    .get("/fakeapi/config.json")
-    .then(response => {
-      // data comming from AJAX request (config stuff)
-      self.data = response.data;
+  setTimeout(function() {
+    axios
+      .get("/fakeapi/config.json")
+      .then(response => {
+        // data comming from AJAX request (config stuff)
+        self.data = response.data;
 
-      self.initializing = false;
-      self.ajaxLoading = false;
-      self.inform();
-    })
-    .catch(err => {
-      console.log("ModelConfig error", err);
-      self.ajaxLoading = false;
-      self.inform();
-    });
+        self.initializing = false;
+        self.ajaxLoading = false;
+        self.inform();
+      })
+      .catch(err => {
+        console.log("ModelConfig error", err);
+        self.ajaxLoading = false;
+        self.inform();
+      });
+  }, 1000);
 };
 
 ModelConfig.prototype.subscribe = function(onChange) {

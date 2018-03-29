@@ -25,7 +25,7 @@ class Instances extends Component {
   render() {
     const self = this;
     const instancesRows = [];
-    this.props.instances.forEach(function(instance) {
+    this.props.instances.data.forEach(function(instance) {
       instancesRows.push(
         <InstanceRow
           config={self.props.config}

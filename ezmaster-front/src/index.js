@@ -19,7 +19,7 @@ modelInstances.subscribe(render);
 function render() {
   ReactDOM.render(
     <Router>
-      <App config={modelConfig.data} instances={modelInstances.data} />
+      <App config={modelConfig} instances={modelInstances} />
     </Router>,
     document.getElementById("root")
   );

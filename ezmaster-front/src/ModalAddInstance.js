@@ -309,7 +309,7 @@ class ModalAddInstance extends Component {
               </FormText>
             </FormGroup>
 
-            {this.props.config.EZMASTER_PUBLIC_DOMAIN && (
+            {this.props.config.data.EZMASTER_PUBLIC_DOMAIN && (
               <FormGroup>
                 <Label for="emai-preview">
                   URL preview of the instance web access point
@@ -341,7 +341,7 @@ class ModalAddInstance extends Component {
                       "http://" +
                       this.state.technicalName +
                       "." +
-                      this.props.config.EZMASTER_PUBLIC_DOMAIN
+                      this.props.config.data.EZMASTER_PUBLIC_DOMAIN
                     }
                   />
                 </InputGroup>
