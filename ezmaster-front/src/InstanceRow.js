@@ -33,7 +33,7 @@ class InstanceRow extends Component {
             <code>{this.props.instance.creationDate}</code>
           </UncontrolledTooltip>
         </td>
-        <td>{this.props.instance.application}</td>
+        <td>{this.props.instance.app}</td>
         <td>
           <InstanceBadgeStatus
             config={this.props.config}

@@ -46,7 +46,7 @@ class InstanceBtnTrash extends Component {
             <code>{this.props.instance.technicalName}</code> instance.<br />
             It represents{" "}
             <strong>
-              {prettyBytes(this.props.instance.dataFolderSize)}
+              {prettyBytes(this.props.instance.dataFolderSize || 0)}
             </strong>{" "}
             of data.
             <br />

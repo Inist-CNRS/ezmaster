@@ -1,24 +1,291 @@
-[{
-    "longName": "Les projets du DPI",
-    "technicalName": "dpi-project-1",
-    "application": "inistcnrs/lodex:8.18.0",
-    "dataFolderSize": 5000,
-    "creationDate": "2018/03/05 14:46:05",
-    "status": "started"
-},
 {
-    "longName": "Les projets du DLP",
-    "technicalName": "dpi-project-2",
-    "application": "inistcnrs/lodex:8.18.0",
-    "dataFolderSize": 2400,
-    "creationDate": "2018/03/03 14:46:05",
-    "status": "stopped"
-},
-{
-    "longName": "Les projets du DAI",
-    "technicalName": "dpi-project-3",
-    "application": "inistcnrs/lodex:8.18.0",
-    "dataFolderSize": 4000,
-    "creationDate": "2017/03/05 14:46:05",
-    "status": null
-}]
+    "lodex-cop21-2":
+    {
+        "technicalName": "lodex-cop21-2",
+        "containerId": "ffc9c2c599b7fd6b40e45fa4cd6a774bc9b861dad3a001018aad3f876771037b",
+        "dataPath": "/app/src/app/custom",
+        "creationDate": "2018/03/28 09:45:55",
+        "app": "inistcnrs/lodex:8.18.5",
+        "running": true,
+        "port": 49182,
+        "publicURL": "http://192.168.128.64:49182",
+        "target": "lodex-cop21-2",
+        "httpPort": 3000,
+        "configPath": "/app/config.json",
+        "#cleanupScript": "/app/src/common/mongoCleanup.sh",
+        "longName": "Démonstration de lodex (cop21)",
+        "dockerCmdForCreation": "docker run -dt -p 49182:3000 -e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT --restart unless-stopped -e EZMASTER_TECHNICAL_NAME=\"lodex-cop21-2\" -e EZMASTER_LONG_NAME=\"Démonstration de lodex (cop21)\" -e EZMASTER_APPLICATION=\"inistcnrs/lodex:8.18.5\" -e DEBUG -e EZMASTER_PUBLIC_URL=\"http://lodex-cop21-2.dpi.inist.fr\" --net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api -v /applis/ezmaster/home/ezmaster/data/instances/lodex-cop21-2/config/config.raw:/app/config.json -v /applis/ezmaster/home/ezmaster/data/instances/lodex-cop21-2/data/:/app/src/app/custom --label ezmasterInstance=1 --name lodex-cop21-2 inistcnrs/lodex:8.18.5",
+        "ezmasterVersionForCreation": "4.1.1"
+    },
+    "lodex-istex-1":
+    {
+        "technicalName": "lodex-istex-1",
+        "containerId": "41365e39c699fc2460a62c3c22ed8812de506d0a8854fe71afde646209243122",
+        "dataPath": "/app/src/app/custom",
+        "creationDate": "2018/03/27 14:55:57",
+        "app": "inistcnrs/lodex:8.18.5",
+        "running": true,
+        "port": 49181,
+        "publicURL": "http://192.168.128.64:49181",
+        "target": "lodex-istex-1",
+        "httpPort": 3000,
+        "configPath": "/app/config.json",
+        "#cleanupScript": "/app/src/common/mongoCleanup.sh",
+        "longName": "Démonstration de lodex (istex)",
+        "dockerCmdForCreation": "docker run -dt -p 49181:3000 -e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT --restart unless-stopped -e EZMASTER_TECHNICAL_NAME=\"lodex-istex-1\" -e EZMASTER_LONG_NAME=\"Démonstration de lodex (istex)\" -e EZMASTER_APPLICATION=\"inistcnrs/lodex:8.18.5\" -e DEBUG -e EZMASTER_PUBLIC_URL=\"http://lodex-istex-1.dpi.inist.fr\" --net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api -v /applis/ezmaster/home/ezmaster/data/instances/lodex-istex-1/config/config.raw:/app/config.json -v /applis/ezmaster/home/ezmaster/data/instances/lodex-istex-1/data/:/app/src/app/custom --label ezmasterInstance=1 --name lodex-istex-1 inistcnrs/lodex:8.18.5",
+        "ezmasterVersionForCreation": "4.1.1"
+    },
+    "lodex-films-3":
+    {
+        "technicalName": "lodex-films-3",
+        "containerId": "9885ced4f2813c03053a7b972dcf4b39c5e66ba509529666188c12d0e368c746",
+        "dataPath": "/app/src/app/custom/",
+        "creationDate": "2018/03/06 09:08:14",
+        "app": "inistcnrs/lodex:8.18.0",
+        "running": true,
+        "port": 49180,
+        "publicURL": "http://192.168.128.64:49180",
+        "target": "lodex-films-3",
+        "httpPort": 3000,
+        "configPath": "/app/config.json",
+        "#cleanupScript": "/app/src/common/mongoCleanup.sh",
+        "longName": "Démonstration de lodex (films)",
+        "dockerCmdForCreation": "docker run -dt -p 49180:3000 -e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT --restart unless-stopped -e EZMASTER_TECHNICAL_NAME=\"lodex-films-3\" -e EZMASTER_LONG_NAME=\"Démonstration de lodex (films)\" -e EZMASTER_APPLICATION=\"inistcnrs/lodex:8.18.0\" -e DEBUG -e EZMASTER_PUBLIC_URL=\"http://lodex-films-3.dpi.inist.fr\" --net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api -v /applis/ezmaster/home/ezmaster/data/instances/lodex-films-3/config/config.raw:/app/config.json -v /applis/ezmaster/home/ezmaster/data/instances/lodex-films-3/data/:/app/src/app/custom/ --label ezmasterInstance=1 --name lodex-films-3 inistcnrs/lodex:8.18.0",
+        "ezmasterVersionForCreation": "4.0.12"
+    },
+    "all-projects-5":
+    {
+        "technicalName": "all-projects-5",
+        "containerId": "625db67e2a5c4d146a505bb26c07b005cd96b4bef6c37d23ada78c4859ed2702",
+        "dataPath": "/app/src/app/custom/",
+        "creationDate": "2018/03/05 14:46:05",
+        "app": "inistcnrs/lodex:8.18.0",
+        "running": true,
+        "port": 49179,
+        "publicURL": "http://192.168.128.64:49179",
+        "target": "all-projects-5",
+        "httpPort": 3000,
+        "configPath": "/app/config.json",
+        "#cleanupScript": "/app/src/common/mongoCleanup.sh",
+        "longName": "Les projets du DPI",
+        "dockerCmdForCreation": "docker run -dt -p 49179:3000 -e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT --restart unless-stopped -e EZMASTER_TECHNICAL_NAME=\"all-projects-5\" -e EZMASTER_LONG_NAME=\"Les projets du DPI\" -e EZMASTER_APPLICATION=\"inistcnrs/lodex:8.18.0\" -e DEBUG -e EZMASTER_PUBLIC_URL=\"http://all-projects-5.dpi.inist.fr\" --net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api -v /applis/ezmaster/home/ezmaster/data/instances/all-projects-5/config/config.raw:/app/config.json -v /applis/ezmaster/home/ezmaster/data/instances/all-projects-5/data/:/app/src/app/custom/ --label ezmasterInstance=1 --name all-projects-5 inistcnrs/lodex:8.18.0",
+        "ezmasterVersionForCreation": "4.0.12"
+    },
+    "lodex-cop21-1":
+    {
+        "technicalName": "lodex-cop21-1",
+        "containerId": "55e8455793cddc3b7a892fa8c1f83519e1fa24f5203d790321f4784049b26b0c",
+        "dataPath": "/app/src/app/custom/",
+        "creationDate": "2018/03/05 11:40:13",
+        "app": "inistcnrs/lodex:8.18.0",
+        "running": true,
+        "port": 49178,
+        "publicURL": "http://192.168.128.64:49178",
+        "target": "lodex-cop21-1",
+        "httpPort": 3000,
+        "configPath": "/app/config.json",
+        "#cleanupScript": "/app/src/common/mongoCleanup.sh",
+        "longName": "Démonstration de lodex (cop21)",
+        "dockerCmdForCreation": "docker run -dt -p 49178:3000 -e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT --restart unless-stopped -e EZMASTER_TECHNICAL_NAME=\"lodex-cop21-1\" -e EZMASTER_LONG_NAME=\"Démonstration de lodex \" -e EZMASTER_APPLICATION=\"inistcnrs/lodex:8.18.0\" -e DEBUG -e EZMASTER_PUBLIC_URL=\"http://lodex-cop21-1.dpi.inist.fr\" --net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api -v /applis/ezmaster/home/ezmaster/data/instances/lodex-cop21-1/config/config.raw:/app/config.json -v /applis/ezmaster/home/ezmaster/data/instances/lodex-cop21-1/data/:/app/src/app/custom/ --label ezmasterInstance=1 --name lodex-cop21-1 inistcnrs/lodex:8.18.0",
+        "ezmasterVersionForCreation": "4.0.12"
+    },
+    "ark-registry-1":
+    {
+        "technicalName": "ark-registry-1",
+        "containerId": "d732de12c18c750ccb61894fbc089449c7b20ac3a8c2d873360904c9e4e7a014",
+        "dataPath": "/app/src/app/custom/",
+        "creationDate": "2018/01/31 09:14:10",
+        "app": "inistcnrs/lodex:7.16.0",
+        "running": false,
+        "port": [],
+        "publicURL": "",
+        "target": "",
+        "httpPort": 3000,
+        "configPath": "/app/config.json",
+        "cleanupScript": "/app/src/common/mongoCleanup.sh",
+        "longName": "Démonstration d'un registre de préfixes ARK",
+        "dockerCmdForCreation": "docker run -dt -p 49176:3000 -e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT --restart unless-stopped -e EZMASTER_TECHNICAL_NAME=\"ark-registry-1\" -e EZMASTER_LONG_NAME=\"Démonstration d'un registre de préfixes ARK\" -e EZMASTER_APPLICATION=\"inistcnrs/lodex:7.16.0\" -e DEBUG -e EZMASTER_PUBLIC_URL=\"http://ark-registry-1.dpi.inist.fr\" --net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api -v /applis/ezmaster/home/ezmaster/data/instances/ark-registry-1/config/config.raw:/app/config.json -v /applis/ezmaster/home/ezmaster/data/instances/ark-registry-1/data/:/app/src/app/custom/ --label ezmasterInstance=1 --name ark-registry-1 inistcnrs/lodex:7.16.0",
+        "ezmasterVersionForCreation": "4.0.6"
+    },
+    "github-backup-1":
+    {
+        "technicalName": "github-backup-1",
+        "containerId": "45a2f7bc8eeda62a44d88b7184052d2c2b81f41a7aaaa407dd9555a5e4880513",
+        "dataPath": "/usr/local/apache2/htdocs",
+        "creationDate": "2018/01/15 11:17:50",
+        "app": "inistcnrs/ezmaster-globs:2.0.3",
+        "running": true,
+        "port": 49175,
+        "publicURL": "http://192.168.128.64:49175",
+        "target": "github-backup-1",
+        "httpPort": 80,
+        "configPath": "/config.json",
+        "configType": "json",
+        "longName": "Backup des dépôts GitHub de l'Inist-CNRS",
+        "dockerCmdForCreation": "docker run -dt -p 49175:80 -e http_proxy -e https_proxy -e no_proxy -e EZMASTER_MONGODB_HOST_PORT --restart unless-stopped -e EZMASTER_TECHNICAL_NAME=\"github-backup-1\" -e EZMASTER_LONG_NAME=\"Backup des dépôts GitHub de l'Inist-CNRS\" -e EZMASTER_APPLICATION=\"inistcnrs/ezmaster-globs:2.0.3\" -e DEBUG -e EZMASTER_PUBLIC_URL=\"http://github-backup-1.dpi.inist.fr\" --net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api -v /applis/ezmaster/home/ezmaster/data/instances/github-backup-1/config/config.raw:/config.json -v /applis/ezmaster/home/ezmaster/data/instances/github-backup-1/data/:/usr/local/apache2/htdocs --label ezmasterInstance=1 --name github-backup-1 inistcnrs/ezmaster-globs:2.0.3",
+        "ezmasterVersionForCreation": "4.0.5"
+    },
+    "ezteam-bbe-2":
+    {
+        "technicalName": "ezteam-bbe-2",
+        "containerId": "1ea92d1eb87df757405c5055bf90db3c4ddf30f910ee0c46efd0e41fc2137e1f",
+        "dataPath": "",
+        "creationDate": "2017/02/27 10:55:11",
+        "app": "ezpaarseproject/bibliomap-enricher:3.1.6",
+        "running": true,
+        "port": 49170,
+        "publicURL": "http://192.168.128.64:49170",
+        "target": "ezteam-bbe-2",
+        "httpPort": 3000,
+        "configPath": "/app/config/default.json",
+        "longName": "Module interne à Bibliomap (enricher)"
+    },
+    "ezteam-bbv-1":
+    {
+        "technicalName": "ezteam-bbv-1",
+        "containerId": "1b129dce7d740d4a5b200301cbe73840a55b2068e6501001b31033b19b3f3733",
+        "dataPath": "",
+        "creationDate": "2017/02/27 09:55:09",
+        "app": "ezpaarseproject/bibliomap-viewer:3.1.1",
+        "running": true,
+        "port": 49168,
+        "publicURL": "http://192.168.128.64:49168",
+        "target": "ezteam-bbv-1",
+        "httpPort": 50197,
+        "configPath": "/app/config.json",
+        "longName": "Démonstration de bibliomap"
+    },
+    "ezteam-bbh-1":
+    {
+        "technicalName": "ezteam-bbh-1",
+        "containerId": "6bf452f3f5876262b3f348e8ab0f285e0d2cad359240951f1e4e6690c9247311",
+        "dataPath": "",
+        "creationDate": "2017/02/27 09:53:21",
+        "app": "ezpaarseproject/bibliomap-harvester:2.1.7",
+        "running": true,
+        "port": 49166,
+        "publicURL": "http://192.168.128.64:49166",
+        "target": "ezteam-bbh-1",
+        "httpPort": 3000,
+        "configPath": "/app/config.json",
+        "longName": "Module interne à Bibliomap (harvester)"
+    },
+    "diachronic-explorer-1":
+    {
+        "technicalName": "diachronic-explorer-1",
+        "containerId": "d6cf5ac53a063d5eb03cd06b20863211b8e34dc1cc21a671dbcef3b7e6b3e340",
+        "dataPath": "/app/db/",
+        "creationDate": "2017/01/10 10:28:46",
+        "app": "inistcnrs/diachronic-explorer:1.0.1",
+        "running": true,
+        "port": 49163,
+        "publicURL": "http://192.168.128.64:49163",
+        "target": "diachronic-explorer-1",
+        "httpPort": 3000,
+        "configPath": "/app/diachro.json",
+        "longName": "Démonstration du diachronic explorer"
+    },
+    "ezteam-ezpaarse-1":
+    {
+        "technicalName": "ezteam-ezpaarse-1",
+        "containerId": "6c15d0d925d0d5437ce8c7745f739805283f25b9cb58f24a972d7315d274da08",
+        "dataPath": "",
+        "creationDate": "2017/01/04 16:35:27",
+        "app": "ezpaarseproject/ezpaarse:2.9.6",
+        "running": true,
+        "port": 49162,
+        "publicURL": "http://192.168.128.64:49162",
+        "target": "ezteam-ezpaarse-1",
+        "httpPort": 59599,
+        "configPath": "/opt/ezpaarse/config.local.json",
+        "longName": "Démonstration d'ezpaarse"
+    },
+    "lodex-films-2":
+    {
+        "technicalName": "lodex-films-2",
+        "containerId": "7fb30a3efdfc735a17d1716589df8543be5bd25b5c792d21bf73ee8eadb3f72e",
+        "dataPath": "/app/data/",
+        "creationDate": "2017/01/04 14:32:58",
+        "app": "inistcnrs/lodex:1.0.12",
+        "running": false,
+        "port": [],
+        "publicURL": "",
+        "target": "",
+        "httpPort": 3000,
+        "configPath": "/app/data.json",
+        "longName": "Démonstration de l'outil lodex du projet éponyme"
+    },
+    "termith-idefix-2":
+    {
+        "technicalName": "termith-idefix-2",
+        "containerId": "868554816bec4539688aa3d5127a3b15d76d502ef3a16b0118c270800b47c55d",
+        "dataPath": "/app/tests/instances/2015-02-13",
+        "creationDate": "2017/01/04 13:31:45",
+        "app": "inistcnrs/idefix:7.11.5",
+        "running": false,
+        "port": [],
+        "publicURL": "",
+        "target": "",
+        "httpPort": 3000,
+        "configPath": "/app/tests/instances/2015-02-13.json",
+        "longName": "Démonstration d'Idefix du projet ANR-termith (qui marche après ugrade ezmaster)"
+    },
+    "lodex-films-1":
+    {
+        "technicalName": "lodex-films-1",
+        "containerId": "c9e692470226d96cac7144f63ecdb43a57b3759eabf3237fb7329a934387501e",
+        "dataPath": "/app/data/",
+        "creationDate": "2016/12/06 17:10:49",
+        "app": "inistcnrs/lodex:1.0.8",
+        "running": false,
+        "port": [],
+        "publicURL": "",
+        "target": "",
+        "httpPort": 3000,
+        "configPath": "/app/data.json",
+        "longName": "Démonstration de l'outil lodex du projet éponyme"
+    },
+    "lodex-ezark-1":
+    {
+        "technicalName": "lodex-ezark-1",
+        "containerId": "0d7a7229cd9af54753173e7675e20477e98391a1f3e7866a064ce766d77e002d",
+        "dataPath": "",
+        "creationDate": "2016/11/18 13:00:15",
+        "app": "inistcnrs/ezark:2.5.1",
+        "running": false,
+        "port": [],
+        "publicURL": "",
+        "target": "",
+        "httpPort": 3000,
+        "longName": "Démonstration d'ezark du projet Lodex"
+    },
+    "madec-ezvis-1":
+    {
+        "technicalName": "madec-ezvis-1",
+        "containerId": "b310d2104599c758efd730bfe9fddd63401872e6a6b7d07dbb979a311d3bc273",
+        "dataPath": "/applis/ezmaster/home/ezmaster/data/instances/madec-ezvis-1/data/",
+        "creationDate": "2016/11/18 11:19:29",
+        "app": "inistcnrs/ezvis:6.8.9",
+        "running": false,
+        "port": [],
+        "publicURL": "",
+        "target": "",
+        "httpPort": 3000,
+        "longName": "Démonstration d'ezvis du projet Madec"
+    },
+    "termith-idefix-1":
+    {
+        "technicalName": "termith-idefix-1",
+        "containerId": "a4e8edea10f2e278ad8380ea9ecf8729f6491d78945c72366403b3541cdd193a",
+        "dataPath": "/app/tests/instances/2015-02-13",
+        "creationDate": "2016/11/18 11:10:00",
+        "app": "inistcnrs/idefix:7.11.5",
+        "running": false,
+        "port": [],
+        "publicURL": "",
+        "target": "",
+        "httpPort": 3000,
+        "configPath": "/app/tests/instances/2015-02-13.json",
+        "longName": "Démonstration d'Idefix du projet ANR-termith"
+    }
+}
