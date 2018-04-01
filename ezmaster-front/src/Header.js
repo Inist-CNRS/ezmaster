@@ -34,16 +34,18 @@ class Header extends Component {
     return (
       <header>
         <Navbar color="faded" light expand="md">
-          <NavbarBrand href="/">
-            <img src={logoImage} alt="EzMaster" height="40px" />
-          </NavbarBrand>
+          <LinkContainer to="/">
+            <NavbarBrand href="/">
+              <img src={logoImage} alt="EzMaster" height="40px" />
+            </NavbarBrand>
+          </LinkContainer>
           <NavbarToggler onClick={this.toggleBurger} />
           <Collapse isOpen={this.state.burgerIsOpen} navbar>
             <Nav navbar>
-              <NavItem active={true}>
+              <NavItem active={this.props.instancesActive}>
                 <LinkContainer to="/instances/">
                   <NavLink
-                    active={true}
+                    active={this.props.instancesActive}
                     href="/instances/"
                     className="ezmaster-menu"
                   >
@@ -51,9 +53,13 @@ class Header extends Component {
                   </NavLink>
                 </LinkContainer>
               </NavItem>
-              <NavItem>
+              <NavItem active={this.props.applicationsActive}>
                 <LinkContainer to="/applications/">
-                  <NavLink className="ezmaster-menu" href="/applications/">
+                  <NavLink
+                    active={this.props.applicationsActive}
+                    className="ezmaster-menu"
+                    href="/applications/"
+                  >
                     Applications
                   </NavLink>
                 </LinkContainer>

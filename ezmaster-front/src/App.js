@@ -38,7 +38,10 @@ class App extends Component {
     return (
       <div className="App">
         <div className="AppHeader">
-          <Header />
+          <Header
+            applicationsActive={window.location.pathname === "/applications/"}
+            instancesActive={window.location.pathname === "/instances/"}
+          />
         </div>
         <div className="AppContent">
           <Switch>
