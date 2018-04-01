@@ -3,6 +3,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import "./App.css";
 import Header from "./Header.js";
 import Instances from "./Instances.js";
+import Applications from "./Applications.js";
 import Footer from "./Footer.js";
 import ModalLoading from "./ModalLoading.js";
 
@@ -49,6 +50,10 @@ class App extends Component {
                   instances={this.state.instances}
                 />
               )}
+            />
+            <Route
+              path="/applications/"
+              component={() => <Applications config={this.state.config} />}
             />
             {/* by default / url is redirecting to the instances tab */}
             <Redirect to="/instances/" />
