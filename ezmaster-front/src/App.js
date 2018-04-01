@@ -1,12 +1,38 @@
 import React, { Component } from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
 import "./App.css";
 import Header from "./Header.js";
 import Instances from "./Instances.js";
 import Footer from "./Footer.js";
 import ModalLoading from "./ModalLoading.js";
 
+import { fetchInstancesList } from "./ModelInstances2.js";
+import { fetchConfig } from "./ModelConfig2.js";
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loadingConfig: true,
+      loadingInstances: true,
+      config: {},
+      instances: {}
+    };
+  }
+
+  componentDidMount() {
+    fetchConfig(
+      function(err, config) {
+        this.setState({ config, loadingConfig: false });
+      }.bind(this)
+    );
+    fetchInstancesList(
+      function(err, instances) {
+        this.setState({ instances, loadingInstances: false });
+      }.bind(this)
+    );
+  }
+
   render() {
     return (
       <div className="App">
@@ -14,25 +40,27 @@ class App extends Component {
           <Header />
         </div>
         <div className="AppContent">
-          {/* by default / url is redirecting to the instances tab */}
-          <Redirect path="/" to="/instances/" />
-          <Route
-            path="/instances/"
-            component={() => (
-              <Instances
-                config={this.props.config}
-                instances={this.props.instances}
-              />
-            )}
-          />
+          <Switch>
+            <Route
+              path="/instances/"
+              component={() => (
+                <Instances
+                  config={this.state.config}
+                  instances={this.state.instances}
+                />
+              )}
+            />
+            {/* by default / url is redirecting to the instances tab */}
+            <Redirect to="/instances/" />
+          </Switch>
         </div>
         <div className="AppFooter">
           <Footer />
         </div>
         <ModalLoading
           modalIsOpen={true}
-          config={this.props.config}
-          instances={this.props.instances}
+          loadingConfig={this.state.loadingConfig}
+          loadingInstances={this.state.loadingInstances}
         />
       </div>
     );

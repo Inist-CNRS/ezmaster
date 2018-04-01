@@ -37,12 +37,14 @@ class InstanceRow extends Component {
         <td>
           <InstanceBadgeStatus
             config={this.props.config}
+            instances={this.props.instances}
             instance={this.props.instance}
           />
         </td>
         <td>
           <InstanceBtnStartStop
             config={this.props.config}
+            instances={this.props.instances}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
@@ -50,6 +52,7 @@ class InstanceRow extends Component {
 
           <InstanceBtnTrash
             config={this.props.config}
+            instances={this.props.instances}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
@@ -57,6 +60,7 @@ class InstanceRow extends Component {
 
           <InstanceBtnSettings
             config={this.props.config}
+            instances={this.props.instances}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
@@ -64,6 +68,7 @@ class InstanceRow extends Component {
 
           <InstanceBtnUpload
             config={this.props.config}
+            instances={this.props.instances}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
@@ -71,6 +76,7 @@ class InstanceRow extends Component {
 
           <InstanceBtnPrivLink
             config={this.props.config}
+            instances={this.props.instances}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
@@ -78,6 +84,7 @@ class InstanceRow extends Component {
 
           <InstanceBtnPubLink
             config={this.props.config}
+            instances={this.props.instances}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"
@@ -85,6 +92,7 @@ class InstanceRow extends Component {
 
           <InstanceBtnLogs
             config={this.props.config}
+            instances={this.props.instances}
             instance={this.props.instance}
             className="ezmaster-a"
             classNameBtn="ezmaster-a-btn"

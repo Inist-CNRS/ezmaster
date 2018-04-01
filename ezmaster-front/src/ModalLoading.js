@@ -32,8 +32,8 @@ class ModalLoading extends Component {
     // wait 1 second so that the user is happy to see data are loaded
     if (
       !this.modalCloseTimeout &&
-      !this.props.config.ajaxLoading &&
-      !this.props.instances.ajaxLoading
+      !this.props.loadingConfig &&
+      !this.props.loadingInstances
     ) {
       this.setState({ dataLoadingCompleted: true });
       this.modalCloseTimeout = setTimeout(function() {
@@ -62,9 +62,7 @@ class ModalLoading extends Component {
                     <i
                       className={
                         "fa " +
-                        (this.props.config.ajaxLoading
-                          ? "fa-spinner"
-                          : "fa-check")
+                        (this.props.loadingConfig ? "fa-spinner" : "fa-check")
                       }
                     />
                   </Badge>
@@ -75,7 +73,7 @@ class ModalLoading extends Component {
                     <i
                       className={
                         "fa " +
-                        (this.props.instances.ajaxLoading
+                        (this.props.loadingInstances
                           ? "fa-spinner"
                           : "fa-check")
                       }
