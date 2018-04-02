@@ -15,6 +15,8 @@ import { Row, Col } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import latinize from "latinize";
+import { toast } from "react-toastify";
+import { createInstance } from "./ModelInstances2.js";
 
 import "./ModalAddInstance.css";
 
@@ -35,6 +37,16 @@ class ModalAddInstance extends Component {
       technicalName2Auto: "",
       technicalName3: "",
       technicalName: "___-___",
+      formSteps: [],
+      errorsList: [
+        "errorRequiredLongName",
+        "errorRequiredApplication",
+        "errorRequiredTechnicalName1",
+        "errorSyntaxTechnicalName1",
+        "errorRequiredTechnicalName2",
+        "errorSyntaxTechnicalName2",
+        "errorExistsTechnicalName"
+      ],
       errorRequiredLongName: false,
       errorRequiredApplication: false,
       errorRequiredTechnicalName1: false,
@@ -56,29 +68,62 @@ class ModalAddInstance extends Component {
       this
     );
     this.generateTechnicalName = this.generateTechnicalName.bind(this);
-    this.handleCreate = this.handleCreate.bind(this);
+    this.doCreateInstance = this.doCreateInstance.bind(this);
   }
 
-  handleCreate() {
-    setTimeout(
-      function() {
-        console.log("STATE", this.state);
-        this.props.toggle();
-      }.bind(this),
-      1000
+  doCreateInstance() {
+    const self = this;
+
+    // async instance creation
+    createInstance(
+      {
+        application: self.state.application,
+        longName: self.state.longName,
+        technicalName: self.state.technicalName
+      },
+      function(err, instance) {
+        if (err) {
+          toast.error(<div>Instance creation error: {"" + err}</div>);
+        } else {
+          toast.info(
+            <div>
+              Instance <code>{instance.technicalName}</code> has been created
+            </div>
+          );
+        }
+      }
     );
+
+    // hide the popup
+    self.props.toggle();
   }
 
   handleChangeLongName(e) {
-    let newState = {
-      errorRequiredLongName: e.target.value === "",
-      longName: e.target.value
-    };
-    this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
+    let newState = this.generateTechnicalName({
+      ...this.state,
+      ...{
+        errorRequiredLongName: e.target.value === "",
+        longName: e.target.value
+      }
+    });
+
+    newState.formSteps = [...new Set(newState.formSteps.concat("longName"))];
+    if (newState.technicalName1Auto !== "") {
+      newState.formSteps = [
+        ...new Set(newState.formSteps.concat("technicalName1"))
+      ];
+    }
+    if (newState.technicalName2Auto !== "") {
+      newState.formSteps = [
+        ...new Set(newState.formSteps.concat("technicalName2"))
+      ];
+    }
+    this.setState(newState);
   }
 
   handleChangeApplication(e) {
     this.setState({
+      formSteps: [...new Set(this.state.formSteps.concat("application"))],
       errorRequiredApplication: e.target.value === "",
       application: e.target.value
     });
@@ -87,6 +132,7 @@ class ModalAddInstance extends Component {
   handleChangeTechnicalName1(e) {
     e.target.value = this.normalizeTNString(e.target.value);
     let newState = {
+      formSteps: [...new Set(this.state.formSteps.concat("technicalName1"))],
       errorRequiredTechnicalName1:
         e.target.value === "" && !this.state.technicalName1Auto,
       errorSyntaxTechnicalName1: !RegExp("^[a-z0-9]*$", "g").test(
@@ -99,6 +145,7 @@ class ModalAddInstance extends Component {
   handleChangeTechnicalName2(e) {
     e.target.value = this.normalizeTNString(e.target.value);
     let newState = {
+      formSteps: [...new Set(this.state.formSteps.concat("technicalName2"))],
       errorRequiredTechnicalName2:
         e.target.value === "" && !this.state.technicalName2Auto,
       errorSyntaxTechnicalName2: !RegExp("^[a-z0-9]*$", "g").test(
@@ -135,7 +182,7 @@ class ModalAddInstance extends Component {
       (newState.technicalName2 || newState.technicalName2Auto) +
       (newState.technicalName3 ? "-" + newState.technicalName3 : "");
 
-    newState.errorExistsTechnicalName = Math.random() > 0.5; // TODO: change this
+    newState.errorExistsTechnicalName = false; // TODO: change this
 
     return newState;
   }
@@ -151,6 +198,15 @@ class ModalAddInstance extends Component {
   }
 
   render() {
+    // calculate if the create button could be enabled
+    const nbErrors = this.state.errorsList
+      .map(elt => (this.state[elt] ? 1 : 0))
+      .reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+      });
+    console.log(nbErrors);
+    const createBtnDisabled = this.state.formSteps.length < 4 || nbErrors > 0;
+
     return (
       <Modal
         isOpen={this.props.modalIsOpen}
@@ -353,8 +409,13 @@ class ModalAddInstance extends Component {
           <Button color="secondary" onClick={this.props.toggle}>
             Cancel
           </Button>
-          <Button color="primary" onClick={this.handleCreate}>
-            Create
+          <Button
+            color="primary"
+            className="emai-create-btn"
+            disabled={createBtnDisabled}
+            onClick={this.doCreateInstance}
+          >
+            Create {this.state.formSteps.length}
           </Button>
         </ModalFooter>
       </Modal>

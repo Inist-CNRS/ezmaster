@@ -39,6 +39,21 @@ class Instances extends Component {
 
     return (
       <div className="ezmaster-instances">
+        {/* append a "add instance" button if the table items are more than 10 items so that it's easier to click on the button */}
+        {instancesRows.length > 10 && (
+          <Row>
+            <Col>
+              <Button
+                className="ml-2 ezmaster-instances-add ezmaster-instances-add-top"
+                color="primary"
+                onClick={this.toggleModalAddInstance}
+              >
+                <i className="fa fa-plus-circle" /> Add instance
+              </Button>
+            </Col>
+          </Row>
+        )}
+
         <Row>
           <Col>
             <Table

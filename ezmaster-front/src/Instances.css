@@ -16,6 +16,15 @@
   font-size: 1.2rem;
 }
 
+.ezmaster-instances-add-top {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+table.ezmaster-instances-table th {
+  border-top: 0px;
+}
+
 /* Responsive table,
    see https://bootsnipp.com/snippets/featured/no-more-tables-respsonsive-table */
 @media only screen and (max-width: 800px) {

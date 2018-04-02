@@ -11,6 +11,8 @@ import {
   NavLink
 } from "reactstrap";
 
+import { Button } from "reactstrap";
+
 import "./Header.css";
 import logoImage from "./logo.svg";
 import InfoMachine from "./InfoMachine.js";

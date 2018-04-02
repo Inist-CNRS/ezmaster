@@ -40,3 +40,10 @@ export function updateInstanceConfig(containerId, newConfig, cb) {
     return cb(null);
   }, 1000);
 }
+
+export function createInstance(newInstance, cb) {
+  setTimeout(function() {
+    console.log("createInstance", newInstance);
+    return cb(null, newInstance);
+  }, 1000);
+}
