@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+
 import "./App.css";
 import Header from "./Header.js";
 import Instances from "./Instances.js";
@@ -70,6 +72,8 @@ class App extends Component {
           loadingConfig={this.state.loadingConfig}
           loadingInstances={this.state.loadingInstances}
         />
+
+        <ToastContainer position="bottom-left" />
       </div>
     );
   }

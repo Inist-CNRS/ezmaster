@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
-import { fetchInstanceDetail } from "./ModelInstances2.js";
+import { toast } from "react-toastify";
+import { fetchInstanceDetail, deleteInstance } from "./ModelInstances2.js";
 
 import "./InstanceBtnTrash.css";
 
@@ -14,10 +15,11 @@ class InstanceBtnTrash extends Component {
       dataFolderSize: 0
     };
     this.toggleModal = this.toggleModal.bind(this);
+    this.doDeleteInstance = this.doDeleteInstance.bind(this);
   }
 
   toggleModal() {
-    let self = this;
+    const self = this;
 
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
@@ -29,6 +31,32 @@ class InstanceBtnTrash extends Component {
         self.setState({ dataFolderSize: data.size });
       });
     }
+  }
+
+  doDeleteInstance() {
+    const self = this;
+
+    // async instance delete
+    deleteInstance(self.props.instance.containerId, function(err) {
+      if (err) {
+        toast.error(
+          <div>
+            {self.props.instance.technicalName} deleting error: {"" + err}
+          </div>
+        );
+      } else {
+        toast(
+          <div>
+            <code>{self.props.instance.technicalName}</code> has been deleted
+          </div>
+        );
+      }
+    });
+
+    // hide the popup
+    self.setState({
+      modalIsOpen: !self.state.modalIsOpen
+    });
   }
 
   render() {
@@ -62,7 +90,7 @@ class InstanceBtnTrash extends Component {
             <Button color="secondary" onClick={this.toggleModal}>
               Cancel
             </Button>
-            <Button color="danger" onClick={this.toggleModal}>
+            <Button color="danger" onClick={this.doDeleteInstance}>
               Yes delete {this.props.instance.technicalName}
             </Button>{" "}
           </ModalFooter>
