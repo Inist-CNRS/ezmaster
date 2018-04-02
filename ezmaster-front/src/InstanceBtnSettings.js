@@ -47,7 +47,7 @@ class InstanceBtnSettings extends Component {
         } catch (err2) {
           self.setState({ code: data.config, codeFormat: "text" });
         }
-        //{Math.random() > 0.5 ? "text" : "json"}
+        self.currentCode = data.config;
       });
     }
   }
