@@ -121,11 +121,11 @@ class InstanceBtnSettings extends Component {
             >
               Edit the configuration in fullscreen mode.
             </UncontrolledTooltip>
-            <Button color="primary" onClick={this.toggleIsOpen}>
-              Update
-            </Button>{" "}
             <Button color="secondary" onClick={this.toggleIsOpen}>
               Cancel
+            </Button>
+            <Button color="primary" onClick={this.toggleIsOpen}>
+              Update
             </Button>
           </ModalFooter>
         </Modal>

@@ -59,12 +59,12 @@ class InstanceBtnTrash extends Component {
             Are you sure?
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" onClick={this.toggleModal}>
-              Yes delete {this.props.instance.technicalName}
-            </Button>{" "}
             <Button color="secondary" onClick={this.toggleModal}>
               Cancel
             </Button>
+            <Button color="danger" onClick={this.toggleModal}>
+              Yes delete {this.props.instance.technicalName}
+            </Button>{" "}
           </ModalFooter>
         </Modal>
 
