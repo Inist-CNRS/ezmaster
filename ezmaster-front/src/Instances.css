@@ -1,3 +1,13 @@
+/* to remove horizontal scrollbars on the big instances table list */
+.ezmaster-instances .row {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+.ezmaster-instances .col {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
 .ezmaster-instances-table {
   color: #616161;
 }
