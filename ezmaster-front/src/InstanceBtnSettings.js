@@ -13,6 +13,7 @@ import "brace/theme/github";
 import "./InstanceBtnSettings.css";
 
 import { updateInstanceConfig } from "./ModelInstances2.js";
+import { fetchInstanceDetail } from "./ModelInstances2.js";
 
 class InstanceBtnSettings extends Component {
   constructor(props) {
@@ -20,19 +21,35 @@ class InstanceBtnSettings extends Component {
     this.state = {
       modalIsOpen: false,
       modalIsFS: false,
-      code: ""
+      code: "",
+      codeFormat: "json"
     };
     this.currentCode = "";
-    this.toggleIsOpen = this.toggleIsOpen.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
     this.toggleIsFS = this.toggleIsFS.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
     this.doUpdateInstanceConfig = this.doUpdateInstanceConfig.bind(this);
   }
 
-  toggleIsOpen() {
-    this.setState({
+  toggleModal() {
+    const self = this;
+
+    self.setState({
       modalIsOpen: !this.state.modalIsOpen
     });
+
+    // fetch the instance config just when the popup is open
+    if (!self.state.modalIsOpen) {
+      fetchInstanceDetail(self.props.instance.containerId, function(err, data) {
+        try {
+          JSON.parse(data.config);
+          self.setState({ code: data.config, codeFormat: "json" });
+        } catch (err2) {
+          self.setState({ code: data.config, codeFormat: "text" });
+        }
+        //{Math.random() > 0.5 ? "text" : "json"}
+      });
+    }
   }
 
   toggleIsFS() {
@@ -98,7 +115,7 @@ class InstanceBtnSettings extends Component {
         <Button
           color="link"
           className={this.props.classNameBtn + " ezmaster-a-cog"}
-          onClick={this.toggleIsOpen}
+          onClick={this.toggleModal}
         >
           <i
             className={"fa fa-cog"}
@@ -108,20 +125,20 @@ class InstanceBtnSettings extends Component {
 
         <Modal
           isOpen={this.state.modalIsOpen}
-          toggle={this.toggleIsOpen}
+          toggle={this.toggleModal}
           className={
             this.state.modalIsFS
               ? "ezmaster-modal-settings modal-fullscreen"
               : "ezmaster-modal-settings"
           }
         >
-          <ModalHeader toggle={this.toggleIsOpen}>
+          <ModalHeader toggle={this.toggleModal}>
             Edit the <code>{this.props.instance.technicalName}</code>{" "}
             configuration{" "}
           </ModalHeader>
           <ModalBody>
             <AceEditor
-              mode={Math.random() > 0.5 ? "text" : "json"}
+              mode={this.state.codeFormat}
               theme="github"
               width="100%"
               height=""
@@ -157,7 +174,7 @@ class InstanceBtnSettings extends Component {
             >
               Edit the configuration in fullscreen mode.
             </UncontrolledTooltip>
-            <Button color="secondary" onClick={this.toggleIsOpen}>
+            <Button color="secondary" onClick={this.toggleModal}>
               Cancel
             </Button>
             <Button color="primary" onClick={this.doUpdateInstanceConfig}>
