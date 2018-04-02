@@ -33,3 +33,10 @@ export function deleteInstance(containerId, cb) {
     return cb(null);
   }, 1000);
 }
+
+export function updateInstanceConfig(containerId, newConfig, cb) {
+  setTimeout(function() {
+    console.log("updateInstanceConfig", containerId, newConfig);
+    return cb(null);
+  }, 1000);
+}

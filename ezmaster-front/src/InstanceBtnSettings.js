@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
+import { toast } from "react-toastify";
 
 import AceEditor from "react-ace";
 import "brace/mode/json";
@@ -10,6 +11,8 @@ import "brace/ext/searchbox";
 import "brace/theme/github";
 
 import "./InstanceBtnSettings.css";
+
+import { updateInstanceConfig } from "./ModelInstances2.js";
 
 class InstanceBtnSettings extends Component {
   constructor(props) {
@@ -23,6 +26,7 @@ class InstanceBtnSettings extends Component {
     this.toggleIsOpen = this.toggleIsOpen.bind(this);
     this.toggleIsFS = this.toggleIsFS.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
+    this.doUpdateInstanceConfig = this.doUpdateInstanceConfig.bind(this);
   }
 
   toggleIsOpen() {
@@ -54,6 +58,38 @@ class InstanceBtnSettings extends Component {
     // This is why we use the currentCode temp variable and push it in
     // the store just when switching to fullscreen (because re-render will occurs).
     this.currentCode = newValue;
+  }
+
+  doUpdateInstanceConfig() {
+    const self = this;
+
+    // async instance config update
+    updateInstanceConfig(
+      self.props.instance.containerId,
+      self.currentCode,
+      function(err) {
+        if (err) {
+          toast.error(
+            <div>
+              {self.props.instance.technicalName} config update error:{" "}
+              {"" + err}
+            </div>
+          );
+        } else {
+          toast.info(
+            <div>
+              <code>{self.props.instance.technicalName}</code> config has been
+              updated
+            </div>
+          );
+        }
+      }
+    );
+
+    // hide the popup
+    self.setState({
+      modalIsOpen: !self.state.modalIsOpen
+    });
   }
 
   render() {
@@ -124,7 +160,7 @@ class InstanceBtnSettings extends Component {
             <Button color="secondary" onClick={this.toggleIsOpen}>
               Cancel
             </Button>
-            <Button color="primary" onClick={this.toggleIsOpen}>
+            <Button color="primary" onClick={this.doUpdateInstanceConfig}>
               Update
             </Button>
           </ModalFooter>
