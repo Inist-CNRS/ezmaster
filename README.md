@@ -79,7 +79,7 @@ mkdir ./ezmaster && cd ezmaster
 mkdir -p ./data/applications ./data/instances ./data/manifests
 mkdir -p ./logs/ezmaster-front/ ./logs/ezmaster-rp/instances/ ./logs/ezmaster-webdav/
 
-wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/4.2.0/docker-compose.yml
+wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/4.3.0/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
