@@ -90,6 +90,7 @@
 
 <script>
   var publicDomain;
+  var publicProtocol;
 
   import Store from './store.js';
   export default {
@@ -104,6 +105,7 @@
         var config = result.data;
         self.publicDomain = config.publicDomain;
         publicDomain = config.publicDomain;
+        publicProtocol = config.publicProtocol;
       }, console.error);
 
       this.$watch('study', function (study) {
@@ -213,6 +215,7 @@
         technicalName: '',
         urlPreview: '',
         messageErrorPull: '',
+        publicProtocol: '',
         publicDomain: '',
         codeErrorPull: '',
         invalid: false,
@@ -226,7 +229,7 @@
         // By return we update what is present in the urlPreview field.
         // So, the content of the urlPreview field will be :
         // 'http://'+this.technicalName+'.'+publicDomain
-        return 'http://' + this.technicalName + '.' + publicDomain;
+        return publicProtocol + '://' + this.technicalName + '.' + publicDomain;
       }
 
     }

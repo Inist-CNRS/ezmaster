@@ -15,12 +15,12 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
     $(eval $(COMMAND_ARGS):;@:)
 endif
 
-install: ## install depedencies thanks to a dockerized npm install
+install: ## install dependencies thanks to a dockerized npm install
 	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm install --unsafe-perm
 	@make chown
 
 build: ## build the docker inistcnrs/ezmaster images localy
-	@docker-compose -f ./docker-compose.debug.yml build 
+	@docker-compose -f ./docker-compose.debug.yml build
 
 setup-folders: # create folder needed for logs and data
 	@mkdir -p logs/ezmaster-front/

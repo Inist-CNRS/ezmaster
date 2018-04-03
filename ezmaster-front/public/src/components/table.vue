@@ -29,7 +29,7 @@
           <td>
             <span v-show="!item.running">{{ item.technicalName }}</span>
             <a v-show="item.running && !publicDomain && item.publicURL" :href="item.publicURL" :target="item.target">{{ item.technicalName }}</a>
-            <a v-show="item.running && publicDomain" :href="'http://' + item.target + '.' + publicDomain" :target="item.target">{{ item.technicalName }}</a>
+            <a v-show="item.running && publicDomain" :href="publicProtocol + '://' + item.target + '.' + publicDomain" :target="item.target">{{ item.technicalName }}</a>
           </td>
           <td>{{ item.creationDate }}</td>
           <td>{{ item.app }}</td>
@@ -45,7 +45,7 @@
               <li :title="'Edit settings of ' + item.technicalName"><span class="glyphicon glyphicon-cog text-primary action" v-on:click="displayConfig(item)"></span></li>
               <li v-show="item.dataPath" :title="'Upload data to ' + item.technicalName"><span class="glyphicon glyphicon-download-alt text-primary action" v-on:click="displayFiles(item)"></span></li>
               <li v-show="item.running" :title="'Open ' + item.technicalName"><a :target="item.target" :href="item.publicURL" v-bind:disabled="!item.running"><span class="glyphicon glyphicon-link"></span></a></li>
-              <li v-show="publicDomain != '' && item.running" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target && item.target[publicDomain]" :href="'http://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>              
+              <li v-show="publicDomain != '' && item.running" :title="'Open ' + item.technicalName + ' using its public URL'"><a :target="item.target && item.target[publicDomain]" :href="publicProtocol + '://' + item.target + '.' + publicDomain"><span class="glyphicon glyphicon-globe"></span></a></li>
               <li><a :href="ezMasterAPI + '/-/v1/instances/' + item.technicalName + '/logs'" target="_blank" :title="'See the logs of ' + item.technicalName"><span class="glyphicon glyphicon-file"></span></a></li>
             </ul>
           </td>
@@ -84,6 +84,7 @@
         showConfig: false,
         showRemover: false,
         containers: [],
+        publicProtocol: '',
         publicDomain: '',
         selectedInstance: null
       };
@@ -101,6 +102,7 @@
       this.$http.get(this.Store.ezMasterAPI + '/-/v1/config').then(result => {
         var config = result.data;
         this.publicDomain = config.publicDomain;
+        this.publicProtocol = config.publicProtocol;
       }, console.error);
 
       // if an instance status changes, update the interface
