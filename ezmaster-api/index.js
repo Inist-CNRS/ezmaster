@@ -45,6 +45,7 @@ io.on('connection', function (socket) {
 require('./lib/docker-websocket.js').init(io);
 
 server.listen(cfg.EZMASTER_PORT, function () {
+  console.info(process.env);
   console.info(kuler(cfg.package.name + ' ' + cfg.package.version + ' is listening.', 'olive'));
   console.info('ezmaster-front (backoffice IHM):       ' +
                kuler('http://' + cfg.publicIP + ':35268/', 'limegreen'));

@@ -20,11 +20,12 @@ cfg = _.mapKeys(cfg, function (v, k) {
 });
 
 // precalculate other internal config parameters
-cfg.fullFsPercent = parseFloat(cfg.EZMASTER_FULL_FS_PERCENT) || 80;
-cfg.freePortRange = cfg.EZMASTER_FREE_PORT_RANGE || '49152-60000';
-cfg.publicIP      = cfg.EZMASTER_PUBLIC_IP || '127.0.0.1';
-cfg.port          = cfg.EZMASTER_PORT || 35269;
-cfg.publicDomain  = cfg.EZMASTER_PUBLIC_DOMAIN || '';
+cfg.fullFsPercent  = parseFloat(cfg.EZMASTER_FULL_FS_PERCENT) || 80;
+cfg.freePortRange  = cfg.EZMASTER_FREE_PORT_RANGE || '49152-60000';
+cfg.publicIP       = cfg.EZMASTER_PUBLIC_IP || '127.0.0.1';
+cfg.port           = cfg.EZMASTER_PORT || 35269;
+cfg.publicDomain   = cfg.EZMASTER_PUBLIC_DOMAIN || '';
+cfg.publicProtocol = cfg.EZMASTER_PUBLIC_PROTOCOL || 'http';
 
 
 // ezmaster_db will be deprecated (removed) in ezmaster v5
@@ -38,7 +39,7 @@ cfg.dataApplicationsPath = path.join(__dirname, '/../data/applications');
 // public parameters we want to communicate to the browser
 // (ie. accessible by the /-/v1/config route)
 cfg.publicParameters = [
-  'fullFsPercent', 'publicIP', 'port', 'publicDomain'
+  'fullFsPercent', 'publicIP', 'port', 'publicDomain', 'publicProtocol'
 ];
 
 module.exports = cfg;
