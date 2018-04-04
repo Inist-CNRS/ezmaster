@@ -85,9 +85,10 @@ class ModalAddInstance extends Component {
         if (err) {
           toast.error(<div>Instance creation error: {"" + err}</div>);
         } else {
-          toast.info(
+          toast.success(
             <div>
-              Instance <code>{instance.technicalName}</code> has been created
+              Instance <strong>{instance.technicalName}</strong> has been
+              created
             </div>
           );
         }
@@ -415,7 +416,7 @@ class ModalAddInstance extends Component {
             disabled={createBtnDisabled}
             onClick={this.doCreateInstance}
           >
-            Create {this.state.formSteps.length}
+            Create
           </Button>
         </ModalFooter>
       </Modal>
