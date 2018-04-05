@@ -40,7 +40,7 @@ class Home extends Component {
           <Col>
             <h1 className="display-4">EzMaster</h1>
             <p className="lead">
-              EzMaster is a none technical backoffice tools for non IT
+              EzMaster is a none technical backoffice tools for none IT
               administrators. It aims to manage applications and instances. One
               instance of an application is a docker packaged software having
               it's own config and it's own data. Each instances are isolated and
