@@ -4,6 +4,7 @@ import { Route, Redirect, Switch } from "react-router-dom";
 import "./App.css";
 import AppToastContainer from "./AppToastContainer.js";
 import Header from "./Header.js";
+import Home from "./Home.js";
 import Instances from "./Instances.js";
 import Applications from "./Applications.js";
 import Footer from "./Footer.js";
@@ -60,8 +61,15 @@ class App extends Component {
               path="/applications/"
               component={() => <Applications config={this.state.config} />}
             />
-            {/* by default / url is redirecting to the instances tab */}
-            <Redirect to="/instances/" />
+            <Route
+              path="/"
+              component={() => (
+                <Home
+                  config={this.state.config}
+                  instances={this.state.instances}
+                />
+              )}
+            />
           </Switch>
         </div>
         <div className="AppFooter">

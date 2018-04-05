@@ -1,0 +1,31 @@
+.ezmaster-home {
+  margin-top: 20px;
+}
+
+.ezmaster-home .badge {
+  font-size: 1.5rem;
+}
+
+.ezmaster-home .ehi-success {
+  color: #2da547;
+  padding: 2px;
+}
+
+.ezmaster-home .ehi-stopped {
+  color: #db3946;
+  padding: 2px;
+}
+
+.ezmaster-home .eha-pill {
+  color: #ccc;
+  padding: 2px;
+}
+
+.ezmaster-home .eh-link {
+  font-size: 3rem;
+  vertical-align: middle;
+}
+
+.ezmaster-home i {
+  color: #aaa;
+}
