@@ -10,7 +10,6 @@ import { subscribeToInfoMachines } from "./ModelInfoMachine.js";
 
 class InfoMachine extends Component {
   static defaultProps = {
-    nbCpu: 4,
     totalRAM: 2 * 1024 * 1024 * 1024,
     freeRAM: Math.random() * 2 * 1024 * 1024 * 1024,
     dangerLimitRAM: 80,
@@ -26,11 +25,8 @@ class InfoMachine extends Component {
     super(props);
 
     this.state = {
-      loadaverage: [
-        (Math.random() * this.props.nbCpu * 2).toFixed(1),
-        (Math.random() * this.props.nbCpu * 2).toFixed(1),
-        (Math.random() * this.props.nbCpu * 2).toFixed(1)
-      ],
+      nbCPUs: 1,
+      loadaverage: ["...", "...", "..."],
       ram: Math.round(this.props.freeRAM / this.props.totalRAM * 100),
       dataHDD: Math.round(
         this.props.freeDataHDD / this.props.totalDataHDD * 100
@@ -44,8 +40,10 @@ class InfoMachine extends Component {
   componentDidMount() {
     const self = this;
     subscribeToInfoMachines(function(err, data) {
-      console.log("DATTTTTTTTTTTA", err, data);
-      self.setState({ loadaverage: data.loadaverage });
+      self.setState({
+        nbCPUs: data.nbCPUs,
+        loadaverage: data.loadaverage
+      });
     });
   }
 
@@ -63,14 +61,14 @@ class InfoMachine extends Component {
             autohide={false}
             target="ezmaster-im-loadaverage"
           >
-            Load average ({this.props.nbCpu} CPUs)
+            Load average ({this.state.nbCPUs} CPUs)
           </UncontrolledTooltip>
 
           {/* LOAD AVERAGE: 1m */}
           <Badge
             className="mr-2"
             color={
-              this.state.loadaverage[0] > this.props.nbCpu
+              this.state.loadaverage[0] > this.state.nbCPUs
                 ? "danger"
                 : "secondary"
             }
@@ -90,7 +88,7 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.loadaverage[1] > this.props.nbCpu
+              this.state.loadaverage[1] > this.state.nbCPUs
                 ? "danger"
                 : "secondary"
             }
@@ -110,7 +108,7 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.loadaverage[2] > this.props.nbCpu
+              this.state.loadaverage[2] > this.state.nbCPUs
                 ? "danger"
                 : "secondary"
             }
