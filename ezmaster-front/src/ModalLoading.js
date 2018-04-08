@@ -33,6 +33,7 @@ class ModalLoading extends Component {
     if (
       !this.modalCloseTimeout &&
       !this.props.loadingConfig &&
+      !this.props.loadingApplications &&
       !this.props.loadingInstances
     ) {
       this.setState({ dataLoadingCompleted: true });
@@ -85,7 +86,10 @@ class ModalLoading extends Component {
                   <Badge pill className="ezmaster-ml-data3">
                     <i
                       className={
-                        "fa " + (this.state.data3 ? "fa-check" : "fa-spinner")
+                        "fa " +
+                        (this.props.loadingApplications
+                          ? "fa-spinner"
+                          : "fa-check")
                       }
                     />
                   </Badge>

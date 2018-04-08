@@ -10,6 +10,7 @@ import Applications from "./Applications.js";
 import Footer from "./Footer.js";
 import ModalLoading from "./ModalLoading.js";
 
+import { fetchApplicationsList } from "./ModelApplications.js";
 import { fetchInstancesList } from "./ModelInstances2.js";
 import { fetchConfig } from "./ModelConfig2.js";
 
@@ -19,8 +20,10 @@ class App extends Component {
     this.state = {
       loadingConfig: true,
       loadingInstances: true,
+      loadingApplications: true,
       config: {},
-      instances: {}
+      instances: {},
+      applications: []
     };
   }
 
@@ -33,6 +36,11 @@ class App extends Component {
     fetchInstancesList(
       function(err, instances) {
         this.setState({ instances, loadingInstances: false });
+      }.bind(this)
+    );
+    fetchApplicationsList(
+      function(err, applications) {
+        this.setState({ applications, loadingApplications: false });
       }.bind(this)
     );
   }
@@ -79,6 +87,7 @@ class App extends Component {
           modalIsOpen={true}
           loadingConfig={this.state.loadingConfig}
           loadingInstances={this.state.loadingInstances}
+          loadingApplications={this.state.loadingApplications}
         />
 
         <AppToastContainer />
