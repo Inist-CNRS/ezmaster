@@ -10,9 +10,6 @@ import { subscribeToInfoMachines } from "./ModelInfoMachine.js";
 
 class InfoMachine extends Component {
   static defaultProps = {
-    totalRAM: 2 * 1024 * 1024 * 1024,
-    freeRAM: Math.random() * 2 * 1024 * 1024 * 1024,
-    dangerLimitRAM: 80,
     totalDataHDD: 20 * 1024 * 1024 * 1024,
     freeDataHDD: Math.random() * 20 * 1024 * 1024 * 1024,
     dangerLimitDataHDD: 80,
@@ -27,7 +24,10 @@ class InfoMachine extends Component {
     this.state = {
       nbCPUs: 1,
       loadaverage: ["...", "...", "..."],
-      ram: Math.round(this.props.freeRAM / this.props.totalRAM * 100),
+      totalMemory: "1.95 GB",
+      freeMemory: "95.1 MB",
+      useMemoryPercentage: "79",
+
       dataHDD: Math.round(
         this.props.freeDataHDD / this.props.totalDataHDD * 100
       ),
@@ -42,7 +42,10 @@ class InfoMachine extends Component {
     subscribeToInfoMachines(function(err, data) {
       self.setState({
         nbCPUs: data.nbCPUs,
-        loadaverage: data.loadaverage
+        loadaverage: data.loadaverage,
+        totalMemory: data.totalMemory,
+        freeMemory: data.freeMemory,
+        useMemoryPercentage: data.useMemoryPercentage
       });
     });
   }
@@ -140,22 +143,18 @@ class InfoMachine extends Component {
 
           <Badge
             className="mr-2"
-            color={
-              this.state.ram > this.props.dangerLimitRAM
-                ? "danger"
-                : "secondary"
-            }
+            color={this.state.useMemoryPercentage > 80 ? "danger" : "secondary"}
             id="ezmaster-im-ram-usage"
           >
-            {this.state.ram} %
+            {this.state.useMemoryPercentage} %
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
             autohide={false}
             target="ezmaster-im-ram-usage"
           >
-            <div>Total: {prettyBytes(this.props.totalRAM)}</div>
-            <div>Free: {prettyBytes(this.props.freeRAM)}</div>
+            <div>Total: {this.state.totalMemory}</div>
+            <div>Free: {this.state.freeMemory}</div>
           </UncontrolledTooltip>
         </NavItem>
 
