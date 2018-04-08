@@ -51,6 +51,12 @@ class Home extends Component {
         );
       });
 
+    const applicationsPills = [];
+    self.props.applications &&
+      self.props.applications.forEach(function(application) {
+        applicationsPills.push(<i className="fa fa-circle eha-pill" />);
+      });
+
     return (
       <Container className="ezmaster-home">
         <Row>
@@ -88,7 +94,7 @@ class Home extends Component {
                     <Col xs="10">
                       <CardText>
                         <Badge color="secondary" pill>
-                          {Object.keys(this.props.instances).length}
+                          {instancesPills.length}
                         </Badge>{" "}
                         Hosted instances<br />
                         {instancesPills}
@@ -107,24 +113,10 @@ class Home extends Component {
                     <Col xs="10">
                       <CardText>
                         <Badge color="secondary" pill>
-                          15
+                          {applicationsPills.length}
                         </Badge>{" "}
                         Downloaded applications<br />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
-                        <i className="fa fa-circle eha-pill" />
+                        {applicationsPills}
                       </CardText>
                     </Col>
                     <Col xs="2">

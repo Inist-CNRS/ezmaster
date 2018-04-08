@@ -75,6 +75,7 @@ class App extends Component {
                 <Home
                   config={this.state.config}
                   instances={this.state.instances}
+                  applications={this.state.applications}
                 />
               )}
             />
