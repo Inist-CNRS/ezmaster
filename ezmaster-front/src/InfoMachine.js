@@ -6,6 +6,8 @@ import { Badge } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { prettyBytes } from "./helpers.js";
 
+import { subscribeToInfoMachines } from "./ModelInfoMachine.js";
+
 class InfoMachine extends Component {
   static defaultProps = {
     nbCpu: 4,
@@ -37,6 +39,14 @@ class InfoMachine extends Component {
         this.props.freeDockerHDD / this.props.totalDockerHDD * 100
       )
     };
+  }
+
+  componentDidMount() {
+    const self = this;
+    subscribeToInfoMachines(function(err, data) {
+      console.log("DATTTTTTTTTTTA", err, data);
+      self.setState({ loadaverage: data.loadaverage });
+    });
   }
 
   render() {

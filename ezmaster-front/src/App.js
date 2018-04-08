@@ -13,6 +13,7 @@ import ModalLoading from "./ModalLoading.js";
 import { fetchApplicationsList } from "./ModelApplications.js";
 import { fetchInstancesList } from "./ModelInstances2.js";
 import { fetchConfig } from "./ModelConfig2.js";
+import { initInfoMachinesWS } from "./ModelInfoMachine.js";
 
 class App extends Component {
   constructor(props) {
@@ -28,6 +29,8 @@ class App extends Component {
   }
 
   componentDidMount() {
+    initInfoMachinesWS();
+
     fetchConfig(
       function(err, config) {
         this.setState({ config, loadingConfig: false });
