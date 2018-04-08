@@ -46,15 +46,17 @@ class Home extends Component {
               "fa fa-circle " +
               (instance.running ? "ehi-success" : "ehi-stopped")
             }
-            key={technicalName}
+            key={"i-pill-" + technicalName}
           />
         );
       });
 
     const applicationsPills = [];
     self.props.applications &&
-      self.props.applications.forEach(function(application) {
-        applicationsPills.push(<i className="fa fa-circle eha-pill" />);
+      self.props.applications.forEach(function(application, idx) {
+        applicationsPills.push(
+          <i className="fa fa-circle eha-pill" key={"a-pill-" + idx} />
+        );
       });
 
     return (
