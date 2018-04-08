@@ -22,8 +22,10 @@
 }
 
 .ezmaster-home .eh-link {
+  text-align: right;
+}
+.ezmaster-home .eh-link i {
   font-size: 3rem;
-  vertical-align: middle;
 }
 
 .ezmaster-home i {

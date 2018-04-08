@@ -93,7 +93,7 @@ class Home extends Component {
                   </CardText>
                   <hr />
                   <Row>
-                    <Col xs="10">
+                    <Col xs="8">
                       <CardText>
                         <Badge color="secondary" pill>
                           {instancesPills.length}
@@ -102,17 +102,17 @@ class Home extends Component {
                         {instancesPills}
                       </CardText>
                     </Col>
-                    <Col xs="2">
+                    <Col className="eh-link">
                       <LinkContainer to="/instances/">
                         <Button color="link">
-                          <i className="fa fa-th-list eh-link" />
+                          <i className="fa fa-th-list" />
                         </Button>
                       </LinkContainer>
                     </Col>
                   </Row>
                   <hr />
                   <Row>
-                    <Col xs="10">
+                    <Col xs="8">
                       <CardText>
                         <Badge color="secondary" pill>
                           {applicationsPills.length}
@@ -121,10 +121,10 @@ class Home extends Component {
                         {applicationsPills}
                       </CardText>
                     </Col>
-                    <Col xs="2">
+                    <Col className="eh-link">
                       <LinkContainer to="/applications/">
                         <Button color="link">
-                          <i className="fa fa-th-list eh-link" />
+                          <i className="fa fa-th-list" />
                         </Button>
                       </LinkContainer>
                     </Col>
