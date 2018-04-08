@@ -34,6 +34,23 @@ class Home extends Component {
   }
 
   render() {
+    const self = this;
+
+    const instancesPills = [];
+    self.props.instances &&
+      Object.keys(self.props.instances).forEach(function(technicalName) {
+        const instance = self.props.instances[technicalName];
+        instancesPills.push(
+          <i
+            className={
+              "fa fa-circle " +
+              (instance.running ? "ehi-success" : "ehi-stopped")
+            }
+            key={technicalName}
+          />
+        );
+      });
+
     return (
       <Container className="ezmaster-home">
         <Row>
@@ -44,7 +61,7 @@ class Home extends Component {
                 __html: this.props.config.EZMASTER_HOME_TITLE || "EzMaster"
               }}
             />
-            <p
+            <div
               className="lead"
               dangerouslySetInnerHTML={{
                 __html:
@@ -71,21 +88,10 @@ class Home extends Component {
                     <Col xs="10">
                       <CardText>
                         <Badge color="secondary" pill>
-                          12
+                          {Object.keys(this.props.instances).length}
                         </Badge>{" "}
                         Hosted instances<br />
-                        <i className="fa fa-circle ehi-success" />
-                        <i className="fa fa-circle ehi-success" />
-                        <i className="fa fa-circle ehi-success" />
-                        <i className="fa fa-circle ehi-success" />
-                        <i className="fa fa-circle ehi-stopped" />
-                        <i className="fa fa-circle ehi-stopped" />
-                        <i className="fa fa-circle ehi-stopped" />
-                        <i className="fa fa-circle ehi-stopped" />
-                        <i className="fa fa-circle ehi-stopped" />
-                        <i className="fa fa-circle ehi-stopped" />
-                        <i className="fa fa-circle ehi-stopped" />
-                        <i className="fa fa-circle ehi-stopped" />
+                        {instancesPills}
                       </CardText>
                     </Col>
                     <Col xs="2">
@@ -139,27 +145,21 @@ class Home extends Component {
                     there is no more available resources on this server.
                   </CardText>
 
-                  <CardText>
-                    Load average{" "}
-                    <Progress animated color="success" value="25" />
-                  </CardText>
-                  <CardText>
-                    Memory <Progress animated color="success" value="45" />
-                  </CardText>
-                  <CardText>
-                    Hard disk (data)<Progress
-                      animated
-                      color="warning"
-                      value="85"
-                    />
-                  </CardText>
-                  <CardText>
-                    Hard disk (docker)<Progress
-                      animated
-                      color="success"
-                      value="55"
-                    />
-                  </CardText>
+                  <CardText>Load average</CardText>
+                  <Progress animated color="success" value="25" />
+
+                  <CardText>Memory</CardText>
+                  <Progress animated color="success" value="45" />
+
+                  <CardText>Hard disk (data)</CardText>
+                  <Progress animated color="warning" value="85" />
+
+                  <CardText>Hard disk (docker)</CardText>
+                  <Progress
+                    animated
+                    color="success"
+                    value={this.state.percent}
+                  />
                 </CardBody>
               </Card>
             </CardDeck>
