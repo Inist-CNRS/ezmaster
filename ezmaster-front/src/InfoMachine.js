@@ -10,12 +10,8 @@ import { subscribeToInfoMachines } from "./ModelInfoMachine.js";
 
 class InfoMachine extends Component {
   static defaultProps = {
-    totalDataHDD: 20 * 1024 * 1024 * 1024,
-    freeDataHDD: Math.random() * 20 * 1024 * 1024 * 1024,
-    dangerLimitDataHDD: 80,
-    totalDockerHDD: 20 * 1024 * 1024 * 1024,
-    freeDockerHDD: Math.random() * 20 * 1024 * 1024 * 1024,
-    dangerLimitDockerHDD: 80
+    config: { fullFsPercent: 100, fullMemoryPercent: 80 },
+    className: ""
   };
 
   constructor(props) {
@@ -24,29 +20,34 @@ class InfoMachine extends Component {
     this.state = {
       nbCPUs: 1,
       loadaverage: ["...", "...", "..."],
-      totalMemory: "1.95 GB",
-      freeMemory: "95.1 MB",
-      useMemoryPercentage: "79",
-
-      dataHDD: Math.round(
-        this.props.freeDataHDD / this.props.totalDataHDD * 100
-      ),
-      dockerHDD: Math.round(
-        this.props.freeDockerHDD / this.props.totalDockerHDD * 100
-      )
+      totalMemory: "... GB",
+      freeMemory: "... MB",
+      useMemoryPercentage: 0,
+      diskApp: {
+        freeDiskRaw: 0,
+        totalDiskRaw: 0,
+        freeDisk: "... GB",
+        totalDisk: "... GB",
+        useDiskPercentage: 0,
+        fsIsAlmostFilled: false,
+        maxFileCapSize: 0
+      },
+      diskDocker: {
+        freeDiskRaw: 0,
+        totalDiskRaw: 0,
+        freeDisk: "... GB",
+        totalDisk: "... GB",
+        useDiskPercentage: 0,
+        fsIsAlmostFilled: false,
+        maxFileCapSize: 0
+      }
     };
   }
 
   componentDidMount() {
     const self = this;
     subscribeToInfoMachines(function(err, data) {
-      self.setState({
-        nbCPUs: data.nbCPUs,
-        loadaverage: data.loadaverage,
-        totalMemory: data.totalMemory,
-        freeMemory: data.freeMemory,
-        useMemoryPercentage: data.useMemoryPercentage
-      });
+      self.setState({ ...data });
     });
   }
 
@@ -143,7 +144,12 @@ class InfoMachine extends Component {
 
           <Badge
             className="mr-2"
-            color={this.state.useMemoryPercentage > 80 ? "danger" : "secondary"}
+            color={
+              this.state.useMemoryPercentage >
+              this.props.config.fullMemoryPercent
+                ? "danger"
+                : "secondary"
+            }
             id="ezmaster-im-ram-usage"
           >
             {this.state.useMemoryPercentage} %
@@ -174,21 +180,22 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.dataHDD > this.props.dangerLimitDataHDD
+              this.state.diskApp.useDiskPercentage >
+              this.props.config.fullFsPercent
                 ? "danger"
                 : "secondary"
             }
             id="ezmaster-im-hdd-data-usage"
           >
-            {this.state.dataHDD} %
+            {this.state.diskApp.useDiskPercentage} %
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
             autohide={false}
             target="ezmaster-im-hdd-data-usage"
           >
-            <div>Total: {prettyBytes(this.props.totalDataHDD)}</div>
-            <div>Free: {prettyBytes(this.props.freeDataHDD)}</div>
+            <div>Total: {prettyBytes(this.state.diskApp.totalDiskRaw)}</div>
+            <div>Free: {prettyBytes(this.state.diskApp.freeDiskRaw)}</div>
           </UncontrolledTooltip>
         </NavItem>
 
@@ -208,21 +215,22 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.dockerHDD > this.props.dangerLimitDockerHDD
+              this.state.diskDocker.useDiskPercentage >
+              this.props.config.fullFsPercent
                 ? "danger"
                 : "secondary"
             }
             id="ezmaster-im-hdd-docker-usage"
           >
-            {this.state.dockerHDD} %
+            {this.state.diskDocker.useDiskPercentage} %
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
             autohide={false}
             target="ezmaster-im-hdd-docker-usage"
           >
-            <div>Total: {prettyBytes(this.props.totalDockerHDD)}</div>
-            <div>Free: {prettyBytes(this.props.freeDockerHDD)}</div>
+            <div>Total: {prettyBytes(this.state.diskDocker.totalDiskRaw)}</div>
+            <div>Free: {prettyBytes(this.state.diskDocker.freeDiskRaw)}</div>
           </UncontrolledTooltip>
         </NavItem>
       </Nav>
