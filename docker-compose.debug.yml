@@ -21,7 +21,7 @@ services:
 
   ezmaster-api:
     container_name: ezmaster-api
-    image: inistcnrs/ezmaster:4.1.1-api
+    image: inistcnrs/ezmaster:4.3.0-api
     build:
       context: ./ezmaster-api
       args:
@@ -39,10 +39,11 @@ services:
     working_dir: /app
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
-      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}      
+      EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
       EZMASTER_MONGODB_HOST_PORT: "ezmaster_db:27017" # will be deprecated in ezmaster v5
       EZMASTER_PUBLIC_IP : ${EZMASTER_PUBLIC_IP}
       EZMASTER_FREE_PORT_RANGE : ${EZMASTER_FREE_PORT_RANGE}
+      EZMASTER_PUBLIC_PROTOCOL: ${EZMASTER_PUBLIC_PROTOCOL}
       EZMASTER_PUBLIC_DOMAIN: ${EZMASTER_PUBLIC_DOMAIN}
       EZMASTER_PATH: ${PWD}
       EZMASTER_FULL_FS_PERCENT: ${EZMASTER_FULL_FS_PERCENT}
@@ -62,7 +63,7 @@ services:
 
   ezmaster-front:
     container_name: ezmaster-front
-    image: inistcnrs/ezmaster:4.1.1-front
+    image: inistcnrs/ezmaster:4.3.0-front
     build:
       context: ./ezmaster-front
       args:
@@ -71,6 +72,7 @@ services:
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
+      EZMASTER_UPLOAD_MAX_BODY_SIZE: ${EZMASTER_UPLOAD_MAX_BODY_SIZE}
     volumes:
       - ./ezmaster-front/nginx.debug.conf:/etc/nginx/nginx.conf.orig
       - ./logs/ezmaster-front/:/var/log/nginx/ezmaster-front/
@@ -102,12 +104,14 @@ services:
 
   ezmaster-rp:
     container_name: ezmaster-rp
-    image: inistcnrs/ezmaster:4.1.1-rp
+    image: inistcnrs/ezmaster:4.3.0-rp
     build:
       context: ./ezmaster-rp
       args:
         - http_proxy
         - https_proxy
+    environment:
+      EZMASTER_UPLOAD_MAX_BODY_SIZE: ${EZMASTER_UPLOAD_MAX_BODY_SIZE}
     volumes:
       - ./logs/ezmaster-rp/:/var/log/nginx/ezmaster-rp/
       - ./ezmaster-rp/nginx.conf:/etc/nginx/nginx.conf
@@ -127,7 +131,7 @@ services:
   # webdav access point for ezmaster's instances data folder (using apache2)
   ezmaster-webdav:
     container_name: ezmaster-webdav
-    image: inistcnrs/ezmaster:4.1.1-webdav
+    image: inistcnrs/ezmaster:4.3.0-webdav
     build:
       context: ./ezmaster-webdav
       args:

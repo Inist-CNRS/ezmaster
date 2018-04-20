@@ -57,10 +57,17 @@ export EZMASTER_FREE_PORT_RANGE="49152-60000"
 # 1) ezmaster backoffice will be publicaly accessible http://ezmaster.lod-test.istex.fr
 # 2) a webdav endpoint will be publicaly accessible http://webdav.lod-test.istex.fr
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
+# Used for your instances' public access URLs. Contains "http" or "https".
+# Default is "http"
+export EZMASTER_PUBLIC_PROTOCOL="http"
 
 # The maximum total free space percent of the disk for avoiding saturation.
 # Default value is 80%.
 export EZMASTER_FULL_FS_PERCENT=80
+
+# The maximum upload size of on file
+# Default value is 500M (means 500 Megabytes)
+export EZMASTER_UPLOAD_MAX_BODY_SIZE="500M"
 ```
 
 
@@ -72,11 +79,12 @@ mkdir ./ezmaster && cd ezmaster
 mkdir -p ./data/applications ./data/instances ./data/manifests
 mkdir -p ./logs/ezmaster-front/ ./logs/ezmaster-rp/instances/ ./logs/ezmaster-webdav/
 
-wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/4.1.1/docker-compose.yml
+wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/4.3.0/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
 export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
+export EZMASTER_PUBLIC_PROTOCOL="http"
 export EZMASTER_USER="ezmaster"
 export EZMASTER_PASSWORD="changeme"
 docker-compose up -d
@@ -143,7 +151,7 @@ to this instance:
 - `EZMASTER_TECHNICAL_NAME`: the identifier of the instance within ezmaster (ex: `myapp-usage-1`)
 - `EZMASTER_LONG_NAME`: a free label for the instance (ex: `This instance is used for the customer C, and maintained by Matt`)
 - `EZMASTER_APPLICATION`: the complete tag of your application's docker image (ex: `inistcnrs/ezmaster-hexo:1.0.3`)
-- `EZMASTER_PUBLIC_URL`: if you use ezmaster's reverse proxy feature (using `EZMASTER_PUBLIC_DOMAIN`), it is the URL publicly available to your internet users (ex: `http://my-app-usage.public.dom`, when `EZMASTER_PUBLIC_DOMAIN`'s value is `public.dom`)
+- `EZMASTER_PUBLIC_URL`: if you use ezmaster's reverse proxy feature (using `EZMASTER_PUBLIC_PROTOCOL` and `EZMASTER_PUBLIC_DOMAIN`), it is the URL publicly available to your internet users (ex: `http://my-app-usage.public.dom`, when `EZMASTER_PUBLIC_DOMAIN`'s value is `public.dom`)
 - `DEBUG`: this variable maybe useful to debug your application running via ezmaster (using the [debug module](https://www.npmjs.com/package/debug)), and logging your instance (via `docker logs myapp-usage-1`)
 - `http_proxy`, `https_proxy`, `no_proxy`: these variables are taken from ezmaster's environment, and allow your application to use your proxy. They can be empty (especially if you don't use a proxy)
 
@@ -200,6 +208,15 @@ If you want to save the config and the data of your instances:
 
 
 ## Changelog
+
+### ezmaster 4.3.0
+
+- Add the EZMASTER_PUBLIC_PROTOCOL env parameter. Use it with EZMASTER_PUBLIC_DOMAIN to switch to ``https`` if needed for your instances' public access URLs. Its default value is ``http``. This env parameter is useless if you do not use the EZMASTER_PUBLIC_DOMAIN feature.
+
+### ezmaster 4.2.0
+
+- EZMASTER_UPLOAD_MAX_BODY_SIZE env parameter is now available. Use it to change the maximum upload size of on file (webdav or backoffice upload). Its default value is 500M
+  See http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size for information where this parameter is used.
 
 ### ezmaster 4.1.0
 

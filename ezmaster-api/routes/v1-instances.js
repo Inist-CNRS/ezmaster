@@ -409,9 +409,10 @@ router
           debug('Creating an instance: initConfigAndData done', technicalName);
 
           var publicDomain = cfg.publicDomain;
+          var publicProtocol = cfg.publicProtocol;
           var publicUrl;
           if (publicDomain) {
-            publicUrl = 'http://' + technicalName + '.' + publicDomain;
+            publicUrl = publicProtocol + '://' + technicalName + '.' + publicDomain;
           } else {
             publicUrl = 'http://'
             + process.env.EZMASTER_PUBLIC_IP + ':' + appConfig.httpPort;

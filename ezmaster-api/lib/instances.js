@@ -408,8 +408,10 @@ module.exports.generateAllRPNginxConfig = function (cb) {
 
         // sort the instances by number in order to
         // implement the reverse proxy aliase feature
-        // ex input: [ 'a-b-5', 'o-p-6', 'a-b-3', 'o-p-8', 'a-b', 'o-p-4', 'a-b-4' ]
-        // ex output : [ 'a-b-3', 'a-b-4', 'a-b-5', 'o-p-4', 'o-p-6', 'o-p-8', 'a-b' ]
+        // Input example, Object.keys(instances) looks like :
+        //   [ 'a-b-5', 'o-p-6', 'a-b-3', 'o-p-8', 'a-b', 'o-p-4', 'a-b-4' ]
+        // orderedTechnicalNames output will be :
+        //   [ 'a-b-3', 'a-b-4', 'a-b-5', 'o-p-4', 'o-p-6', 'o-p-8', 'a-b' ]
         const orderedTechnicalNames = Object.keys(instances).sort(function (item1, item2) {
           item1 = item1.split('-');
           item2 = item2.split('-');
