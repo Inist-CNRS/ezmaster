@@ -4,15 +4,32 @@ header {
 
 header .navbar {
   padding: 0px;
-  background: linear-gradient(#04519b, #044687 60%, #033769);
-  color: #ffffff !important;
+  background: linear-gradient(#539ce1, #a4c4e1 55%, #ffffff);
+  background-color: grey;
+  color: #284c6c !important;
 }
 
 header .navbar .nav-item .ezmaster-menu {
-  color: #ffffff !important;
+  color: #284c6c !important;
   padding: 15px;
 }
 
 header .navbar .nav-item.active {
-  background-color: #022f5a;
+  border-bottom: 5px solid #539ce1;
+  font-weight: bold;
+}
+
+header .ezmaster-logo-header {
+  margin-left: 5px;
+}
+
+@media only screen and (max-width: 800px) {
+  header .navbar .nav-item .ezmaster-menu {
+    text-align: center;
+  }
+  header .navbar .nav-item.active {
+    border-bottom: none;
+    border-right: 10px solid #539ce1;
+    border-left: 10px solid #539ce1;
+  }
 }

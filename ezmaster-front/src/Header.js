@@ -14,7 +14,7 @@ import {
 import { Button } from "reactstrap";
 
 import "./Header.css";
-import logoImage from "./logo.svg";
+import logoImage from "./ezmaster-logo-header.png";
 import InfoMachine from "./InfoMachine.js";
 
 class Header extends Component {
@@ -38,7 +38,7 @@ class Header extends Component {
         <Navbar color="faded" light expand="md">
           <LinkContainer to="/">
             <NavbarBrand href="/">
-              <img src={logoImage} alt="EzMaster" height="40px" />
+              <img src={logoImage} className="ezmaster-logo-header" alt="EzMaster" height="55px" />
             </NavbarBrand>
           </LinkContainer>
           <NavbarToggler onClick={this.toggleBurger} />
