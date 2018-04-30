@@ -74,7 +74,7 @@ class Home extends Component {
               dangerouslySetInnerHTML={{
                 __html:
                   this.props.config.EZMASTER_HOME_DESCRIPTION ||
-                  'EzMaster is a non-technical backoffice tools for non-IT administrators. It aims to manage applications and instances. One instance of an application is a docker packaged software having its own config and its own data. Each instance is isolated and independant, it can be stopped <i class="fa fa-stop-circle"></i> or started <i class="fa fa-play-circle"></i> easily on demand. Applications are "ezmasterized" docker images, they can be easily downloaded <i class="fa fa-download"></i> from dockerhub.'
+                  'EzMaster is a non-technical docker backoffice tools for non-IT administrators. It aims to manage applications and instances. One instance of an application is a docker packaged software having its own config and its own data. Each instance is isolated and independant, it can be stopped <i class="fa fa-stop-circle"></i> or started <i class="fa fa-play-circle"></i> easily on demand. Applications are "ezmasterized" docker images, they can be easily downloaded <i class="fa fa-download"></i> from dockerhub.'
               }}
             />
           </Col>
