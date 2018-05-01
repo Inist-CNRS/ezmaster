@@ -19,6 +19,7 @@ import { initInfoMachinesWS } from "./ModelInfoMachine.js";
 import Favicon from 'react-favicon';
 import favicon from "./favicon.png";
 
+import bgImage from "./ezmaster-logo-bg-lighten.png";
 
 class App extends Component {
   constructor(props) {
@@ -69,7 +70,12 @@ class App extends Component {
             instancesActive={window.location.pathname === "/instances/"}
           />
         </div>
-        <div className="AppContent">
+        <div className="AppContent" style={{ backgroundImage: 'url("' + bgImage + '")',
+          backgroundSize: '90%',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          backgroundBlendMode: 'lighten' 
+        }}>
           <Switch>
             <Route
               path="/instances/"
