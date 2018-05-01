@@ -15,6 +15,8 @@
     "react-ace": "5.10.0",
     "react-dom": "16.3.0-alpha.3",
     "react-dropzone": "4.2.9",
+    "react-favicon": "0.0.14",
+    "react-helmet": "^5.2.0",
     "react-keyed-file-browser": "^1.2.8",
     "react-router-bootstrap": "0.24.4",
     "react-router-dom": "4.2.2",

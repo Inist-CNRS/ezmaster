@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 import { Row, Col } from "reactstrap";
 import { Button } from "reactstrap";
+import { Helmet } from "react-helmet";
 
 import "./Applications.css";
 
@@ -21,7 +22,14 @@ class Applications extends Component {
   }
 
   render() {
-    return <div className="ezmaster-applications">TODO APPLICATIONS</div>;
+    return <div className="ezmaster-applications">
+
+        <Helmet>
+          <title>EzMaster - Applications</title>
+        </Helmet>
+
+        TODO APPLICATIONS
+    </div>;
   }
 }
 

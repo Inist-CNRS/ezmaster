@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 import { Row, Col } from "reactstrap";
 import { Button } from "reactstrap";
+import { Helmet } from "react-helmet";
 
 import "./Instances.css";
 import InstanceRow from "./InstanceRow.js";
 import ModalAddInstance from "./ModalAddInstance.js";
+
 
 class Instances extends Component {
   constructor(props) {
@@ -39,6 +41,9 @@ class Instances extends Component {
 
     return (
       <div className="ezmaster-instances">
+        <Helmet>
+          <title>EzMaster - Instances</title>
+        </Helmet>
         {/* append a "add instance" button if the table items are more than 10 items so that it's easier to click on the button */}
         {instancesRows.length > 10 && (
           <Row>

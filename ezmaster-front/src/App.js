@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
+import {Helmet} from "react-helmet";
 
 import "./App.css";
 import AppToastContainer from "./AppToastContainer.js";
@@ -14,6 +15,10 @@ import { fetchApplicationsList } from "./ModelApplications.js";
 import { fetchInstancesList } from "./ModelInstances2.js";
 import { fetchConfig } from "./ModelConfig2.js";
 import { initInfoMachinesWS } from "./ModelInfoMachine.js";
+
+import Favicon from 'react-favicon';
+import favicon from "./favicon.png";
+
 
 class App extends Component {
   constructor(props) {
@@ -51,6 +56,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+
+        {/* HTML head stuff */}
+        <Favicon url={favicon} />
+        <Helmet>
+          <title>EzMaster</title>
+        </Helmet>
+
         <div className="AppHeader">
           <Header
             applicationsActive={window.location.pathname === "/applications/"}
