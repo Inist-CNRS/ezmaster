@@ -83,7 +83,7 @@ class Home extends Component {
         <Row>
           <Col>
             <CardDeck>
-              <Card>
+              <Card className="ezmaster-home-card">
                 <CardHeader>EzMaster resources</CardHeader>
                 <CardBody>
                   <CardText className="small">
@@ -131,7 +131,7 @@ class Home extends Component {
                   </Row>
                 </CardBody>
               </Card>
-              <Card>
+              <Card className="ezmaster-home-card">
                 <CardHeader>Server resources</CardHeader>
                 <CardBody>
                   <CardText className="small">
