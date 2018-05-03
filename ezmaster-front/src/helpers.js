@@ -44,6 +44,5 @@ module.exports.parseEzMasterizedAppsMD = rawMD => {
       github: github
     };
   }
-  console.log(appList)
   return appList;
 }
