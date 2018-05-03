@@ -92,6 +92,7 @@ class Instances extends Component {
             <ModalAddInstance
               config={this.props.config}
               modalIsOpen={this.state.modalAddInstanceIsOpen}
+              applications={this.props.applications}
               toggle={this.toggleModalAddInstance}
             />
           </Col>

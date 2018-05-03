@@ -91,12 +91,17 @@ class App extends Component {
                 <Instances
                   config={this.state.config}
                   instances={this.state.instances}
+                  applications={this.state.applications}
                 />
               )}
             />
             <Route
               path="/applications/"
-              component={() => <Applications config={this.state.config} applications={this.state.applications} ezmasterizedApps={this.state.ezmasterizedApps} />}
+              component={() => <Applications
+                config={this.state.config}
+                applications={this.state.applications}
+                ezmasterizedApps={this.state.ezmasterizedApps}
+              />}
             />
             <Route
               path="/"

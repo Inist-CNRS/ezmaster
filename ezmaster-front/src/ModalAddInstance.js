@@ -208,6 +208,14 @@ class ModalAddInstance extends Component {
     console.log(nbErrors);
     const createBtnDisabled = this.state.formSteps.length < 4 || nbErrors > 0;
 
+    let applicationsJsx = [];
+    console.log(this.props.applications);
+    this.props.applications.forEach(appItem => {
+      applicationsJsx.push(<option value={appItem.imageName} key={appItem.imageName}>
+        {appItem.imageName}
+      </option>);
+    });
+
     return (
       <Modal
         isOpen={this.props.modalIsOpen}
@@ -232,12 +240,7 @@ class ModalAddInstance extends Component {
                   invalid={this.state.errorRequiredApplication}
                 >
                   <option value="">select an application…</option>
-                  <option value="inistcnrs/lodex:8.18.0">
-                    inistcnrs/lodex:8.18.0
-                  </option>
-                  <option value="inistcnrs/ezmaster-webserver:4.1.0">
-                    inistcnrs/ezmaster-webserver:4.1.0
-                  </option>
+                  {applicationsJsx}
                 </Input>
                 <InputGroupAddon addonType="append">
                   <LinkContainer to="/applications/">
