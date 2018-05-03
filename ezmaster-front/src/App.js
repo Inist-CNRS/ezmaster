@@ -14,6 +14,7 @@ import ModalLoading from "./ModalLoading.js";
 import { fetchApplicationsList } from "./ModelApplications.js";
 import { fetchInstancesList } from "./ModelInstances2.js";
 import { fetchConfig } from "./ModelConfig2.js";
+import { fetchEzMasterizedApps } from "./ModelEzMasterizedApps.js";
 import { initInfoMachinesWS } from "./ModelInfoMachine.js";
 
 import Favicon from 'react-favicon';
@@ -28,9 +29,11 @@ class App extends Component {
       loadingConfig: true,
       loadingInstances: true,
       loadingApplications: true,
+      loadingEzMasterizedApps: true,
       config: {},
       instances: {},
-      applications: []
+      applications: [],
+      ezmasterizedApps: {}
     };
   }
 
@@ -50,6 +53,11 @@ class App extends Component {
     fetchApplicationsList(
       function(err, applications) {
         this.setState({ applications, loadingApplications: false });
+      }.bind(this)
+    );
+    fetchEzMasterizedApps(
+      function(err, ezmasterizedApps) {
+        this.setState({ ezmasterizedApps, loadingEzMasterizedApps: false });
       }.bind(this)
     );
   }
@@ -88,7 +96,7 @@ class App extends Component {
             />
             <Route
               path="/applications/"
-              component={() => <Applications config={this.state.config} />}
+              component={() => <Applications config={this.state.config} applications={this.state.applications} ezmasterizedApps={this.state.ezmasterizedApps} />}
             />
             <Route
               path="/"
@@ -109,7 +117,7 @@ class App extends Component {
           modalIsOpen={true}
           loadingConfig={this.state.loadingConfig}
           loadingInstances={this.state.loadingInstances}
-          loadingApplications={this.state.loadingApplications}
+          loadingApplications={this.state.loadingApplications || this.state.loadingEzMasterizedApps}
         />
 
         <AppToastContainer />
