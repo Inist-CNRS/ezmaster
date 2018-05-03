@@ -209,7 +209,6 @@ class ModalAddInstance extends Component {
     const createBtnDisabled = this.state.formSteps.length < 4 || nbErrors > 0;
 
     let applicationsJsx = [];
-    console.log(this.props.applications);
     this.props.applications.forEach(appItem => {
       applicationsJsx.push(<option value={appItem.imageName} key={appItem.imageName}>
         {appItem.imageName}
