@@ -221,11 +221,11 @@ class ModalAddInstance extends Component {
         toggle={this.props.toggle}
         className="ezmaster-modal-add-instance"
       >
+        <Form onSubmit={e => e.preventDefault()}>
         <ModalHeader toggle={this.props.toggle}>
           Add a new EzMaster instance
         </ModalHeader>
         <ModalBody>
-          <Form>
             <FormGroup>
               <Label for="emai-application">Application</Label>
               <InputGroup>
@@ -406,13 +406,13 @@ class ModalAddInstance extends Component {
                 </InputGroup>
               </FormGroup>
             )}
-          </Form>
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={this.props.toggle}>
             Cancel
           </Button>
           <Button
+            type="submit"
             color="primary"
             className="emai-create-btn"
             disabled={createBtnDisabled}
@@ -421,6 +421,7 @@ class ModalAddInstance extends Component {
             Create
           </Button>
         </ModalFooter>
+          </Form>
       </Modal>
     );
   }
