@@ -29,24 +29,35 @@ class ModalWebdav extends Component {
   }
 
   render() {
-
-
     let webdavURLWin, webdavURLUbu;
     if (this.props.config.publicDomain) {
-      webdavURLWin = this.props.config.publicProtocol 
-        + '://webdav.'
-        + this.props.config.publicDomain + '/'
-        + this.props.instance.technicalName + '/data/';
-      webdavURLUbu = 'dav://webdav.' // maybe it will not work when https is enabled (this.props.config.publicProtocol)
-        + this.props.config.publicDomain + '/'
-        + this.props.instance.technicalName + '/data/';
+      webdavURLWin =
+        this.props.config.publicProtocol +
+        "://webdav." +
+        this.props.config.publicDomain +
+        "/" +
+        this.props.instance.technicalName +
+        "/data/";
+      webdavURLUbu =
+        "dav://webdav." + // maybe it will not work when https is enabled (this.props.config.publicProtocol)
+        this.props.config.publicDomain +
+        "/" +
+        this.props.instance.technicalName +
+        "/data/";
     } else {
-      webdavURLWin = 'http://' + window.location.hostname + ':35270/'
-        + this.props.instance.technicalName + '/data/';
-      webdavURLUbu = 'dav://' + window.location.hostname + ':35270/'
-        + this.props.instance.technicalName + '/data/';
+      webdavURLWin =
+        "http://" +
+        window.location.hostname +
+        ":35270/" +
+        this.props.instance.technicalName +
+        "/data/";
+      webdavURLUbu =
+        "dav://" +
+        window.location.hostname +
+        ":35270/" +
+        this.props.instance.technicalName +
+        "/data/";
     }
-
 
     return (
       <Modal
