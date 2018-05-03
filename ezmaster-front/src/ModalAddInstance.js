@@ -222,206 +222,206 @@ class ModalAddInstance extends Component {
         className="ezmaster-modal-add-instance"
       >
         <Form onSubmit={e => e.preventDefault()}>
-        <ModalHeader toggle={this.props.toggle}>
-          Add a new EzMaster instance
-        </ModalHeader>
-        <ModalBody>
-            <FormGroup>
-              <Label for="emai-application">Application</Label>
-              <InputGroup>
-                <Input
-                  type="select"
-                  name="emai-application"
-                  id="emai-application"
-                  value={this.state.application}
-                  onChange={this.handleChangeApplication}
-                  onBlur={this.handleChangeApplication}
-                  invalid={this.state.errorRequiredApplication}
-                >
-                  <option value="">select an application…</option>
-                  {applicationsJsx}
-                </Input>
-                <InputGroupAddon addonType="append">
-                  <LinkContainer to="/applications/">
-                    <Button color="secondary" className="emai-add-application">
-                      <i className="fa fa-download" />
-                    </Button>
-                  </LinkContainer>
-                  <UncontrolledTooltip
-                    placement="top"
-                    target=".emai-add-application"
-                  >
-                    Your application is not in the list? you can download
-                    another.
-                  </UncontrolledTooltip>
-                </InputGroupAddon>
-              </InputGroup>
-              {this.state.errorRequiredApplication && (
-                <FormText color="danger">This field is required.</FormText>
-              )}
-              <FormText>
-                Choose an application in the list or start downloading the one
-                you want.
-              </FormText>
-            </FormGroup>
-
-            <FormGroup>
-              <Label for="emai-longname">Long name</Label>
-              <Input
-                type="text"
-                name="emai-longname"
-                id="emai-longname"
-                value={this.state.longName}
-                invalid={this.state.errorRequiredLongName}
-                onChange={this.handleChangeLongName}
-                onBlur={this.handleChangeLongName}
-                maxLength={250}
-              />
-              {this.state.errorRequiredLongName && (
-                <FormFeedback>This field is required.</FormFeedback>
-              )}
-              <FormText>A free text, a title, human-readable…</FormText>
-            </FormGroup>
-
-            <FormGroup>
-              <Row>
-                <Col>
-                  <Label for="emai-tn-p">Technical name</Label>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Input
-                    type="text"
-                    name="emai-tn-p"
-                    id="emai-tn-p"
-                    maxLength={30}
-                    value={
-                      this.state.technicalName1 || this.state.technicalName1Auto
-                    }
-                    onChange={this.handleChangeTechnicalName1}
-                    onBlur={this.handleChangeTechnicalName1}
-                    invalid={
-                      this.state.errorRequiredTechnicalName1 ||
-                      this.state.errorSyntaxTechnicalName1
-                    }
-                  />
-                  {this.state.errorRequiredTechnicalName1 && (
-                    <FormFeedback>This field is required.</FormFeedback>
-                  )}
-                  {this.state.errorSyntaxTechnicalName1 && (
-                    <FormFeedback>
-                      It should contains only lowercase and alpha-numeric
-                      characters.
-                    </FormFeedback>
-                  )}
-                </Col>{" "}
-                -
-                <Col>
-                  <Input
-                    type="text"
-                    name="emai-tn-s"
-                    id="emai-tn-s"
-                    maxLength={30}
-                    value={
-                      this.state.technicalName2 || this.state.technicalName2Auto
-                    }
-                    onChange={this.handleChangeTechnicalName2}
-                    onBlur={this.handleChangeTechnicalName2}
-                    invalid={
-                      this.state.errorRequiredTechnicalName2 ||
-                      this.state.errorSyntaxTechnicalName2
-                    }
-                  />
-                  {this.state.errorRequiredTechnicalName2 && (
-                    <FormFeedback>This field is required.</FormFeedback>
-                  )}
-                  {this.state.errorSyntaxTechnicalName2 && (
-                    <FormFeedback>
-                      It should contains only lowercase and alpha-numeric
-                      characters.
-                    </FormFeedback>
-                  )}
-                </Col>{" "}
-                -
-                <Col>
-                  <Input
-                    type="number"
-                    name="emai-tn-v"
-                    min="1"
-                    onChange={this.handleChangeTechnicalName3}
-                    onBlur={this.handleChangeTechnicalName3}
-                  />
-                </Col>
-              </Row>
-              {this.state.errorExistsTechnicalName && (
-                <FormText color="danger">
-                  Technical name "{this.state.technicalName}" already exists,
-                  please choose another one.
-                </FormText>
-              )}
-              <FormText>
-                The technical name is used to identify the instance and to
-                access the instance on the web. The first part could be a
-                project, the second a study, and the last must be a positive
-                number or could be empty.
-              </FormText>
-            </FormGroup>
-
-            {this.props.config.publicDomain && (
+          <ModalHeader toggle={this.props.toggle}>
+            Add a new EzMaster instance
+          </ModalHeader>
+          <ModalBody>
               <FormGroup>
-                <Label for="emai-preview">
-                  URL preview of the instance web access point
-                </Label>
-
+                <Label for="emai-application">Application</Label>
                 <InputGroup>
+                  <Input
+                    type="select"
+                    name="emai-application"
+                    id="emai-application"
+                    value={this.state.application}
+                    onChange={this.handleChangeApplication}
+                    onBlur={this.handleChangeApplication}
+                    invalid={this.state.errorRequiredApplication}
+                  >
+                    <option value="">select an application…</option>
+                    {applicationsJsx}
+                  </Input>
                   <InputGroupAddon addonType="append">
-                    <Button
-                      color="secondary"
-                      className="emai-preview-icon"
-                      onClick={function() {}}
-                    >
-                      <i className="fa fa-globe" />
-                    </Button>
+                    <LinkContainer to="/applications/">
+                      <Button color="secondary" className="emai-add-application">
+                        <i className="fa fa-download" />
+                      </Button>
+                    </LinkContainer>
                     <UncontrolledTooltip
-                      placement="bottom"
-                      target=".emai-preview-icon"
+                      placement="top"
+                      target=".emai-add-application"
                     >
-                      This public URL will be the one to use to access your
-                      instance. Create the instance and try the URL.
+                      Your application is not in the list? you can download
+                      another.
                     </UncontrolledTooltip>
                   </InputGroupAddon>
-                  <Input
-                    type="text"
-                    id="emai-preview"
-                    readOnly
-                    placeholder="Generated URL…"
-                    value={
-                      "http://" +
-                      this.state.technicalName +
-                      "." +
-                      this.props.config.publicDomain
-                    }
-                  />
                 </InputGroup>
+                {this.state.errorRequiredApplication && (
+                  <FormText color="danger">This field is required.</FormText>
+                )}
+                <FormText>
+                  Choose an application in the list or start downloading the one
+                  you want.
+                </FormText>
               </FormGroup>
-            )}
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={this.props.toggle}>
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            color="primary"
-            className="emai-create-btn"
-            disabled={createBtnDisabled}
-            onClick={this.doCreateInstance}
-          >
-            Create
-          </Button>
-        </ModalFooter>
-          </Form>
+
+              <FormGroup>
+                <Label for="emai-longname">Long name</Label>
+                <Input
+                  type="text"
+                  name="emai-longname"
+                  id="emai-longname"
+                  value={this.state.longName}
+                  invalid={this.state.errorRequiredLongName}
+                  onChange={this.handleChangeLongName}
+                  onBlur={this.handleChangeLongName}
+                  maxLength={250}
+                />
+                {this.state.errorRequiredLongName && (
+                  <FormFeedback>This field is required.</FormFeedback>
+                )}
+                <FormText>A free text, a title, human-readable…</FormText>
+              </FormGroup>
+
+              <FormGroup>
+                <Row>
+                  <Col>
+                    <Label for="emai-tn-p">Technical name</Label>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Input
+                      type="text"
+                      name="emai-tn-p"
+                      id="emai-tn-p"
+                      maxLength={30}
+                      value={
+                        this.state.technicalName1 || this.state.technicalName1Auto
+                      }
+                      onChange={this.handleChangeTechnicalName1}
+                      onBlur={this.handleChangeTechnicalName1}
+                      invalid={
+                        this.state.errorRequiredTechnicalName1 ||
+                        this.state.errorSyntaxTechnicalName1
+                      }
+                    />
+                    {this.state.errorRequiredTechnicalName1 && (
+                      <FormFeedback>This field is required.</FormFeedback>
+                    )}
+                    {this.state.errorSyntaxTechnicalName1 && (
+                      <FormFeedback>
+                        It should contains only lowercase and alpha-numeric
+                        characters.
+                      </FormFeedback>
+                    )}
+                  </Col>{" "}
+                  -
+                  <Col>
+                    <Input
+                      type="text"
+                      name="emai-tn-s"
+                      id="emai-tn-s"
+                      maxLength={30}
+                      value={
+                        this.state.technicalName2 || this.state.technicalName2Auto
+                      }
+                      onChange={this.handleChangeTechnicalName2}
+                      onBlur={this.handleChangeTechnicalName2}
+                      invalid={
+                        this.state.errorRequiredTechnicalName2 ||
+                        this.state.errorSyntaxTechnicalName2
+                      }
+                    />
+                    {this.state.errorRequiredTechnicalName2 && (
+                      <FormFeedback>This field is required.</FormFeedback>
+                    )}
+                    {this.state.errorSyntaxTechnicalName2 && (
+                      <FormFeedback>
+                        It should contains only lowercase and alpha-numeric
+                        characters.
+                      </FormFeedback>
+                    )}
+                  </Col>{" "}
+                  -
+                  <Col>
+                    <Input
+                      type="number"
+                      name="emai-tn-v"
+                      min="1"
+                      onChange={this.handleChangeTechnicalName3}
+                      onBlur={this.handleChangeTechnicalName3}
+                    />
+                  </Col>
+                </Row>
+                {this.state.errorExistsTechnicalName && (
+                  <FormText color="danger">
+                    Technical name "{this.state.technicalName}" already exists,
+                    please choose another one.
+                  </FormText>
+                )}
+                <FormText>
+                  The technical name is used to identify the instance and to
+                  access the instance on the web. The first part could be a
+                  project, the second a study, and the last must be a positive
+                  number or could be empty.
+                </FormText>
+              </FormGroup>
+
+              {this.props.config.publicDomain && (
+                <FormGroup>
+                  <Label for="emai-preview">
+                    URL preview of the instance web access point
+                  </Label>
+
+                  <InputGroup>
+                    <InputGroupAddon addonType="append">
+                      <Button
+                        color="secondary"
+                        className="emai-preview-icon"
+                        onClick={function() {}}
+                      >
+                        <i className="fa fa-globe" />
+                      </Button>
+                      <UncontrolledTooltip
+                        placement="bottom"
+                        target=".emai-preview-icon"
+                      >
+                        This public URL will be the one to use to access your
+                        instance. Create the instance and try the URL.
+                      </UncontrolledTooltip>
+                    </InputGroupAddon>
+                    <Input
+                      type="text"
+                      id="emai-preview"
+                      readOnly
+                      placeholder="Generated URL…"
+                      value={
+                        "http://" +
+                        this.state.technicalName +
+                        "." +
+                        this.props.config.publicDomain
+                      }
+                    />
+                  </InputGroup>
+                </FormGroup>
+              )}
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={this.props.toggle}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              color="primary"
+              className="emai-create-btn"
+              disabled={createBtnDisabled}
+              onClick={this.doCreateInstance}
+            >
+              Create
+            </Button>
+          </ModalFooter>
+        </Form>
       </Modal>
     );
   }
