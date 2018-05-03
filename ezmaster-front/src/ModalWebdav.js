@@ -29,6 +29,25 @@ class ModalWebdav extends Component {
   }
 
   render() {
+
+
+    let webdavURLWin, webdavURLUbu;
+    if (this.props.config.publicDomain) {
+      webdavURLWin = this.props.config.publicProtocol 
+        + '://webdav.'
+        + this.props.config.publicDomain + '/'
+        + this.props.instance.technicalName + '/data/';
+      webdavURLUbu = 'dav://webdav.' // maybe it will not work when https is enabled (this.props.config.publicProtocol)
+        + this.props.config.publicDomain + '/'
+        + this.props.instance.technicalName + '/data/';
+    } else {
+      webdavURLWin = 'http://' + window.location.hostname + ':35270/'
+        + this.props.instance.technicalName + '/data/';
+      webdavURLUbu = 'dav://' + window.location.hostname + ':35270/'
+        + this.props.instance.technicalName + '/data/';
+    }
+
+
     return (
       <Modal
         isOpen={this.props.modalIsOpen}
@@ -84,7 +103,7 @@ class ModalWebdav extends Component {
                       2. As shown on the screenshot on the right, copy paste the
                       folowing webdav URL into the "Dossier" field.
                       <br />
-                      <code>http://vp-dpi.intra.inist.fr:23556/</code>
+                      <code>{webdavURLWin}</code>
                     </ListGroupItem>
                     <ListGroupItem>
                       3. Click on "Terminer", enter the ezmaster login/password
@@ -112,7 +131,7 @@ class ModalWebdav extends Component {
                       2. Type CTRL+L and enter this URL in the input field (see
                       the screenshot)
                       <br />
-                      <code>dav://vp-dpi.intra.inist.fr:23556/</code>
+                      <code>{webdavURLUbu}</code>
                     </ListGroupItem>
                     <ListGroupItem>
                       3. Validate with the enter key, enter the ezmaster
