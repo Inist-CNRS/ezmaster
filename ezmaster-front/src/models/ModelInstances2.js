@@ -47,3 +47,20 @@ export function createInstance(newInstance, cb) {
     return cb(null, newInstance);
   }, 1000);
 }
+
+export function uploadFilesToInstanceData(containerId, files, cb) {
+  // const uploadURL = "http://127.0.0.1:35269/-/v1/instances/" + containerId + "/data/";
+  const uploadURL =
+    "http://127.0.0.1:35269/-/v1/instances/04f9ee5b2733fe4fbd22d695e846530619fe27a8121a375fb144b684409c208a/data/";
+
+  // POST file uploads with axios
+  const uploaders = files.map(file => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return axios.post(uploadURL, formData).then(response => {
+      // occurs when one file is uploaded
+    });
+  });
+  // Once all the files are uploaded
+  axios.all(uploaders).then(cb);
+}

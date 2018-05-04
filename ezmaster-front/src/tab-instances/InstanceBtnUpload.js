@@ -4,6 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { Container, Row, Col } from "reactstrap";
 import ModalWebdav from "./ModalWebdav.js";
+import { uploadFilesToInstanceData } from "../models/ModelInstances2.js";
 
 import Dropzone from "react-dropzone";
 
@@ -39,8 +40,23 @@ class InstanceBtnUpload extends Component {
 
   onDrop(acceptedFiles, rejectedFiles) {
     console.log(acceptedFiles, rejectedFiles);
+
+    uploadFilesToInstanceData(
+      this.props.instance.containerId,
+      acceptedFiles,
+      function() {}
+    );
+
+    const fileBrowserFiles = acceptedFiles.map(item => {
+      return {
+        key: item.name,
+        modified: Moment(item.lastModified),
+        size: item.size
+      };
+    });
+
     this.setState({
-      files: acceptedFiles
+      files: [...this.state.files, ...fileBrowserFiles]
     });
   }
 
@@ -108,23 +124,7 @@ class InstanceBtnUpload extends Component {
                     <FileBrowser
                       showActionBar={true}
                       onDeleteFile={this.handleDeleteFile.bind(this)}
-                      files={[
-                        {
-                          key: "cat.png",
-                          modified: +Moment().subtract(1, "hours"),
-                          size: 1.5 * 1024 * 1024
-                        },
-                        {
-                          key: "kitten.png",
-                          modified: +Moment().subtract(3, "days"),
-                          size: 545 * 1024
-                        },
-                        {
-                          key: "elephant.png",
-                          modified: +Moment().subtract(3, "days"),
-                          size: 52 * 1024
-                        }
-                      ]}
+                      files={this.state.files}
                     />
                   </div>
                 </Col>
