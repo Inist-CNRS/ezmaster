@@ -38,7 +38,12 @@ class Header extends Component {
         <Navbar color="faded" light expand="md">
           <LinkContainer to="/">
             <NavbarBrand href="/">
-              <img src={logoImage} className="ezmaster-logo-header" alt="EzMaster" height="55px" />
+              <img
+                src={logoImage}
+                className="ezmaster-logo-header"
+                alt="EzMaster"
+                height="55px"
+              />
             </NavbarBrand>
           </LinkContainer>
           <NavbarToggler onClick={this.toggleBurger} />

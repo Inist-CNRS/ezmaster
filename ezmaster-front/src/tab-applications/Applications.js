@@ -22,14 +22,14 @@ class Applications extends Component {
   }
 
   render() {
-    return <div className="ezmaster-applications">
-
+    return (
+      <div className="ezmaster-applications">
         <Helmet>
           <title>EzMaster - Applications</title>
         </Helmet>
-
         TODO APPLICATIONS
-    </div>;
+      </div>
+    );
   }
 }
 

@@ -3,7 +3,10 @@ import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { toast } from "react-toastify";
-import { fetchInstanceDetail, deleteInstance } from "./ModelInstances2.js";
+import {
+  fetchInstanceDetail,
+  deleteInstance
+} from "../models/ModelInstances2.js";
 
 import "./InstanceBtnTrash.css";
 

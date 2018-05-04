@@ -12,8 +12,8 @@ import "brace/theme/github";
 
 import "./InstanceBtnSettings.css";
 
-import { updateInstanceConfig } from "./ModelInstances2.js";
-import { fetchInstanceDetail } from "./ModelInstances2.js";
+import { updateInstanceConfig } from "../models/ModelInstances2.js";
+import { fetchInstanceDetail } from "../models/ModelInstances2.js";
 
 class InstanceBtnSettings extends Component {
   constructor(props) {

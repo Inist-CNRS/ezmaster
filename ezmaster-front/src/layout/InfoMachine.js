@@ -4,9 +4,9 @@ import { Nav, NavItem } from "reactstrap";
 
 import { Badge } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
-import { prettyBytes } from "./helpers.js";
+import { prettyBytes } from "../helpers.js";
 
-import { subscribeToInfoMachines } from "./ModelInfoMachine.js";
+import { subscribeToInfoMachines } from "../models/ModelInfoMachine.js";
 
 class InfoMachine extends Component {
   static defaultProps = {

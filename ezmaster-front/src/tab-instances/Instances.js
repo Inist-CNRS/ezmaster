@@ -8,7 +8,6 @@ import "./Instances.css";
 import InstanceRow from "./InstanceRow.js";
 import ModalAddInstance from "./ModalAddInstance.js";
 
-
 class Instances extends Component {
   constructor(props) {
     super(props);
