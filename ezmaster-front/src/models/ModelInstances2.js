@@ -28,6 +28,15 @@ export function fetchInstanceDetail(containerId, cb) {
     .catch(cb);
 }
 
+export function fetchInstanceData(containerId, cb) {
+  axios
+    .get("/fakeapi/instances/" + containerId + "/data.json")
+    .then(response => {
+      return cb(null, response.data);
+    })
+    .catch(cb);
+}
+
 export function deleteInstance(containerId, cb) {
   setTimeout(function() {
     return cb(null);

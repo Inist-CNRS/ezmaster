@@ -4,7 +4,10 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { Container, Row, Col } from "reactstrap";
 import ModalWebdav from "./ModalWebdav.js";
-import { uploadFilesToInstanceData } from "../models/ModelInstances2.js";
+import {
+  uploadFilesToInstanceData,
+  fetchInstanceData
+} from "../models/ModelInstances2.js";
 
 import Dropzone from "react-dropzone";
 
@@ -28,6 +31,20 @@ class InstanceBtnUpload extends Component {
   }
 
   toggleModalUpload() {
+    const self = this;
+
+    fetchInstanceData(this.props.instance.containerId, (err, data) => {
+      const fileBrowserFiles = Object.keys(data).map(filename => {
+        return {
+          key: filename,
+          //modified: Moment(),
+          // could be a better code if calculated from raw numeric bytes
+          size: data[filename].size.replace("B", "")
+        };
+      });
+      self.setState({ files: fileBrowserFiles });
+    });
+
     this.setState({
       modalIsOpenUpload: !this.state.modalIsOpenUpload
     });
@@ -123,6 +140,9 @@ class InstanceBtnUpload extends Component {
                   <div className="ezmaster-instance-filelist">
                     <FileBrowser
                       showActionBar={true}
+                      detailRenderer={() => {
+                        return null;
+                      }}
                       onDeleteFile={this.handleDeleteFile.bind(this)}
                       files={this.state.files}
                     />

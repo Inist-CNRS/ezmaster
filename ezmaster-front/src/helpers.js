@@ -22,7 +22,6 @@ module.exports.prettyBytes = num => {
   return (neg ? "-" : "") + numStr + " " + unit;
 };
 
-
 /**
  * Function used to parse the markdown content on this page
  * https://github.com/Inist-CNRS/ezmaster/blob/reactjs/EZMASTERIZED.md
@@ -30,13 +29,14 @@ module.exports.prettyBytes = num => {
 module.exports.parseEzMasterizedAppsMD = rawMD => {
   let myArray;
   let appList = {};
-  let myRe = new RegExp('^## (.*)\n+- (.*)\n- (.*)', 'mg');
+  let myRe = new RegExp("^## (.*)\n+- (.*)\n- (.*)", "mg");
   while ((myArray = myRe.exec(rawMD)) !== null) {
-
-    var docker = new RegExp('registry.hub.docker.com/u/([^/]+)/([^/)]+)').exec(myArray[3]);
-    docker = docker[1] + '/' + docker[2];
-    var github = new RegExp('github.com/([^/]+)/([^/)]+)').exec(myArray[3]);
-    github = github[1] + '/' + github[2];
+    var docker = new RegExp("registry.hub.docker.com/u/([^/]+)/([^/)]+)").exec(
+      myArray[3]
+    );
+    docker = docker[1] + "/" + docker[2];
+    var github = new RegExp("github.com/([^/]+)/([^/)]+)").exec(myArray[3]);
+    github = github[1] + "/" + github[2];
 
     appList[myArray[1]] = {
       description: myArray[2],
@@ -45,4 +45,4 @@ module.exports.parseEzMasterizedAppsMD = rawMD => {
     };
   }
   return appList;
-}
+};
