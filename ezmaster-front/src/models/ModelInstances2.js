@@ -21,7 +21,7 @@ export function fetchInstancesList(cb) {
 
 export function fetchInstanceDetail(containerId, cb) {
   axios
-    .get("/fakeapi/" + containerId + ".json")
+    .get("/fakeapi/instances/" + containerId + ".json")
     .then(response => {
       return cb(null, response.data);
     })
