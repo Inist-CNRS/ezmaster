@@ -205,7 +205,6 @@ class ModalAddInstance extends Component {
       .reduce((accumulator, currentValue) => {
         return accumulator + currentValue;
       });
-    console.log(nbErrors);
     const createBtnDisabled = this.state.formSteps.length < 4 || nbErrors > 0;
 
     let applicationsJsx = [];
