@@ -6,16 +6,22 @@ import "./InstanceBtnLogs.css";
 
 class InstanceBtnLogs extends Component {
   render() {
+    // ex: /-/v1/instances/lodex-istex-2/logs
+    const logsUrl =
+      "/-/v1/instances/" + this.props.instance.technicalName + "/logs";
+
     return (
       <div className={this.props.className}>
         <Button
           color="link"
-          className={this.props.classNameBtn + " ezmaster-a-file"}
+          className={this.props.classNameBtn + " ezmaster-a-logs"}
         >
-          <i
-            className={"fa fa-file"}
-            id={this.props.instance.technicalName + "-logs"}
-          />
+          <a href={logsUrl} target="_blank">
+            <i
+              className={"fa fa-file"}
+              id={this.props.instance.technicalName + "-logs"}
+            />
+          </a>
         </Button>
 
         <UncontrolledTooltip
