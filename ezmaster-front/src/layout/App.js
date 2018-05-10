@@ -90,7 +90,7 @@ class App extends Component {
           <Switch>
             <Route
               path="/instances/"
-              component={() => (
+              render={() => (
                 <Instances
                   config={this.state.config}
                   instances={this.state.instances}
@@ -100,7 +100,7 @@ class App extends Component {
             />
             <Route
               path="/applications/"
-              component={() => (
+              render={() => (
                 <Applications
                   config={this.state.config}
                   applications={this.state.applications}
@@ -109,8 +109,9 @@ class App extends Component {
               )}
             />
             <Route
+              exact
               path="/"
-              component={() => (
+              render={() => (
                 <Home
                   config={this.state.config}
                   instances={this.state.instances}
