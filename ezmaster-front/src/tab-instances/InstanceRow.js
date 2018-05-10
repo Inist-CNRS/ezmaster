@@ -14,11 +14,21 @@ import InstanceBadgeStatus from "./InstanceBadgeStatus.js";
 
 class InstanceRow extends Component {
   render() {
+    const instanceURL = !this.props.config.publicDomain
+      ? this.props.instance.publicURL
+      : this.props.config.publicProtocol +
+        "://" +
+        this.props.instance.technicalName +
+        "." +
+        this.props.config.publicDomain;
+
     return (
       <tr>
         <td>{this.props.instance.longName}</td>
         <td>
-          <a href="">{this.props.instance.technicalName}</a>
+          <a href={instanceURL} target="_blank">
+            {this.props.instance.technicalName}
+          </a>
         </td>
         <td>
           <span id={this.props.instance.technicalName + "-creationDate"}>

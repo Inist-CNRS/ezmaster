@@ -6,6 +6,8 @@ import "./InstanceBtnPrivLink.css";
 
 class InstanceBtnPrivLink extends Component {
   render() {
+    const instancePrivURL = this.props.instance.publicURL;
+
     return (
       <div className={this.props.className}>
         <Button
@@ -13,10 +15,12 @@ class InstanceBtnPrivLink extends Component {
           className={this.props.classNameBtn + " ezmaster-a-link"}
           onClick={this.toggleModal}
         >
-          <i
-            className={"fa fa-link"}
-            id={this.props.instance.technicalName + "-privlink"}
-          />
+          <a href={instancePrivURL} target="_blank">
+            <i
+              className={"fa fa-link"}
+              id={this.props.instance.technicalName + "-privlink"}
+            />
+          </a>
         </Button>
 
         <UncontrolledTooltip
