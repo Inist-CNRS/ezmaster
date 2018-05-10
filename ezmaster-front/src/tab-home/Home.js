@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Jumbotron } from "reactstrap";
 import { Progress } from "reactstrap";
 import { Container, Row, Col } from "reactstrap";
 import { Badge } from "reactstrap";
@@ -7,11 +6,8 @@ import {
   Card,
   CardHeader,
   Button,
-  CardImg,
-  CardTitle,
   CardText,
   CardDeck,
-  CardSubtitle,
   CardBody
 } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";

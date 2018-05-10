@@ -32,7 +32,10 @@ class InstanceRow extends Component {
         </td>
         <td>
           <span id={this.props.instance.technicalName + "-creationDate"}>
-            {moment(this.props.instance.creationDate).fromNow()}
+            {moment(
+              this.props.instance.creationDate,
+              "YYYY/MM/DD HH:mm:ss"
+            ).fromNow()}
           </span>
           <UncontrolledTooltip
             autohide={false}

@@ -22,6 +22,7 @@ module.exports.prettyBytes = num => {
   return (neg ? "-" : "") + numStr + " " + unit;
 };
 
+/*eslint no-control-regex: "off"*/
 /**
  * Function used to parse the markdown content on this page
  * https://github.com/Inist-CNRS/ezmaster/blob/reactjs/EZMASTERIZED.md

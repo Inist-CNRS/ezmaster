@@ -11,8 +11,6 @@ import {
   NavLink
 } from "reactstrap";
 
-import { Button } from "reactstrap";
-
 import "./Header.css";
 import logoImage from "./ezmaster-logo-header.png";
 import InfoMachine from "./InfoMachine.js";

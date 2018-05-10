@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-import { Row, Col } from "reactstrap";
-import { Button } from "reactstrap";
+// import { Table } from "reactstrap";
+// import { Row, Col } from "reactstrap";
+// import { Button } from "reactstrap";
 import { Helmet } from "react-helmet";
 
 import "./Applications.css";
