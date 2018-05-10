@@ -2,6 +2,14 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import classnames from "classnames";
+import { toast } from "react-toastify";
+
+import {
+  subscribeToInstanceStatus,
+  unsubscribeToInstanceStatus,
+  startInstance,
+  stopInstance
+} from "../models/ModelInstances2.js";
 
 import "./InstanceBtnStartStop.css";
 
@@ -9,25 +17,73 @@ class InstanceBtnStartStop extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      instanceStarted: this.props.instance.status === "started",
-      btnDisabled: !this.props.instance.status
+      instanceStarted: this.props.instance.running,
+      btnDisabled: false
     };
 
     this.toggleStatus = this.toggleStatus.bind(this);
   }
 
-  toggleStatus() {
-    // simulate a time when the status is undefined
-    this.setState({ btnDisabled: true });
-    setTimeout(
-      function() {
-        this.setState({
-          instanceStarted: !this.state.instanceStarted,
-          btnDisabled: false
-        });
-      }.bind(this),
-      1000
+  componentDidMount() {
+    const self = this;
+    subscribeToInstanceStatus(
+      self.props.instance.technicalName,
+      "InstanceBtnStartStop",
+      (err, status, intermediate) => {
+        self.setState({ instanceStarted: status, btnDisabled: intermediate });
+      }
     );
+  }
+  componentWillUnmount() {
+    const self = this;
+    unsubscribeToInstanceStatus(
+      self.props.instance.technicalName,
+      "InstanceBtnStartStop"
+    );
+  }
+
+  toggleStatus() {
+    const self = this;
+
+    // simulate a time when the status is undefined
+    self.setState({ btnDisabled: true });
+    if (self.state.instanceStarted) {
+      stopInstance(self.props.instance.technicalName, err => {
+        if (err) {
+          toast.error(
+            <div>
+              Instance <strong>{self.props.instance.technicalName}</strong>{" "}
+              stopping error: {"" + err}
+            </div>
+          );
+        } else {
+          toast.success(
+            <div>
+              Instance <strong>{self.props.instance.technicalName}</strong> has
+              been stopped
+            </div>
+          );
+        }
+      });
+    } else {
+      startInstance(self.props.instance.technicalName, err => {
+        if (err) {
+          toast.error(
+            <div>
+              Instance <strong>{self.props.instance.technicalName}</strong>{" "}
+              starting error: {"" + err}
+            </div>
+          );
+        } else {
+          toast.success(
+            <div>
+              Instance <strong>{self.props.instance.technicalName}</strong> has
+              been started
+            </div>
+          );
+        }
+      });
+    }
   }
 
   render() {
@@ -39,9 +95,9 @@ class InstanceBtnStartStop extends Component {
           className={classnames(this.props.classNameBtn, {
             "ezmaster-startstop": true,
             "ezmaster-a-play-circle":
-              !this.state.btnDisabled && this.state.instanceStarted,
+              !this.state.btnDisabled && !this.state.instanceStarted,
             "ezmaster-a-stop-circle":
-              !this.state.btnDisabled && !this.state.instanceStarted
+              !this.state.btnDisabled && this.state.instanceStarted
           })}
           onClick={this.toggleStatus}
         >
@@ -50,9 +106,9 @@ class InstanceBtnStartStop extends Component {
               fa: true,
               "fa-spinner": this.state.btnDisabled,
               "fa-play-circle":
-                !this.state.btnDisabled && this.state.instanceStarted,
+                !this.state.btnDisabled && !this.state.instanceStarted,
               "fa-stop-circle":
-                !this.state.btnDisabled && !this.state.instanceStarted
+                !this.state.btnDisabled && this.state.instanceStarted
             })}
             id={this.props.instance.technicalName + "-startstop"}
           />
