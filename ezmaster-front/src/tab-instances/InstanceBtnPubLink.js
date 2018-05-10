@@ -6,6 +6,13 @@ import "./InstanceBtnPubLink.css";
 
 class InstanceBtnPubLink extends Component {
   render() {
+    const instancePubURL =
+      this.props.config.publicProtocol +
+      "://" +
+      this.props.instance.technicalName +
+      "." +
+      this.props.config.publicDomain;
+
     return (
       <div className={this.props.className}>
         <Button
@@ -13,10 +20,12 @@ class InstanceBtnPubLink extends Component {
           className={this.props.classNameBtn + " ezmaster-a-globe"}
           onClick={this.toggleModal}
         >
-          <i
-            className={"fa fa-globe"}
-            id={this.props.instance.technicalName + "-publink"}
-          />
+          <a href={instancePubURL} target="_blank">
+            <i
+              className={"fa fa-globe"}
+              id={this.props.instance.technicalName + "-publink"}
+            />
+          </a>
         </Button>
 
         <UncontrolledTooltip

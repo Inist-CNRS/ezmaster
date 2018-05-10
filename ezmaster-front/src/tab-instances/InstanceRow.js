@@ -82,13 +82,15 @@ class InstanceRow extends Component {
             classNameBtn="ezmaster-a-btn"
           />
 
-          <InstanceBtnPubLink
-            config={this.props.config}
-            instances={this.props.instances}
-            instance={this.props.instance}
-            className="ezmaster-a"
-            classNameBtn="ezmaster-a-btn"
-          />
+          {this.props.config.publicDomain && (
+            <InstanceBtnPubLink
+              config={this.props.config}
+              instances={this.props.instances}
+              instance={this.props.instance}
+              className="ezmaster-a"
+              classNameBtn="ezmaster-a-btn"
+            />
+          )}
 
           <InstanceBtnLogs
             config={this.props.config}
