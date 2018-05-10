@@ -58,9 +58,9 @@ export function createInstance(newInstance, cb) {
 }
 
 export function uploadFilesToInstanceData(containerId, files, cb) {
-  // const uploadURL = "http://127.0.0.1:35269/-/v1/instances/" + containerId + "/data/";
+  // const uploadURL = "/-/v1/instances/" + containerId + "/data/";
   const uploadURL =
-    "http://127.0.0.1:35269/-/v1/instances/04f9ee5b2733fe4fbd22d695e846530619fe27a8121a375fb144b684409c208a/data/";
+    "/-/v1/instances/04f9ee5b2733fe4fbd22d695e846530619fe27a8121a375fb144b684409c208a/data/";
 
   // POST file uploads with axios
   const uploaders = files.map(file => {
