@@ -15,7 +15,7 @@ export function deleteInstance(containerId, cb) {
 
 export function fetchInstancesList(cb) {
   axios
-    .get("/fakeapi/instances.json")
+    .get("/-/v1/instances")
     .then(response => {
       // data comming from AJAX request (ezmaster instances stuff)
       let data = response.data;
@@ -34,7 +34,7 @@ export function fetchInstancesList(cb) {
 
 export function fetchInstanceDetail(containerId, cb) {
   axios
-    .get("/fakeapi/instances/" + containerId + ".json")
+    .get("/-/v1/instances/" + containerId)
     .then(response => {
       return cb(null, response.data);
     })
@@ -50,7 +50,7 @@ export function updateInstanceConfig(containerId, newConfig, cb) {
 
 export function fetchInstanceData(containerId, cb) {
   axios
-    .get("/fakeapi/instances/" + containerId + "/data.json")
+    .get("/-/v1/instances/" + containerId + "/data")
     .then(response => {
       return cb(null, response.data);
     })
@@ -58,9 +58,7 @@ export function fetchInstanceData(containerId, cb) {
 }
 
 export function uploadFilesToInstanceData(containerId, files, cb) {
-  // const uploadURL = "/-/v1/instances/" + containerId + "/data/";
-  const uploadURL =
-    "/-/v1/instances/04f9ee5b2733fe4fbd22d695e846530619fe27a8121a375fb144b684409c208a/data/";
+  const uploadURL = "/-/v1/instances/" + containerId + "/data/";
 
   // POST file uploads with axios
   const uploaders = files.map(file => {
