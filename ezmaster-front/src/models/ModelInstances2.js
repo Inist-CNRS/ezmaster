@@ -72,19 +72,27 @@ export function uploadFilesToInstanceData(containerId, files, cb) {
   axios.all(uploaders).then(cb);
 }
 
-export function startInstance(technicalName, cb) {
-  callSubscribedInstanceStatusCallbacks(technicalName, true, true);
-  setTimeout(() => {
-    callSubscribedInstanceStatusCallbacks(technicalName, true, false);
-    return cb(null, true);
-  }, 1000);
+export function startInstance(containerId, cb) {
+  callSubscribedInstanceStatusCallbacks(containerId, true, true);
+
+  axios
+    .put("/-/v1/instances/start/" + containerId)
+    .then(response => {
+      callSubscribedInstanceStatusCallbacks(containerId, true, false);
+      return cb(null, response.data);
+    })
+    .catch(cb);
 }
-export function stopInstance(technicalName, cb) {
-  callSubscribedInstanceStatusCallbacks(technicalName, false, true);
-  setTimeout(() => {
-    callSubscribedInstanceStatusCallbacks(technicalName, false, false);
-    return cb(null, false);
-  }, 1000);
+export function stopInstance(containerId, cb) {
+  callSubscribedInstanceStatusCallbacks(containerId, false, true);
+
+  axios
+    .put("/-/v1/instances/stop/" + containerId)
+    .then(response => {
+      callSubscribedInstanceStatusCallbacks(containerId, false, false);
+      return cb(null, response.data);
+    })
+    .catch(cb);
 }
 
 /**
@@ -93,23 +101,23 @@ export function stopInstance(technicalName, cb) {
  * instance status is changing (BtnStartStop and BadgeStatus).
  */
 let statusSubscribers = {};
-export function subscribeToInstanceStatus(technicalName, tag, cbToCall) {
-  statusSubscribers[technicalName] = statusSubscribers[technicalName]
-    ? statusSubscribers[technicalName]
+export function subscribeToInstanceStatus(containerId, tag, cbToCall) {
+  statusSubscribers[containerId] = statusSubscribers[containerId]
+    ? statusSubscribers[containerId]
     : {};
-  statusSubscribers[technicalName][tag] = cbToCall;
+  statusSubscribers[containerId][tag] = cbToCall;
 }
-export function unsubscribeToInstanceStatus(technicalName, tag) {
-  delete statusSubscribers[technicalName][tag];
+export function unsubscribeToInstanceStatus(containerId, tag) {
+  delete statusSubscribers[containerId][tag];
 }
 function callSubscribedInstanceStatusCallbacks(
-  technicalName,
+  containerId,
   status,
   intermediate
 ) {
-  if (statusSubscribers[technicalName]) {
-    Object.keys(statusSubscribers[technicalName]).forEach(tag => {
-      return statusSubscribers[technicalName][tag](null, status, intermediate);
+  if (statusSubscribers[containerId]) {
+    Object.keys(statusSubscribers[containerId]).forEach(tag => {
+      return statusSubscribers[containerId][tag](null, status, intermediate);
     });
   }
 }

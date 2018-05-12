@@ -22,7 +22,7 @@ class InstanceBadgeStatus extends Component {
   componentDidMount() {
     const self = this;
     subscribeToInstanceStatus(
-      self.props.instance.technicalName,
+      self.props.instance.containerId,
       "InstanceBadgeStatus",
       (err, status, intermediate) => {
         self.setState({
@@ -35,7 +35,7 @@ class InstanceBadgeStatus extends Component {
   componentWillUnmount() {
     const self = this;
     unsubscribeToInstanceStatus(
-      self.props.instance.technicalName,
+      self.props.instance.containerId,
       "InstanceBadgeStatus"
     );
   }

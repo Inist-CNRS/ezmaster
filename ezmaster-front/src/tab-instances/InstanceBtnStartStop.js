@@ -3,6 +3,7 @@ import { Button } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import classnames from "classnames";
 import { toast } from "react-toastify";
+import renderHTML from "react-render-html";
 
 import {
   subscribeToInstanceStatus,
@@ -27,7 +28,7 @@ class InstanceBtnStartStop extends Component {
   componentDidMount() {
     const self = this;
     subscribeToInstanceStatus(
-      self.props.instance.technicalName,
+      self.props.instance.containerId,
       "InstanceBtnStartStop",
       (err, status, intermediate) => {
         self.setState({ instanceStarted: status, btnDisabled: intermediate });
@@ -37,7 +38,7 @@ class InstanceBtnStartStop extends Component {
   componentWillUnmount() {
     const self = this;
     unsubscribeToInstanceStatus(
-      self.props.instance.technicalName,
+      self.props.instance.containerId,
       "InstanceBtnStartStop"
     );
   }
@@ -48,12 +49,17 @@ class InstanceBtnStartStop extends Component {
     // simulate a time when the status is undefined
     self.setState({ btnDisabled: true });
     if (self.state.instanceStarted) {
-      stopInstance(self.props.instance.technicalName, err => {
+      stopInstance(self.props.instance.containerId, err => {
         if (err) {
           toast.error(
             <div>
               Instance <strong>{self.props.instance.technicalName}</strong>{" "}
               stopping error: {"" + err}
+            </div>
+          );
+          toast.error(
+            <div style={{ width: "30rem" }}>
+              {renderHTML(err.response.data)}
             </div>
           );
         } else {
@@ -66,12 +72,17 @@ class InstanceBtnStartStop extends Component {
         }
       });
     } else {
-      startInstance(self.props.instance.technicalName, err => {
+      startInstance(self.props.instance.containerId, (err, res) => {
         if (err) {
           toast.error(
             <div>
               Instance <strong>{self.props.instance.technicalName}</strong>{" "}
               starting error: {"" + err}
+            </div>
+          );
+          toast.error(
+            <div style={{ width: "30rem" }}>
+              {renderHTML(err.response.data)}
             </div>
           );
         } else {
