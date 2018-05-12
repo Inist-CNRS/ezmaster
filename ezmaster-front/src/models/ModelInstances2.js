@@ -28,9 +28,13 @@ export function createInstance(newInstance, cb) {
 
 export function deleteInstance(containerId, cb) {
   // DELETE /-/v1/instances/fc9eb6873196c2733e66a69fc5d33126b2647d8b24784f3015f05b40eed3ae2d
-  setTimeout(function() {
-    return cb(null);
-  }, 1000);
+
+  axios
+    .delete("/-/v1/instances/" + containerId)
+    .then(response => {
+      return cb(null, response.data);
+    })
+    .catch(cb);
 }
 
 export function fetchInstancesList(cb) {

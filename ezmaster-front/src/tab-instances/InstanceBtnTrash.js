@@ -48,8 +48,11 @@ class InstanceBtnTrash extends Component {
           </div>
         );
       } else {
-        toast.info(
-          <div>{self.props.instance.technicalName} has been deleted</div>
+        toast.success(
+          <div>
+            {self.props.instance.technicalName} has been deleted{" "}
+            <i className={"fa fa-trash"} />
+          </div>
         );
       }
     });
