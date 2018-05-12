@@ -66,7 +66,7 @@ class InstanceBtnStartStop extends Component {
           toast.success(
             <div>
               Instance <strong>{self.props.instance.technicalName}</strong> has
-              been stopped
+              been stopped <i className="fa fa-stop-circle" />
             </div>
           );
         }
@@ -89,7 +89,7 @@ class InstanceBtnStartStop extends Component {
           toast.success(
             <div>
               Instance <strong>{self.props.instance.technicalName}</strong> has
-              been started
+              been started <i className="fa fa-play-circle" />
             </div>
           );
         }

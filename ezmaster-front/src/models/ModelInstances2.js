@@ -1,13 +1,33 @@
 import axios from "axios";
 
 export function createInstance(newInstance, cb) {
-  setTimeout(function() {
-    console.log("createInstance", newInstance);
-    return cb(null, newInstance);
-  }, 1000);
+  // POST /-/v1/instances
+  // { app : "inistcnrs/ezmaster-phpserver:1.0.2"
+  // longName : "Long nammmme"
+  // project : "teee"
+  // study : "tiii"
+  // technicalName : "teee-tiii"
+  // version : "" }
+  const tnSplitted = newInstance.technicalName.split("-");
+  const data = {
+    app: newInstance.application,
+    longName: newInstance.longName,
+    technicalName: newInstance.technicalName,
+    project: tnSplitted[0],
+    study: tnSplitted[1],
+    version: tnSplitted[2] ? tnSplitted[2] : ""
+  };
+
+  axios
+    .post("/-/v1/instances", data)
+    .then(response => {
+      return cb(null, response.data);
+    })
+    .catch(cb);
 }
 
 export function deleteInstance(containerId, cb) {
+  // DELETE /-/v1/instances/fc9eb6873196c2733e66a69fc5d33126b2647d8b24784f3015f05b40eed3ae2d
   setTimeout(function() {
     return cb(null);
   }, 1000);
