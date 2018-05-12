@@ -53,7 +53,8 @@ class ModalAddInstance extends Component {
       errorSyntaxTechnicalName1: false,
       errorRequiredTechnicalName2: false,
       errorSyntaxTechnicalName2: false,
-      errorExistsTechnicalName: false
+      errorExistsTechnicalName: false,
+      createBtnDisabled: false
     };
 
     this.handleChangeLongName = this.handleChangeLongName.bind(this);
@@ -74,6 +75,10 @@ class ModalAddInstance extends Component {
   doCreateInstance() {
     const self = this;
 
+    self.setState({
+      createBtnDisabled: true
+    });
+
     // async instance creation
     createInstance(
       {
@@ -81,22 +86,31 @@ class ModalAddInstance extends Component {
         longName: self.state.longName,
         technicalName: self.state.technicalName
       },
-      function(err, instance) {
+      function(err, body) {
         if (err) {
-          toast.error(<div>Instance creation error: {"" + err}</div>);
+          toast.error(
+            <div>
+              Instance creation error: <br />
+              {err}
+              <br />
+              {body}
+            </div>
+          );
         } else {
           toast.success(
             <div>
-              Instance <strong>{instance.technicalName}</strong> has been
-              created
+              Instance <strong>{self.state.technicalName}</strong> has been
+              created <i className="fa fa-plus-circle" />
             </div>
           );
         }
+        // hide the modal
+        self.props.toggle();
+        self.setState({
+          createBtnDisabled: false
+        });
       }
     );
-
-    // hide the popup
-    self.props.toggle();
   }
 
   handleChangeLongName(e) {
@@ -205,7 +219,10 @@ class ModalAddInstance extends Component {
       .reduce((accumulator, currentValue) => {
         return accumulator + currentValue;
       });
-    const createBtnDisabled = this.state.formSteps.length < 4 || nbErrors > 0;
+    const createBtnDisabled =
+      this.state.createBtnDisabled ||
+      this.state.formSteps.length < 4 ||
+      nbErrors > 0;
 
     let applicationsJsx = [];
     this.props.applications.forEach(appItem => {

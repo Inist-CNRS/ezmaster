@@ -15,7 +15,8 @@ class InstanceBtnTrash extends Component {
     super(props);
     this.state = {
       modalIsOpen: false,
-      dataFolderSize: 0
+      dataFolderSize: 0,
+      deleteBtnDisabled: false
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.doDeleteInstance = this.doDeleteInstance.bind(this);
@@ -39,6 +40,10 @@ class InstanceBtnTrash extends Component {
   doDeleteInstance() {
     const self = this;
 
+    self.setState({
+      deleteBtnDisabled: true
+    });
+
     // async instance delete
     deleteInstance(self.props.instance.containerId, function(err) {
       if (err) {
@@ -55,11 +60,11 @@ class InstanceBtnTrash extends Component {
           </div>
         );
       }
-    });
-
-    // hide the popup
-    self.setState({
-      modalIsOpen: !self.state.modalIsOpen
+      // hide the popup
+      self.setState({
+        modalIsOpen: !self.state.modalIsOpen,
+        deleteBtnDisabled: false
+      });
     });
   }
 
@@ -94,7 +99,11 @@ class InstanceBtnTrash extends Component {
             <Button color="secondary" onClick={this.toggleModal}>
               Cancel
             </Button>
-            <Button color="danger" onClick={this.doDeleteInstance}>
+            <Button
+              color="danger"
+              onClick={this.doDeleteInstance}
+              disabled={this.state.deleteBtnDisabled}
+            >
               Yes delete {this.props.instance.technicalName}
             </Button>{" "}
           </ModalFooter>

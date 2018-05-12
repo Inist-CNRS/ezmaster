@@ -22,7 +22,8 @@ class InstanceBtnSettings extends Component {
       modalIsOpen: false,
       modalIsFS: false,
       code: "",
-      codeFormat: "json"
+      codeFormat: "json",
+      updateBtnDisabled: false
     };
     this.currentCode = "";
     this.toggleModal = this.toggleModal.bind(this);
@@ -80,6 +81,10 @@ class InstanceBtnSettings extends Component {
   doUpdateInstanceConfig() {
     const self = this;
 
+    self.setState({
+      updateBtnDisabled: true
+    });
+
     // async instance config update
     updateInstanceConfig(
       self.props.instance.containerId,
@@ -100,13 +105,14 @@ class InstanceBtnSettings extends Component {
             </div>
           );
         }
+
+        // hide the modal
+        self.setState({
+          modalIsOpen: !self.state.modalIsOpen,
+          updateBtnDisabled: false
+        });
       }
     );
-
-    // hide the popup
-    self.setState({
-      modalIsOpen: !self.state.modalIsOpen
-    });
   }
 
   render() {
@@ -177,7 +183,11 @@ class InstanceBtnSettings extends Component {
             <Button color="secondary" onClick={this.toggleModal}>
               Cancel
             </Button>
-            <Button color="primary" onClick={this.doUpdateInstanceConfig}>
+            <Button
+              color="primary"
+              onClick={this.doUpdateInstanceConfig}
+              disabled={this.state.updateBtnDisabled}
+            >
               Update
             </Button>
           </ModalFooter>
