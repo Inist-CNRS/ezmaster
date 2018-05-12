@@ -66,10 +66,20 @@ export function fetchInstanceDetail(containerId, cb) {
 }
 
 export function updateInstanceConfig(containerId, newConfig, cb) {
-  setTimeout(function() {
-    console.log("updateInstanceConfig", containerId, newConfig);
-    return cb(null);
-  }, 1000);
+  // PUT /-/v1/instances/config/1b129dce7d740d4a5b200301cbe73840a55b2068e6501001b31033b19b3f3733
+
+  axios
+    .put("/-/v1/instances/config/" + containerId, { newConfig })
+    .then(response => {
+      return cb(null, response.data);
+    })
+    .catch(cb);
+
+  // console.log(newConfig);
+  // setTimeout(function() {
+  //   console.log("updateInstanceConfig", containerId, newConfig);
+  //   return cb(null);
+  // }, 1000);
 }
 
 export function fetchInstanceData(containerId, cb) {

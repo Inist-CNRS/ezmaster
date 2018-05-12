@@ -93,10 +93,10 @@ class InstanceBtnSettings extends Component {
             </div>
           );
         } else {
-          toast.info(
+          toast.success(
             <div>
-              <code>{self.props.instance.technicalName}</code> config has been
-              updated
+              {self.props.instance.technicalName} config has been updated{" "}
+              <i className={"fa fa-cog"} />
             </div>
           );
         }
