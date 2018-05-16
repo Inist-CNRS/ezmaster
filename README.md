@@ -209,6 +209,10 @@ If you want to save the config and the data of your instances:
 
 ## Changelog
 
+### ezmaster 4.3.1
+
+- Fix webdav files permissions & access permissions.
+
 ### ezmaster 4.3.0
 
 - Add the EZMASTER_PUBLIC_PROTOCOL env parameter. Use it with EZMASTER_PUBLIC_DOMAIN to switch to ``https`` if needed for your instances' public access URLs. Its default value is ``http``. This env parameter is useless if you do not use the EZMASTER_PUBLIC_DOMAIN feature.
