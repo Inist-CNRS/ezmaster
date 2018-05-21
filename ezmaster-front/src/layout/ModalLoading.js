@@ -29,6 +29,7 @@ class ModalLoading extends Component {
 
     const dataLoadingCompleted =
       !this.props.loadingConfig &&
+      !this.props.loadingInfoMachine &&
       !this.props.loadingApplications &&
       !this.props.loadingInstances;
 
@@ -66,6 +67,19 @@ class ModalLoading extends Component {
                     />
                   </Badge>
                   &nbsp;&nbsp;Loading EzMaster configuration
+                </ListGroupItem>
+                <ListGroupItem>
+                  <Badge pill className="ezmaster-ml-data4">
+                    <i
+                      className={
+                        "fa " +
+                        (this.props.loadingInfoMachine
+                          ? "fa-spinner"
+                          : "fa-check")
+                      }
+                    />
+                  </Badge>
+                  &nbsp;&nbsp;Loading EzMaster server available resources
                 </ListGroupItem>
                 <ListGroupItem>
                   <Badge pill className="ezmaster-ml-data2">

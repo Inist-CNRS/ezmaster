@@ -1,34 +1,52 @@
-import axios from "axios";
+import { subscribeToWS } from "../websocket.js";
 
-export function fetchInfoMachines(cb) {
-  axios
-    .get("/fakeapi/info-machines.json")
-    .then(response => {
-      // data comming from AJAX request (info-machines stuff)
-      let data = response.data;
+let ModelInfoMachine = function() {
+  let self = this;
+  self.initializing = true;
+  self.onChanges = [];
+  self.d = {
+    nbCPUs: 1,
+    loadAverage: ["...", "...", "..."],
+    totalMemory: "... GB",
+    freeMemory: "... MB",
+    useMemoryPercentage: 0,
+    diskApp: {
+      freeDiskRaw: 0,
+      totalDiskRaw: 0,
+      freeDisk: "... GB",
+      totalDisk: "... GB",
+      useDiskPercentage: 0,
+      fsIsAlmostFilled: false,
+      maxFileCapSize: 0
+    },
+    diskDocker: {
+      freeDiskRaw: 0,
+      totalDiskRaw: 0,
+      freeDisk: "... GB",
+      totalDisk: "... GB",
+      useDiskPercentage: 0,
+      fsIsAlmostFilled: false,
+      maxFileCapSize: 0
+    }
+  };
 
-      data.loadaverage = [
-        (Math.random() * data.nbCPUs * 2).toFixed(1),
-        (Math.random() * data.nbCPUs * 2).toFixed(1),
-        (Math.random() * data.nbCPUs * 2).toFixed(1)
-      ];
+  // connect websocket to the model
+  subscribeToWS("refreshInfosMachine", data => {
+    //console.log('INFO MACHINE', data)
+    self.d = data;
+    self.initializing = false;
+    self.inform("infoMachine");
+  });
+};
 
-      return cb(null, data);
-    })
-    .catch(cb);
-}
+ModelInfoMachine.prototype.subscribe = function(onChange) {
+  this.onChanges.push(onChange);
+};
 
-export function initInfoMachinesWS() {
-  setInterval(function() {
-    fetchInfoMachines(function(err, info) {
-      subscribers.forEach(function(cbToCall) {
-        return cbToCall(err, info);
-      });
-    });
-  }, 5000);
-}
+ModelInfoMachine.prototype.inform = function(modelEvent) {
+  this.onChanges.forEach(function(cb) {
+    cb(modelEvent);
+  });
+};
 
-let subscribers = [];
-export function subscribeToInfoMachines(cbToCall) {
-  subscribers.push(cbToCall);
-}
+export default ModelInfoMachine;

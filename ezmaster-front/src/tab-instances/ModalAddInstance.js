@@ -16,7 +16,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import latinize from "latinize";
 import { toast } from "react-toastify";
-import { createInstance } from "../models/ModelInstances2.js";
 
 import "./ModalAddInstance.css";
 
@@ -54,7 +53,7 @@ class ModalAddInstance extends Component {
       errorRequiredTechnicalName2: false,
       errorSyntaxTechnicalName2: false,
       errorExistsTechnicalName: false,
-      createBtnDisabled: false
+      creatingInstance: false
     };
 
     this.handleChangeLongName = this.handleChangeLongName.bind(this);
@@ -76,11 +75,11 @@ class ModalAddInstance extends Component {
     const self = this;
 
     self.setState({
-      createBtnDisabled: true
+      creatingInstance: true
     });
 
     // async instance creation
-    createInstance(
+    self.props.instances.createInstance(
       {
         application: self.state.application,
         longName: self.state.longName,
@@ -107,7 +106,7 @@ class ModalAddInstance extends Component {
         // hide the modal
         self.props.toggle();
         self.setState({
-          createBtnDisabled: false
+          creatingInstance: false
         });
       }
     );
@@ -220,12 +219,13 @@ class ModalAddInstance extends Component {
         return accumulator + currentValue;
       });
     const createBtnDisabled =
-      this.state.createBtnDisabled ||
+      this.state.creatingInstance ||
       this.state.formSteps.length < 4 ||
       nbErrors > 0;
+    const cancelBtnDisabled = this.state.creatingInstance;
 
     let applicationsJsx = [];
-    this.props.applications.forEach(appItem => {
+    this.props.applications.d.forEach(appItem => {
       applicationsJsx.push(
         <option value={appItem.imageName} key={appItem.imageName}>
           {appItem.imageName}
@@ -426,7 +426,18 @@ class ModalAddInstance extends Component {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button color="secondary" onClick={this.props.toggle}>
+            <FormText
+              style={{
+                display: this.state.creatingInstance ? "block" : "none"
+              }}
+            >
+              Creating instance.<br /> Please wait ...
+            </FormText>
+            <Button
+              color="secondary"
+              onClick={this.props.toggle}
+              disabled={cancelBtnDisabled}
+            >
               Cancel
             </Button>
             <Button

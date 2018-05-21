@@ -6,49 +6,15 @@ import { Badge } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { prettyBytes } from "../helpers.js";
 
-import { subscribeToInfoMachines } from "../models/ModelInfoMachine.js";
-
 class InfoMachine extends Component {
   static defaultProps = {
-    config: { fullFsPercent: 100, fullMemoryPercent: 80 },
     className: ""
   };
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      nbCPUs: 1,
-      loadaverage: ["...", "...", "..."],
-      totalMemory: "... GB",
-      freeMemory: "... MB",
-      useMemoryPercentage: 0,
-      diskApp: {
-        freeDiskRaw: 0,
-        totalDiskRaw: 0,
-        freeDisk: "... GB",
-        totalDisk: "... GB",
-        useDiskPercentage: 0,
-        fsIsAlmostFilled: false,
-        maxFileCapSize: 0
-      },
-      diskDocker: {
-        freeDiskRaw: 0,
-        totalDiskRaw: 0,
-        freeDisk: "... GB",
-        totalDisk: "... GB",
-        useDiskPercentage: 0,
-        fsIsAlmostFilled: false,
-        maxFileCapSize: 0
-      }
-    };
-  }
-
-  componentDidMount() {
-    const self = this;
-    subscribeToInfoMachines(function(err, data) {
-      self.setState({ ...data });
-    });
+    this.state = {};
   }
 
   render() {
@@ -65,20 +31,21 @@ class InfoMachine extends Component {
             autohide={false}
             target="ezmaster-im-loadaverage"
           >
-            Load average ({this.state.nbCPUs} CPUs)
+            Load average ({this.props.infoMachine.d.nbCPUs} CPUs)
           </UncontrolledTooltip>
 
           {/* LOAD AVERAGE: 1m */}
           <Badge
             className="mr-2"
             color={
-              this.state.loadaverage[0] > this.state.nbCPUs
+              this.props.infoMachine.d.loadAverage[0] >
+              this.props.infoMachine.d.nbCPUs
                 ? "danger"
                 : "secondary"
             }
             id="ezmaster-im-loadaverage-1m"
           >
-            {this.state.loadaverage[0]}
+            {this.props.infoMachine.d.loadAverage[0]}
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
@@ -92,13 +59,14 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.loadaverage[1] > this.state.nbCPUs
+              this.props.infoMachine.d.loadAverage[1] >
+              this.props.infoMachine.d.nbCPUs
                 ? "danger"
                 : "secondary"
             }
             id="ezmaster-im-loadaverage-5m"
           >
-            {this.state.loadaverage[1]}
+            {this.props.infoMachine.d.loadAverage[1]}
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
@@ -112,13 +80,14 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.loadaverage[2] > this.state.nbCPUs
+              this.props.infoMachine.d.loadAverage[2] >
+              this.props.infoMachine.d.nbCPUs
                 ? "danger"
                 : "secondary"
             }
             id="ezmaster-im-loadaverage-15m"
           >
-            {this.state.loadaverage[2]}
+            {this.props.infoMachine.d.loadAverage[2]}
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
@@ -145,22 +114,22 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.useMemoryPercentage >
-              this.props.config.fullMemoryPercent
+              this.props.infoMachine.d.useMemoryPercentage >
+              this.props.config.d.fullMemoryPercent
                 ? "danger"
                 : "secondary"
             }
             id="ezmaster-im-ram-usage"
           >
-            {this.state.useMemoryPercentage} %
+            {this.props.infoMachine.d.useMemoryPercentage} %
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
             autohide={false}
             target="ezmaster-im-ram-usage"
           >
-            <div>Total: {this.state.totalMemory}</div>
-            <div>Free: {this.state.freeMemory}</div>
+            <div>Total: {this.props.infoMachine.d.totalMemory}</div>
+            <div>Free: {this.props.infoMachine.d.freeMemory}</div>
           </UncontrolledTooltip>
         </NavItem>
 
@@ -180,22 +149,27 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.diskApp.useDiskPercentage >
-              this.props.config.fullFsPercent
+              this.props.infoMachine.d.diskApp.useDiskPercentage >
+              this.props.config.d.fullFsPercent
                 ? "danger"
                 : "secondary"
             }
             id="ezmaster-im-hdd-data-usage"
           >
-            {this.state.diskApp.useDiskPercentage} %
+            {this.props.infoMachine.d.diskApp.useDiskPercentage} %
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
             autohide={false}
             target="ezmaster-im-hdd-data-usage"
           >
-            <div>Total: {prettyBytes(this.state.diskApp.totalDiskRaw)}</div>
-            <div>Free: {prettyBytes(this.state.diskApp.freeDiskRaw)}</div>
+            <div>
+              Total:{" "}
+              {prettyBytes(this.props.infoMachine.d.diskApp.totalDiskRaw)}
+            </div>
+            <div>
+              Free: {prettyBytes(this.props.infoMachine.d.diskApp.freeDiskRaw)}
+            </div>
           </UncontrolledTooltip>
         </NavItem>
 
@@ -215,22 +189,28 @@ class InfoMachine extends Component {
           <Badge
             className="mr-2"
             color={
-              this.state.diskDocker.useDiskPercentage >
-              this.props.config.fullFsPercent
+              this.props.infoMachine.d.diskDocker.useDiskPercentage >
+              this.props.config.d.fullFsPercent
                 ? "danger"
                 : "secondary"
             }
             id="ezmaster-im-hdd-docker-usage"
           >
-            {this.state.diskDocker.useDiskPercentage} %
+            {this.props.infoMachine.d.diskDocker.useDiskPercentage} %
           </Badge>
           <UncontrolledTooltip
             placement="bottom"
             autohide={false}
             target="ezmaster-im-hdd-docker-usage"
           >
-            <div>Total: {prettyBytes(this.state.diskDocker.totalDiskRaw)}</div>
-            <div>Free: {prettyBytes(this.state.diskDocker.freeDiskRaw)}</div>
+            <div>
+              Total:{" "}
+              {prettyBytes(this.props.infoMachine.d.diskDocker.totalDiskRaw)}
+            </div>
+            <div>
+              Free:{" "}
+              {prettyBytes(this.props.infoMachine.d.diskDocker.freeDiskRaw)}
+            </div>
           </UncontrolledTooltip>
         </NavItem>
       </Nav>

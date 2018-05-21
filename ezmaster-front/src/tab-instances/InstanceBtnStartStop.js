@@ -5,95 +5,72 @@ import classnames from "classnames";
 import { toast } from "react-toastify";
 import renderHTML from "react-render-html";
 
-import {
-  subscribeToInstanceStatus,
-  unsubscribeToInstanceStatus,
-  startInstance,
-  stopInstance
-} from "../models/ModelInstances2.js";
-
 import "./InstanceBtnStartStop.css";
 
 class InstanceBtnStartStop extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      instanceStarted: this.props.instance.running,
-      btnDisabled: false
-    };
+    this.state = {};
 
     this.toggleStatus = this.toggleStatus.bind(this);
-  }
-
-  componentDidMount() {
-    const self = this;
-    subscribeToInstanceStatus(
-      self.props.instance.containerId,
-      "InstanceBtnStartStop",
-      (err, status, intermediate) => {
-        self.setState({ instanceStarted: status, btnDisabled: intermediate });
-      }
-    );
-  }
-  componentWillUnmount() {
-    const self = this;
-    unsubscribeToInstanceStatus(
-      self.props.instance.containerId,
-      "InstanceBtnStartStop"
-    );
   }
 
   toggleStatus() {
     const self = this;
 
     // simulate a time when the status is undefined
-    self.setState({ btnDisabled: true });
-    if (self.state.instanceStarted) {
-      stopInstance(self.props.instance.containerId, err => {
-        if (err) {
-          toast.error(
-            <div>
-              Instance <strong>{self.props.instance.technicalName}</strong>{" "}
-              stopping error: {"" + err}
-            </div>
-          );
-          toast.error(
-            <div style={{ width: "30rem" }}>
-              {renderHTML(err.response.data)}
-            </div>
-          );
-        } else {
-          toast.success(
-            <div>
-              Instance <strong>{self.props.instance.technicalName}</strong> has
-              been stopped <i className="fa fa-stop-circle" />
-            </div>
-          );
+    if (self.props.instance.running) {
+      self.props.instances.stopInstance(
+        self.props.instance.containerId,
+        err => {
+          if (err) {
+            toast.error(
+              <div>
+                Instance <strong>{self.props.instance.technicalName}</strong>{" "}
+                stopping error: {"" + err}
+              </div>
+            );
+            toast.error(
+              <div style={{ width: "30rem" }}>
+                {renderHTML(err.response.data)}
+              </div>
+            );
+          } else {
+            toast.success(
+              <div>
+                Instance <strong>{self.props.instance.technicalName}</strong>{" "}
+                has been stopped <i className="fa fa-stop-circle" />
+              </div>
+            );
+          }
         }
-      });
+      );
     } else {
-      startInstance(self.props.instance.containerId, (err, res) => {
-        if (err) {
-          toast.error(
-            <div>
-              Instance <strong>{self.props.instance.technicalName}</strong>{" "}
-              starting error: {"" + err}
-            </div>
-          );
-          toast.error(
-            <div style={{ width: "30rem" }}>
-              {renderHTML(err.response.data)}
-            </div>
-          );
-        } else {
-          toast.success(
-            <div>
-              Instance <strong>{self.props.instance.technicalName}</strong> has
-              been started <i className="fa fa-play-circle" />
-            </div>
-          );
+      self.props.instances.startInstance(
+        self.props.instance.containerId,
+        (err, res) => {
+          if (err) {
+            toast.error(
+              <div>
+                Instance <strong>{self.props.instance.technicalName}</strong>{" "}
+                starting error: {"" + err}
+              </div>
+            );
+            toast.error(
+              <div style={{ width: "30rem" }}>
+                {renderHTML(err.response.data)}
+              </div>
+            );
+          } else {
+            toast.success(
+              <div>
+                Instance <strong>{self.props.instance.technicalName}</strong>{" "}
+                has been started <i className="fa fa-play-circle" />
+              </div>
+            );
+          }
         }
-      });
+      );
     }
   }
 
@@ -101,25 +78,28 @@ class InstanceBtnStartStop extends Component {
     return (
       <div className={this.props.className}>
         <Button
-          disabled={this.state.btnDisabled}
+          disabled={this.props.instance.changingState}
           color="link"
           className={classnames(this.props.classNameBtn, {
             "ezmaster-startstop": true,
             "ezmaster-a-play-circle":
-              !this.state.btnDisabled && !this.state.instanceStarted,
+              !this.props.instance.changingState &&
+              !this.props.instance.running,
             "ezmaster-a-stop-circle":
-              !this.state.btnDisabled && this.state.instanceStarted
+              !this.props.instance.changingState && this.props.instance.running
           })}
           onClick={this.toggleStatus}
         >
           <i
             className={classnames({
               fa: true,
-              "fa-spinner": this.state.btnDisabled,
+              "fa-spinner": this.props.instance.changingState,
               "fa-play-circle":
-                !this.state.btnDisabled && !this.state.instanceStarted,
+                !this.props.instance.changingState &&
+                !this.props.instance.running,
               "fa-stop-circle":
-                !this.state.btnDisabled && this.state.instanceStarted
+                !this.props.instance.changingState &&
+                this.props.instance.running
             })}
             id={this.props.instance.technicalName + "-startstop"}
           />
@@ -129,14 +109,14 @@ class InstanceBtnStartStop extends Component {
           placement="top"
           target={this.props.instance.technicalName + "-startstop"}
         >
-          {!this.state.btnDisabled ? (
+          {!this.props.instance.changingState ? (
             <span>
-              {this.state.instanceStarted ? "Stop" : "Start"}{" "}
+              {this.props.instance.running ? "Stop" : "Start"}{" "}
               <code>{this.props.instance.technicalName}</code>
             </span>
           ) : (
             <span>
-              {this.state.instanceStarted
+              {this.props.instance.running
                 ? "Instance is stopping"
                 : "Instance is starting"}
             </span>

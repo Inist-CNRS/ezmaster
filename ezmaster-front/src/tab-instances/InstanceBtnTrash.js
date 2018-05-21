@@ -3,10 +3,6 @@ import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { toast } from "react-toastify";
-import {
-  fetchInstanceDetail,
-  deleteInstance
-} from "../models/ModelInstances2.js";
 
 import "./InstanceBtnTrash.css";
 
@@ -15,7 +11,6 @@ class InstanceBtnTrash extends Component {
     super(props);
     this.state = {
       modalIsOpen: false,
-      dataFolderSize: 0,
       deleteBtnDisabled: false
     };
     this.toggleModal = this.toggleModal.bind(this);
@@ -31,9 +26,18 @@ class InstanceBtnTrash extends Component {
 
     // update the instance data folder size just when the popup is open
     if (!this.state.modalIsOpen) {
-      fetchInstanceDetail(self.props.instance.containerId, function(err, data) {
-        self.setState({ dataFolderSize: data.size });
-      });
+      this.props.instances.fetchInstanceDetail(
+        self.props.instance.containerId,
+        err => {
+          if (err) {
+            toast.error(
+              <div>
+                Instance featching detail error: <br /> {err}
+              </div>
+            );
+          }
+        }
+      );
     }
   }
 
@@ -45,27 +49,30 @@ class InstanceBtnTrash extends Component {
     });
 
     // async instance delete
-    deleteInstance(self.props.instance.containerId, function(err) {
-      if (err) {
-        toast.error(
-          <div>
-            {self.props.instance.technicalName} deleting error: {"" + err}
-          </div>
-        );
-      } else {
-        toast.success(
-          <div>
-            {self.props.instance.technicalName} has been deleted{" "}
-            <i className={"fa fa-trash"} />
-          </div>
-        );
+    self.props.instances.deleteInstance(
+      self.props.instance.containerId,
+      function(err) {
+        if (err) {
+          toast.error(
+            <div>
+              {self.props.instance.technicalName} deleting error: {"" + err}
+            </div>
+          );
+        } else {
+          toast.success(
+            <div>
+              {self.props.instance.technicalName} has been deleted{" "}
+              <i className={"fa fa-trash"} />
+            </div>
+          );
+        }
+        // hide the popup
+        self.setState({
+          modalIsOpen: !self.state.modalIsOpen,
+          deleteBtnDisabled: false
+        });
       }
-      // hide the popup
-      self.setState({
-        modalIsOpen: !self.state.modalIsOpen,
-        deleteBtnDisabled: false
-      });
-    });
+    );
   }
 
   render() {
@@ -90,7 +97,8 @@ class InstanceBtnTrash extends Component {
           <ModalBody>
             You are going to delete the{" "}
             <code>{this.props.instance.technicalName}</code> instance.<br />
-            It represents <strong>{this.state.dataFolderSize}</strong> of data.
+            It represents <strong>{this.props.instance.detail.size}</strong> of
+            data.
             <br />
             <br />
             Are you sure?

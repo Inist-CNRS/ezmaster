@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import shallowEqual from "fbjs/lib/shallowEqual";
 import { Table } from "reactstrap";
 import { Row, Col } from "reactstrap";
 import { Button } from "reactstrap";
@@ -17,6 +18,15 @@ class Instances extends Component {
     this.toggleModalAddInstance = this.toggleModalAddInstance.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (!shallowEqual(this.state, nextState)) {
+      return true;
+    }
+    return ["config", "instances", "applications"].includes(
+      nextProps.modelEvent
+    );
+  }
+
   toggleModalAddInstance() {
     this.setState({
       modalAddInstanceIsOpen: !this.state.modalAddInstanceIsOpen
@@ -26,8 +36,8 @@ class Instances extends Component {
   render() {
     const self = this;
     const instancesRows = [];
-    Object.keys(self.props.instances).forEach(function(technicalName) {
-      const instance = self.props.instances[technicalName];
+    Object.keys(self.props.instances.d).forEach(function(technicalName) {
+      const instance = self.props.instances.d[technicalName];
       instancesRows.push(
         <InstanceRow
           config={self.props.config}
@@ -92,6 +102,7 @@ class Instances extends Component {
               config={this.props.config}
               modalIsOpen={this.state.modalAddInstanceIsOpen}
               applications={this.props.applications}
+              instances={this.props.instances}
               toggle={this.toggleModalAddInstance}
             />
           </Col>

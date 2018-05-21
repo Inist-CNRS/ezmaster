@@ -12,20 +12,15 @@ import "brace/theme/github";
 
 import "./InstanceBtnSettings.css";
 
-import { updateInstanceConfig } from "../models/ModelInstances2.js";
-import { fetchInstanceDetail } from "../models/ModelInstances2.js";
-
 class InstanceBtnSettings extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modalIsOpen: false,
       modalIsFS: false,
-      code: "",
-      codeFormat: "json",
       updateBtnDisabled: false
     };
-    this.currentCode = "";
+    this.currentCode = this.props.instance.detail.code;
     this.toggleModal = this.toggleModal.bind(this);
     this.toggleIsFS = this.toggleIsFS.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
@@ -41,15 +36,10 @@ class InstanceBtnSettings extends Component {
 
     // fetch the instance config just when the popup is open
     if (!self.state.modalIsOpen) {
-      fetchInstanceDetail(self.props.instance.containerId, function(err, data) {
-        try {
-          JSON.parse(data.config);
-          self.setState({ code: data.config, codeFormat: "json" });
-        } catch (err2) {
-          self.setState({ code: data.config, codeFormat: "text" });
-        }
-        self.currentCode = data.config;
-      });
+      this.props.instances.fetchInstanceDetail(
+        self.props.instance.containerId,
+        () => {}
+      );
     }
   }
 
@@ -86,10 +76,10 @@ class InstanceBtnSettings extends Component {
     });
 
     // async instance config update
-    updateInstanceConfig(
+    this.props.instances.updateInstanceConfig(
       self.props.instance.containerId,
       self.currentCode,
-      function(err) {
+      err => {
         if (err) {
           toast.error(
             <div>
@@ -105,7 +95,6 @@ class InstanceBtnSettings extends Component {
             </div>
           );
         }
-
         // hide the modal
         self.setState({
           modalIsOpen: !self.state.modalIsOpen,
@@ -144,7 +133,7 @@ class InstanceBtnSettings extends Component {
           </ModalHeader>
           <ModalBody>
             <AceEditor
-              mode={this.state.codeFormat}
+              mode={this.props.instance.detail.codeFormat}
               theme="github"
               width="100%"
               height=""
@@ -153,12 +142,15 @@ class InstanceBtnSettings extends Component {
               tabSize={2}
               ref={this.props.instance.technicalName + "-ace"}
               name={this.props.instance.technicalName + "-ace"}
-              enableBasicAutocompletion={true}
-              enableLiveAutocompletion={true}
-              enableSnippets={true}
+              enableBasicAutocompletion={false}
+              enableLiveAutocompletion={false}
+              enableSnippets={false}
+              editorProps={{
+                $blockScrolling: Infinity
+              }}
               fontSize={"1.5rem"}
               onChange={this.onCodeChange}
-              value={this.state.code}
+              value={this.currentCode || this.props.instance.detail.code}
             />
           </ModalBody>
           <ModalFooter>
@@ -180,6 +172,13 @@ class InstanceBtnSettings extends Component {
             >
               Edit the configuration in fullscreen mode.
             </UncontrolledTooltip>
+            <div
+              style={{
+                display: this.state.updateBtnDisabled ? "block" : "none"
+              }}
+            >
+              Updating instance config.<br /> Please wait ...
+            </div>
             <Button color="secondary" onClick={this.toggleModal}>
               Cancel
             </Button>

@@ -24,6 +24,11 @@ class Header extends Component {
     };
     this.toggleBurger = this.toggleBurger.bind(this);
   }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return ["config", "infoMachine"].includes(nextProps.modelEvent);
+  }
+
   toggleBurger() {
     this.setState({
       burgerIsOpen: !this.state.burgerIsOpen
@@ -71,7 +76,11 @@ class Header extends Component {
               </NavItem>
             </Nav>
 
-            <InfoMachine className="ml-auto" />
+            <InfoMachine
+              className="ml-auto"
+              config={this.props.config}
+              infoMachine={this.props.infoMachine}
+            />
           </Collapse>
         </Navbar>
       </header>

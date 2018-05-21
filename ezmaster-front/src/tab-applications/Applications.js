@@ -15,6 +15,10 @@ class Applications extends Component {
     this.toggleModalAddApplication = this.toggleModalAddApplication.bind(this);
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !["config", "applications"].includes(nextProps.modelEvent);
+  }
+
   toggleModalAddApplication() {
     this.setState({
       modalAddApplicationIsOpen: !this.state.modalAddApplicationIsOpen

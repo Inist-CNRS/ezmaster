@@ -3,11 +3,10 @@ import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { Container, Row, Col } from "reactstrap";
+import { toast } from "react-toastify";
+import renderHTML from "react-render-html";
+
 import ModalWebdav from "./ModalWebdav.js";
-import {
-  uploadFilesToInstanceData,
-  fetchInstanceData
-} from "../models/ModelInstances2.js";
 
 import Dropzone from "react-dropzone";
 
@@ -28,22 +27,13 @@ class InstanceBtnUpload extends Component {
 
     this.toggleModalUpload = this.toggleModalUpload.bind(this);
     this.toggleModalWebdav = this.toggleModalWebdav.bind(this);
+    this.handleDeleteFile = this.handleDeleteFile.bind(this);
   }
 
   toggleModalUpload() {
     const self = this;
 
-    fetchInstanceData(this.props.instance.containerId, (err, data) => {
-      const fileBrowserFiles = Object.keys(data).map(filename => {
-        return {
-          key: filename,
-          //modified: Moment(),
-          // could be a better code if calculated from raw numeric bytes
-          size: data[filename].size.replace("B", "")
-        };
-      });
-      self.setState({ files: fileBrowserFiles });
-    });
+    self.props.instances.fetchInstanceData(this.props.instance.containerId);
 
     this.setState({
       modalIsOpenUpload: !this.state.modalIsOpenUpload
@@ -56,30 +46,78 @@ class InstanceBtnUpload extends Component {
   }
 
   onDrop(acceptedFiles, rejectedFiles) {
-    console.log(acceptedFiles, rejectedFiles);
+    const self = this;
 
-    uploadFilesToInstanceData(
-      this.props.instance.containerId,
+    self.props.instances.uploadFilesToInstanceData(
+      self.props.instance.containerId,
       acceptedFiles,
-      function() {}
+      (err, fileName) => {
+        if (err) {
+          toast.error(
+            <div>
+              Upload error on{" "}
+              <strong>{self.props.instance.technicalName}</strong> error:{" "}
+              {"" + err}
+            </div>
+          );
+        } else {
+          toast.success(
+            <div>
+              Upload "{fileName}" success on{" "}
+              <strong>{self.props.instance.technicalName}</strong>{" "}
+              <i className="fa fa-upload" />
+            </div>
+          );
+        }
+      }
     );
-
-    const fileBrowserFiles = acceptedFiles.map(item => {
-      return {
-        key: item.name,
-        modified: Moment(item.lastModified),
-        size: item.size
-      };
-    });
-
-    this.setState({
-      files: [...this.state.files, ...fileBrowserFiles]
-    });
   }
 
-  handleDeleteFile() {}
+  handleDeleteFile(fileName) {
+    const self = this;
+
+    self.props.instances.deleteFileOnInstanceData(
+      self.props.instance.containerId,
+      fileName,
+      err => {
+        if (err) {
+          toast.error(
+            <div>
+              Unable to delete "{fileName}" on{" "}
+              <strong>{self.props.instance.technicalName}</strong> error:{" "}
+              {"" + err}
+            </div>
+          );
+        } else {
+          toast.success(
+            <div>
+              File "{fileName}"" has been deleted on{" "}
+              <strong>{self.props.instance.technicalName}</strong>{" "}
+              <i className="fa fa-delete" />
+            </div>
+          );
+        }
+      }
+    );
+  }
 
   render() {
+    const self = this;
+
+    const fileBrowserFiles = !self.props.instance.data
+      ? []
+      : Object.keys(self.props.instance.data).map(filename => {
+          return {
+            key: filename,
+            //modified: self.props.instance.data[filename].modified,
+            // could be a better code if calculated from raw numeric bytes
+            size:
+              typeof self.props.instance.data[filename].size == "string"
+                ? self.props.instance.data[filename].size.replace("B", "")
+                : self.props.instance.data[filename].size
+          };
+        });
+
     return (
       <div className={this.props.className}>
         <Button
@@ -144,7 +182,7 @@ class InstanceBtnUpload extends Component {
                         return null;
                       }}
                       onDeleteFile={this.handleDeleteFile.bind(this)}
-                      files={this.state.files}
+                      files={fileBrowserFiles}
                     />
                   </div>
                 </Col>

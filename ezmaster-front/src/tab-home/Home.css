@@ -35,3 +35,9 @@
 .ezmaster-home-card {
   background-color: rgba(255, 255, 255, 0.7);
 }
+.ezmaster-home-card p.card-text {
+  margin: 0;
+}
+.ezmaster-home-card .progress {
+  margin-bottom: 10px;
+}

@@ -1,12 +1,34 @@
 import axios from "axios";
 
-export function fetchConfig(cb) {
+let ModelConfig = function() {
+  let self = this;
+  self.initializing = true;
+  self.ajaxLoading = true;
+  self.onChanges = [];
+  self.d = { fullFsPercent: 100, fullMemoryPercent: 80 };
+
   axios
     .get("/fakeapi/config.json")
     .then(response => {
       // data comming from AJAX request (config stuff)
-      let data = response.data;
-      return cb(null, data);
+      self.d = response.data;
+      self.ajaxLoading = false;
+      self.initializing = false;
+      self.inform("config");
     })
-    .catch(cb);
-}
+    .catch(err => {
+      console.log("ModelConfig error loading data", err);
+    });
+};
+
+ModelConfig.prototype.subscribe = function(onChange) {
+  this.onChanges.push(onChange);
+};
+
+ModelConfig.prototype.inform = function(modelEvent) {
+  this.onChanges.forEach(function(cb) {
+    cb(modelEvent);
+  });
+};
+
+export default ModelConfig;

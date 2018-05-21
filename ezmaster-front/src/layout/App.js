@@ -11,12 +11,6 @@ import Home from "./../tab-home/Home.js";
 import Instances from "./../tab-instances/Instances.js";
 import Applications from "./../tab-applications/Applications.js";
 
-import { fetchApplicationsList } from "../models/ModelApplications.js";
-import { fetchInstancesList } from "../models/ModelInstances2.js";
-import { fetchConfig } from "../models/ModelConfig2.js";
-import { fetchEzMasterizedApps } from "../models/ModelEzMasterizedApps.js";
-import { initInfoMachinesWS } from "../models/ModelInfoMachine.js";
-
 import Favicon from "react-favicon";
 import favicon from "./favicon.png";
 
@@ -25,41 +19,7 @@ import bgImage from "./ezmaster-logo-bg-lighten.png";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loadingConfig: true,
-      loadingInstances: true,
-      loadingApplications: true,
-      loadingEzMasterizedApps: true,
-      config: {},
-      instances: {},
-      applications: [],
-      ezmasterizedApps: {}
-    };
-  }
-
-  componentDidMount() {
-    initInfoMachinesWS();
-
-    fetchConfig(
-      function(err, config) {
-        this.setState({ config, loadingConfig: false });
-      }.bind(this)
-    );
-    fetchInstancesList(
-      function(err, instances) {
-        this.setState({ instances, loadingInstances: false });
-      }.bind(this)
-    );
-    fetchApplicationsList(
-      function(err, applications) {
-        this.setState({ applications, loadingApplications: false });
-      }.bind(this)
-    );
-    fetchEzMasterizedApps(
-      function(err, ezmasterizedApps) {
-        this.setState({ ezmasterizedApps, loadingEzMasterizedApps: false });
-      }.bind(this)
-    );
+    this.state = {};
   }
 
   render() {
@@ -73,6 +33,9 @@ class App extends Component {
 
         <div className="AppHeader">
           <Header
+            modelEvent={this.props.modelEvent}
+            config={this.props.config}
+            infoMachine={this.props.infoMachine}
             applicationsActive={window.location.pathname === "/applications/"}
             instancesActive={window.location.pathname === "/instances/"}
           />
@@ -92,9 +55,10 @@ class App extends Component {
               path="/instances/"
               render={() => (
                 <Instances
-                  config={this.state.config}
-                  instances={this.state.instances}
-                  applications={this.state.applications}
+                  modelEvent={this.props.modelEvent}
+                  config={this.props.config}
+                  instances={this.props.instances}
+                  applications={this.props.applications}
                 />
               )}
             />
@@ -102,9 +66,10 @@ class App extends Component {
               path="/applications/"
               render={() => (
                 <Applications
-                  config={this.state.config}
-                  applications={this.state.applications}
-                  ezmasterizedApps={this.state.ezmasterizedApps}
+                  modelEvent={this.props.modelEvent}
+                  config={this.props.config}
+                  applications={this.props.applications}
+                  ezMasterizedApps={this.props.ezMasterizedApps}
                 />
               )}
             />
@@ -113,9 +78,11 @@ class App extends Component {
               path="/"
               render={() => (
                 <Home
-                  config={this.state.config}
-                  instances={this.state.instances}
-                  applications={this.state.applications}
+                  modelEvent={this.props.modelEvent}
+                  config={this.props.config}
+                  infoMachine={this.props.infoMachine}
+                  instances={this.props.instances}
+                  applications={this.props.applications}
                 />
               )}
             />
@@ -126,10 +93,12 @@ class App extends Component {
         </div>
         <ModalLoading
           modalIsOpen={true}
-          loadingConfig={this.state.loadingConfig}
-          loadingInstances={this.state.loadingInstances}
+          loadingConfig={this.props.config.initializing}
+          loadingInfoMachine={this.props.infoMachine.initializing}
+          loadingInstances={this.props.instances.initializing}
           loadingApplications={
-            this.state.loadingApplications || this.state.loadingEzMasterizedApps
+            this.props.applications.initializing ||
+            this.props.ezMasterizedApps.initializing
           }
         />
 
