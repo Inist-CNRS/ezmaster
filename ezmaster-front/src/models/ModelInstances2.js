@@ -316,4 +316,19 @@ ModelInstances.prototype.createInstance = function(newInstance, cb) {
     .catch(cb);
 };
 
+ModelInstances.prototype.CheckInstanceAlreadyExists = function(
+  technicalName,
+  cb
+) {
+  let self = this;
+
+  // GET /-/v1/instances/verif/<technicalName>
+  axios
+    .get("/-/v1/instances/verif/" + technicalName)
+    .then(response => {
+      return cb(null, response.data == "OK");
+    })
+    .catch(cb);
+};
+
 export default ModelInstances;

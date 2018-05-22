@@ -113,26 +113,33 @@ class ModalAddInstance extends Component {
   }
 
   handleChangeLongName(e) {
-    let newState = this.generateTechnicalName({
-      ...this.state,
-      ...{
-        errorRequiredLongName: e.target.value === "",
-        longName: e.target.value
+    const self = this;
+    let newState = self.generateTechnicalName(
+      {
+        ...self.state,
+        ...{
+          errorRequiredLongName: e.target.value === "",
+          longName: e.target.value,
+          errorRequiredApplication: this.state.application === ""
+        }
+      },
+      (err, newState) => {
+        newState.formSteps = [
+          ...new Set(newState.formSteps.concat("longName"))
+        ];
+        if (newState.technicalName1Auto !== "") {
+          newState.formSteps = [
+            ...new Set(newState.formSteps.concat("technicalName1"))
+          ];
+        }
+        if (newState.technicalName2Auto !== "") {
+          newState.formSteps = [
+            ...new Set(newState.formSteps.concat("technicalName2"))
+          ];
+        }
+        self.setState(newState);
       }
-    });
-
-    newState.formSteps = [...new Set(newState.formSteps.concat("longName"))];
-    if (newState.technicalName1Auto !== "") {
-      newState.formSteps = [
-        ...new Set(newState.formSteps.concat("technicalName1"))
-      ];
-    }
-    if (newState.technicalName2Auto !== "") {
-      newState.formSteps = [
-        ...new Set(newState.formSteps.concat("technicalName2"))
-      ];
-    }
-    this.setState(newState);
+    );
   }
 
   handleChangeApplication(e) {
@@ -144,6 +151,7 @@ class ModalAddInstance extends Component {
   }
 
   handleChangeTechnicalName1(e) {
+    const self = this;
     e.target.value = this.normalizeTNString(e.target.value);
     let newState = {
       formSteps: [...new Set(this.state.formSteps.concat("technicalName1"))],
@@ -152,11 +160,19 @@ class ModalAddInstance extends Component {
       errorSyntaxTechnicalName1: !RegExp("^[a-z0-9]*$", "g").test(
         e.target.value
       ),
+      errorRequiredApplication: this.state.application === "",
       technicalName1: e.target.value
     };
-    this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
+    this.generateTechnicalName(
+      { ...this.state, ...newState },
+      (err, newState) => {
+        self.setState(newState);
+      }
+    );
   }
   handleChangeTechnicalName2(e) {
+    const self = this;
+
     e.target.value = this.normalizeTNString(e.target.value);
     let newState = {
       formSteps: [...new Set(this.state.formSteps.concat("technicalName2"))],
@@ -165,26 +181,39 @@ class ModalAddInstance extends Component {
       errorSyntaxTechnicalName2: !RegExp("^[a-z0-9]*$", "g").test(
         e.target.value
       ),
+      errorRequiredApplication: this.state.application === "",
       technicalName2: e.target.value
     };
-    this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
+    self.generateTechnicalName(
+      { ...self.state, ...newState },
+      (err, newState) => {
+        self.setState(newState);
+      }
+    );
   }
   handleChangeTechnicalName3(e) {
+    const self = this;
     let newState = {};
     newState.technicalName3 = e.target.value;
-    this.setState(this.generateTechnicalName({ ...this.state, ...newState }));
+    self.generateTechnicalName(
+      { ...self.state, ...newState },
+      (err, newState) => {
+        self.setState(newState);
+      }
+    );
   }
 
-  generateTechnicalName(oldState) {
+  generateTechnicalName(oldState, cb) {
+    const self = this;
     let longNameArray = oldState.longName ? oldState.longName.split(" ") : [];
     let newState = {
       ...oldState,
-      technicalName1Auto: this.normalizeTNString(
+      technicalName1Auto: self.normalizeTNString(
         !oldState.technicalName1
           ? longNameArray[0] ? longNameArray[0] : ""
           : ""
       ),
-      technicalName2Auto: this.normalizeTNString(
+      technicalName2Auto: self.normalizeTNString(
         !oldState.technicalName2
           ? longNameArray[1] ? longNameArray[1] : ""
           : ""
@@ -196,9 +225,13 @@ class ModalAddInstance extends Component {
       (newState.technicalName2 || newState.technicalName2Auto) +
       (newState.technicalName3 ? "-" + newState.technicalName3 : "");
 
-    newState.errorExistsTechnicalName = false; // TODO: change this
-
-    return newState;
+    self.props.instances.CheckInstanceAlreadyExists(
+      newState.technicalName,
+      (err, notExistsTechnicalName) => {
+        newState.errorExistsTechnicalName = !notExistsTechnicalName;
+        return cb(err, newState);
+      }
+    );
   }
 
   /**
