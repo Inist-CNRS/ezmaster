@@ -139,6 +139,9 @@ module.exports.getInstances = function (cb) {
 
         var dockerInstances = [];
         containers.forEach(function (data) {
+          if (!data.Labels.ezmasterInstance) {
+            return; // skip if it's not an ezmaster instance
+          }
 
           var instance = {};
 
