@@ -9,6 +9,7 @@ var cfg = require('../lib/config.js')
   , moment = require('moment')
   , async = require('async')
   , fs = require('fs')
+  , getSize = require('get-folder-size')
   , glob = require('glob')
   , docker = require('./docker.js').docker
   , sortBy = require('sort-by')
@@ -196,9 +197,16 @@ module.exports.getInstances = function (cb) {
         // The '-' means that we want a reversed order.
         dockerInstances.sort(sortBy('-creationDate'));
 
-        // Once docker containers are parsed we return the
-        // Ezmaster formated instances list.
-        return handleDockerInstances(null, dockerInstances);
+        // finally calculates the instance folder size
+        async.map(dockerInstances, function (instance, cbInstanceSize) {
+          var instanceRootPath = cfg.dataInstancesPath + '/' + instance.technicalName + '/';
+          getSize(instanceRootPath, function (err, size) {
+            if (err) return cbInstanceSize(err);
+            instance.rawSize = size;
+            return cbInstanceSize(err, instance);
+          });
+        }, handleDockerInstances);
+
       });
     }
 
