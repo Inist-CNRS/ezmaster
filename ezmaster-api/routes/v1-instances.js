@@ -46,6 +46,19 @@ router.route('/')
 });
 
 /**
+ * Force refreshing the instance list
+ * (this a bad way to do that because the instance state
+ *  should be managed internaly without any client action.
+ *  When the ezmaster API will be rewritten, this should be removed)
+ */
+router.route('/refresh')
+.get(function (req, res, next) {
+  instances.refreshInstances();
+  return res.status(200).send('Refreshing instances list.');
+});
+
+
+/**
  * Start an instance
  */
 router.route('/start/:containerId')
