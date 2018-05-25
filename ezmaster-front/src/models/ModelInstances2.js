@@ -331,4 +331,17 @@ ModelInstances.prototype.CheckInstanceAlreadyExists = function(
     .catch(cb);
 };
 
+ModelInstances.prototype.refreshInstances = function(cb) {
+  let self = this;
+  cb = cb ? cb : () => {};
+
+  // GET /-/v1/instances/verif/<technicalName>
+  axios
+    .get("/-/v1/instances/refresh")
+    .then(response => {
+      return cb(null, response.data);
+    })
+    .catch(cb);
+};
+
 export default ModelInstances;

@@ -80,6 +80,7 @@ class Instances extends Component {
                   <th>Long name</th>
                   <th>Technical name</th>
                   <th>Creation date</th>
+                  <th>Size</th>
                   <th>Application</th>
                   <th>Status</th>
                   <th>Actions</th>

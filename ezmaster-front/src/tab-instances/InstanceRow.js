@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import moment from "moment";
 import { UncontrolledTooltip } from "reactstrap";
+import { prettyBytes } from "../helpers.js";
 
 import "./InstanceRow.css";
 import InstanceBtnTrash from "./InstanceBtnTrash.js";
@@ -46,6 +47,7 @@ class InstanceRow extends Component {
             <code>{this.props.instance.creationDate}</code>
           </UncontrolledTooltip>
         </td>
+        <td>{prettyBytes(this.props.instance.rawSize)}</td>
         <td>{this.props.instance.app}</td>
         <td>
           <InstanceBadgeStatus

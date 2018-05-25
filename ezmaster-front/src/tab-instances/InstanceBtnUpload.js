@@ -5,6 +5,7 @@ import { UncontrolledTooltip } from "reactstrap";
 import { Container, Row, Col } from "reactstrap";
 import { toast } from "react-toastify";
 import renderHTML from "react-render-html";
+import shallowEqual from "fbjs/lib/shallowEqual";
 
 import ModalWebdav from "./ModalWebdav.js";
 
@@ -33,11 +34,15 @@ class InstanceBtnUpload extends Component {
   toggleModalUpload() {
     const self = this;
 
-    self.props.instances.fetchInstanceData(this.props.instance.containerId);
-
-    this.setState({
-      modalIsOpenUpload: !this.state.modalIsOpenUpload
-    });
+    if (this.state.modalIsOpenUpload) {
+      // close it !
+      this.setState({ modalIsOpenUpload: false });
+      self.props.instances.refreshInstances();
+    } else {
+      // open it !
+      self.props.instances.fetchInstanceData(this.props.instance.containerId);
+      this.setState({ modalIsOpenUpload: true });
+    }
   }
   toggleModalWebdav() {
     this.setState({
