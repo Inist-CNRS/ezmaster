@@ -192,6 +192,7 @@ router
       if (err) { return next(err); }
 
       result.technicalName = splittedName[1];
+      result.rawSize = size;
       result.size = filesize(size);
 
       // Get Configuration Information.
