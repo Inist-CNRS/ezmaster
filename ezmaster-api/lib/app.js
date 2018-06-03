@@ -30,6 +30,7 @@ module.exports.getApps = function (cb) {
     }
 
     var manifests = [];
+    var nbImagesHandled = 0;
     files.forEach(function (file) {
 
       var manifest = {};
@@ -44,13 +45,18 @@ module.exports.getApps = function (cb) {
         manifest = JSON.parse(manifestContent);
 
         var image = docker.getImage(manifest.imageName);
-
-        if (image !== undefined) {
-          manifests.push(manifest);
-          if (manifests.length === files.length) {
+        image.inspect(function (err, data) {
+          nbImagesHandled++;
+          if (err) {
+            debug('Remove ' + manifest.imageName + ' from the list because it does not exists on the host. ' + err) 
+          } else {
+            manifest.image = data;
+            manifests.push(manifest);    
+          }
+          if (files.length === nbImagesHandled) {
             return cb(null, manifests);
           }
-        }
+        });
       });
     });
   });
