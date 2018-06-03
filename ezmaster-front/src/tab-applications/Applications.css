@@ -1,3 +1,64 @@
 .ezmaster-applications {
   min-height: 500px;
 }
+
+/* to remove horizontal scrollbars on the big table list */
+.ezmaster-applications .row {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+.ezmaster-applications .col {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.ezmaster-applications-table {
+  color: #616161;
+}
+
+.ezmaster-applications-add {
+  font-size: 1.2rem;
+}
+
+.ezmaster-applications-add-top {
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+table.ezmaster-applications-table th {
+  border-top: 0px;
+}
+
+/* Responsive table,
+   see https://bootsnipp.com/snippets/featured/no-more-tables-respsonsive-table */
+@media only screen and (max-width: 800px) {
+  /* Force table to not be like tables anymore */
+  .ezmaster-applications-table table,
+  .ezmaster-applications-table thead,
+  .ezmaster-applications-table tbody,
+  .ezmaster-applications-table th,
+  .ezmaster-applications-table td,
+  .ezmaster-applications-table tr {
+    display: block;
+  }
+
+  /* Hide table headers (but not display: none;, for accessibility) */
+  .ezmaster-applications-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .ezmaster-applications-table tr {
+    border: 1px solid #ccc;
+  }
+
+  .ezmaster-applications-table td {
+    /* Behave  like a "row" */
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    white-space: normal;
+    text-align: left;
+  }
+}

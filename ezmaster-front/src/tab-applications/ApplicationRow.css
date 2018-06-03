@@ -1,0 +1,18 @@
+.ezmaster-a-a {
+  display: inline-block;
+}
+
+.ezmaster-a-a-btn {
+  font-size: 1.6rem;
+  padding: 0 2px 0 2px;
+  margin: 0px;
+}
+.ezmaster-a-a-btn i {
+  vertical-align: top;
+}
+
+@media only screen and (max-width: 800px) {
+  .ezmaster-a-a i {
+    font-size: 2.8rem;
+  }
+}
