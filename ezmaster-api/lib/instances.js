@@ -201,9 +201,12 @@ module.exports.getInstances = function (cb) {
         async.map(dockerInstances, function (instance, cbInstanceSize) {
           var instanceRootPath = cfg.dataInstancesPath + '/' + instance.technicalName + '/';
           getSize(instanceRootPath, function (err, size) {
-            if (err) return cbInstanceSize(err);
-            instance.rawSize = size;
-            return cbInstanceSize(err, instance);
+            if (err) {
+              instance.rawSize = 0;
+            } else {
+              instance.rawSize = size;
+            }
+            return cbInstanceSize(null, instance);
           });
         }, handleDockerInstances);
 
