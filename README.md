@@ -209,6 +209,10 @@ If you want to save the config and the data of your instances:
 
 ## Changelog
 
+### ezmaster 4.3.2
+
+- Add the proxypreservehost feature on the ezmaster-rp's nginx config (needed especially by instances, ex: wordpress)
+
 ### ezmaster 4.3.1
 
 - Fix webdav files permissions & access permissions.
