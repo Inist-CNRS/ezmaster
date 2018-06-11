@@ -11,6 +11,7 @@ server {
     # max file upload size
     client_max_body_size 500M;
 
+    proxy_set_header Host $http_host;
     proxy_pass http://ezmaster-webdav:35270/;
     proxy_redirect off;
   }

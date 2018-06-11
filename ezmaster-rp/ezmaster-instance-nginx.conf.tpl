@@ -12,12 +12,14 @@ server {
     # max file upload size
     client_max_body_size 500M;
 
+    proxy_set_header Host $http_host;
     proxy_pass http://EZMASTER_RP_INSTANCE_HOST:EZMASTER_RP_INSTANCE_PORT;
   }
 
   # enable websocket support (only support socket.io stuff)
   location /socket.io/ {
     proxy_http_version 1.1;
+    proxy_set_header Host $http_host;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
     proxy_pass http://EZMASTER_RP_INSTANCE_HOST:EZMASTER_RP_INSTANCE_PORT;
