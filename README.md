@@ -212,6 +212,7 @@ If you want to save the config and the data of your instances:
 ### ezmaster 4.3.2
 
 - Add the proxypreservehost feature on the ezmaster-rp's nginx config (needed especially by instances, ex: wordpress)
+- Bug fix: somtime log button does not work because of a strange behavior on the [dockerode lib](https://github.com/apocas/dockerode/issues/456) 
 
 ### ezmaster 4.3.1
 
