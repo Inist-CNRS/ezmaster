@@ -687,12 +687,19 @@ router
       if (err) {
         return res.status(err.statusCode).send(err.reason).end();
       }
-      stream.on('data', (chunk) => {
-        res.write(stripAnsi(chunk.toString()));
-      });
-      stream.on('end', () => {
+      // strange behavior: stream could be a string !
+      // see https://github.com/apocas/dockerode/issues/456
+      if (typeof(stream) === 'string') {
+        res.write(stripAnsi(stream));
         res.end();
-      });
+      } else {
+        stream.on('data', (chunk) => {
+          res.write(stripAnsi(chunk.toString()));
+        });
+        stream.on('end', () => {
+          res.end();
+        });
+      }
     });
   });
 });
