@@ -25,13 +25,4 @@ server {
     proxy_pass http://EZMASTER_RP_INSTANCE_HOST:EZMASTER_RP_INSTANCE_PORT;
   }
 
-  # Block nginx from serving .git directories
-  location ~ /\.git {
-    deny all;
-  }
-  # or, all . directories/files in general (including .htaccess, etc)
-  location ~ /\. {
-    deny all;
-  }
-
 }

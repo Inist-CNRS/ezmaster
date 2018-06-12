@@ -23,13 +23,4 @@ server {
     proxy_pass http://ezmaster-front:35268;
   }
 
-  # Block nginx from serving .git directories
-  location ~ /\.git {
-    deny all;
-  }
-  # or, all . directories/files in general (including .htaccess, etc)
-  location ~ /\. {
-    deny all;
-  }
-
 }
