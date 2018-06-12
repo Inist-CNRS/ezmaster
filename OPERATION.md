@@ -1,6 +1,6 @@
 # EzMaster for ops
 
-EzMaster has [requirements](DEVELOPER.md) and can be [customized with env parameters](DEVELOPER.md).
+EzMaster has [requirements](DEVELOPER.md#requirements) and can be [customized with env parameters](DEVELOPER.md#environment-variables).
 
 ## Install and run for production
 
