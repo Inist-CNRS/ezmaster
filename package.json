@@ -5,12 +5,12 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext=.js,.vue ./ezmaster-api/index.js ./ezmaster-api/routes/ ./ezmaster-api/middlewares/ ./test/ ./ezmaster-api/lib/ ./ezmaster-front/public/src/",
-    "insertversion:readme": "sed -i \"s#\\(ezmaster/\\)\\([\\.a-z0-9]\\+\\)\\(/docker-compose\\)#\\1${npm_package_version}$3\\3#g\" README.md",
+    "insertversion:readme": "sed -i \"s#\\(ezmaster/\\)\\([\\.a-z0-9]\\+\\)\\(/docker-compose\\)#\\1${npm_package_version}$3\\3#g\" *.md",
     "insertversion:docker": "sed -i \"s#\\(inistcnrs/ezmaster:\\)\\([\\.a-z0-9]\\+\\)\\(-[a-z]\\+\\)#\\1${npm_package_version}\\3#g\" docker-compose*.yml ezmaster-webdav/README.md",
     "insertversion:index": "sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html",
     "insertversion:package": "sed -i \"s#^\\(  \\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" ezmaster-front/package*.json ezmaster-api/package*.json",
     "preversion": "npm run lint",
-    "version": "npm run insertversion:readme && npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add README.md ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package*.json ezmaster-front/package*.json docker-compose*.yml ezmaster-webdav/README.md",
+    "version": "npm run insertversion:readme && npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add *.md ezmaster-front/public/index.html ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package*.json ezmaster-front/package*.json docker-compose*.yml ezmaster-webdav/README.md",
     "postversion": "git push && git push --tags",
     "precommit": "npm run lint",
     "postinstall": "cd ezmaster-api/ ; npm i --unsafe-perm ; cd ../ezmaster-front/ ; npm i --unsafe-perm"
