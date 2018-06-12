@@ -76,7 +76,7 @@ mkdir ./ezmaster && cd ezmaster
 mkdir -p ./data/applications ./data/instances ./data/manifests
 mkdir -p ./logs/ezmaster-front/ ./logs/ezmaster-rp/instances/ ./logs/ezmaster-webdav/
 
-wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/4.3.1/docker-compose.yml
+wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/4.3.2/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
@@ -208,6 +208,12 @@ If you want to save the config and the data of your instances:
 [![architecture 4.0](https://docs.google.com/drawings/d/e/2PACX-1vTAlDhUXFEigSwBPsAUH16E2Eqkb2OIJ7H1BaKk_zLd3_RJn3bmTIqnWYvbwqPsJs76RCCjCcZqyjEc/pub?w=791&h=573)](https://docs.google.com/drawings/d/1Z-2F4o5PTx4Fsk5eBps8tKvh5Pf79zsSGLHUXv1UA18/edit)
 
 ## Changelog
+
+### ezmaster 4.3.2
+
+* Add the proxypreservehost feature on the ezmaster-rp's nginx config (needed especially by instances, ex: wordpress)
+* Bug fix: somtime log button does not work because of a strange behavior on the [dockerode lib](https://github.com/apocas/dockerode/issues/456)
+* EzMaster do not forbid anymore .git and .\* web folders
 
 ### ezmaster 4.3.1
 
