@@ -32,6 +32,11 @@ When you want to **upgrade EzMaster**, you just have to download the new EzMaste
 
 If you want to save the config and the data of your instances:
 - you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
-- you also have to save the mongodb database contained in the ezmaster_db docker container: `docker exec -it ezmaster_db mongodump --quiet --archive=- > ezmaster_db_archive`
+- you also have to save the mongodb database contained in the ezmaster_db docker container:
+  
+  ```
+  docker exec -it ezmaster_db mongodump --quiet --archive=- > ezmaster_db_archive
+  ```
+  
   (ezmaster_db will be deprecated in ezmaster ⩾ v5)
 
