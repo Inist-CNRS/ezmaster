@@ -5,6 +5,7 @@ EzMaster changelog lists what changed (features and bug fix) between all the ezm
 ### ezmaster 4.X.X
 
 - Add EZMASTER_VERSION variable in environment of instances
+- Bug fix : try to avoid invalid technical name
 - Bug fix: improved sorting of technical names, to get the last version of a instance
 
 ### ezmaster 4.3.2
