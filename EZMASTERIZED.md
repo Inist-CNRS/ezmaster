@@ -1,4 +1,4 @@
-# How to EzMasterize an application
+# How to EzMasterize an application?
 
 ## Dockerfile modifications
 
