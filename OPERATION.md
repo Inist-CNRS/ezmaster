@@ -48,7 +48,21 @@ You should add a dedicated VirtualHost :
     ServerName exemple.fr
     ServerAlias *.exemple.fr
     ProxyPreserveHost On
-    ProxyPass        / http://192.168.100.10:35267/   # Replace IP with yours
-    ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours
+    ProxyPass        / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+    ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+</VirtualHost>
+<VirtualHost *:443>
+    ServerName exemple.fr
+    ServerAlias *.exemple.fr
+
+    SSLEngine on
+    SSLProxyEngine on
+    SSLCACertificateFile  /your/path/to/DigiCertCA.crt
+    SSLCertificateFile    /your/path/to/exemple_fr.crt
+    SSLCertificateKeyFile /your/path/to/exemple_fr.key
+
+    ProxyPreserveHost On
+    ProxyPass        / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+    ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
 </VirtualHost>
 ``` 
