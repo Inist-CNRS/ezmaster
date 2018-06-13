@@ -48,7 +48,7 @@ You should add a dedicated VirtualHost :
     ServerName exemple.fr
     ServerAlias *.exemple.fr
     ProxyPreserveHost On
-    ProxyPass        / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+    ProxyPass        / http://192.168.100.10:35267/ retry=5   # Replace IP with yours ezmaster IP
     ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
 </VirtualHost>
 <VirtualHost *:443>
@@ -62,7 +62,19 @@ You should add a dedicated VirtualHost :
     SSLCertificateKeyFile /your/path/to/exemple_fr.key
 
     ProxyPreserveHost On
-    ProxyPass        / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+    ProxyPass        / http://192.168.100.10:35267/ retry=5   # Replace IP with yours ezmaster IP
     ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
 </VirtualHost>
 ``` 
+
+### How to use ezmaster behind Apache reverse proxy with a custom domain ?
+
+```
+<VirtualHost *:80>
+    ServerName www.exemple.fr
+    RequestHeader set Host "technical-name.example.fr"  # supposing exemple.fr is a value of EZMASTER_PUBLIC_DOMAIN (env. var.) 
+    ProxyPreserveHost On
+    ProxyPass        / http://192.168.100.10:35267/ retry=5  # Replace IP with yours ezmaster IP
+    ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+</VirtualHost>
+```
