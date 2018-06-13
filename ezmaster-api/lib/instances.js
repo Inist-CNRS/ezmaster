@@ -419,7 +419,7 @@ module.exports.generateAllRPNginxConfig = function (cb) {
           if (item1[0] === item2[0] && item1[1] === item2[1]) {
             return parseInt(item1[2]) < parseInt(item2[2]) ? 1 : -1;
           }
-          return 1;
+          return item1[0].localeCompare(item2[0]);
         }).reverse();
 
         // generate all the instances reverseproxy configurations (nginx)
