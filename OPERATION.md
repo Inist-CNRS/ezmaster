@@ -28,7 +28,7 @@ When you want to **upgrade EzMaster**, you just have to download the new EzMaste
 
 ## FAQ
 
-### How to backup the data and the config of the instances?
+### How to backup instances (data and config)?
 
 If you want to save the config and the data of your instances:
 - you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
