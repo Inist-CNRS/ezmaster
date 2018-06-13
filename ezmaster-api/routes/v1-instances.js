@@ -428,6 +428,7 @@ router
           // https://docs.docker.com/engine/admin/start-containers-automatically/
           + (process.env.NODE_ENV === 'production' ? '--restart unless-stopped ' : '')
           + '-e EZMASTER_TECHNICAL_NAME="' + technicalName + '" '
+          + '-e EZMASTER_VERSION ="' + cfg.package.version + '" '
           // eslint-disable-next-line quotes
           + '-e EZMASTER_LONG_NAME="' + longName.replace('"', "\\\"") + '" '
           + '-e EZMASTER_APPLICATION="' + image + '" '
