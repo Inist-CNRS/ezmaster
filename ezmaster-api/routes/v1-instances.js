@@ -288,11 +288,15 @@ router
   var technicalName = req.body.technicalName
     , longName = req.body.longName
     , image = req.body.app
-    , project = req.body.project
-    , study = req.body.study
-    , version = req.body.version
+    , project = req.body.project || ''
+    , study = req.body.study || ''
+    , version = req.body.version || ''
     ;
   debug('Creating an instance:', technicalName, longName, image);
+
+  project = project.trim();
+  study = study.trim();
+  version = version.trim();
 
   if (/^[a-z0-9]+$/.test(project) == false && project != '' && project != null) {
     return res.status(400).send('Enter a valid project name');
