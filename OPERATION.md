@@ -28,7 +28,7 @@ When you want to **upgrade EzMaster**, you just have to download the new EzMaste
 
 ## FAQ
 
-### How to save the data and config of the instances ?
+### How to backup the data and the config of the instances?
 
 If you want to save the config and the data of your instances:
 - you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
@@ -40,9 +40,9 @@ If you want to save the config and the data of your instances:
   
   (ezmaster_db will be deprecated in ezmaster ⩾ v5)
 
-### How to use ezmaster behind Apache reverse proxy ?
+### How to use ezmaster behind Apache reverse proxy?
 
-You should add a dedicated VirtualHost : 
+You should add a dedicated VirtualHost: 
 ```
 <VirtualHost *:80>
     ServerName exemple.fr
@@ -67,7 +67,7 @@ You should add a dedicated VirtualHost :
 </VirtualHost>
 ``` 
 
-### How to use ezmaster behind Apache reverse proxy with a custom domain ?
+### How to use ezmaster behind Apache reverse proxy with a custom domain?
 
 ```
 <VirtualHost *:80>
