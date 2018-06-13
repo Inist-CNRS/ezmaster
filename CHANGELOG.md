@@ -2,6 +2,11 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster. 
 
+### ezmaster 4.X.X
+
+- Add EZMASTER_VERSION variable in environment of instances
+- Bug fix: improved sorting of technical names, to get the last version of a instance
+
 ### ezmaster 4.3.2
 
 - Add the proxypreservehost feature on the ezmaster-rp's nginx config (needed especially by instances, ex: wordpress)
