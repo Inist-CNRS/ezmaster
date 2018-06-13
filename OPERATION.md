@@ -40,3 +40,15 @@ If you want to save the config and the data of your instances:
   
   (ezmaster_db will be deprecated in ezmaster ⩾ v5)
 
+### How to use ezmaster behind Apache reverse proxy ?
+
+You should add a dedicated VirtualHost : 
+```
+<VirtualHost *:80>
+    ServerName exemple.fr
+    ServerAlias *.exemple.fr
+    ProxyPreserveHost On
+    ProxyPass        / http://192.168.100.10:35267/   # Replace IP with yours
+    ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours
+</VirtualHost>
+``` 
