@@ -42,7 +42,7 @@ When ezmaster launches your application, it provides few environment variables
 to this instance:
 
 - `EZMASTER_MONGODB_HOST_PORT`: (will be deprecated in ezmaster v5), ex: `ezmaster_db:27017`
-- `EZMASTER_VERSION`: the current version of ezamster (ex: `4.3.1`)
+- `EZMASTER_VERSION`: the current version of ezmaster (ex: `4.3.1`)
 - `EZMASTER_TECHNICAL_NAME`: the identifier of the instance within ezmaster (ex: `myapp-usage-1`)
 - `EZMASTER_LONG_NAME`: a free label for the instance (ex: `This instance is used for the customer C, and maintained by Matt`)
 - `EZMASTER_APPLICATION`: the complete tag of your application's docker image (ex: `inistcnrs/ezmaster-hexo:1.0.3`)
