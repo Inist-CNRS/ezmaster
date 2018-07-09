@@ -2,11 +2,12 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster. 
 
-### ezmaster 4.X.X
+### ezmaster 4.4.0
 
 - Add EZMASTER_VERSION variable in environment of instances
-- Bug fix : try to avoid invalid technical name
+- Bug fix: try to avoid invalid technical name
 - Bug fix: improved sorting of technical names, to get the last version of a instance
+- README refactoring
 
 ### ezmaster 4.3.2
 
