@@ -124,6 +124,6 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 ### ezvis
 
 - A dashboard to visualize a synthesis on a structured corpus, using several charts (pies, histograms, ...)
-- [![Docker](https://img.shields.io/docker/pulls/madec-project/ezvis.svg)](https://registry.hub.docker.com/u/madec-project/ezvis/) [![Github](https://img.shields.io/github/tag/madec-project/ezvis.svg)](https://github.com/madec-project/ezvis)
+- [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezvis.svg)](https://registry.hub.docker.com/u/inistcnrs/ezvis/) [![Github](https://img.shields.io/github/tag/madec-project/ezvis.svg)](https://github.com/madec-project/ezvis)
 
 
