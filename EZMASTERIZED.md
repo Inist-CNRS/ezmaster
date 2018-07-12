@@ -65,6 +65,12 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 - Desc ...
 - [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-hexo.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-hexo/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-hexo.svg)](https://github.com/Inist-CNRS/ezmaster-hexo)
 
+### ezmaster-jekyll
+
+- Jekyll for ezmaster! (a static web site generator)
+- [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-jekyll.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-jekyll/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-jekyll.svg)](https://github.com/Inist-CNRS/ezmaster-jekyll)
+
+
 ### ezmaster-mongo
 
 - MongoDB for ezmaster with an auto dump feature
