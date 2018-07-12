@@ -7,6 +7,7 @@ import shallowEqual from "fbjs/lib/shallowEqual";
 
 import "./Applications.css";
 import ApplicationRow from "./ApplicationRow.js";
+import ModalAddApplication from "./ModalAddApplication.js";
 
 class Applications extends Component {
   constructor(props) {
@@ -92,15 +93,14 @@ class Applications extends Component {
               <i className="fa fa-plus-circle" /> Add application
             </Button>
 
-            {/*
-            <ModalAddInstance
+            <ModalAddApplication
               config={this.props.config}
-              modalIsOpen={this.state.modalAddInstanceIsOpen}
+              modalIsOpen={this.state.modalAddApplicationIsOpen}
               applications={this.props.applications}
+              ezMasterizedApps={this.props.ezMasterizedApps}
               instances={this.props.instances}
-              toggle={this.toggleModalAddInstance}
+              toggle={this.toggleModalAddApplication}
             />
-*/}
           </Col>
         </Row>
       </div>

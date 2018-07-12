@@ -30,7 +30,7 @@ module.exports.prettyBytes = num => {
 module.exports.parseEzMasterizedAppsMD = rawMD => {
   let myArray;
   let appList = {};
-  let myRe = new RegExp("^## (.*)\n+- (.*)\n- (.*)", "mg");
+  let myRe = new RegExp("^### (.*)\n+- (.*)\n- (.*)$", "mg");
   while ((myArray = myRe.exec(rawMD)) !== null) {
     var docker = new RegExp("registry.hub.docker.com/u/([^/]+)/([^/)]+)").exec(
       myArray[3]

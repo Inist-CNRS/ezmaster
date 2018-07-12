@@ -9,7 +9,7 @@ let ModelEzMasterizedApps = function() {
   self.d = [];
 
   const url =
-    "https://raw.githubusercontent.com/Inist-CNRS/ezmaster/reactjs/EZMASTERIZED.md";
+    "https://raw.githubusercontent.com/Inist-CNRS/ezmaster/master/EZMASTERIZED.md";
   axios
     .get(url)
     .then(response => {
