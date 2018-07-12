@@ -22,7 +22,9 @@ class Applications extends Component {
     if (!shallowEqual(this.state, nextState)) {
       return true;
     }
-    return ["config", "applications"].includes(nextProps.modelEvent);
+    return ["config", "applications", "ezMasterizedApps"].includes(
+      nextProps.modelEvent
+    );
   }
 
   toggleModalAddApplication() {

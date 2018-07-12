@@ -123,7 +123,9 @@ class ModalAddApplication extends Component {
    */
   handleChangeApplicationName(e) {
     const self = this;
-    const inputValue = e.target.value;
+    const inputValue =
+      e && e.target ? e.target.value : self.state.applicationName;
+    console.log("handleChangeApplicationName", inputValue);
     self.setState({
       errorRequiredApplicationName: inputValue.trim().length == 0
     });
@@ -175,38 +177,72 @@ class ModalAddApplication extends Component {
    * and empty the application name list
    */
   handleApplicationNameSelected(applicationName) {
-    this.setState({
+    const self = this;
+    self.setState({
       applicationName: applicationName,
-      applicationsNameList: []
+      applicationsNameList: [],
+      errorRequiredApplicationName: applicationName.length == 0
     });
-    this.inputApplicationName.focus();
-    this.handleChangeApplicationVersion(
-      { target: { value: this.state.applicationVersion } },
-      true
-    );
+    self.inputApplicationName.focus();
+    self.loadApplicationVersionSuggestionWithTimeout();
   }
   handleApplicationVersionSelected(applicationVersion) {
-    this.setState({
+    const self = this;
+    console.log("applicationVersion", applicationVersion);
+    self.setState({
       applicationVersion: applicationVersion,
-      applicationsVersionList: []
+      applicationsVersionList: [],
+      errorRequiredApplicationVersion: applicationVersion.length == 0
     });
-    this.inputApplicationVersion.focus();
+    self.inputApplicationVersion.focus();
   }
 
-  handleChangeApplicationVersion(e, forceVersionFetch) {
+  handleChangeApplicationVersion(e) {
     const self = this;
-    const inputValue = e.target.value;
+
+    // update the input field value
+    const inputValue =
+      e && e.target ? e.target.value : self.state.applicationVersion;
+    console.log("handleChangeApplicationVersion", e, inputValue);
     self.setState({
       errorRequiredApplicationVersion: inputValue.trim().length == 0
     });
-
     // skip if the value is not changed !
-    if (!forceVersionFetch && inputValue == self.state.applicationVersion)
-      return;
+    if (inputValue != self.state.applicationVersion) {
+      self.setState({
+        applicationVersion: inputValue
+      });
+      self.loadApplicationVersionSuggestionWithTimeout();
+    }
+  }
 
-    self.setState({
-      applicationVersion: inputValue
-    });
+  loadApplicationNameSuggestion(inputValue, callback) {
+    if (!inputValue) return callback([]);
+
+    // /-/v1/hub/search/repositories/?query=inist&page=1&page_size=5
+    this.props.applications.searchDockerHubImageName(
+      inputValue,
+      (err, applicationsList) => {
+        if (err) return callback([]);
+        callback(applicationsList);
+      }
+    );
+  }
+
+  loadApplicationVersionSuggestion(applicationName, callback) {
+    if (!applicationName) return callback([]);
+
+    // /-/v1/hub/repositories/inistcnrs/ezmaster-webserver/tags/?page=1&page_size=10
+    this.props.applications.searchDockerHubImageVersion(
+      applicationName,
+      (err, applicationsVersionList) => {
+        if (err) return callback([]);
+        callback(applicationsVersionList);
+      }
+    );
+  }
+  loadApplicationVersionSuggestionWithTimeout() {
+    const self = this;
 
     // do nothing more it the applicationName is empty because
     // searching on dockerhub would be useless
@@ -226,33 +262,9 @@ class ModalAddApplication extends Component {
     }, 100);
   }
 
-  loadApplicationNameSuggestion(inputValue, callback) {
-    if (!inputValue) return callback([]);
-
-    // /-/v1/hub/search/repositories/?query=inist&page=1&page_size=5
-    this.props.applications.searchDockerHubImageName(
-      inputValue,
-      (err, applicationsList) => {
-        if (err) return callback([]);
-        callback(applicationsList);
-      }
-    );
-  }
-
-  loadApplicationVersionSuggestion(inputValue, callback) {
-    if (!inputValue) return callback([]);
-
-    // /-/v1/hub/repositories/inistcnrs/ezmaster-webserver/tags/?page=1&page_size=10
-    this.props.applications.searchDockerHubImageVersion(
-      inputValue,
-      (err, applicationsVersionList) => {
-        if (err) return callback([]);
-        callback(applicationsVersionList);
-      }
-    );
-  }
-
   render() {
+    const self = this;
+
     // calculate if the create button could be enabled
     const createBtnDisabled =
       this.state.creatingApplication ||
@@ -260,8 +272,21 @@ class ModalAddApplication extends Component {
       this.state.applicationVersion.length == 0;
     const cancelBtnDisabled = this.state.creatingApplication;
 
+    let applicationsNameListJSON = this.state.applicationsNameList;
+    // if (this.state.applicationName.length == 0) {
+    //   applicationsNameListJSON = Object.keys(self.props.ezMasterizedApps.d).map((key) => {
+    //     let item = self.props.ezMasterizedApps.d[key];
+    //     return {
+    //       name: item.docker,
+    //       description: item.description,
+    //       github: item.github,
+    //       ezmasterized: true
+    //     }
+    //   }).slice(0, 5)
+    // }
+
     // applications name suggestion list
-    const applicationsNameList = this.state.applicationsNameList.map(item => {
+    const applicationsNameList = applicationsNameListJSON.map(item => {
       return (
         <ListGroupItem
           onClick={() => this.handleApplicationNameSelected(item.name)}
@@ -320,7 +345,7 @@ class ModalAddApplication extends Component {
                 type="text"
                 name="emaa-name"
                 id="emaa-name"
-                autocomplete="off"
+                autoComplete="off"
                 placeholder="Ex: inistcnrs/ezmaster-webserver"
                 value={this.state.applicationName}
                 invalid={this.state.errorRequiredApplicationName}
@@ -360,7 +385,7 @@ class ModalAddApplication extends Component {
                 type="text"
                 name="emaa-version"
                 id="emaa-version"
-                autocomplete="off"
+                autoComplete="off"
                 placeholder="..."
                 value={this.state.applicationVersion}
                 invalid={this.state.errorRequiredApplicationVersion}
