@@ -22,10 +22,6 @@ import {
 import { Row, Col } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { UncontrolledTooltip } from "reactstrap";
-// import Select from 'react-select';
-// import AsyncSelect from 'react-select/lib/Async';
-//import Autosuggest from 'react-autosuggest';
-// import Autocomplete from 'react-autocomplete';
 
 import latinize from "latinize";
 import { toast } from "react-toastify";
@@ -53,12 +49,8 @@ class ModalAddApplication extends Component {
       username: "",
       password: "",
       email: "",
-      formSteps: [],
-      errorsList: [
-        "errorRequireApplicationName",
-        "errorRequiredApplicationVersion"
-      ],
-      errorRequireApplicationName: false,
+
+      errorRequiredApplicationName: false,
       errorRequiredApplicationVersion: false,
       creatingApplication: false
     };
@@ -132,6 +124,9 @@ class ModalAddApplication extends Component {
   handleChangeApplicationName(e) {
     const self = this;
     const inputValue = e.target.value;
+    self.setState({
+      errorRequiredApplicationName: inputValue.trim().length == 0
+    });
 
     // skip if the value is not changed !
     if (inputValue == self.state.applicationName) return;
@@ -148,7 +143,7 @@ class ModalAddApplication extends Component {
       self.loadApplicationNameSuggestion(inputValue, applicationsNameList => {
         applicationsNameList = applicationsNameList.map(item => {
           // search if this app is in the ezmasterized list
-          // the extract the description and set the flag ezmasterized=true
+          // then extract the description and set the flag ezmasterized=true
           // (docker image name is the string to compare)
           let ezmasterized = false;
           let github = "";
@@ -201,6 +196,9 @@ class ModalAddApplication extends Component {
   handleChangeApplicationVersion(e, forceVersionFetch) {
     const self = this;
     const inputValue = e.target.value;
+    self.setState({
+      errorRequiredApplicationVersion: inputValue.trim().length == 0
+    });
 
     // skip if the value is not changed !
     if (!forceVersionFetch && inputValue == self.state.applicationVersion)
@@ -256,15 +254,10 @@ class ModalAddApplication extends Component {
 
   render() {
     // calculate if the create button could be enabled
-    const nbErrors = this.state.errorsList
-      .map(elt => (this.state[elt] ? 1 : 0))
-      .reduce((accumulator, currentValue) => {
-        return accumulator + currentValue;
-      });
     const createBtnDisabled =
       this.state.creatingApplication ||
-      this.state.formSteps.length < 4 ||
-      nbErrors > 0;
+      this.state.applicationName.length == 0 ||
+      this.state.applicationVersion.length == 0;
     const cancelBtnDisabled = this.state.creatingApplication;
 
     // applications name suggestion list
@@ -330,7 +323,7 @@ class ModalAddApplication extends Component {
                 autocomplete="off"
                 placeholder="Ex: inistcnrs/ezmaster-webserver"
                 value={this.state.applicationName}
-                invalid={this.state.errorRequireApplicationName}
+                invalid={this.state.errorRequiredApplicationName}
                 onChange={this.handleChangeApplicationName}
                 onBlur={this.handleChangeApplicationName}
                 maxLength={250}
@@ -341,8 +334,10 @@ class ModalAddApplication extends Component {
                 {applicationsNameList}
               </ListGroup>
 
-              {this.state.errorRequireApplicationName && (
-                <FormText color="danger">This field is required.</FormText>
+              {this.state.errorRequiredApplicationName && (
+                <FormText color="danger">
+                  Application name is required.
+                </FormText>
               )}
               <FormText>
                 Type a part of (autocomplete from dockerhub) or the{" "}
@@ -368,7 +363,7 @@ class ModalAddApplication extends Component {
                 autocomplete="off"
                 placeholder="..."
                 value={this.state.applicationVersion}
-                invalid={this.state.errorRequireApplicationVersion}
+                invalid={this.state.errorRequiredApplicationVersion}
                 onChange={this.handleChangeApplicationVersion}
                 onBlur={this.handleChangeApplicationVersion}
                 maxLength={100}
@@ -376,7 +371,7 @@ class ModalAddApplication extends Component {
               />
 
               {this.state.errorRequiredApplicationVersion && (
-                <FormFeedback>This field is required.</FormFeedback>
+                <FormFeedback>Version is required.</FormFeedback>
               )}
               <FormText>
                 Type the application version (docker image tag)
