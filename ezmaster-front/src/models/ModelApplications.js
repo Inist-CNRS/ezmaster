@@ -1,4 +1,5 @@
 import axios from "axios";
+import { subscribeToWS } from "../websocket.js";
 
 let ModelApplications = function() {
   let self = this;
@@ -19,6 +20,12 @@ let ModelApplications = function() {
     .catch(err => {
       console.log("ModelApplications error loading data", err);
     });
+
+  // connect websocket to the model
+  subscribeToWS("statusPull", data => {
+    self.dockerPull = data;
+    self.inform("applications");
+  });
 };
 
 ModelApplications.prototype.subscribe = function(onChange) {
@@ -38,12 +45,26 @@ ModelApplications.prototype.deleteApplication = function(application) {
   }, 1000);
 };
 
-ModelApplications.prototype.createApplication = function(newApplication) {
+ModelApplications.prototype.createApplication = function(newApplication, cb) {
   let self = this;
-  setTimeout(function() {
-    console.log("createApplication", newApplication);
-    self.inform("applications");
-  }, 1000);
+
+  // POST /-/v1/app
+  // {"imageName":"istex/istex-view","versionImage":"2.5.1","imageHub":"","username":"","password":"","email":""}
+  const data = {
+    imageName: newApplication.imageName,
+    versionImage: newApplication.versionImage,
+    imageHub: newApplication.imageHub,
+    username: newApplication.username,
+    password: newApplication.password,
+    email: newApplication.email
+  };
+
+  axios
+    .post("/-/v1/app", data)
+    .then(response => {
+      return cb(null, response.data);
+    })
+    .catch(cb);
 };
 
 ModelApplications.prototype.searchDockerHubImageName = function(searchTxt, cb) {

@@ -9,7 +9,8 @@ import {
   InputGroup,
   InputGroupAddon,
   FormText,
-  FormFeedback
+  FormFeedback,
+  Progress
 } from "reactstrap";
 
 import {
@@ -22,7 +23,7 @@ import {
 import { Row, Col } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { UncontrolledTooltip } from "reactstrap";
-
+import { parseDockerPullToPerCent } from "../helpers.js";
 import latinize from "latinize";
 import { toast } from "react-toastify";
 
@@ -337,6 +338,7 @@ class ModalAddApplication extends Component {
         );
       }
     );
+
     return (
       <Modal
         isOpen={this.props.modalIsOpen}
@@ -358,6 +360,7 @@ class ModalAddApplication extends Component {
                   id="emaa-name"
                   autoComplete="off"
                   placeholder="Ex: inistcnrs/ezmaster-webserver"
+                  disabled={this.state.creatingApplication}
                   value={this.state.applicationName}
                   invalid={this.state.errorRequiredApplicationName}
                   onChange={this.handleChangeApplicationName}
@@ -408,6 +411,7 @@ class ModalAddApplication extends Component {
                   id="emaa-version"
                   autoComplete="off"
                   placeholder="..."
+                  disabled={this.state.creatingApplication}
                   value={this.state.applicationVersion}
                   invalid={this.state.errorRequiredApplicationVersion}
                   onChange={this.handleChangeApplicationVersion}
@@ -432,6 +436,19 @@ class ModalAddApplication extends Component {
                 Type the application version (docker image tag)
               </FormText>
             </FormGroup>
+
+            {this.state.creatingApplication &&
+              this.props.applications.dockerPull && (
+                <div>
+                  <FormText>{this.props.applications.dockerPull}</FormText>
+                  <Progress
+                    color="#4c9edd"
+                    value={parseDockerPullToPerCent(
+                      this.props.applications.dockerPull
+                    )}
+                  />
+                </div>
+              )}
           </ModalBody>
           <ModalFooter>
             <FormText

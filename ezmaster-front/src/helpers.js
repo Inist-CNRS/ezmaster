@@ -47,3 +47,18 @@ module.exports.parseEzMasterizedAppsMD = rawMD => {
   }
   return appList;
 };
+
+/**
+ * Parse docker pull result stream to %
+ */
+module.exports.parseDockerPullToPerCent = txt => {
+  // Extracting: 34.54MB/62.64MB
+  if (!txt) return 0;
+  let parsed = txt
+    .replace("Extracting: ", "")
+    .replace("Downloading: ", "")
+    .replace(/MB/g, "", "g")
+    .split("/")
+    .map(parseFloat);
+  return parsed[0] / parsed[1] * 100;
+};
