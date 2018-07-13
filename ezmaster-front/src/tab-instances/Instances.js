@@ -38,21 +38,10 @@ class Instances extends Component {
     const instancesRows = [];
     Object.keys(self.props.instances.d)
       .sort((a, b) => {
-        const splittedTnA = self.props.instances.d[a].technicalName.split("-");
-        const splittedTnB = self.props.instances.d[b].technicalName.split("-");
-        // ex A: istex-dl-21
-        // ex B: istex-dl-4
-        if (
-          splittedTnA[0] == splittedTnB[0] &&
-          splittedTnA[1] == splittedTnB[1]
-        ) {
-          return parseInt(splittedTnA[2]) > parseInt(splittedTnB[2]) ? -1 : 1;
-        } else {
-          return self.props.instances.d[a].technicalName <
-            self.props.instances.d[b].technicalName
-            ? -1
-            : 1;
-        }
+        return self.props.instances.d[a].creationDate >
+          self.props.instances.d[b].creationDate
+          ? -1
+          : 1;
       })
       .forEach(function(technicalName) {
         const instance = self.props.instances.d[technicalName];

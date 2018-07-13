@@ -33,7 +33,7 @@ ModelApplications.prototype.refreshApplicationsList = function() {
     .then(response => {
       // data comming from AJAX request (ezmaster app stuff)
       self.d = response.data.sort((a, b) => {
-        return a.imageName < b.imageName ? -1 : 1;
+        return a.creationDate > b.creationDate ? -1 : 1;
       });
       self.ajaxLoading = false;
       self.initializing = false;

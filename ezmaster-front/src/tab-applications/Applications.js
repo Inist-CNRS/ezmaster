@@ -76,7 +76,7 @@ class Applications extends Component {
               <thead>
                 <tr>
                   <th>Application name</th>
-                  <th>Creation date</th>
+                  <th>Download date</th>
                   <th>Size</th>
                   <th>Actions</th>
                 </tr>
