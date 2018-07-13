@@ -128,7 +128,6 @@ class ModalAddApplication extends Component {
     const self = this;
     const inputValue =
       e && e.target ? e.target.value : self.state.applicationName;
-    console.log("handleChangeApplicationName", inputValue);
     self.setState({
       errorRequiredApplicationName: inputValue.trim().length == 0
     });
@@ -147,10 +146,44 @@ class ModalAddApplication extends Component {
     self.applicationNameTimer = setTimeout(() => {
       self.setState({ applicationsNameListLoading: true });
       self.loadApplicationNameSuggestion(inputValue, applicationsNameList => {
+        // search if the typed string match something in the ezmasterized static list
+        // then add it as a result because dockerhub search engine
+        // is not always very pertinent
+        let staticApplicationsNameList = [];
+        Object.keys(self.props.ezMasterizedApps.d).forEach(key => {
+          const item = self.props.ezMasterizedApps.d[key];
+          key = key || "";
+          item.description = item.description || "";
+          item.docker = item.docker || "";
+          item.github = item.github || "";
+          item.docker = item.docker || "";
+          if (
+            key.toLowerCase().includes(inputValue.toLowerCase()) ||
+            item.description.toLowerCase().includes(inputValue.toLowerCase()) ||
+            item.docker.toLowerCase().includes(inputValue.toLowerCase()) ||
+            item.github.toLowerCase().includes(inputValue.toLowerCase()) ||
+            item.docker.toLowerCase().includes(inputValue.toLowerCase())
+          ) {
+            staticApplicationsNameList.push({
+              name: item.docker,
+              description: item.description,
+              github: item.github,
+              ezmasterized: true
+            });
+          }
+        });
+
+        // filter double items
+        applicationsNameList = applicationsNameList.filter(item => {
+          return !staticApplicationsNameList.some(elt => {
+            return elt.name == item.name;
+          });
+        });
+
+        // search if this app is in the ezmasterized list
+        // then extract the description and set the flag ezmasterized=true
+        // (docker image name is the string to compare)
         applicationsNameList = applicationsNameList.map(item => {
-          // search if this app is in the ezmasterized list
-          // then extract the description and set the flag ezmasterized=true
-          // (docker image name is the string to compare)
           let ezmasterized = false;
           let github = "";
           let description = "";
@@ -162,7 +195,6 @@ class ModalAddApplication extends Component {
               github = self.props.ezMasterizedApps.d[key].github;
             }
           });
-
           return {
             name: item.name,
             description: description ? description : item.description,
@@ -170,8 +202,11 @@ class ModalAddApplication extends Component {
             ezmasterized: ezmasterized
           };
         });
+
         self.setState({
-          applicationsNameList,
+          applicationsNameList: staticApplicationsNameList.concat(
+            applicationsNameList
+          ),
           applicationsNameListLoading: false
         });
       });
@@ -195,7 +230,6 @@ class ModalAddApplication extends Component {
   }
   handleApplicationVersionSelected(applicationVersion) {
     const self = this;
-    console.log("applicationVersion", applicationVersion);
     self.setState({
       applicationVersion: applicationVersion,
       applicationsVersionList: [],
@@ -210,7 +244,6 @@ class ModalAddApplication extends Component {
     // update the input field value
     const inputValue =
       e && e.target ? e.target.value : self.state.applicationVersion;
-    console.log("handleChangeApplicationVersion", e, inputValue);
     self.setState({
       errorRequiredApplicationVersion: inputValue.trim().length == 0
     });
