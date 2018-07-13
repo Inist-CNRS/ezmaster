@@ -36,17 +36,35 @@ class Instances extends Component {
   render() {
     const self = this;
     const instancesRows = [];
-    Object.keys(self.props.instances.d).forEach(function(technicalName) {
-      const instance = self.props.instances.d[technicalName];
-      instancesRows.push(
-        <InstanceRow
-          config={self.props.config}
-          instances={self.props.instances}
-          key={technicalName}
-          instance={instance}
-        />
-      );
-    });
+    Object.keys(self.props.instances.d)
+      .sort((a, b) => {
+        const splittedTnA = self.props.instances.d[a].technicalName.split("-");
+        const splittedTnB = self.props.instances.d[b].technicalName.split("-");
+        // ex A: istex-dl-21
+        // ex B: istex-dl-4
+        if (
+          splittedTnA[0] == splittedTnB[0] &&
+          splittedTnA[1] == splittedTnB[1]
+        ) {
+          return parseInt(splittedTnA[2]) > parseInt(splittedTnB[2]) ? -1 : 1;
+        } else {
+          return self.props.instances.d[a].technicalName <
+            self.props.instances.d[b].technicalName
+            ? -1
+            : 1;
+        }
+      })
+      .forEach(function(technicalName) {
+        const instance = self.props.instances.d[technicalName];
+        instancesRows.push(
+          <InstanceRow
+            config={self.props.config}
+            instances={self.props.instances}
+            key={technicalName}
+            instance={instance}
+          />
+        );
+      });
 
     return (
       <div className="ezmaster-instances">

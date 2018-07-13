@@ -7,19 +7,7 @@ let ModelApplications = function() {
   self.ajaxLoading = true;
   self.onChanges = [];
   self.d = [];
-
-  axios
-    .get("/-/v1/app")
-    .then(response => {
-      // data comming from AJAX request (ezmaster app stuff)
-      self.d = response.data;
-      self.ajaxLoading = false;
-      self.initializing = false;
-      self.inform("applications");
-    })
-    .catch(err => {
-      console.log("ModelApplications error loading data", err);
-    });
+  self.refreshApplicationsList();
 
   // connect websocket to the model
   subscribeToWS("statusPull", data => {
@@ -36,6 +24,24 @@ ModelApplications.prototype.inform = function(modelEvent) {
   this.onChanges.forEach(function(cb) {
     cb(modelEvent);
   });
+};
+
+ModelApplications.prototype.refreshApplicationsList = function() {
+  let self = this;
+  axios
+    .get("/-/v1/app")
+    .then(response => {
+      // data comming from AJAX request (ezmaster app stuff)
+      self.d = response.data.sort((a, b) => {
+        return a.imageName < b.imageName ? -1 : 1;
+      });
+      self.ajaxLoading = false;
+      self.initializing = false;
+      self.inform("applications");
+    })
+    .catch(err => {
+      console.error("ModelApplications error: refreshApplicationsList", err);
+    });
 };
 
 ModelApplications.prototype.deleteApplication = function(application) {
@@ -62,6 +68,10 @@ ModelApplications.prototype.createApplication = function(newApplication, cb) {
   axios
     .post("/-/v1/app", data)
     .then(response => {
+      // call the refreshApplicationsList function because
+      // the response of the createApplication API call does not
+      // contain the necessary data to add the data to the list
+      self.refreshApplicationsList();
       return cb(null, response.data);
     })
     .catch(cb);
