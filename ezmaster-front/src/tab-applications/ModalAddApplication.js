@@ -44,6 +44,8 @@ class ModalAddApplication extends Component {
       // will be dynamicaly filled by dockerhub api suggestions
       applicationsNameList: [],
       applicationsVersionList: [],
+      applicationsNameListLoading: false,
+      applicationsVersionListLoading: false,
 
       dockerRegistryUrl: "",
       username: "",
@@ -142,6 +144,7 @@ class ModalAddApplication extends Component {
       clearTimeout(self.applicationNameTimer);
     }
     self.applicationNameTimer = setTimeout(() => {
+      self.setState({ applicationsNameListLoading: true });
       self.loadApplicationNameSuggestion(inputValue, applicationsNameList => {
         applicationsNameList = applicationsNameList.map(item => {
           // search if this app is in the ezmasterized list
@@ -166,7 +169,10 @@ class ModalAddApplication extends Component {
             ezmasterized: ezmasterized
           };
         });
-        self.setState({ applicationsNameList });
+        self.setState({
+          applicationsNameList,
+          applicationsNameListLoading: false
+        });
       });
     }, 100);
   }
@@ -253,10 +259,14 @@ class ModalAddApplication extends Component {
       clearTimeout(self.applicationVersionTimer);
     }
     self.applicationVersionTimer = setTimeout(() => {
+      self.setState({ applicationsVersionListLoading: true });
       self.loadApplicationVersionSuggestion(
         self.state.applicationName,
         applicationsVersionList => {
-          self.setState({ applicationsVersionList });
+          self.setState({
+            applicationsVersionList,
+            applicationsVersionListLoading: false
+          });
         }
       );
     }, 100);
@@ -341,21 +351,30 @@ class ModalAddApplication extends Component {
             <FormGroup>
               <Label for="emaa-name">Application name</Label>
 
-              <Input
-                type="text"
-                name="emaa-name"
-                id="emaa-name"
-                autoComplete="off"
-                placeholder="Ex: inistcnrs/ezmaster-webserver"
-                value={this.state.applicationName}
-                invalid={this.state.errorRequiredApplicationName}
-                onChange={this.handleChangeApplicationName}
-                onBlur={this.handleChangeApplicationName}
-                maxLength={250}
-                innerRef={elt => (this.inputApplicationName = elt)}
-              />
+              <InputGroup>
+                <Input
+                  type="text"
+                  name="emaa-name"
+                  id="emaa-name"
+                  autoComplete="off"
+                  placeholder="Ex: inistcnrs/ezmaster-webserver"
+                  value={this.state.applicationName}
+                  invalid={this.state.errorRequiredApplicationName}
+                  onChange={this.handleChangeApplicationName}
+                  onBlur={this.handleChangeApplicationName}
+                  maxLength={250}
+                  innerRef={elt => (this.inputApplicationName = elt)}
+                />
+                {this.state.applicationsNameListLoading && (
+                  <InputGroupAddon addonType="append">
+                    <Button color="grey" className="emaa-loading">
+                      <i className="fa fa-spinner" />
+                    </Button>
+                  </InputGroupAddon>
+                )}
+              </InputGroup>
 
-              <ListGroup className="emma-name-list">
+              <ListGroup className="emaa-name-list">
                 {applicationsNameList}
               </ListGroup>
 
@@ -378,22 +397,33 @@ class ModalAddApplication extends Component {
 
             <FormGroup>
               <Label for="emaa-version">Application version</Label>
-              <ListGroup className="emma-version-list">
+              <ListGroup className="emaa-version-list">
                 {applicationsVersionList}
               </ListGroup>
-              <Input
-                type="text"
-                name="emaa-version"
-                id="emaa-version"
-                autoComplete="off"
-                placeholder="..."
-                value={this.state.applicationVersion}
-                invalid={this.state.errorRequiredApplicationVersion}
-                onChange={this.handleChangeApplicationVersion}
-                onBlur={this.handleChangeApplicationVersion}
-                maxLength={100}
-                innerRef={elt => (this.inputApplicationVersion = elt)}
-              />
+
+              <InputGroup>
+                <Input
+                  type="text"
+                  name="emaa-version"
+                  id="emaa-version"
+                  autoComplete="off"
+                  placeholder="..."
+                  value={this.state.applicationVersion}
+                  invalid={this.state.errorRequiredApplicationVersion}
+                  onChange={this.handleChangeApplicationVersion}
+                  onBlur={this.handleChangeApplicationVersion}
+                  maxLength={100}
+                  innerRef={elt => (this.inputApplicationVersion = elt)}
+                />
+
+                {this.state.applicationsVersionListLoading && (
+                  <InputGroupAddon addonType="append">
+                    <Button color="grey" className="emaa-loading">
+                      <i className="fa fa-spinner" />
+                    </Button>
+                  </InputGroupAddon>
+                )}
+              </InputGroup>
 
               {this.state.errorRequiredApplicationVersion && (
                 <FormFeedback>Version is required.</FormFeedback>

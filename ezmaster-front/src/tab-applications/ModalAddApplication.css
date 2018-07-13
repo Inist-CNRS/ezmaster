@@ -2,20 +2,15 @@
   max-width: 800px !important;
 }
 
-#emai-preview {
-  font-size: 1.5rem;
-  font-family: monospace;
-}
-
-.emma-name-list .list-group-item {
+.emaa-name-list .list-group-item {
   padding: 0.4rem;
 }
-.emma-name-list .list-group-item img {
+.emaa-name-list .list-group-item img {
   float: right;
   opacity: 0.2;
   margin-top: 5px;
 }
-.emma-name-list .list-group-item a.github-link {
+.emaa-name-list .list-group-item a.github-link {
   float: right;
   opacity: 0.2;
   color: #000;
@@ -23,32 +18,44 @@
   vertical-align: top;
   margin-left: 8px;
 }
-.emma-name-list .list-group-item:hover {
+.emaa-name-list .list-group-item:hover {
   background-color: #59a9fb;
   cursor: pointer;
 }
 
-.emma-name-list .list-group-item-heading {
+.emaa-name-list .list-group-item-heading {
   font-size: 1rem;
   margin: 0;
   font-weight: bold;
   font-family: monospace;
 }
-.emma-name-list .list-group-item-text {
+.emaa-name-list .list-group-item-text {
   font-size: 0.7rem;
   margin: 0;
 }
 
-.emma-version-list .list-group-item {
+.emaa-version-list .list-group-item {
   padding: 0.4rem;
 }
-.emma-version-list .list-group-item:hover {
+.emaa-version-list .list-group-item:hover {
   background-color: #59a9fb;
   cursor: pointer;
 }
-.emma-version-list .list-group-item-heading {
+.emaa-version-list .list-group-item-heading {
   font-size: 1rem;
   margin: 0;
   font-weight: bold;
   font-family: monospace;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.emaa-loading .fa-spinner {
+  animation: spin 2s linear infinite;
 }
