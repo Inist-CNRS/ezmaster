@@ -60,6 +60,16 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 - A basic web server used to host static files
 - [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-webserver.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-webserver/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-webserver.svg)](https://github.com/Inist-CNRS/ezmaster-webserver)
 
+### ezmaster-phpserver
+
+- PHP and Apache web server for EzMaster (usefull for Wordpress)
+- [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-phpserver.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-phpserver/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-phpserver.svg)](https://github.com/Inist-CNRS/ezmaster-phpserver)
+
+### ezmaster-mysql
+
+- MySQL for ezmaster
+- [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-mysql.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-mysql/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-mysql.svg)](https://github.com/Inist-CNRS/ezmaster-mysql)
+
 ### ezmaster-hexo
 
 - Desc ...
