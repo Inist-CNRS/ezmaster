@@ -6,7 +6,7 @@ Administration of docker applications without any IT skills.
 
 ![ezmaster demo](/doc/anim3.gif)
 
-Why are you here ? you are insterested by ezmaster because you are a end-user, a developer, or an op guy?
+Why are you here? you are insterested by ezmaster because you are a end-user, a developer, or an op guy?
 
 * [EzMaster for end-users](USER.md)
 * [EzMaster for dev](DEVELOPER.md)
