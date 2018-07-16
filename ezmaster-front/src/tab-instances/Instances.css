@@ -51,6 +51,7 @@ table.ezmaster-instances-table th {
   font-size: 0.6rem;
   vertical-align: middle;
   margin-left: -10px;
+  cursor: pointer;
 }
 
 /* Responsive table,

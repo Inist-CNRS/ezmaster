@@ -55,6 +55,7 @@ class Instances extends Component {
   render() {
     const self = this;
     const instancesRows = [];
+    let technicalInstancesNb = 0;
     Object.keys(self.props.instances.d)
       .sort((a, b) => {
         return self.props.instances.d[a].creationDate >
@@ -64,14 +65,17 @@ class Instances extends Component {
       })
       .forEach(function(technicalName) {
         const instance = self.props.instances.d[technicalName];
+
         // do not show technicalInstance if it has not been
         // requested by the user
         if (
           self.state.showTechnicalInstances === "no" &&
           instance.technicalInstance
         ) {
+          technicalInstancesNb++;
           return;
         }
+
         instancesRows.push(
           <InstanceRow
             config={self.props.config}
@@ -88,7 +92,7 @@ class Instances extends Component {
           <title>EzMaster - Instances</title>
         </Helmet>
         {/* append a "add instance" button if the table items are more than 10 items so that it's easier to click on the button */}
-        {instancesRows.length > 10 && (
+        {instancesRows.length + technicalInstancesNb > 10 && (
           <Row>
             <Col>
               <Button
@@ -122,24 +126,30 @@ class Instances extends Component {
                       }
                       onClick={this.toggleTechnicalInstances}
                     />&nbsp;
-                    <Badge
-                      id="etif-badge"
-                      className={
-                        this.state.showTechnicalInstances === "yes"
-                          ? "active"
-                          : ""
-                      }
-                      color="warning"
-                    >
-                      2
-                    </Badge>
-                    <UncontrolledTooltip
-                      autohide={false}
-                      placement="bottom"
-                      target="etif-badge"
-                    >
-                      Click to show the 2 hidden technical instances.
-                    </UncontrolledTooltip>
+                    {technicalInstancesNb > 0 && (
+                      <Badge
+                        id="etif-badge"
+                        onClick={this.toggleTechnicalInstances}
+                        className={
+                          this.state.showTechnicalInstances === "yes"
+                            ? "active"
+                            : ""
+                        }
+                        color="warning"
+                      >
+                        {technicalInstancesNb}
+                      </Badge>
+                    )}
+                    {technicalInstancesNb > 0 && (
+                      <UncontrolledTooltip
+                        autohide={false}
+                        placement="bottom"
+                        target="etif-badge"
+                      >
+                        Click to show the {technicalInstancesNb} hidden
+                        technical instances.
+                      </UncontrolledTooltip>
+                    )}
                     <UncontrolledTooltip
                       autohide={false}
                       placement="right"

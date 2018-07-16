@@ -67,7 +67,6 @@ ModelInstances.prototype.fetchInstancesList = function(cb) {
             size: "__ B",
             technicalName: technicalName
           };
-          self.d[technicalName].technicalInstance = Math.random() > 0.5;
         }
       });
 
