@@ -6,11 +6,11 @@
   "dependencies": {
     "axios": "0.18.0",
     "bootstrap": "4.1.2",
-    "classnames": "2.2.5",
+    "classnames": "2.2.6",
     "fbjs": "^0.8.17",
     "font-awesome": "4.7.0",
     "latinize": "0.4.0",
-    "moment": "2.22.0",
+    "moment": "2.22.2",
     "react": "16.3.0-alpha.3",
     "react-ace": "5.10.0",
     "react-cookie": "^2.2.0",
