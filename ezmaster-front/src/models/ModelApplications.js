@@ -98,7 +98,7 @@ ModelApplications.prototype.searchDockerHubImageName = function(searchTxt, cb) {
         };
       });
       applicationsList = applicationsList.filter(item => {
-        return item.name != "inistcnrs/ezmaster";
+        return item.name !== "inistcnrs/ezmaster";
       });
       return cb(null, applicationsList);
     })

@@ -15,10 +15,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import "./Home.css";
 
 class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const self = this;
 

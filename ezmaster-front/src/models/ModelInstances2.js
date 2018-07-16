@@ -20,23 +20,6 @@ let ModelInstances = function() {
     self.inform("instances");
     console.log("refreshInstances XXXXX", data);
   });
-
-  // subscribeToWS('docker-event', data => {
-  //   console.log('INSTANCE MODEL', data);
-
-  //   // filter only docker containers related to ezmaster
-  //   // existing technicalName means it is an ezmaster instance
-  //   if (data.Type == 'container' && data.scope == 'local' &&  data.technicalName) {
-
-  //     // DO SOMETHING WHEN AN INSTANCE IS CREATED ?
-  //     // if (data.status == 'destroy') {
-  //     // }
-
-  //     // if (data.status == 'create') {
-  //     // }
-
-  //   }
-  // });
 };
 
 ModelInstances.prototype.subscribe = function(onChange) {
@@ -112,7 +95,7 @@ ModelInstances.prototype.getTechnicalNameFromContainerId = function(
 
   let technicalNameFound = "";
   Object.keys(self.d).forEach(technicalName => {
-    if (self.d[technicalName].containerId == containerId) {
+    if (self.d[technicalName].containerId === containerId) {
       technicalNameFound = technicalName;
       return;
     }
@@ -167,7 +150,6 @@ ModelInstances.prototype.fetchInstanceData = function(containerId) {
   axios
     .get("/-/v1/instances/" + containerId + "/data")
     .then(response => {
-      console.log("OKDADADADADADA", response.data);
       self.d[technicalName].data = response.data;
       self.inform("instances");
     })
@@ -263,15 +245,13 @@ ModelInstances.prototype.stopInstance = function(containerId, cb) {
 };
 
 ModelInstances.prototype.deleteInstance = function(containerId, cb) {
-  let self = this;
-  const technicalName = self.getTechnicalNameFromContainerId(containerId);
-
   // DELETE /-/v1/instances/fc9eb6873196c2733e66a69fc5d33126b2647d8b24784f3015f05b40eed3ae2d
   axios
     .delete("/-/v1/instances/" + containerId)
     .then(response => {
       // // This is dirty but do nothing here because
       // // refreshInstances Websocket event will update the list
+      // const technicalName = self.getTechnicalNameFromContainerId(containerId);
       // delete self.d[technicalName]
       // self.inform('instances');
       return cb(null);
@@ -280,8 +260,6 @@ ModelInstances.prototype.deleteInstance = function(containerId, cb) {
 };
 
 ModelInstances.prototype.createInstance = function(newInstance, cb) {
-  let self = this;
-
   // POST /-/v1/instances
   // { app : "inistcnrs/ezmaster-phpserver:1.0.2"
   // longName : "Long nammmme"
@@ -320,19 +298,16 @@ ModelInstances.prototype.CheckInstanceAlreadyExists = function(
   technicalName,
   cb
 ) {
-  let self = this;
-
   // GET /-/v1/instances/verif/<technicalName>
   axios
     .get("/-/v1/instances/verif/" + technicalName)
     .then(response => {
-      return cb(null, response.data == "OK");
+      return cb(null, response.data === "OK");
     })
     .catch(cb);
 };
 
 ModelInstances.prototype.refreshInstances = function(cb) {
-  let self = this;
   cb = cb ? cb : () => {};
 
   // GET /-/v1/instances/verif/<technicalName>

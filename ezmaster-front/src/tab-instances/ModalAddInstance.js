@@ -117,7 +117,7 @@ class ModalAddInstance extends Component {
 
   handleChangeLongName(e) {
     const self = this;
-    let newState = self.generateTechnicalName(
+    self.generateTechnicalName(
       {
         ...self.state,
         ...{

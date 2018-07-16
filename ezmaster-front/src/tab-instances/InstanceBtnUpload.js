@@ -4,8 +4,6 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { Container, Row, Col } from "reactstrap";
 import { toast } from "react-toastify";
-import renderHTML from "react-render-html";
-import shallowEqual from "fbjs/lib/shallowEqual";
 
 import ModalWebdav from "./ModalWebdav.js";
 
@@ -13,7 +11,6 @@ import Dropzone from "react-dropzone";
 
 import "react-keyed-file-browser/dist/react-keyed-file-browser.css";
 import FileBrowser from "react-keyed-file-browser";
-import Moment from "moment";
 
 import "./InstanceBtnUpload.css";
 
@@ -117,7 +114,7 @@ class InstanceBtnUpload extends Component {
             //modified: self.props.instance.data[filename].modified,
             // could be a better code if calculated from raw numeric bytes
             size:
-              typeof self.props.instance.data[filename].size == "string"
+              typeof self.props.instance.data[filename].size === "string"
                 ? self.props.instance.data[filename].size.replace("B", "")
                 : self.props.instance.data[filename].size
           };

@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import shallowEqual from "fbjs/lib/shallowEqual";
-import { Table } from "reactstrap";
-import { Row, Col } from "reactstrap";
-import { Button, ButtonGroup } from "reactstrap";
+import { Table, Row, Col } from "reactstrap";
+import { Button, Badge, UncontrolledTooltip } from "reactstrap";
 import { Helmet } from "react-helmet";
-import { Label, Input, Badge, UncontrolledTooltip } from "reactstrap";
 import { withCookies, Cookies } from "react-cookie";
 import { instanceOf } from "prop-types";
 

@@ -20,11 +20,7 @@ import {
   ListGroupItemText
 } from "reactstrap";
 
-import { Row, Col } from "reactstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import { UncontrolledTooltip } from "reactstrap";
 import { parseDockerPullToPerCent } from "../helpers.js";
-import latinize from "latinize";
 import { toast } from "react-toastify";
 
 import ezmasterizedLogo from "./ezmasterized-logo.png";
@@ -129,11 +125,11 @@ class ModalAddApplication extends Component {
     const inputValue =
       e && e.target ? e.target.value : self.state.applicationName;
     self.setState({
-      errorRequiredApplicationName: inputValue.trim().length == 0
+      errorRequiredApplicationName: inputValue.trim().length === 0
     });
 
     // skip if the value is not changed !
-    if (inputValue == self.state.applicationName) return;
+    if (inputValue === self.state.applicationName) return;
 
     self.setState({
       applicationName: inputValue
@@ -176,7 +172,7 @@ class ModalAddApplication extends Component {
         // filter double items
         applicationsNameList = applicationsNameList.filter(item => {
           return !staticApplicationsNameList.some(elt => {
-            return elt.name == item.name;
+            return elt.name === item.name;
           });
         });
 
@@ -188,9 +184,9 @@ class ModalAddApplication extends Component {
           let github = "";
           let description = "";
           Object.keys(self.props.ezMasterizedApps.d).forEach(key => {
-            if (self.props.ezMasterizedApps.d[key].docker == item.name) {
+            if (self.props.ezMasterizedApps.d[key].docker === item.name) {
               ezmasterized =
-                self.props.ezMasterizedApps.d[key].docker == item.name;
+                self.props.ezMasterizedApps.d[key].docker === item.name;
               description = self.props.ezMasterizedApps.d[key].description;
               github = self.props.ezMasterizedApps.d[key].github;
             }
@@ -223,7 +219,7 @@ class ModalAddApplication extends Component {
     self.setState({
       applicationName: applicationName,
       applicationsNameList: [],
-      errorRequiredApplicationName: applicationName.length == 0
+      errorRequiredApplicationName: applicationName.length === 0
     });
     self.inputApplicationName.focus();
     self.loadApplicationVersionSuggestionWithTimeout();
@@ -233,7 +229,7 @@ class ModalAddApplication extends Component {
     self.setState({
       applicationVersion: applicationVersion,
       applicationsVersionList: [],
-      errorRequiredApplicationVersion: applicationVersion.length == 0
+      errorRequiredApplicationVersion: applicationVersion.length === 0
     });
     self.inputApplicationVersion.focus();
   }
@@ -245,10 +241,10 @@ class ModalAddApplication extends Component {
     const inputValue =
       e && e.target ? e.target.value : self.state.applicationVersion;
     self.setState({
-      errorRequiredApplicationVersion: inputValue.trim().length == 0
+      errorRequiredApplicationVersion: inputValue.trim().length === 0
     });
     // skip if the value is not changed !
-    if (inputValue != self.state.applicationVersion) {
+    if (inputValue !== self.state.applicationVersion) {
       self.setState({
         applicationVersion: inputValue
       });
@@ -307,27 +303,14 @@ class ModalAddApplication extends Component {
   }
 
   render() {
-    const self = this;
-
     // calculate if the create button could be enabled
     const createBtnDisabled =
       this.state.creatingApplication ||
-      this.state.applicationName.length == 0 ||
-      this.state.applicationVersion.length == 0;
+      this.state.applicationName.length === 0 ||
+      this.state.applicationVersion.length === 0;
     const cancelBtnDisabled = this.state.creatingApplication;
 
     let applicationsNameListJSON = this.state.applicationsNameList;
-    // if (this.state.applicationName.length == 0) {
-    //   applicationsNameListJSON = Object.keys(self.props.ezMasterizedApps.d).map((key) => {
-    //     let item = self.props.ezMasterizedApps.d[key];
-    //     return {
-    //       name: item.docker,
-    //       description: item.description,
-    //       github: item.github,
-    //       ezmasterized: true
-    //     }
-    //   }).slice(0, 5)
-    // }
 
     // applications name suggestion list
     const applicationsNameList = applicationsNameListJSON.map(item => {
@@ -424,6 +407,7 @@ class ModalAddApplication extends Component {
                 <a
                   href="https://github.com/Inist-CNRS/ezmaster/blob/master/EZMASTERIZED.md"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   ezmasterized application
                 </a>{" "}
