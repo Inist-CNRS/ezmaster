@@ -9,7 +9,7 @@ mkdir ./ezmaster && cd ezmaster
 mkdir -p ./data/applications ./data/instances ./data/manifests
 mkdir -p ./logs/ezmaster-front/ ./logs/ezmaster-rp/instances/ ./logs/ezmaster-webdav/
 
-wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/4.3.2/docker-compose.yml
+wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/4.4.0/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
@@ -30,7 +30,7 @@ When you want to **upgrade EzMaster**, you just have to download the new EzMaste
 
 ## FAQ
 
-### How to save the data and config of the instances ?
+### How to backup instances (data and config)?
 
 If you want to save the config and the data of your instances:
 
@@ -41,4 +41,44 @@ If you want to save the config and the data of your instances:
   docker exec -it ezmaster_db mongodump --quiet --archive=- > ezmaster_db_archive
   ```
 
-  (ezmaster_db will be deprecated in ezmaster ⩾ v5)
+  (ezmaster_db will be deprecated in ezmaster ⩾ v6)
+
+### How to use ezmaster behind Apache reverse proxy?
+
+You should add a dedicated VirtualHost:
+
+```
+<VirtualHost *:80>
+    ServerName exemple.fr
+    ServerAlias *.exemple.fr
+    ProxyPreserveHost On
+    ProxyPass        / http://192.168.100.10:35267/ retry=5   # Replace IP with yours ezmaster IP
+    ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+</VirtualHost>
+<VirtualHost *:443>
+    ServerName exemple.fr
+    ServerAlias *.exemple.fr
+
+    SSLEngine on
+    SSLProxyEngine on
+    SSLCACertificateFile  /your/path/to/DigiCertCA.crt
+    SSLCertificateFile    /your/path/to/exemple_fr.crt
+    SSLCertificateKeyFile /your/path/to/exemple_fr.key
+
+    ProxyPreserveHost On
+    ProxyPass        / http://192.168.100.10:35267/ retry=5   # Replace IP with yours ezmaster IP
+    ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+</VirtualHost>
+```
+
+### How to use ezmaster behind Apache reverse proxy with a custom domain?
+
+```
+<VirtualHost *:80>
+    ServerName www.exemple.fr
+    RequestHeader set Host "technical-name.example.fr"  # supposing exemple.fr is a value of EZMASTER_PUBLIC_DOMAIN (env. var.)
+    ProxyPreserveHost On
+    ProxyPass        / http://192.168.100.10:35267/ retry=5  # Replace IP with yours ezmaster IP
+    ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
+</VirtualHost>
+```

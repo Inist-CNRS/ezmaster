@@ -18,6 +18,13 @@ This release do no brake anything API side or internaly. This is a mostly a full
 * Ezmaster UI is now fully SPA (single page application)
 * Adds the `technicalInstance` flag to ezmasterized applications. It is used to filter these instances from the default instances list because end-user are not concerned by these instances. Ex: databases used by other instances
 
+### ezmaster 4.4.0
+
+* Add EZMASTER_VERSION variable in environment of instances
+* Bug fix: try to avoid invalid technical name
+* Bug fix: improved sorting of technical names, to get the last version of a instance
+* README refactoring
+
 ### ezmaster 4.3.2
 
 * Add the proxypreservehost feature on the ezmaster-rp's nginx config (needed especially by instances, ex: wordpress)

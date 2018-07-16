@@ -222,7 +222,6 @@ router.route("/:containerId").get(bodyParser(), function(req, res, next) {
       }
 
       result.technicalName = splittedName[1];
-      result.rawSize = size;
       result.size = filesize(size);
 
       // Get Configuration Information.
@@ -331,10 +330,14 @@ router.route("").post(bodyParser(), function(req, res, next) {
   var technicalName = req.body.technicalName,
     longName = req.body.longName,
     image = req.body.app,
-    project = req.body.project,
-    study = req.body.study,
-    version = req.body.version;
+    project = req.body.project || "",
+    study = req.body.study || "",
+    version = req.body.version || "";
   debug("Creating an instance:", technicalName, longName, image);
+
+  project = project.trim();
+  study = study.trim();
+  version = version.trim();
 
   if (
     /^[a-z0-9]+$/.test(project) == false &&
@@ -523,6 +526,9 @@ router.route("").post(bodyParser(), function(req, res, next) {
                 : "") +
               '-e EZMASTER_TECHNICAL_NAME="' +
               technicalName +
+              '" ' +
+              '-e EZMASTER_VERSION="' +
+              cfg.package.version +
               '" ' +
               // eslint-disable-next-line quotes
               '-e EZMASTER_LONG_NAME="' +

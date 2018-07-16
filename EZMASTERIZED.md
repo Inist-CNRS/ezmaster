@@ -1,4 +1,4 @@
-# How to EzMasterize an application
+# How to EzMasterize an application?
 
 ## Dockerfile modifications
 
@@ -40,11 +40,12 @@ RUN echo '{ \
 
 ## Dockerfile example of ezmasterized applications
 
-* ezvis Dockerfile: https://github.com/madec-project/ezvis/blob/master/Dockerfile
-* ezark Dockerfile: https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile
-* ezpaarse Dockerfile: https://github.com/ezpaarse-project/ezpaarse/blob/master/Dockerfile
+* ezmaster-webserver Dockerfile: https://github.com/Inist-CNRS/ezmaster-webserver/blob/master/Dockerfile
 * ezmaster-hexo Dockerfile: https://github.com/Inist-CNRS/ezmaster-hexo/blob/master/Dockerfile
 * lodex Dockerfile: https://github.com/Inist-CNRS/lodex/blob/master/Dockerfile
+* ezpaarse Dockerfile: https://github.com/ezpaarse-project/ezpaarse/blob/master/Dockerfile
+* ezvis Dockerfile: https://github.com/madec-project/ezvis/blob/master/Dockerfile
+* ezark Dockerfile: https://github.com/Inist-CNRS/ezark/blob/master/Dockerfile
 
 ## Environment variables available to your application
 
@@ -52,6 +53,9 @@ When ezmaster launches your application, it provides few environment variables
 to this instance:
 
 * `EZMASTER_MONGODB_HOST_PORT`: (will be deprecated in ezmaster v5), ex: `ezmaster_db:27017`
+
+- `EZMASTER_VERSION`: the current version of ezmaster (ex: `4.3.1`)
+
 * `EZMASTER_TECHNICAL_NAME`: the identifier of the instance within ezmaster (ex: `myapp-usage-1`)
 * `EZMASTER_LONG_NAME`: a free label for the instance (ex: `This instance is used for the customer C, and maintained by Matt`)
 * `EZMASTER_APPLICATION`: the complete tag of your application's docker image (ex: `inistcnrs/ezmaster-hexo:1.0.3`)
@@ -68,10 +72,25 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 * A basic web server used to host static files
 * [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-webserver.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-webserver/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-webserver.svg)](https://github.com/Inist-CNRS/ezmaster-webserver)
 
+### ezmaster-phpserver
+
+* PHP and Apache web server for EzMaster (usefull for Wordpress)
+* [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-phpserver.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-phpserver/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-phpserver.svg)](https://github.com/Inist-CNRS/ezmaster-phpserver)
+
+### ezmaster-mysql
+
+* MySQL for ezmaster
+* [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-mysql.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-mysql/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-mysql.svg)](https://github.com/Inist-CNRS/ezmaster-mysql)
+
 ### ezmaster-hexo
 
 * Desc ...
 * [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-hexo.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-hexo/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-hexo.svg)](https://github.com/Inist-CNRS/ezmaster-hexo)
+
+### ezmaster-jekyll
+
+* Jekyll for ezmaster! (a static web site generator)
+* [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-jekyll.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-jekyll/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-jekyll.svg)](https://github.com/Inist-CNRS/ezmaster-jekyll)
 
 ### ezmaster-mongo
 
@@ -122,3 +141,8 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 
 * Desc ...
 * [![Docker](https://img.shields.io/docker/pulls/ezpaarseproject/bibliomap-enricher.svg)](https://registry.hub.docker.com/u/ezpaarseproject/bibliomap-enricher/) [![Github](https://img.shields.io/github/tag/ezpaarse-project/bibliomap-enricher.svg)](https://github.com/ezpaarse-project/bibliomap-enricher)
+
+### ezvis
+
+* A dashboard to visualize a synthesis on a structured corpus, using several charts (pies, histograms, ...)
+* [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezvis.svg)](https://registry.hub.docker.com/u/inistcnrs/ezvis/) [![Github](https://img.shields.io/github/tag/madec-project/ezvis.svg)](https://github.com/madec-project/ezvis)

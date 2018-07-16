@@ -21,7 +21,7 @@ services:
 
   ezmaster-api:
     container_name: ezmaster-api
-    image: inistcnrs/ezmaster:4.3.2-api
+    image: inistcnrs/ezmaster:4.4.0-api
     build:
       context: ./ezmaster-api
       args:
@@ -65,7 +65,7 @@ services:
 
   ezmaster-front:
     container_name: ezmaster-front
-    image: inistcnrs/ezmaster:4.3.2-front
+    image: inistcnrs/ezmaster:4.4.0-front
     build:
       context: ./ezmaster-front
       args:
@@ -106,7 +106,7 @@ services:
 
   ezmaster-rp:
     container_name: ezmaster-rp
-    image: inistcnrs/ezmaster:4.3.2-rp
+    image: inistcnrs/ezmaster:4.4.0-rp
     build:
       context: ./ezmaster-rp
       args:
@@ -133,7 +133,7 @@ services:
   # webdav access point for ezmaster's instances data folder (using apache2)
   ezmaster-webdav:
     container_name: ezmaster-webdav
-    image: inistcnrs/ezmaster:4.3.2-webdav
+    image: inistcnrs/ezmaster:4.4.0-webdav
     build:
       context: ./ezmaster-webdav
       args:
