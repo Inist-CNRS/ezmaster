@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import { CookiesProvider } from "react-cookie";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.min.css";
@@ -27,14 +28,16 @@ modelEzMasterizedApps.subscribe(render);
 function render(modelEvent) {
   ReactDOM.render(
     <Router>
-      <App
-        modelEvent={modelEvent}
-        config={modelConfig}
-        infoMachine={modelInfoMachine}
-        applications={modelApplications}
-        instances={modelInstances}
-        ezMasterizedApps={modelEzMasterizedApps}
-      />
+      <CookiesProvider>
+        <App
+          modelEvent={modelEvent}
+          config={modelConfig}
+          infoMachine={modelInfoMachine}
+          applications={modelApplications}
+          instances={modelInstances}
+          ezMasterizedApps={modelEzMasterizedApps}
+        />
+      </CookiesProvider>
     </Router>,
     document.getElementById("root")
   );

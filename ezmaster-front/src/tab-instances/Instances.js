@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import shallowEqual from "fbjs/lib/shallowEqual";
 import { Table } from "reactstrap";
 import { Row, Col } from "reactstrap";
-import { Button } from "reactstrap";
+import { Button, ButtonGroup } from "reactstrap";
 import { Helmet } from "react-helmet";
+import { Label, Input, Badge, UncontrolledTooltip } from "reactstrap";
+import { withCookies, Cookies } from "react-cookie";
+import { instanceOf } from "prop-types";
 
 import "./Instances.css";
 import InstanceRow from "./InstanceRow.js";
@@ -12,10 +15,13 @@ import ModalAddInstance from "./ModalAddInstance.js";
 class Instances extends Component {
   constructor(props) {
     super(props);
+    const { cookies } = props;
     this.state = {
-      modalAddInstanceIsOpen: false
+      modalAddInstanceIsOpen: false,
+      showTechnicalInstances: cookies.get("showTechnicalInstances") || "no"
     };
     this.toggleModalAddInstance = this.toggleModalAddInstance.bind(this);
+    this.toggleTechnicalInstances = this.toggleTechnicalInstances.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -33,6 +39,19 @@ class Instances extends Component {
     });
   }
 
+  toggleTechnicalInstances() {
+    const { cookies } = this.props;
+    cookies.set(
+      "showTechnicalInstances",
+      this.state.showTechnicalInstances === "yes" ? "no" : "yes",
+      { path: "/" }
+    );
+    this.setState({
+      showTechnicalInstances:
+        this.state.showTechnicalInstances === "yes" ? "no" : "yes"
+    });
+  }
+
   render() {
     const self = this;
     const instancesRows = [];
@@ -45,6 +64,14 @@ class Instances extends Component {
       })
       .forEach(function(technicalName) {
         const instance = self.props.instances.d[technicalName];
+        // do not show technicalInstance if it has not been
+        // requested by the user
+        if (
+          self.state.showTechnicalInstances === "no" &&
+          instance.technicalInstance
+        ) {
+          return;
+        }
         instancesRows.push(
           <InstanceRow
             config={self.props.config}
@@ -84,6 +111,43 @@ class Instances extends Component {
             >
               <thead>
                 <tr>
+                  <th className="ezm-technical-instances-filter">
+                    <i
+                      id="etif-btn"
+                      className={
+                        "fa fa-cog " +
+                        (this.state.showTechnicalInstances === "yes"
+                          ? "active"
+                          : "")
+                      }
+                      onClick={this.toggleTechnicalInstances}
+                    />&nbsp;
+                    <Badge
+                      id="etif-badge"
+                      className={
+                        this.state.showTechnicalInstances === "yes"
+                          ? "active"
+                          : ""
+                      }
+                      color="warning"
+                    >
+                      2
+                    </Badge>
+                    <UncontrolledTooltip
+                      autohide={false}
+                      placement="bottom"
+                      target="etif-badge"
+                    >
+                      Click to show the 2 hidden technical instances.
+                    </UncontrolledTooltip>
+                    <UncontrolledTooltip
+                      autohide={false}
+                      placement="right"
+                      target="etif-btn"
+                    >
+                      Show/hide ezmaster's technical instances (ex: databases)
+                    </UncontrolledTooltip>
+                  </th>
                   <th>Long name</th>
                   <th>Technical name</th>
                   <th>Creation date</th>
@@ -120,4 +184,8 @@ class Instances extends Component {
   }
 }
 
-export default Instances;
+Instances.propTypes = {
+  cookies: instanceOf(Cookies).isRequired
+};
+
+export default withCookies(Instances);

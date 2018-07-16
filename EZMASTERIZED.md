@@ -23,11 +23,20 @@ RUN echo '{ \
   "httpPort": 3000, \
   "configPath": "/yourapp/config.json", \
   "configType": "json", \
-  "dataPath": "/yourapp/data/" \
+  "dataPath": "/yourapp/data/", \
+  "technicalInstance": false \
 }' > /etc/ezmaster.json
 
 # ...
 ```
+
+`/etc/ezmaster.json` explanation:
+
+* `httpPort` must be the listening HTTP port used by your application
+* `configPath` must be where is located the configuration file used by your application. This file will be editable through the ezmaster's internal text editor
+* `configType` must be the mime-type used by your the configuration file of your application (**text** or **json**)
+* `dataPath` must be where data are stored by your application. This folder will be shared through file upload and webdav ezmaster systems.
+* `technicalInstance` flag should be set to true if this is a technical application not designed for end-users (ex: database). The instances flagged this way will be filtered by default in the instances list.
 
 ## Dockerfile example of ezmasterized applications
 

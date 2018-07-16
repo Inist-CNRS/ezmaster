@@ -2,6 +2,22 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.0.0
+
+This release do no brake anything API side or internaly. This is a mostly a full relooking of EzMaster UI.
+
+* Adds an [ezmaster logo](./ezmaster-front/src/layout/ezmaster-logo-bg.png) (thanks to François Debeaupuis)
+  ![logo](./ezmaster-front/src/layout/ezmaster-logo-header.png)
+* Adds a sumup ezmaster homepage with customisable texts
+* Improved webdav modal: mini-tutorial with cross-browsers screenshot
+* Improved add instance modal: autocompleted technicalName from the typed longName
+* Improved add application modal: larger input fields & better suggestion list with detailed informations (desc, ezmasterized, github)
+* Adds "Size" columns to the instances and applications lists
+* Adds "starting" status to the Start/Stop instances button action including a visual animated indicator
+* Adds a loading data modal for waiting before ezmaster UI is ready
+* Ezmaster UI is now fully SPA (single page application)
+* Adds the `technicalInstance` flag to ezmasterized applications. It is used to filter these instances from the default instances list because end-user are not concerned by these instances. Ex: databases used by other instances
+
 ### ezmaster 4.3.2
 
 * Add the proxypreservehost feature on the ezmaster-rp's nginx config (needed especially by instances, ex: wordpress)

@@ -28,6 +28,31 @@ table.ezmaster-instances-table th {
   border-top: 0px;
 }
 
+.ezm-technical-instances-filter i {
+  cursor: pointer;
+}
+.ezm-technical-instances-filter i {
+  color: #cccccc;
+}
+.ezm-technical-instances-filter i:hover {
+  color: #555555;
+}
+.ezm-technical-instances-filter i.active {
+  color: #555555;
+}
+.ezm-technical-instances-filter i.active:hover {
+  color: #cccccc;
+}
+.ezm-technical-instances-filter .badge.active {
+  display: none;
+}
+
+.ezm-technical-instances-filter .badge {
+  font-size: 0.6rem;
+  vertical-align: middle;
+  margin-left: -10px;
+}
+
 /* Responsive table,
    see https://bootsnipp.com/snippets/featured/no-more-tables-respsonsive-table */
 @media only screen and (max-width: 800px) {
@@ -59,5 +84,11 @@ table.ezmaster-instances-table th {
     position: relative;
     white-space: normal;
     text-align: left;
+  }
+}
+
+@media only screen and (max-width: 1260px) {
+  .ezm-technical-instances-filter .badge {
+    display: none;
   }
 }

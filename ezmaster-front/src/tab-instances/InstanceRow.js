@@ -25,6 +25,13 @@ class InstanceRow extends Component {
 
     return (
       <tr>
+        <td>
+          {this.props.instance.technicalInstance ? (
+            <i className="fa fa-cog" />
+          ) : (
+            ""
+          )}
+        </td>
         <td>{this.props.instance.longName}</td>
         <td>
           <a href={instanceURL} target="_blank">
