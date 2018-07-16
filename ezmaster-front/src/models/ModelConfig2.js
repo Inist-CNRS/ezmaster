@@ -8,7 +8,7 @@ let ModelConfig = function() {
   self.d = { fullFsPercent: 100, fullMemoryPercent: 80 };
 
   axios
-    .get("/fakeapi/config.json")
+    .get("/-/v1/config")
     .then(response => {
       // data comming from AJAX request (config stuff)
       self.d = response.data;

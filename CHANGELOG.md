@@ -8,7 +8,7 @@ This release do no brake anything API side or internaly. This is a mostly a full
 
 * Adds an [ezmaster logo](./ezmaster-front/src/layout/ezmaster-logo-bg.png) (thanks to François Debeaupuis)
   ![logo](./ezmaster-front/src/layout/ezmaster-logo-header.png)
-* Adds a sumup ezmaster homepage with customisable texts
+* Adds a sumup ezmaster homepage with customisable texts (thanks to the `EZMASTER_HOME_TITLE` and `EZMASTER_HOME_DESCRIPTION` env var)
 * Improved webdav modal: mini-tutorial with cross-browsers screenshot
 * Improved add instance modal: autocompleted technicalName from the typed longName
 * Improved add application modal: larger input fields & better suggestion list with detailed informations (desc, ezmasterized, github)

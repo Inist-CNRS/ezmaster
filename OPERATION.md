@@ -17,6 +17,8 @@ export EZMASTER_PUBLIC_DOMAIN="lod-test.istex.fr"
 export EZMASTER_PUBLIC_PROTOCOL="http"
 export EZMASTER_USER="ezmaster"
 export EZMASTER_PASSWORD="changeme"
+export EZMASTER_HOME_TITLE=""
+export EZMASTER_HOME_DESCRIPTION=""
 docker-compose up -d
 
 # then ezmaster is listening at http://<Your ezmaster server IP>:35268

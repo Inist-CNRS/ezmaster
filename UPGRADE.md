@@ -3,7 +3,11 @@
 EzMaster upgrade instructions are useful when upgrading ezmaster from one version to another one.
 [CHANGELOG.md](CHANGELOG.md) lists what features and bug fixes are related to every ezmaster versions.
 
-### Upgrade from ezmaster 3.8.3 to ezmaster 4.x.x
+### Upgrade from ezmaster 4.4.0 to ezmaster 5.0.0
+
+* Include the `EZMASTER_HOME_TITLE` and `EZMASTER_HOME_DESCRIPTION` env var to your deployment process. Empty value are ok or ask the ezmaster administrator the correct values to setup. (see also [parameters explanation](./DEVELOPER.md#environment-variables))
+
+### Upgrade from ezmaster 3.8.3 to ezmaster 4.0.0
 
 * be sure your ezmaster is in the version 3.8.3
 * stop ezmaster and upgrade the host to docker >= 17.05.0 and docker-compose >= 1.17.0

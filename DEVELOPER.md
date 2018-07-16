@@ -16,6 +16,13 @@ To configure ezmaster, setup these environment variables before running ezmaster
 export EZMASTER_USER="ezmaster"
 export EZMASTER_PASSWORD="changeme"
 
+# The customized texts to display on the ezmaster homepage UI (could contain HTML tags)
+# Example: EZMASTER_HOME_TITLE="EzMaster dedicated to data.istex.fr"
+#          EZMASTER_HOME_DESCRIPTION="This EzMaster contains <a href=\"\">Lodex</a> instances used to [...]"
+# Default is the generic EzMaster text explaining what is EzMaster.
+export EZMASTER_HOME_TITLE=""
+export EZMASTER_HOME_DESCRIPTION=""
+
 # The server IP where ezmaster is installed
 # it will be used by the "Access" button to join instances on specific ports
 # (one port for one instance, see EZMASTER_FREE_PORT_RANGE)
