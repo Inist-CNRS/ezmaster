@@ -66,12 +66,11 @@ class Instances extends Component {
 
         // do not show technicalInstance if it has not been
         // requested by the user
-        if (
-          self.state.showTechnicalInstances === "no" &&
-          instance.technicalInstance
-        ) {
+        if (instance.technicalInstance) {
           technicalInstancesNb++;
-          return;
+          if (self.state.showTechnicalInstances === "no") {
+            return;
+          }
         }
 
         instancesRows.push(
@@ -113,54 +112,57 @@ class Instances extends Component {
             >
               <thead>
                 <tr>
-                  <th className="ezm-technical-instances-filter">
-                    <i
-                      id="etif-btn"
-                      className={
-                        "fa fa-cog " +
-                        (this.state.showTechnicalInstances === "yes"
-                          ? "active"
-                          : "")
-                      }
-                      onClick={this.toggleTechnicalInstances}
-                    />&nbsp;
-                    {technicalInstancesNb > 0 && (
-                      <Badge
-                        id="etif-badge"
-                        onClick={this.toggleTechnicalInstances}
-                        className={
-                          this.state.showTechnicalInstances === "yes"
-                            ? "active"
-                            : ""
-                        }
-                        color="warning"
-                      >
-                        {technicalInstancesNb}
-                      </Badge>
-                    )}
-                    {technicalInstancesNb > 0 && (
-                      <UncontrolledTooltip
-                        autohide={false}
-                        placement="bottom"
-                        target="etif-badge"
-                      >
-                        Click to show the {technicalInstancesNb} hidden
-                        technical instances.
-                      </UncontrolledTooltip>
-                    )}
-                    <UncontrolledTooltip
-                      autohide={false}
-                      placement="right"
-                      target="etif-btn"
-                    >
-                      Show/hide ezmaster's technical instances (ex: databases)
-                    </UncontrolledTooltip>
-                  </th>
                   <th>Long name</th>
                   <th>Technical name</th>
                   <th>Creation date</th>
                   <th>Size</th>
-                  <th>Application</th>
+                  <th>
+                    Application
+                    {/* This is the technicalInstances button used to 
+                        filter the instances list */}
+                    {technicalInstancesNb > 0 && (
+                      <div className="ezm-technical-instances-filter">
+                        <i
+                          id="etif-btn"
+                          className={
+                            "fa fa-cog " +
+                            (this.state.showTechnicalInstances === "yes"
+                              ? "active"
+                              : "")
+                          }
+                          onClick={this.toggleTechnicalInstances}
+                        />&nbsp;
+                        <Badge
+                          id="etif-badge"
+                          onClick={this.toggleTechnicalInstances}
+                          className={
+                            this.state.showTechnicalInstances === "yes"
+                              ? "active"
+                              : ""
+                          }
+                          color="warning"
+                        >
+                          {technicalInstancesNb}
+                        </Badge>
+                        <UncontrolledTooltip
+                          autohide={false}
+                          placement="bottom"
+                          target="etif-badge"
+                        >
+                          Click to display the {technicalInstancesNb} hidden
+                          technical instances.
+                        </UncontrolledTooltip>
+                        <UncontrolledTooltip
+                          autohide={false}
+                          placement="right"
+                          target="etif-btn"
+                        >
+                          Show/hide ezmaster's technical instances (ex:
+                          databases)
+                        </UncontrolledTooltip>
+                      </div>
+                    )}
+                  </th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>

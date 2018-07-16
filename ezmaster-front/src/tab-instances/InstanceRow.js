@@ -25,13 +25,6 @@ class InstanceRow extends Component {
 
     return (
       <tr>
-        <td>
-          {this.props.instance.technicalInstance ? (
-            <i className="fa fa-cog" />
-          ) : (
-            ""
-          )}
-        </td>
         <td>{this.props.instance.longName}</td>
         <td>
           <a href={instanceURL} target="_blank">
@@ -55,7 +48,14 @@ class InstanceRow extends Component {
           </UncontrolledTooltip>
         </td>
         <td>{prettyBytes(this.props.instance.rawSize)}</td>
-        <td>{this.props.instance.app}</td>
+        <td>
+          {this.props.instance.app}
+          {this.props.instance.technicalInstance ? (
+            <i className="fa fa-cog" style={{ marginLeft: "10px" }} />
+          ) : (
+            ""
+          )}
+        </td>
         <td>
           <InstanceBadgeStatus
             config={this.props.config}

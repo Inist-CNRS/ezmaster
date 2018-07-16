@@ -28,6 +28,11 @@ table.ezmaster-instances-table th {
   border-top: 0px;
 }
 
+.ezm-technical-instances-filter {
+  display: inline-block;
+  margin-left: 10px;
+}
+
 .ezm-technical-instances-filter i {
   cursor: pointer;
 }
