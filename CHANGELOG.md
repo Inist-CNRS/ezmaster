@@ -16,7 +16,7 @@ This release do no brake anything API side or internaly. This is a mostly a full
 * Adds "starting" status to the Start/Stop instances button action including a visual animated indicator
 * Adds a loading data modal for waiting before ezmaster UI is ready
 * Ezmaster UI is now fully SPA (single page application)
-* Adds the `technicalInstance` flag to ezmasterized applications. It is used to filter these instances from the default instances list because end-user are not concerned by these instances. Ex: databases used by other instances
+* Adds the `technicalApplication` flag to ezmasterized applications. It is used to filter these instances from the default instances list because end-user are not concerned by these instances. Ex: databases used by other instances
 
 ### ezmaster 4.4.0
 
