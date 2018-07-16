@@ -80,7 +80,7 @@ module.exports.readEzmasterAppConfig = function(image, cb) {
     httpPort: 3000,
     configPath: "/opt/ezmaster/config/config.json",
     dataPath: "/opt/ezmaster/data/",
-    technicalInstance: false
+    technicalApplication: false
   };
   var cmd =
     'docker run --rm --entrypoint "/bin/cat" ' + image + " /etc/ezmaster.json";

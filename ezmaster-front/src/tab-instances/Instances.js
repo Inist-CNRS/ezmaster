@@ -53,7 +53,7 @@ class Instances extends Component {
   render() {
     const self = this;
     const instancesRows = [];
-    let technicalInstancesNb = 0;
+    let technicalApplicationsNb = 0;
     Object.keys(self.props.instances.d)
       .sort((a, b) => {
         return self.props.instances.d[a].creationDate >
@@ -64,10 +64,10 @@ class Instances extends Component {
       .forEach(function(technicalName) {
         const instance = self.props.instances.d[technicalName];
 
-        // do not show technicalInstance if it has not been
+        // do not show technicalApplication if it has not been
         // requested by the user
-        if (instance.technicalInstance) {
-          technicalInstancesNb++;
+        if (instance.technicalApplication) {
+          technicalApplicationsNb++;
           if (self.state.showTechnicalInstances === "no") {
             return;
           }
@@ -89,7 +89,7 @@ class Instances extends Component {
           <title>EzMaster - Instances</title>
         </Helmet>
         {/* append a "add instance" button if the table items are more than 10 items so that it's easier to click on the button */}
-        {instancesRows.length + technicalInstancesNb > 10 && (
+        {instancesRows.length + technicalApplicationsNb > 10 && (
           <Row>
             <Col>
               <Button
@@ -118,9 +118,9 @@ class Instances extends Component {
                   <th>Size</th>
                   <th>
                     Application
-                    {/* This is the technicalInstances button used to 
+                    {/* This is the technicalApplications button used to 
                         filter the instances list */}
-                    {technicalInstancesNb > 0 && (
+                    {technicalApplicationsNb > 0 && (
                       <div className="ezm-technical-instances-filter">
                         <i
                           id="etif-btn"
@@ -142,14 +142,14 @@ class Instances extends Component {
                           }
                           color="warning"
                         >
-                          {technicalInstancesNb}
+                          {technicalApplicationsNb}
                         </Badge>
                         <UncontrolledTooltip
                           autohide={false}
                           placement="bottom"
                           target="etif-badge"
                         >
-                          Click to display the {technicalInstancesNb} hidden
+                          Click to display the {technicalApplicationsNb} hidden
                           technical instances.
                         </UncontrolledTooltip>
                         <UncontrolledTooltip
@@ -158,7 +158,7 @@ class Instances extends Component {
                           target="etif-btn"
                         >
                           Show/hide ezmaster's technical instances (ex:
-                          databases)
+                          database)
                         </UncontrolledTooltip>
                       </div>
                     )}

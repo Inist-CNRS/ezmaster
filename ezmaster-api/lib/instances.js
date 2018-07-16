@@ -67,8 +67,8 @@ module.exports.getInstancesManifests = function(cb) {
           manifests[technicalName] = manifest;
 
           // default value
-          if (manifests[technicalName].technicalInstance === undefined) {
-            manifests[technicalName].technicalInstance = false;
+          if (manifests[technicalName].technicalApplication === undefined) {
+            manifests[technicalName].technicalApplication = false;
           }
         } catch (err) {
           debug("Error reading manifest: " + file + " [" + err + "]");

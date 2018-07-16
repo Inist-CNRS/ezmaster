@@ -50,7 +50,7 @@ class InstanceRow extends Component {
         <td>{prettyBytes(this.props.instance.rawSize)}</td>
         <td>
           {this.props.instance.app}
-          {this.props.instance.technicalInstance ? (
+          {this.props.instance.technicalApplication ? (
             <i className="fa fa-cog" style={{ marginLeft: "10px" }} />
           ) : (
             ""
