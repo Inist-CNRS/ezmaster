@@ -1,6 +1,6 @@
 {
   "name": "ezmaster",
-  "version": "4.4.0",
+  "version": "5.0.0",
   "description": "Administration of docker applications without any IT skills",
   "private": true,
   "scripts": {
