@@ -65,9 +65,8 @@ class InstanceBtnUpload extends Component {
         } else {
           toast.success(
             <div>
-              Upload "{fileName}" success on{" "}
+              <i className="fa fa-upload" /> Upload "{fileName}" success on{" "}
               <strong>{self.props.instance.technicalName}</strong>{" "}
-              <i className="fa fa-upload" />
             </div>
           );
         }
@@ -93,9 +92,8 @@ class InstanceBtnUpload extends Component {
         } else {
           toast.success(
             <div>
-              File "{fileName}"" has been deleted on{" "}
-              <strong>{self.props.instance.technicalName}</strong>{" "}
-              <i className="fa fa-delete" />
+              <i className="fa fa-delete" /> File "{fileName}"" has been deleted
+              on <strong>{self.props.instance.technicalName}</strong>{" "}
             </div>
           );
         }

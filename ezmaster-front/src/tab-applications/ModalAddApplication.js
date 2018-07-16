@@ -99,11 +99,11 @@ class ModalAddApplication extends Component {
         } else {
           toast.success(
             <div>
-              Application{" "}
+              <i className="fa fa-plus-circle" /> Application{" "}
               <strong>
                 {self.state.applicationName}:{self.state.applicationVersion}
               </strong>{" "}
-              has been created <i className="fa fa-plus-circle" />
+              has been created
             </div>
           );
         }

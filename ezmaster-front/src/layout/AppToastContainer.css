@@ -1,2 +1,21 @@
-.ezmaster-toast {
+/* force to take all the available width */
+.Toastify__toast-container {
+  width: inherit;
+}
+.Toastify__toast--info {
+  background-color: #4aa8e8;
+}
+.Toastify__toast--success {
+  background-color: #4a864a;
+}
+.Toastify__toast--warning {
+  background-color: #eccc69;
+}
+.Toastify__toast--error {
+  background-color: #db3946;
+}
+
+.Toastify__toast-body {
+  margin-right: 5px;
+  margin-left: 5px;
 }

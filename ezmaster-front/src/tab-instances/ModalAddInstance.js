@@ -98,8 +98,8 @@ class ModalAddInstance extends Component {
         } else {
           toast.success(
             <div>
-              Instance <strong>{self.state.technicalName}</strong> has been
-              created <i className="fa fa-plus-circle" />
+              <i className="fa fa-plus-circle" /> Instance{" "}
+              <strong>{self.state.technicalName}</strong> has been created
               <br />
               Warning: this is a "technical Instance"{" "}
               <i className="fa fa-cog" />

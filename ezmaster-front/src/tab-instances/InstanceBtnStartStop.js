@@ -38,8 +38,9 @@ class InstanceBtnStartStop extends Component {
           } else {
             toast.success(
               <div>
-                Instance <strong>{self.props.instance.technicalName}</strong>{" "}
-                has been stopped <i className="fa fa-stop-circle" />
+                <i className="fa fa-stop-circle" /> Instance{" "}
+                <strong>{self.props.instance.technicalName}</strong> has been
+                stopped
               </div>
             );
           }
@@ -64,8 +65,9 @@ class InstanceBtnStartStop extends Component {
           } else {
             toast.success(
               <div>
-                Instance <strong>{self.props.instance.technicalName}</strong>{" "}
-                has been started <i className="fa fa-play-circle" />
+                <i className="fa fa-play-circle" /> Instance{" "}
+                <strong>{self.props.instance.technicalName}</strong> has been
+                started
               </div>
             );
           }
