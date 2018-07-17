@@ -360,6 +360,7 @@ class ModalAddApplication extends Component {
         isOpen={this.props.modalIsOpen}
         toggle={this.props.toggle}
         className="ezmaster-modal-add-application"
+        autoFocus={false}
       >
         <Form onSubmit={e => e.preventDefault()}>
           <ModalHeader toggle={this.props.toggle}>
@@ -383,6 +384,7 @@ class ModalAddApplication extends Component {
                   onBlur={this.handleChangeApplicationName}
                   maxLength={250}
                   innerRef={elt => (this.inputApplicationName = elt)}
+                  autoFocus={true}
                 />
                 {this.state.applicationsNameListLoading && (
                   <InputGroupAddon addonType="append">
