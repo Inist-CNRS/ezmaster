@@ -24,7 +24,7 @@ class InstanceBtnPrivLink extends Component {
         </Button>
 
         <UncontrolledTooltip
-          placement="top"
+          placement="bottom"
           target={this.props.instance.technicalName + "-privlink"}
         >
           Open the <code>{this.props.instance.technicalName}</code> internal URL
