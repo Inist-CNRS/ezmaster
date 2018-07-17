@@ -93,3 +93,21 @@ If you are interested to [create your own ezmasterized application, follow the h
 * Change the DOCKER_VERSION parameter
 * Browse to https://hub.docker.com/_/docker/ to get the correct DOCKER_SHA256 value and change it in the Dockerfile
 * Test that everything works well after a : `make build`
+
+### How to simulate a reverse proxy locally in order to test the EZMASTER_PUBLIC_DOMAIN feature?
+
+The `ezmaster-debug-public-rp` dedicated (only in debug mode) container will help you. It will run a dedicated reverse proxy listening on `*.mydomain` hostnames (virtual hosts) and forwarding requests to your local ezmaster.
+
+* You first have to add these hostname in your `/etc/hosts` file:
+  ```
+  127.0.0.1 mydomain
+  127.0.0.1 ezmaster.mydomain
+  127.0.0.1 tech-name.mydomain
+  ```
+* Then start your ezmaster:
+  ```
+  EZMASTER_PUBLIC_DOMAIN="mydomain" make run-debug
+  ```
+* Then open your ezmaster backoffice at this URL: http://ezmaster.mydomain
+* Then create an instance with this technical name: `tech-name`
+* Then browse to your instance at this URL: http://tech-name.mydomain

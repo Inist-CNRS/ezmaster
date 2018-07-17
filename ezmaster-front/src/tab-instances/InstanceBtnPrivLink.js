@@ -14,13 +14,13 @@ class InstanceBtnPrivLink extends Component {
           color="link"
           className={this.props.classNameBtn + " ezmaster-a-link"}
           onClick={this.toggleModal}
+          href={instancePrivURL}
+          target="_blank"
         >
-          <a href={instancePrivURL} target="_blank">
-            <i
-              className={"fa fa-link"}
-              id={this.props.instance.technicalName + "-privlink"}
-            />
-          </a>
+          <i
+            className={"fa fa-link"}
+            id={this.props.instance.technicalName + "-privlink"}
+          />
         </Button>
 
         <UncontrolledTooltip

@@ -72,7 +72,6 @@ class Instances extends Component {
             return;
           }
         }
-
         instancesRows.push(
           <InstanceRow
             config={self.props.config}

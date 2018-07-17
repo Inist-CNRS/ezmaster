@@ -15,13 +15,13 @@ import InstanceBadgeStatus from "./InstanceBadgeStatus.js";
 
 class InstanceRow extends Component {
   render() {
-    const instanceURL = !this.props.config.publicDomain
+    const instanceURL = !this.props.config.d.publicDomain
       ? this.props.instance.publicURL
-      : this.props.config.publicProtocol +
+      : this.props.config.d.publicProtocol +
         "://" +
         this.props.instance.technicalName +
         "." +
-        this.props.config.publicDomain;
+        this.props.config.d.publicDomain;
 
     return (
       <tr>
@@ -104,7 +104,7 @@ class InstanceRow extends Component {
             classNameBtn="ezmaster-a-btn"
           />
 
-          {this.props.config.publicDomain && (
+          {this.props.config.d.publicDomain && (
             <InstanceBtnPubLink
               config={this.props.config}
               instances={this.props.instances}
