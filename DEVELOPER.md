@@ -17,6 +17,7 @@ export EZMASTER_USER="ezmaster"
 export EZMASTER_PASSWORD="changeme"
 
 # The customized texts to display on the ezmaster homepage UI (could contain HTML tags)
+# Warning: you cannot use special caracters like latin accent in env var, you have to use HTML entities
 # Example: EZMASTER_HOME_TITLE="EzMaster dedicated to data.istex.fr"
 #          EZMASTER_HOME_DESCRIPTION="This EzMaster contains <a href=\"\">Lodex</a> instances used to [...]"
 # Default is the generic EzMaster text explaining what is EzMaster.
