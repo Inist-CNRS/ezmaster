@@ -63,7 +63,7 @@ class InstanceRow extends Component {
             instance={this.props.instance}
           />
         </td>
-        <td>
+        <td style={{ whiteSpace: "nowrap" }}>
           <InstanceBtnStartStop
             config={this.props.config}
             instances={this.props.instances}
