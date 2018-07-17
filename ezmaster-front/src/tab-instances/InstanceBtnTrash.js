@@ -89,7 +89,11 @@ class InstanceBtnTrash extends Component {
           />
         </Button>
 
-        <Modal isOpen={this.state.modalIsOpen} toggle={this.toggleModal}>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          toggle={this.toggleModal}
+          autoFocus={false}
+        >
           <ModalHeader toggle={this.toggleModal}>
             Confirm you want to delete{" "}
             <code>{this.props.instance.technicalName}</code>
@@ -109,6 +113,7 @@ class InstanceBtnTrash extends Component {
             </Button>
             <Button
               color="danger"
+              autoFocus={true}
               onClick={this.doDeleteInstance}
               disabled={this.state.deleteBtnDisabled}
             >

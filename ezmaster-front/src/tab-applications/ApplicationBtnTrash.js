@@ -38,13 +38,18 @@ class ApplicationBtnTrash extends Component {
     self.props.applications.deleteApplication(
       self.props.application.imageName,
       function(err, res) {
-        console.log('err', err, res);
+        console.log("err", err, res);
         if (err) {
           toast.error(
             <div>
               {self.props.application.imageName} deleting error: {"" + err}
-              <br/>
-              {(err.response && err.response.data && err.response.data.json && err.response.data.json.message) ? err.response.data.json.message : ""}
+              <br />
+              {err.response &&
+              err.response.data &&
+              err.response.data.json &&
+              err.response.data.json.message
+                ? err.response.data.json.message
+                : ""}
             </div>
           );
         } else {
@@ -78,15 +83,20 @@ class ApplicationBtnTrash extends Component {
           />
         </Button>
 
-        <Modal isOpen={this.state.modalIsOpen} toggle={this.toggleModal}>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          toggle={this.toggleModal}
+          autoFocus={false}
+        >
           <ModalHeader toggle={this.toggleModal}>
-            Confirm you want to delete{" "}
-            this application ?
+            Confirm you want to delete this application ?
           </ModalHeader>
           <ModalBody>
             You are going to delete{" "}
-            <code>{this.props.application.imageName}</code><br />
-            It represents <strong>{prettyBytes(this.props.application.image.Size)}</strong> of
+            <code>{this.props.application.imageName}</code>
+            <br />
+            It represents{" "}
+            <strong>{prettyBytes(this.props.application.image.Size)}</strong> of
             data.
             <br />
             <br />
@@ -98,6 +108,7 @@ class ApplicationBtnTrash extends Component {
             </Button>
             <Button
               color="danger"
+              autoFocus={true}
               onClick={this.doDeleteApplication}
               disabled={this.state.deleteBtnDisabled}
             >
