@@ -100,9 +100,6 @@ class ModalAddInstance extends Component {
             <div>
               <i className="fa fa-plus-circle" /> Instance{" "}
               <strong>{self.state.technicalName}</strong> has been created
-              <br />
-              Warning: this is a "technical Instance"{" "}
-              <i className="fa fa-cog" />
             </div>
           );
         }
