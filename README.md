@@ -5,7 +5,7 @@
 EzMaster is a non-technical docker backoffice tools for non-IT administrators. It aims to manage applications and instances. One instance of an application is a docker packaged software having its own config and its own data. Each instance is a docker container, is isolated and independant, and can be stopped  or started easily on demand. Applications are "[ezmasterized](./EZMASTERIZED.md)" docker images, they can be easily downloaded  from dockerhub.
 
 
-![ezmaster demo](/doc/anim3.gif)
+![ezmaster demo](/doc/ezmaster-v5.gif)
 
 Why are you here? you are insterested by ezmaster because you are a end-user, a developer, or an op guy?
 
