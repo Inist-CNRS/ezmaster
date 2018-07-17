@@ -2,6 +2,10 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.1.0
+
+* Add the remove application button
+
 ### ezmaster 5.0.0
 
 This release do no brake anything API side or internaly. This is a mostly a full relooking of EzMaster UI.
