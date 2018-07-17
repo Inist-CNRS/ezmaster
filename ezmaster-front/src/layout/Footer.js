@@ -13,7 +13,7 @@ class Footer extends Component {
         <hr />
         <div className="ezmaster-footer-text float-left ml-2">
           <a href="https://github.com/Inist-CNRS/ezmaster">EzMaster</a>
-          version 5.1.1
+          version 5.1.2
         </div>
         <div className="ezmaster-footer-icon float-right mr-2">
           <a href="https://github.com/Inist-CNRS/ezmaster" className="mr-2">
