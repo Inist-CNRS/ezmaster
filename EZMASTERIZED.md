@@ -102,7 +102,7 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 
 ### lodex
 
-* Desc ...
+* Linked Data CMS with charts and diagrams inside
 * [![Docker](https://img.shields.io/docker/pulls/inistcnrs/lodex.svg)](https://registry.hub.docker.com/u/inistcnrs/lodex/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/lodex.svg)](https://github.com/Inist-CNRS/lodex)
 
 ### ezpaarse
