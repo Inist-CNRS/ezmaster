@@ -13,6 +13,7 @@
 
 .ezmaster-instances-table {
   color: #616161;
+  margin-top: 10px;
 }
 
 .ezmaster-instances-add {
@@ -26,6 +27,11 @@
 
 table.ezmaster-instances-table th {
   border-top: 0px;
+}
+
+table.ezmaster-instances-table td,
+table.ezmaster-instances-table th {
+  padding: 0.2rem;
 }
 
 .ezm-technical-instances-filter {
