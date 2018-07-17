@@ -3,10 +3,11 @@ import { Button } from "reactstrap";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import { toast } from "react-toastify";
+import { prettyBytes } from "../helpers.js";
 
-import "./InstanceBtnTrash.css";
+import "./ApplicationBtnTrash.css";
 
-class InstanceBtnTrash extends Component {
+class ApplicationBtnTrash extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -14,7 +15,7 @@ class InstanceBtnTrash extends Component {
       deleteBtnDisabled: false
     };
     this.toggleModal = this.toggleModal.bind(this);
-    this.doDeleteInstance = this.doDeleteInstance.bind(this);
+    this.doDeleteApplication = this.doDeleteApplication.bind(this);
   }
 
   toggleModal() {
@@ -23,25 +24,9 @@ class InstanceBtnTrash extends Component {
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
     });
-
-    // update the instance data folder size just when the popup is open
-    if (!this.state.modalIsOpen) {
-      this.props.instances.fetchInstanceDetail(
-        self.props.instance.containerId,
-        err => {
-          if (err) {
-            toast.error(
-              <div>
-                Instance featching detail error: <br /> {err}
-              </div>
-            );
-          }
-        }
-      );
-    }
   }
 
-  doDeleteInstance() {
+  doDeleteApplication() {
     const self = this;
 
     self.setState({
@@ -49,19 +34,23 @@ class InstanceBtnTrash extends Component {
     });
 
     // async instance delete
-    self.props.instances.deleteInstance(
-      self.props.instance.containerId,
-      function(err) {
+
+    self.props.applications.deleteApplication(
+      self.props.application.imageName,
+      function(err, res) {
+        console.log('err', err, res);
         if (err) {
           toast.error(
             <div>
-              {self.props.instance.technicalName} deleting error: {"" + err}
+              {self.props.application.imageName} deleting error: {"" + err}
+              <br/>
+              {(err.response && err.response.data && err.response.data.json && err.response.data.json.message) ? err.response.data.json.message : ""}
             </div>
           );
         } else {
           toast.success(
             <div>
-              {self.props.instance.technicalName} has been deleted{" "}
+              {self.props.application.name} has been deleted{" "}
               <i className={"fa fa-trash"} />
             </div>
           );
@@ -85,19 +74,19 @@ class InstanceBtnTrash extends Component {
         >
           <i
             className={"fa fa-trash"}
-            id={this.props.instance.technicalName + "-trash"}
+            id={this.props.application.imageName + "-trash"}
           />
         </Button>
 
         <Modal isOpen={this.state.modalIsOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>
             Confirm you want to delete{" "}
-            <code>{this.props.instance.technicalName}</code>
+            this application ?
           </ModalHeader>
           <ModalBody>
-            You are going to delete the{" "}
-            <code>{this.props.instance.technicalName}</code> instance.<br />
-            It represents <strong>{this.props.instance.detail.size}</strong> of
+            You are going to delete{" "}
+            <code>{this.props.application.imageName}</code><br />
+            It represents <strong>{prettyBytes(this.props.application.image.Size)}</strong> of
             data.
             <br />
             <br />
@@ -109,23 +98,16 @@ class InstanceBtnTrash extends Component {
             </Button>
             <Button
               color="danger"
-              onClick={this.doDeleteInstance}
+              onClick={this.doDeleteApplication}
               disabled={this.state.deleteBtnDisabled}
             >
-              Yes delete {this.props.instance.technicalName}
+              Yes delete {this.props.application.imageName}
             </Button>{" "}
           </ModalFooter>
         </Modal>
-
-        <UncontrolledTooltip
-          placement="top"
-          target={this.props.instance.technicalName + "-trash"}
-        >
-          Delete <code>{this.props.instance.technicalName}</code>
-        </UncontrolledTooltip>
       </div>
     );
   }
 }
 
-export default InstanceBtnTrash;
+export default ApplicationBtnTrash;

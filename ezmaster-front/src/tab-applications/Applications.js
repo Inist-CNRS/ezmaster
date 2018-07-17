@@ -36,12 +36,13 @@ class Applications extends Component {
   render() {
     const self = this;
     const applicationsRows = [];
-    self.props.applications.d.forEach(function(application, idx) {
+    self.props.applications.d.forEach((application, idx) => {
       applicationsRows.push(
         <ApplicationRow
           config={self.props.config}
           key={idx}
           application={application}
+          applications={this.props.applications}
         />
       );
     });

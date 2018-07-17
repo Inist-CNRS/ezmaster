@@ -44,11 +44,16 @@ ModelApplications.prototype.refreshApplicationsList = function() {
     });
 };
 
-ModelApplications.prototype.deleteApplication = function(application) {
-  let self = this;
-  setTimeout(function() {
-    self.inform("applications");
-  }, 1000);
+
+ModelApplications.prototype.deleteApplication = function(imageName, cb) {
+  const name = new Buffer(imageName).toString('base64');
+  axios
+    .delete(`/-/v1/app/${name}`)
+    .then(response => {
+      this.refreshApplicationsList();
+      return cb(null, response.data);
+    })
+    .catch(cb);
 };
 
 ModelApplications.prototype.createApplication = function(newApplication, cb) {

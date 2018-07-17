@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import moment from "moment";
 import { UncontrolledTooltip } from "reactstrap";
 import { prettyBytes } from "../helpers.js";
+import ApplicationBtnTrash from "./ApplicationBtnTrash.js";
 
 import "./ApplicationRow.css";
 
@@ -24,7 +25,12 @@ class ApplicationRow extends Component {
           </UncontrolledTooltip>
         </td>
         <td>{prettyBytes(this.props.application.image.Size)}</td>
-        <td>___</td>
+        <td>
+          <ApplicationBtnTrash
+            application={this.props.application}
+            applications={this.props.applications}
+          />
+        </td>
       </tr>
     );
   }
