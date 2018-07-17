@@ -2,7 +2,7 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
-### ezmaster 5.1.1
+### ezmaster 5.1.2
 
 * Add the remove application button
 * Fix router problem when reverse proxy mode is enabled (ex: `/instances/` route is replaced by `#/instances/`)
