@@ -19,6 +19,7 @@ class InstanceBtnPubLink extends Component {
           className={this.props.classNameBtn + " ezmaster-a-globe"}
           onClick={this.toggleModal}
           href={instancePubURL}
+          disabled={!this.props.instance.running}
           target="_blank"
         >
           <i

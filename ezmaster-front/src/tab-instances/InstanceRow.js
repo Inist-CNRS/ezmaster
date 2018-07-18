@@ -27,9 +27,14 @@ class InstanceRow extends Component {
       <tr>
         <td>{this.props.instance.longName}</td>
         <td>
-          <a href={instanceURL} target="_blank">
-            {this.props.instance.technicalName}
-          </a>
+          {this.props.instance.running && (
+            <a href={instanceURL} target="_blank">
+              <span>{this.props.instance.technicalName}</span>
+            </a>
+          )}
+          {!this.props.instance.running && (
+            <span>{this.props.instance.technicalName}</span>
+          )}
         </td>
         <td>
           <span id={this.props.instance.technicalName + "-creationDate"}>

@@ -15,6 +15,7 @@ class InstanceBtnPrivLink extends Component {
           className={this.props.classNameBtn + " ezmaster-a-link"}
           onClick={this.toggleModal}
           href={instancePrivURL}
+          disabled={!this.props.instance.running}
           target="_blank"
         >
           <i
