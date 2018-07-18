@@ -49,7 +49,9 @@ class InstanceRow extends Component {
             </code>
           </UncontrolledTooltip>
         </td>
-        <td>{prettyBytes(this.props.instance.rawSize)}</td>
+        <td style={{ whiteSpace: "nowrap" }}>
+          {prettyBytes(this.props.instance.rawSize)}
+        </td>
         <td>
           {this.props.instance.app}
           {this.props.instance.technicalApplication ? (
