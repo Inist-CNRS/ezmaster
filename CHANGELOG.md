@@ -6,6 +6,7 @@ EzMaster changelog lists what changed (features and bug fix) between all the ezm
 
 * Now you cannot delete a used application
 * Fix timezone when displaying date in instances and applications tabs
+* Fix instance web links when the instance is not running: disable it
 
 ### ezmaster 5.1.2
 
