@@ -16,6 +16,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { UncontrolledTooltip } from "reactstrap";
 import latinize from "latinize";
 import { toast } from "react-toastify";
+import semver from "semver";
 
 import "./ModalAddInstance.css";
 
@@ -257,14 +258,26 @@ class ModalAddInstance extends Component {
       nbErrors > 0;
     const cancelBtnDisabled = this.state.creatingInstance;
 
+    // when displaying the dropdown application list,
+    // we sort by imageName and version instead of
+    // creationDate (default sort algo)
     let applicationsJsx = [];
-    this.props.applications.d.forEach(appItem => {
-      applicationsJsx.push(
-        <option value={appItem.imageName} key={appItem.imageName}>
-          {appItem.imageName}
-        </option>
-      );
-    });
+    this.props.applications.d
+      .sort((a, b) => {
+        const splitedA = a.imageName.split(":");
+        const splitedB = b.imageName.split(":");
+        if (splitedA[0] === splitedB[0]) {
+          return semver.lt(splitedA[1], splitedB[1]) ? 1 : -1;
+        }
+        return a.imageName > b.imageName ? 1 : -1;
+      })
+      .forEach(appItem => {
+        applicationsJsx.push(
+          <option value={appItem.imageName} key={appItem.imageName}>
+            {appItem.imageName}
+          </option>
+        );
+      });
 
     return (
       <Modal
