@@ -2,7 +2,7 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
-### ezmaster 5.X.X
+### ezmaster 5.2.0
 
 * Now you cannot delete a used application
 * Fix timezone when displaying date in instances and applications tabs
