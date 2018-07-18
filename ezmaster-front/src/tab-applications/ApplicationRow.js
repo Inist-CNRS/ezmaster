@@ -29,6 +29,7 @@ class ApplicationRow extends Component {
           <ApplicationBtnTrash
             application={this.props.application}
             applications={this.props.applications}
+            usedApplications={this.props.usedApplications}
           />
         </td>
       </tr>

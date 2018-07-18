@@ -45,10 +45,9 @@ ModelApplications.prototype.refreshApplicationsList = function() {
 };
 
 
-ModelApplications.prototype.deleteApplication = function(imageName, cb) {
-  const name = new Buffer(imageName).toString('base64');
+ModelApplications.prototype.deleteApplication = function(imageHash, cb) {
   axios
-    .delete(`/-/v1/app/${name}`)
+    .delete(`/-/v1/app/${imageHash}`)
     .then(response => {
       this.refreshApplicationsList();
       return cb(null, response.data);
