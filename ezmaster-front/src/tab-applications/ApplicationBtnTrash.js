@@ -122,7 +122,7 @@ class ApplicationBtnTrash extends Component {
         </Modal>
 
         <UncontrolledTooltip
-          placement="top"
+          placement="left"
           target={this.state.imageHash.slice(0, -2) + "-trash"}
         >
           Delete <code>{this.props.application.imageName}</code>

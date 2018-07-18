@@ -81,6 +81,7 @@ class Instances extends Component {
           />
         );
       });
+    const emptyTable = instancesRows.length + technicalApplicationsNb === 0;
 
     return (
       <div className="ezmaster-instances">
@@ -102,7 +103,7 @@ class Instances extends Component {
           </Row>
         )}
 
-        <Row>
+        <Row style={{ display: emptyTable ? "none" : "block" }}>
           <Col>
             <Table
               striped={true}
@@ -170,10 +171,16 @@ class Instances extends Component {
             </Table>
           </Col>
         </Row>
-        <Row>
-          <Col>
+        <Row
+          className={
+            emptyTable
+              ? "ezmaster-instances-add justify-content-md-center"
+              : "ezmaster-instances-add"
+          }
+        >
+          <Col className={emptyTable ? "col-md-auto" : ""}>
             <Button
-              className="ml-2 ezmaster-instances-add"
+              className="ml-2"
               color="primary"
               onClick={this.toggleModalAddInstance}
             >

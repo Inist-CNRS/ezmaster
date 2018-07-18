@@ -19,6 +19,9 @@
 .ezmaster-instances-add {
   font-size: 1.2rem;
 }
+.ezmaster-instances-add.justify-content-md-center {
+  margin-top: 50px;
+}
 
 .ezmaster-instances-add-top {
   margin-top: 10px;

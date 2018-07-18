@@ -34,12 +34,11 @@ class Applications extends Component {
   }
 
   render() {
-    const self = this;
     const applicationsRows = [];
-    self.props.applications.d.forEach((application, idx) => {
+    this.props.applications.d.forEach((application, idx) => {
       applicationsRows.push(
         <ApplicationRow
-          config={self.props.config}
+          config={this.props.config}
           key={idx}
           application={application}
           applications={this.props.applications}
@@ -47,6 +46,7 @@ class Applications extends Component {
         />
       );
     });
+    const emptyTable = this.props.applications.d.length === 0;
 
     return (
       <div className="ezmaster-applications">
@@ -68,7 +68,7 @@ class Applications extends Component {
           </Row>
         )}
 
-        <Row>
+        <Row style={{ display: emptyTable ? "none" : "block" }}>
           <Col>
             <Table
               striped={true}
@@ -87,10 +87,16 @@ class Applications extends Component {
             </Table>
           </Col>
         </Row>
-        <Row>
-          <Col>
+        <Row
+          className={
+            emptyTable
+              ? "ezmaster-applications-add justify-content-md-center"
+              : "ezmaster-applications-add"
+          }
+        >
+          <Col className={emptyTable ? "col-md-auto" : ""}>
             <Button
-              className="ml-2 ezmaster-applications-add"
+              className="ml-2"
               color="primary"
               onClick={this.toggleModalAddApplication}
             >

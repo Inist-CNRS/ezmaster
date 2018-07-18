@@ -20,6 +20,9 @@
 .ezmaster-applications-add {
   font-size: 1.2rem;
 }
+.ezmaster-applications-add.justify-content-md-center {
+  margin-top: 50px;
+}
 
 .ezmaster-applications-add-top {
   margin-top: 10px;
