@@ -36,8 +36,8 @@ class App extends Component {
             modelEvent={this.props.modelEvent}
             config={this.props.config}
             infoMachine={this.props.infoMachine}
-            applicationsActive={window.location.pathname === "/applications/"}
-            instancesActive={window.location.pathname === "/instances/"}
+            applicationsActive={window.location.hash === "#/applications/"}
+            instancesActive={window.location.hash === "#/instances/"}
           />
         </div>
         <div
@@ -69,7 +69,9 @@ class App extends Component {
                   modelEvent={this.props.modelEvent}
                   config={this.props.config}
                   applications={this.props.applications}
-                  usedApplications={Object.keys(this.props.instances.d).map(i => this.props.instances.d[i].app)}
+                  usedApplications={Object.keys(this.props.instances.d).map(
+                    i => this.props.instances.d[i].app
+                  )}
                   ezMasterizedApps={this.props.ezMasterizedApps}
                 />
               )}

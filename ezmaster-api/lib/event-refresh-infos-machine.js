@@ -3,19 +3,18 @@
  * the data are communicated through websocket to the client
  */
 
-'use strict';
+"use strict";
 
-var cfg        = require('../lib/config.js');
-var os         = require('os');
-var filesize   = require('filesize');
-var numCPUs    = require('num-cpus');
-var udisk      = require('./diskusage.js');
-var path       = require('path');
-var basename   = path.basename(__filename, '.js');
-var debug      = require('debug')('ezmaster:' + basename);
+var cfg = require("../lib/config.js");
+var os = require("os");
+var filesize = require("filesize");
+var numCPUs = require("num-cpus");
+var udisk = require("./diskusage.js");
+var path = require("path");
+var basename = path.basename(__filename, ".js");
+var debug = require("debug")("ezmaster:" + basename);
 
-module.exports = function (heartbeat, last) {
-
+module.exports = function(heartbeat, last) {
   // do nothing if the websocket is not yet connected
   if (!cfg.socket) {
     return;
@@ -29,26 +28,36 @@ module.exports = function (heartbeat, last) {
 
   // Trunc loadAverage values.
   var numberOfDecimalNumbers = 2;
-  infosMachine.loadAverage[0] = infosMachine.loadAverage[0].toFixed(numberOfDecimalNumbers);
-  infosMachine.loadAverage[1] = infosMachine.loadAverage[1].toFixed(numberOfDecimalNumbers);
-  infosMachine.loadAverage[2] = infosMachine.loadAverage[2].toFixed(numberOfDecimalNumbers);
+  infosMachine.loadAverage[0] = infosMachine.loadAverage[0].toFixed(
+    numberOfDecimalNumbers
+  );
+  infosMachine.loadAverage[1] = infosMachine.loadAverage[1].toFixed(
+    numberOfDecimalNumbers
+  );
+  infosMachine.loadAverage[2] = infosMachine.loadAverage[2].toFixed(
+    numberOfDecimalNumbers
+  );
 
   // os.totalmem() returns the total amount of system memory in bytes.
-  infosMachine.totalMemory = filesize(os.totalmem(), {base: 2});
+  infosMachine.totalMemory = filesize(os.totalmem(), { base: 2 });
   // os.freemem() returns the amount of free system memory in bytes.
-  infosMachine.freeMemory = filesize(os.freemem(), {base: 2});
+  infosMachine.freeMemory = filesize(os.freemem(), { base: 2 });
   // RAM use percentage.
   numberOfDecimalNumbers = 0;
-  infosMachine.useMemoryPercentage = (((os.totalmem() - os.freemem()) * 100) /
-      os.totalmem()).toFixed(numberOfDecimalNumbers);
+  infosMachine.useMemoryPercentage = (
+    (os.totalmem() - os.freemem()) *
+    100 /
+    os.totalmem()
+  ).toFixed(numberOfDecimalNumbers);
 
   // CPUs number
   infosMachine.nbCPUs = numCPUs;
 
   // Disk information
-  udisk(function (err, info) {
-
-    if (err) { return new Error(err); }
+  udisk(function(err, info) {
+    if (err) {
+      return new Error(err);
+    }
 
     infosMachine = Object.assign(infosMachine, info);
 
@@ -56,7 +65,7 @@ module.exports = function (heartbeat, last) {
     //  - update the 'infosMachine' variable
     //  - refresh the infosMachineTable.js component
     // This is the infosMachineTable.js component which receives the emit message.
-    cfg.socket.broadcast.emit('refreshInfosMachine', infosMachine);
+    cfg.socket.broadcast.emit("refreshInfosMachine", infosMachine);
 
     // When we come on the web page, while testing in local,
     // machine info are not displayed, we have to refresh the page for that.
@@ -68,9 +77,6 @@ module.exports = function (heartbeat, last) {
     // To solve this local testing problem we add a simple emit which sends
     // a message to the current client who just connect to the server.
     // As a consequence, this line can be commented when the code is deployed on the vilodex.
-    cfg.socket.emit('refreshInfosMachine', infosMachine);
-
+    cfg.socket.emit("refreshInfosMachine", infosMachine);
   });
-
-
 };

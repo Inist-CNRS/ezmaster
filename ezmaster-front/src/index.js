@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { CookiesProvider } from "react-cookie";
 
 import "bootstrap/dist/css/bootstrap.css";
@@ -27,7 +27,7 @@ modelEzMasterizedApps.subscribe(render);
 
 function render(modelEvent) {
   ReactDOM.render(
-    <Router>
+    <HashRouter>
       <CookiesProvider>
         <App
           modelEvent={modelEvent}
@@ -38,7 +38,7 @@ function render(modelEvent) {
           ezMasterizedApps={modelEzMasterizedApps}
         />
       </CookiesProvider>
-    </Router>,
+    </HashRouter>,
     document.getElementById("root")
   );
 }

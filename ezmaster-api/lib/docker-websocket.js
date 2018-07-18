@@ -6,17 +6,17 @@
  * - die
  */
 
-'use strict';
+"use strict";
 
-var path      = require('path');
-var basename  = path.basename(__filename, '.js');
-var debug     = require('debug')('ezmaster:' + basename);
-var emitter   = require('./docker.js').emitter;
-var instances = require('./instances.js');
+var path = require("path");
+var basename = path.basename(__filename, ".js");
+var debug = require("debug")("ezmaster:" + basename);
+var emitter = require("./docker.js").emitter;
+var instances = require("./instances.js");
 
 module.exports = {};
-module.exports.init = function (io) {
-  debug('init');
+module.exports.init = function(io) {
+  debug("init");
 
   //
   // Docker-event message example:
@@ -32,20 +32,21 @@ module.exports.init = function (io) {
   //   timeNano: 1480600121692591000 }
   //
 
-  emitter.on('start',   sendDockerEventToWs);
-  emitter.on('stop',    sendDockerEventToWs);
-  emitter.on('destroy', sendDockerEventToWs);
-  emitter.on('die',     sendDockerEventToWs);
+  emitter.on("start", sendDockerEventToWs);
+  emitter.on("stop", sendDockerEventToWs);
+  emitter.on("destroy", sendDockerEventToWs);
+  emitter.on("die", sendDockerEventToWs);
 
   function sendDockerEventToWs(message) {
-    message = Object.assign(message, { technicalName: message.Actor.Attributes.name });
+    message = Object.assign(message, {
+      technicalName: message.Actor.Attributes.name
+    });
 
     // ignore docker containers not listed as an ezmaster instance
     if (message.Actor.Attributes.ezmasterInstance) {
-
       // refresh the nginx reverse proxy config (ezmaster-rp)
       // if a container is started, stopped or destroyed
-      if (['start', 'stop', 'destroy'].indexOf(message.status) !== -1) {
+      if (["start", "stop", "destroy"].indexOf(message.status) !== -1) {
         // When an instance appears or disapears, we call refreshInstances() to update the
         // instances list cache and socket emit the updated list to all users.
         instances.refreshInstances();
@@ -53,8 +54,7 @@ module.exports.init = function (io) {
       }
 
       // tell the client something appends to an instance
-      io.sockets.emit('docker-event', message);
+      io.sockets.emit("docker-event", message);
     }
   }
-
 };

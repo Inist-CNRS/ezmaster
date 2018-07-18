@@ -30,17 +30,17 @@ class ModalWebdav extends Component {
 
   render() {
     let webdavURLWin, webdavURLUbu;
-    if (this.props.config.publicDomain) {
+    if (this.props.config.d.publicDomain) {
       webdavURLWin =
-        this.props.config.publicProtocol +
+        this.props.config.d.publicProtocol +
         "://webdav." +
-        this.props.config.publicDomain +
+        this.props.config.d.publicDomain +
         "/" +
         this.props.instance.technicalName +
         "/data/";
       webdavURLUbu =
-        "dav://webdav." + // maybe it will not work when https is enabled (this.props.config.publicProtocol)
-        this.props.config.publicDomain +
+        "dav://webdav." + // maybe it will not work when https is enabled (this.props.config.d.publicProtocol)
+        this.props.config.d.publicDomain +
         "/" +
         this.props.instance.technicalName +
         "/data/";

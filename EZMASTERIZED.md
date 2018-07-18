@@ -82,7 +82,7 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 
 ### ezmaster-hexo
 
-* Desc ...
+* A basic static blog system
 * [![Docker](https://img.shields.io/docker/pulls/inistcnrs/ezmaster-hexo.svg)](https://registry.hub.docker.com/u/inistcnrs/ezmaster-hexo/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/ezmaster-hexo.svg)](https://github.com/Inist-CNRS/ezmaster-hexo)
 
 ### ezmaster-jekyll
@@ -102,12 +102,12 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 
 ### lodex
 
-* Desc ...
+* Linked Data CMS with charts and diagrams inside
 * [![Docker](https://img.shields.io/docker/pulls/inistcnrs/lodex.svg)](https://registry.hub.docker.com/u/inistcnrs/lodex/) [![Github](https://img.shields.io/github/tag/Inist-CNRS/lodex.svg)](https://github.com/Inist-CNRS/lodex)
 
 ### ezpaarse
 
-* Desc ...
+* ezPAARSE can ingest your (proxy) log files and show how users access suscribed electronic ressources.
 * [![Docker](https://img.shields.io/docker/pulls/ezpaarseproject/ezpaarse.svg)](https://registry.hub.docker.com/u/ezpaarseproject/ezpaarse/) [![Github](https://img.shields.io/github/tag/ezpaarse-project/ezpaarse.svg)](https://github.com/ezpaarse-project/ezpaarse)
 
 ### ezmaster-web-term
@@ -127,17 +127,17 @@ This formated list will be used by ezmaster itself to dynamicaly display a dropd
 
 ### bibliomap-viewer
 
-* Desc ...
+* Bibliomap HTML viewer
 * [![Docker](https://img.shields.io/docker/pulls/ezpaarseproject/bibliomap-viewer.svg)](https://registry.hub.docker.com/u/ezpaarseproject/bibliomap-viewer/) [![Github](https://img.shields.io/github/tag/ezpaarse-project/bibliomap-viewer.svg)](https://github.com/ezpaarse-project/bibliomap-viewer)
 
 ### bibliomap-harvester
 
-* Desc ...
+* Bibliomap package used to listen for ezproxy logs
 * [![Docker](https://img.shields.io/docker/pulls/ezpaarseproject/bibliomap-harvester.svg)](https://registry.hub.docker.com/u/ezpaarseproject/bibliomap-harvester/) [![Github](https://img.shields.io/github/tag/ezpaarse-project/bibliomap-harvester.svg)](https://github.com/ezpaarse-project/bibliomap-harvester)
 
 ### bibliomap-enricher
 
-* Desc ...
+* Bibliomap package used to realtime (streaming) parse your ezproxy logs with ezpaarse
 * [![Docker](https://img.shields.io/docker/pulls/ezpaarseproject/bibliomap-enricher.svg)](https://registry.hub.docker.com/u/ezpaarseproject/bibliomap-enricher/) [![Github](https://img.shields.io/github/tag/ezpaarse-project/bibliomap-enricher.svg)](https://github.com/ezpaarse-project/bibliomap-enricher)
 
 ### ezvis

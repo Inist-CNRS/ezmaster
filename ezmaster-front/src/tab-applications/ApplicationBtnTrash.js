@@ -11,42 +11,48 @@ class ApplicationBtnTrash extends Component {
   constructor(props) {
     super(props);
 
-    const deleteBtnUseless = this.props.usedApplications.find((app) => (app === this.props.application.imageName)) !== undefined;
-    const imageHash = new Buffer(this.props.application.imageName).toString('base64');
+    const deleteBtnUseless =
+      this.props.usedApplications.find(
+        app => app === this.props.application.imageName
+      ) !== undefined;
+    const imageHash = new Buffer(this.props.application.imageName).toString(
+      "base64"
+    );
     this.state = {
       modalIsOpen: false,
       deleteBtnDisabled: false,
       deleteBtnUseless,
-      imageHash,
+      imageHash
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.doDeleteApplication = this.doDeleteApplication.bind(this);
   }
 
   toggleModal() {
-
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
     });
   }
 
   doDeleteApplication() {
-
     this.setState({
       deleteBtnDisabled: true
     });
 
-    // async instance delete
-
     this.props.applications.deleteApplication(
-      this.state.imageHash,
+      self.props.application.imageName,
       (err, res) => {
         if (err) {
           toast.error(
             <div>
               {this.props.application.imageName} deleting error: {"" + err}
-              <br/>
-              {(err.response && err.response.data && err.response.data.json && err.response.data.json.message) ? err.response.data.json.message : ""}
+              <br />
+              {err.response &&
+              err.response.data &&
+              err.response.data.json &&
+              err.response.data.json.message
+                ? err.response.data.json.message
+                : ""}
             </div>
           );
         } else {
@@ -81,15 +87,20 @@ class ApplicationBtnTrash extends Component {
           />
         </Button>
 
-        <Modal isOpen={this.state.modalIsOpen} toggle={this.toggleModal}>
+        <Modal
+          isOpen={this.state.modalIsOpen}
+          toggle={this.toggleModal}
+          autoFocus={false}
+        >
           <ModalHeader toggle={this.toggleModal}>
-            Confirm you want to delete{" "}
-            this application ?
+            Confirm you want to delete this application ?
           </ModalHeader>
           <ModalBody>
             You are going to delete{" "}
-            <code>{this.props.application.imageName}</code><br />
-            It represents <strong>{prettyBytes(this.props.application.image.Size)}</strong> of
+            <code>{this.props.application.imageName}</code>
+            <br />
+            It represents{" "}
+            <strong>{prettyBytes(this.props.application.image.Size)}</strong> of
             data.
             <br />
             <br />
@@ -101,6 +112,7 @@ class ApplicationBtnTrash extends Component {
             </Button>
             <Button
               color="danger"
+              autoFocus={true}
               onClick={this.doDeleteApplication}
               disabled={this.state.deleteBtnDisabled}
             >
