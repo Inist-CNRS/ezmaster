@@ -2,6 +2,10 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.X.X
+
+* Now you cannot delete a used application
+
 ### ezmaster 5.1.2
 
 * Add the remove application button
