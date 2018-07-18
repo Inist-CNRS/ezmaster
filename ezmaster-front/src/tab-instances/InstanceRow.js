@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import moment from "moment";
+import moment from "moment-timezone";
 import { UncontrolledTooltip } from "reactstrap";
 import { prettyBytes } from "../helpers.js";
 
@@ -33,10 +33,7 @@ class InstanceRow extends Component {
         </td>
         <td>
           <span id={this.props.instance.technicalName + "-creationDate"}>
-            {moment(
-              this.props.instance.creationDate,
-              "YYYY/MM/DD HH:mm:ss"
-            ).fromNow()}
+            {moment.utc(this.props.instance.creationDate).fromNow()}
           </span>
           <UncontrolledTooltip
             autohide={false}
@@ -44,7 +41,12 @@ class InstanceRow extends Component {
             target={this.props.instance.technicalName + "-creationDate"}
           >
             This instance has been created exactly on{" "}
-            <code>{this.props.instance.creationDate}</code>
+            <code>
+              {moment
+                .utc(this.props.instance.creationDate)
+                .tz(moment.tz.guess())
+                .format("YYYY-MM-DD HH:mm:ss zz")}
+            </code>
           </UncontrolledTooltip>
         </td>
         <td>{prettyBytes(this.props.instance.rawSize)}</td>

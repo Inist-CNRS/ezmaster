@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import moment from "moment";
+import moment from "moment-timezone";
 import { UncontrolledTooltip } from "reactstrap";
 import { prettyBytes } from "../helpers.js";
 import ApplicationBtnTrash from "./ApplicationBtnTrash.js";
@@ -13,7 +13,7 @@ class ApplicationRow extends Component {
         <td>{this.props.application.imageName}</td>
         <td>
           <span id={"creationDate-" + this.props.application.imageId}>
-            {moment(this.props.application.image.Created).fromNow()}
+            {moment.utc(this.props.application.creationDate).fromNow()}
           </span>
           <UncontrolledTooltip
             autohide={false}
@@ -21,7 +21,12 @@ class ApplicationRow extends Component {
             target={"creationDate-" + this.props.application.imageId}
           >
             This application has been created exactly on{" "}
-            <code>{this.props.application.image.Created}</code>
+            <code>
+              {moment
+                .utc(this.props.application.creationDate)
+                .tz(moment.tz.guess())
+                .format("YYYY-MM-DD HH:mm:ss zz")}
+            </code>
           </UncontrolledTooltip>
         </td>
         <td>{prettyBytes(this.props.application.image.Size)}</td>
