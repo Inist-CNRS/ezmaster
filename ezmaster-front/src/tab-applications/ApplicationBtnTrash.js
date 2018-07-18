@@ -40,7 +40,7 @@ class ApplicationBtnTrash extends Component {
     });
 
     this.props.applications.deleteApplication(
-      self.props.application.imageName,
+      self.state.imageHash,
       (err, res) => {
         if (err) {
           toast.error(
