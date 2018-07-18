@@ -137,9 +137,7 @@ router.route("/").post(bodyParser(), function(req, res, next) {
       var imageName = {
         imageName: imageToPull,
         imageId: data.Id.split(":")[1],
-        creationDate: moment(data.Created, moment.ISO_8601).format(
-          "YYYY/MM/DD hh:mm:ss"
-        )
+        creationDate: moment().format("YYYY/MM/DD hh:mm:ss")
       };
 
       var nameManifest = new Buffer(imageToPull).toString("base64");
