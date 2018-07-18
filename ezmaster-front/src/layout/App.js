@@ -69,6 +69,9 @@ class App extends Component {
                   modelEvent={this.props.modelEvent}
                   config={this.props.config}
                   applications={this.props.applications}
+                  usedApplications={Object.keys(this.props.instances.d).map(
+                    i => this.props.instances.d[i].app
+                  )}
                   ezMasterizedApps={this.props.ezMasterizedApps}
                 />
               )}

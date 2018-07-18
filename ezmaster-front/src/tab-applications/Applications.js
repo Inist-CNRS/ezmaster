@@ -43,6 +43,7 @@ class Applications extends Component {
           key={idx}
           application={application}
           applications={this.props.applications}
+          usedApplications={this.props.usedApplications}
         />
       );
     });

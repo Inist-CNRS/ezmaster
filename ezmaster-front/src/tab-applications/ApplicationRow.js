@@ -34,6 +34,7 @@ class ApplicationRow extends Component {
           <ApplicationBtnTrash
             application={this.props.application}
             applications={this.props.applications}
+            usedApplications={this.props.usedApplications}
             className="ezmaster-a-a"
             classNameBtn="ezmaster-a-a-btn"
           />

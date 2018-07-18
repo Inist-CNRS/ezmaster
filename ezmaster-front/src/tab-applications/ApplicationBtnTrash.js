@@ -10,39 +10,42 @@ import "./ApplicationBtnTrash.css";
 class ApplicationBtnTrash extends Component {
   constructor(props) {
     super(props);
+
+    const deleteBtnUseless =
+      this.props.usedApplications.find(
+        app => app === this.props.application.imageName
+      ) !== undefined;
+    const imageHash = new Buffer(this.props.application.imageName).toString(
+      "base64"
+    );
     this.state = {
       modalIsOpen: false,
-      deleteBtnDisabled: false
+      deleteBtnDisabled: false,
+      deleteBtnUseless,
+      imageHash
     };
     this.toggleModal = this.toggleModal.bind(this);
     this.doDeleteApplication = this.doDeleteApplication.bind(this);
   }
 
   toggleModal() {
-    const self = this;
-
     this.setState({
       modalIsOpen: !this.state.modalIsOpen
     });
   }
 
   doDeleteApplication() {
-    const self = this;
-
-    self.setState({
+    this.setState({
       deleteBtnDisabled: true
     });
 
-    // async instance delete
-
-    self.props.applications.deleteApplication(
-      self.props.application.imageName,
-      function(err, res) {
-        console.log("err", err, res);
+    this.props.applications.deleteApplication(
+      this.state.imageHash,
+      (err, res) => {
         if (err) {
           toast.error(
             <div>
-              {self.props.application.imageName} deleting error: {"" + err}
+              {this.props.application.imageName} deleting error: {"" + err}
               <br />
               {err.response &&
               err.response.data &&
@@ -55,14 +58,14 @@ class ApplicationBtnTrash extends Component {
         } else {
           toast.success(
             <div>
-              {self.props.application.name} has been deleted{" "}
+              {this.props.application.name} has been deleted{" "}
               <i className={"fa fa-trash"} />
             </div>
           );
         }
         // hide the popup
-        self.setState({
-          modalIsOpen: !self.state.modalIsOpen,
+        this.setState({
+          modalIsOpen: !this.state.modalIsOpen,
           deleteBtnDisabled: false
         });
       }
@@ -76,10 +79,11 @@ class ApplicationBtnTrash extends Component {
           color="link"
           className={this.props.classNameBtn + " ezmaster-a-trash"}
           onClick={this.toggleModal}
+          disabled={this.state.deleteBtnUseless}
         >
           <i
             className={"fa fa-trash"}
-            id={this.props.application.imageName + "-trash"}
+            id={this.state.imageHash.slice(0, -2) + "-trash"}
           />
         </Button>
 
@@ -116,6 +120,13 @@ class ApplicationBtnTrash extends Component {
             </Button>{" "}
           </ModalFooter>
         </Modal>
+
+        <UncontrolledTooltip
+          placement="top"
+          target={this.state.imageHash.slice(0, -2) + "-trash"}
+        >
+          Delete <code>{this.props.application.imageName}</code>
+        </UncontrolledTooltip>
       </div>
     );
   }
