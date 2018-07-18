@@ -5,6 +5,7 @@ EzMaster changelog lists what changed (features and bug fix) between all the ezm
 ### ezmaster 5.X.X
 
 * Now you cannot delete a used application
+* Fix timezone when displaying date in instances and applications tabs
 
 ### ezmaster 5.1.2
 
