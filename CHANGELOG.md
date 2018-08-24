@@ -16,7 +16,7 @@ EzMaster changelog lists what changed (features and bug fix) between all the ezm
 
 ### ezmaster 5.0.0
 
-This release do no brake anything API side or internaly. This is a mostly a full relooking of EzMaster UI.
+This release do no break anything API side or internaly. This is a mostly a full relooking of EzMaster UI.
 
 * Adds an [ezmaster logo](./ezmaster-front/src/layout/ezmaster-logo-bg.png) (thanks to François Debeaupuis)
   ![logo](./ezmaster-front/src/layout/ezmaster-logo-header.png)
