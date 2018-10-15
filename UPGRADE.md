@@ -11,6 +11,7 @@ EzMaster upgrade instructions are useful when upgrading ezmaster from one versio
 
 * be sure your ezmaster is in the version 3.8.3
 * stop ezmaster and upgrade the host to docker >= 17.05.0 and docker-compose >= 1.17.0
+* install jq apt-get install jq
 * download and run the upgrade script this way (it will patch the docker container of the ezmaster instances):
 
   ```shell
