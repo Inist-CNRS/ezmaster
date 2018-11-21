@@ -82,3 +82,9 @@ You should add a dedicated VirtualHost:
     ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
 </VirtualHost>
 ```
+### How to to clean safely unused Docker containers and images?
+
+```
+docker rm $(docker ps -f status=created -q)​
+docker rmi $(docker images -q)
+```
