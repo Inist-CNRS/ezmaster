@@ -88,3 +88,10 @@ You should add a dedicated VirtualHost:
 docker rm $(docker ps -f status=created -q)​
 docker rmi $(docker images -q)
 ```
+
+
+### How to drop unused MongoDB databases by ezMaster instances ?
+
+```
+comm -13 <(docker ps -a --format '{{.Names}}'|egrep "^\w+\-\w+\-.*$"|sed -e s/-[0-9]*$//g|sort|uniq) <(docker exec ezmaster_db mongo --quiet --eval 'db.adminCommand( { listDatabases: 1 } )'|jq -r '.databases[] | .name'|awk '{ print $1}'|sort|uniq)|awk '{print "docker exec ezmaster_db mongo",$1,"--eval \x27 db.dropDatabase(); \x27"}'|bash
+```
