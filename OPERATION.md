@@ -95,3 +95,18 @@ docker rmi $(docker images -q)
 ```
 comm -13 <(docker ps -a --format '{{.Names}}'|egrep "^\w+\-\w+\-.*$"|sed -e s/-[0-9]*$//g|sort|uniq) <(docker exec ezmaster_db mongo --quiet --eval 'db.adminCommand( { listDatabases: 1 } )'|jq -r '.databases[] | .name'|awk '{ print $1}'|sort|uniq)|awk '{print "docker exec ezmaster_db mongo",$1,"--eval \x27 db.dropDatabase(); \x27"}'|bash
 ```
+
+
+### What is the minimum configuration to run the ezMaster ? 
+
+ezMaster can use small configuration, but in this case you cannot host a lot of instances.
+For **tests**, It's recommended to run ezMaster with the following settings:
+``` 
+4 vCPU + 16Go RAM + 10 Go DOCKER  + 30 Go DATA
+
+```
+
+For production, It's recommended to run ezMaster with the following **minimum** settings :
+``` 
+8 vCPU + 32Go RAM + 20 Go DOCKER + 60 Go DATA
+``` 
