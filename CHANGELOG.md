@@ -2,6 +2,11 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.2.2
+
+* Fix #39 : Use host /tmp for all instances
+* Fix #40 : Disable corefile for all instances
+
 ### ezmaster 5.2.1
 
 * Fix #35 : Sometimes an instance is inaccessible, even if it is started
