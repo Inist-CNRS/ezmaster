@@ -513,8 +513,9 @@ router.route("").post(bodyParser(), function(req, res, next) {
 
             // prepare the command line to create and run the instance
             var cmd =
-              "docker run -dt -p " +
-              portMax +
+              "docker run -dt" +
+              " --tmpfs /tmp" +
+              " -p " + portMax +
               ":" +
               appConfig.httpPort +
               " " +
