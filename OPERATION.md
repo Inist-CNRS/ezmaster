@@ -9,7 +9,7 @@ mkdir ./ezmaster && cd ezmaster
 mkdir -p ./data/applications ./data/instances ./data/manifests
 mkdir -p ./logs/ezmaster-front/ ./logs/ezmaster-rp/instances/ ./logs/ezmaster-webdav/
 
-wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/5.2.1/docker-compose.yml
+wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/5.2.2/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
@@ -82,6 +82,7 @@ You should add a dedicated VirtualHost:
     ProxyPassReverse / http://192.168.100.10:35267/   # Replace IP with yours ezmaster IP
 </VirtualHost>
 ```
+
 ### How to to clean safely unused Docker containers and images?
 
 ```
@@ -89,24 +90,23 @@ docker rm $(docker ps -f status=created -q)​
 docker rmi $(docker images -q)
 ```
 
-
 ### How to drop unused MongoDB databases by ezMaster instances ?
 
 ```
 comm -13 <(docker ps -a --format '{{.Names}}'|egrep "^\w+\-\w+\-.*$"|sed -e s/-[0-9]*$//g|sort|uniq) <(docker exec ezmaster_db mongo --quiet --eval 'db.adminCommand( { listDatabases: 1 } )'|jq -r '.databases[] | .name'|awk '{ print $1}'|sort|uniq)|awk '{print "docker exec ezmaster_db mongo",$1,"--eval \x27 db.dropDatabase(); \x27"}'|bash
 ```
 
-
-### What is the minimum configuration to run the ezMaster ? 
+### What is the minimum configuration to run the ezMaster ?
 
 ezMaster can use small configuration, but in this case you cannot host a lot of instances.
 For **tests**, It's recommended to run ezMaster with the following settings:
-``` 
-4 vCPU + 16Go RAM + 10 Go DOCKER  + 30 Go DATA
 
+```
+4 vCPU + 16Go RAM + 10 Go DOCKER  + 30 Go DATA
 ```
 
 For production, It's recommended to run ezMaster with the following **minimum** settings :
-``` 
+
+```
 8 vCPU + 32Go RAM + 20 Go DOCKER + 60 Go DATA
-``` 
+```
