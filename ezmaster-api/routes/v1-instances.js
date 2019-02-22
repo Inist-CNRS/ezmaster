@@ -546,7 +546,7 @@ router.route("").post(bodyParser(), function(req, res, next) {
               '-e EZMASTER_PUBLIC_URL="' +
               publicUrl +
               '" ' +
-              "--net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api " +
+              "--net=ezmaster_eznetwork --link ezmaster_db --link ezmaster-api --ulimit core=0 " +
               "-v " +
               process.env.EZMASTER_PATH +
               "/data/instances/" +
