@@ -4,6 +4,7 @@
 
 var cfg = require("../lib/config.js"),
   path = require("path"),
+  os = require("os"),
   basename = path.basename(__filename, ".js"),
   debug = require("debug")("ezmaster:" + basename),
   bodyParser = require("body-parser"),
@@ -513,7 +514,11 @@ router.route("").post(bodyParser(), function(req, res, next) {
 
             // prepare the command line to create and run the instance
             var cmd =
-              "docker run -dt -p " +
+              "docker run -dt" +
+              " -v " +
+              path.join(os.tmpdir(), technicalName) +
+              ":/tmp" +
+              " -p " +
               portMax +
               ":" +
               appConfig.httpPort +
