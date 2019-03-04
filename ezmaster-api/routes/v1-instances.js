@@ -516,8 +516,10 @@ router.route("").post(bodyParser(), function(req, res, next) {
             var cmd =
               "docker run -dt" +
               " -v " +
-              path.join(os.tmpdir(), technicalName) +
-              ":/tmp" +
+              process.env.EZMASTER_PATH +
+              "/data/instances/" +
+              technicalName +
+              "/tmp/:/tmp" +
               " -p " +
               portMax +
               ":" +
