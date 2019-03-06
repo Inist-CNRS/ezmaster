@@ -14,8 +14,6 @@ COPY ./ezmaster-instance-nginx.conf.tpl /etc/nginx/
 COPY ./ezmaster-front-nginx.conf.tpl    /etc/nginx/
 COPY ./ezmaster-webdav-nginx.conf.tpl   /etc/nginx/
 
-# nginx logs
-RUN mkdir -p /var/log/nginx/ezmaster-rp/instances/
 RUN chmod go+rwX -R /var /run
 
 ENTRYPOINT ["/entrypoint.sh"]
