@@ -4,8 +4,8 @@ server {
 
   listen 80;
   server_name webdav.EZMASTER_PUBLIC_DOMAIN;
-  access_log  /var/log/nginx/ezmaster-rp/ezmaster-webdav.access.log  main;
-  error_log   /var/log/nginx/ezmaster-rp/ezmaster-webdav.error.log   warn;
+  access_log  /var/log/nginx/access.log  main;
+  error_log   /var/log/nginx/error.log   warn;
 
   location / {
     # max file upload size
