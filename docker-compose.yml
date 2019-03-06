@@ -5,7 +5,7 @@ services:
 
   ezmaster-api:
     container_name: ezmaster-api
-    image: inistcnrs/ezmaster:5.2.3-api
+    image: inistcnrs/ezmaster:5.2.4-api
     links:
       - ezmaster_db
     volumes:
@@ -43,7 +43,7 @@ services:
 
   ezmaster-front:
     container_name: ezmaster-front
-    image: inistcnrs/ezmaster:5.2.3-front
+    image: inistcnrs/ezmaster:5.2.4-front
     environment:
       EZMASTER_USER: ${EZMASTER_USER}
       EZMASTER_PASSWORD: ${EZMASTER_PASSWORD}
@@ -62,7 +62,7 @@ services:
 
   ezmaster-rp:
     container_name: ezmaster-rp
-    image: inistcnrs/ezmaster:5.2.3-rp
+    image: inistcnrs/ezmaster:5.2.4-rp
     environment:
       EZMASTER_UPLOAD_MAX_BODY_SIZE: ${EZMASTER_UPLOAD_MAX_BODY_SIZE}
     volumes:
@@ -79,7 +79,7 @@ services:
   # webdav access point for ezmaster's instances data folder (using apache2)
   ezmaster-webdav:
     container_name: ezmaster-webdav
-    image: inistcnrs/ezmaster:5.2.3-webdav
+    image: inistcnrs/ezmaster:5.2.4-webdav
     volumes:
       - ./data/instances/:/usr/local/apache2/htdocs/
       - ./logs/ezmaster-webdav/:/var/log/apache2/
