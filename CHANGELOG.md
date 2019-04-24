@@ -2,7 +2,7 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
-### ezmaster 5.2.x
+### ezmaster 5.2.5
 
 * Fix webdav COPY through reverse proxy
 * Fix broken links during the build
