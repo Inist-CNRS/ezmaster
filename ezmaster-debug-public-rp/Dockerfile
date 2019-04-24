@@ -1,4 +1,4 @@
-FROM httpd:2.4.29
+FROM httpd:2.4.39
 
 # vim for debug
 RUN apt-get update && apt-get install -yq --no-install-recommends vim
