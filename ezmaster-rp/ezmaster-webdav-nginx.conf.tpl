@@ -8,12 +8,19 @@ server {
   error_log   /var/log/nginx/error.log   warn;
 
   location / {
-    # max file upload size
-    client_max_body_size 500M;
+    client_max_body_size 0;
+
+    set $dest $http_destination;
+    if ($http_destination ~ "^https://(.+)") {
+        set $dest http://$1;
+    }
+    proxy_set_header Destination $dest;
 
     proxy_set_header Host $http_host;
     proxy_pass http://ezmaster-webdav:35270/;
     proxy_redirect off;
+    proxy_request_buffering off;
+    proxy_buffering off;
   }
 
 }
