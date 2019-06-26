@@ -211,12 +211,16 @@ class ModalAddInstance extends Component {
       ...oldState,
       technicalName1Auto: self.normalizeTNString(
         !oldState.technicalName1
-          ? longNameArray[0] ? longNameArray[0] : ""
+          ? longNameArray[0]
+            ? longNameArray[0]
+            : ""
           : ""
       ),
       technicalName2Auto: self.normalizeTNString(
         !oldState.technicalName2
-          ? longNameArray[1] ? longNameArray[1] : ""
+          ? longNameArray[1]
+            ? longNameArray[1]
+            : ""
           : ""
       )
     };
@@ -266,7 +270,11 @@ class ModalAddInstance extends Component {
       .sort((a, b) => {
         const splitedA = a.imageName.split(":");
         const splitedB = b.imageName.split(":");
-        if (splitedA[0] === splitedB[0]) {
+        if (
+          splitedA[0] === splitedB[0] &&
+          semver.valid(splitedA[1]) &&
+          semver.valid(splitedB[1])
+        ) {
           return semver.lt(splitedA[1], splitedB[1]) ? 1 : -1;
         }
         return a.imageName > b.imageName ? 1 : -1;
@@ -477,7 +485,8 @@ class ModalAddInstance extends Component {
                 display: this.state.creatingInstance ? "block" : "none"
               }}
             >
-              Creating instance.<br /> Please wait ...
+              Creating instance.
+              <br /> Please wait ...
             </FormText>
             <Button
               color="secondary"
