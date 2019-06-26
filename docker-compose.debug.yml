@@ -99,7 +99,7 @@ services:
       DEBUG: ${DEBUG}
     tty: true         # to have nice debug(...) outputs
     stdin_open: true  # to be able to use CTRL+C to stop the debug
-    command: npm run start
+    command: npm run start -y
     networks:
       - eznetwork
 
