@@ -2,6 +2,11 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.2.7
+ 
+ * Fix instances display Only when application version does not comply with semver.
+ * Fix start on debug mode
+
 ### ezmaster 5.2.6
 
 * Fix security alert - https://github.com/Inist-CNRS/ezmaster/pull/46
