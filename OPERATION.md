@@ -9,7 +9,7 @@ mkdir ./ezmaster && cd ezmaster
 mkdir -p ./data/applications ./data/instances ./data/manifests
 mkdir -p ./logs/ezmaster-front/ ./logs/ezmaster-rp/instances/ ./logs/ezmaster-webdav/
 
-wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/5.2.6/docker-compose.yml
+wget https://raw.githubusercontent.com/Inist-CNRS/ezmaster/5.2.7/docker-compose.yml
 export EZMASTER_PUBLIC_IP="<Your ezmaster server IP>"
 export EZMASTER_FREE_PORT_RANGE="49152-60000"
 export EZMASTER_FULL_FS_PERCENT=80
@@ -34,8 +34,8 @@ When you want to **upgrade EzMaster**, you just have to download the new EzMaste
 
 If you want to save the config and the data of your instances:
 
-* you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
-* you also have to save the mongodb database contained in the ezmaster_db docker container:
+- you have to recursivly save the `data/applications`, `data/manifests` and `data/instances` folders (or simply `data/`).
+- you also have to save the mongodb database contained in the ezmaster_db docker container:
 
   ```
   docker exec -it ezmaster_db mongodump --quiet --archive=- > ezmaster_db_archive
