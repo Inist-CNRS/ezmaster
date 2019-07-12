@@ -17,7 +17,7 @@ docker run --name my-webdav-share \
   inistcnrs/ezmaster:5.2.7-webdav
 ```
 
-WEBDAV_DATA_FOLDER is the folder you want to share. The `$WEBDAV_DATA_FOLDER` content rights will be recursivly set to 777 by default. If you do not want this behavior, set the `DATA_FOLDER_NO_CHMOD` env var to `1`
+WEBDAV_DATA_FOLDER is the local folder you want to share. The `$WEBDAV_DATA_FOLDER` content rights will be recursivly set to 777 by default. If you do not want this behavior, set the `DATA_FOLDER_NO_CHMOD` env var to `1`
 
 EZMASTER_USER and EZMASTER_PASSWORD are the login/password used to protect read and writh access to WEBDAV_DATA_FOLDER through webdav.
 
