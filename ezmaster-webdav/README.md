@@ -2,17 +2,14 @@
 
 This image can be use standelone to simply share a given folder using a webdav share.
 
-Here is a quick usecase.
+Here is a quick use case.
 
 ```shell
-export WEBDAV_DATA_FOLDER=/tmp
-export EZMASTER_USER=user
-export EZMASTER_PASSWORD=password
-export DATA_FOLDER_NO_CHMOD=0
-
 docker run --name my-webdav-share \
-  -e EZMASTER_USER -e EZMASTER_PASSWORD -e DATA_FOLDER_NO_CHMOD \
-  -v $WEBDAV_DATA_FOLDER:/usr/local/apache2/htdocs/ \
+  -e EZMASTER_USER=user \
+  -e EZMASTER_PASSWORD=password \
+  -e DATA_FOLDER_NO_CHMOD=0 \
+  -v /tmp/:/usr/local/apache2/htdocs/ \
   -p 35270:35270 \
   inistcnrs/ezmaster:5.2.7-webdav
 ```
