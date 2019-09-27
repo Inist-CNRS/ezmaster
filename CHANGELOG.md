@@ -2,6 +2,11 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.2.8
+
+* Fix Github security alert
+* Fix react-dropzone upgrade bug (upload bug)
+
 ### ezmaster 5.2.7
  
  * Fix instances display Only when application version does not comply with semver.
