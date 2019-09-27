@@ -10,8 +10,12 @@
     "insertversion:package": "sed -i \"s#^\\(  \\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" ezmaster-front/package*.json ezmaster-api/package*.json",
     "version": "npm run insertversion:readme && npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add *.md ezmaster-front/src/layout/Footer.js ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package*.json ezmaster-front/package*.json docker-compose*.yml ezmaster-webdav/README.md",
     "postversion": "git push && git push --tags",
-    "precommit": "lint-staged",
     "postinstall": "cd ezmaster-api/ ; npm i --unsafe-perm ; cd ../ezmaster-front/ ; npm i --unsafe-perm"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "keywords": [
     "docker",

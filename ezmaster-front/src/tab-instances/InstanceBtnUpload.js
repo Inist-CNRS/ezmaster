@@ -143,16 +143,21 @@ class InstanceBtnUpload extends Component {
             <Container>
               <Row>
                 <Col>
-                  <Dropzone
-                    onDrop={this.onDrop.bind(this)}
-                    className="ezmaster-instance-dropzone"
-                  >
-                    <div className="btn btn-link">
-                      <i className={"fa fa-cloud-upload"} />
-                    </div>
-                    <br />
-                    <div className="btn btn-primary">Choose file to upload</div>
-                    <div>or drag and drop them here.</div>
+                  <Dropzone onDrop={this.onDrop.bind(this)}>
+                    {({ getRootProps, getInputProps }) => (
+                      <section className="ezmaster-instance-dropzone">
+                        <div {...getRootProps()}>
+                          <input {...getInputProps()} />
+                          <div className="btn btn-link">
+                            <i className={"fa fa-cloud-upload"} />
+                          </div>
+                          <br />
+                          <div className="btn btn-primary">
+                            Choose file to upload
+                          </div>
+                        </div>
+                      </section>
+                    )}
                   </Dropzone>
                 </Col>
                 <Col className="ezmaster-instance-webdav">
