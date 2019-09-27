@@ -1,6 +1,6 @@
 {
   "name": "ezmaster-front",
-  "version": "5.2.7",
+  "version": "5.2.8",
   "description": "ezmaster-front",
   "private": true,
   "dependencies": {
