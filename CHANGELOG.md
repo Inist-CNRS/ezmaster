@@ -2,6 +2,10 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.2.9
+
+* Add some docker capabilities options at instance startup ([see this change in code](https://github.com/Inist-CNRS/ezmaster/blob/master/ezmaster-api/routes/v1-instances.js#L551))
+
 ### ezmaster 5.2.8
 
 * Fix Github security alert
