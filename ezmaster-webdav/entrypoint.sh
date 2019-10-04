@@ -1,5 +1,6 @@
 #!/bin/bash -eux
 
+
 # remove port 80 adjust to 35270
 sed -i 's%Listen 80%Listen 35270%g' /usr/local/apache2/conf/httpd.conf
 
@@ -34,6 +35,9 @@ else
     /usr/local/apache2/conf/extra/httpd-dav.conf.orig \
     > /usr/local/apache2/conf/extra/httpd-dav.conf
 fi
+
+# avoid restriction
+umask 0000
 
 # exec the CMD (see Dockerfile)
 exec "$@"
