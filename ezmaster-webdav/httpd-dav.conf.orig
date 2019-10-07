@@ -21,17 +21,8 @@ DavLockDB "/usr/local/apache2/var/DavLock"
   </LimitExcept>
 
 </Directory>
-
-# do not allow to modify ezmaster instance config files & root files
+# do not allow to modify ezmaster instance config files
 <DirectoryMatch "^/usr/local/apache2/htdocs/([a-z-0-9]+)/config/">
-  Order Deny,Allow
-  Deny from All
-</DirectoryMatch>
-<DirectoryMatch "^/usr/local/apache2/htdocs/([a-z-0-9]+)/$">
-  Order Deny,Allow
-  Deny from All
-</DirectoryMatch>
-<DirectoryMatch "^/usr/local/apache2/htdocs/$">
   Order Deny,Allow
   Deny from All
 </DirectoryMatch>

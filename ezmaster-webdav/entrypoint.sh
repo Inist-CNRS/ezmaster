@@ -1,5 +1,6 @@
 #!/bin/bash -eux
 
+
 # remove port 80 adjust to 35270
 sed -i 's%Listen 80%Listen 35270%g' /usr/local/apache2/conf/httpd.conf
 
@@ -20,11 +21,6 @@ if [ "${DATA_FOLDER_NO_CHMOD:-}" == "" ] || [ "${DATA_FOLDER_NO_CHMOD:-}" == "0"
   chmod -R ugo+rwx /usr/local/apache2/htdocs/
 fi
 
-# log stuff
-mkdir -p /var/log/apache2/
-sed -i 's%/proc/self/fd/2%/var/log/apache2/error.log%g'  /usr/local/apache2/conf/httpd.conf
-sed -i 's%/proc/self/fd/1%/var/log/apache2/access.log%g' /usr/local/apache2/conf/httpd.conf
-
 # authentication stuff enabled or disabled
 if [ -n "${EZMASTER_USER:-}" ] && [ -n "${EZMASTER_PASSWORD:-}" ]; then
   # generates the login/mdp password file
@@ -39,6 +35,9 @@ else
     /usr/local/apache2/conf/extra/httpd-dav.conf.orig \
     > /usr/local/apache2/conf/extra/httpd-dav.conf
 fi
+
+# avoid restriction
+umask 0000
 
 # exec the CMD (see Dockerfile)
 exec "$@"
