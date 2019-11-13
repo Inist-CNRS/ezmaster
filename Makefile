@@ -16,7 +16,7 @@ ifneq "$(SUPPORTS_MAKE_ARGS)" ""
 endif
 
 install: ## install dependencies thanks to a dockerized npm install
-	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm install --unsafe-perm
+	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:12.13.0 npm install --unsafe-perm
 	@make chown
 
 build: ## build the docker inistcnrs/ezmaster images localy
@@ -50,14 +50,14 @@ stop-prod: ## stop ezmaster production daemon
 
 # makefile rule used to keep current user's unix rights on the docker mounted files
 chown:
-	@test ! -d $$(pwd)/node_modules || docker run -it --rm -v $$(pwd):/app node:8.9.0 chown -R $$(id -u):$$(id -g) /app/
+	@test ! -d $$(pwd)/node_modules || docker run -it --rm -v $$(pwd):/app node:12.13.0 chown -R $$(id -u):$$(id -g) /app/
 
 npm: ## npm wrapper. example: make npm install --save mongodb-querystring
-	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm $(filter-out $@,$(MAKECMDGOALS))
+	@docker run -it --rm -v $$(pwd):/app -w /app --net=host -e NODE_ENV -e http_proxy -e https_proxy node:12.13.0 npm $(filter-out $@,$(MAKECMDGOALS))
 	@make chown
 
 lint: ## checks the coding rules (in a dockerized process)
-	@docker run -it --rm -v $$(pwd):/app -w /app -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm run lint
+	@docker run -it --rm -v $$(pwd):/app -w /app -e NODE_ENV -e http_proxy -e https_proxy node:12.13.0 npm run lint
 
 clean: ## remove node_modules and temp files
 	@rm -Rf ./node_modules/ ./npm-debug.log
