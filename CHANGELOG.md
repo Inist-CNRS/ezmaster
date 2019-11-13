@@ -7,6 +7,7 @@ EzMaster changelog lists what changed (features and bug fix) between all the ezm
 
 ### ezmaster 5.2.11
 * Security Fix with Docker capabilities - The admin sys mode is now conditional and dedicated for the special case.
+  **By default, no instance (container) is launched  with advanced capabilities**
 
 ### ezmaster 5.2.10
 * Fix webdav denied access
