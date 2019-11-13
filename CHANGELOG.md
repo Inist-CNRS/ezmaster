@@ -2,6 +2,9 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.2.12
+* Upgrade nested packages to fix NPM security alert
+
 ### ezmaster 5.2.11
 * Security Fix with Docker capabilities - The admin sys mode is now conditional and dedicated for the special case.
 
