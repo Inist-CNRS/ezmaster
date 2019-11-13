@@ -2,6 +2,12 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.2.11
+* Security Fix with Docker capabilities - The admin sys mode is now conditional and dedicated for the special case.
+
+### ezmaster 5.2.10
+* Fix webdav denied access
+
 ### ezmaster 5.2.9
 
 * Add some docker capabilities options at instance startup ([see this change in code](https://github.com/Inist-CNRS/ezmaster/blob/master/ezmaster-api/routes/v1-instances.js#L551))
