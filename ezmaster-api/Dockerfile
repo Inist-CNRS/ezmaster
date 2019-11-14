@@ -1,4 +1,4 @@
-FROM node:8.9.0
+FROM node:12.13.0
 
 # install the docker and docker-compose client inside this image
 # ezmaster uses it to manage the app instances

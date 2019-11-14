@@ -1,5 +1,5 @@
 # build the vuejs app
-FROM node:8.9.0 as build-deps
+FROM node:12.13.0 as build-deps
 WORKDIR /app/
 COPY ./package.json /app/
 RUN npm install
