@@ -60,7 +60,7 @@ lint: ## checks the coding rules (in a dockerized process)
 	@docker run -it --rm -v $$(pwd):/app -w /app -e NODE_ENV -e http_proxy -e https_proxy node:8.9.0 npm run lint
 
 clean: ## remove node_modules and temp files
-	@rm -Rf ./node_modules/ ./npm-debug.log
+	@rm -Rf ./node_modules/ ./ezmaster-api/node_modules/ ./ezmaster-api/node_modules/ ./npm-debug.log 
 
 version: ## creates a new ezmaster version (same way npm version works)
 ifdef COMMAND_ARGS
