@@ -11,7 +11,7 @@ docker run --name my-webdav-share \
   -e DATA_FOLDER_NO_CHMOD=0 \
   -v /tmp/:/usr/local/apache2/htdocs/ \
   -p 35270:35270 \
-  inistcnrs/ezmaster:5.2.12-webdav
+  inistcnrs/ezmaster:5.2.13-webdav
 ```
 
 WEBDAV_DATA_FOLDER is the local folder you want to share. The `$WEBDAV_DATA_FOLDER` content rights will be recursivly set to 777 by default. If you do not want this behavior, set the `DATA_FOLDER_NO_CHMOD` env var to `1`
