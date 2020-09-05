@@ -25,7 +25,7 @@
     "get-folder-size": "^2.0.1",
     "glob": "^7.1.4",
     "heartbeats": "^5.0.1",
-    "http-proxy": "^1.17.0",
+    "http-proxy": "^1.18.1",
     "jsonfile": "^5.0.0",
     "kuler": "2.0.0",
     "lodash": "^4.17.13",
