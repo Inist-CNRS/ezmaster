@@ -45,7 +45,9 @@ If you want to save the config and the data of your instances:
 
 ### How to use ezmaster behind Apache reverse proxy?
 
-You should add a dedicated VirtualHost:
+You should create a DNS entry for `example.fr` and `*.example.fr` pointing to your ezmaster server IP.
+
+Then you should configure a dedicated VirtualHost :
 
 ```
 <VirtualHost *:80>
