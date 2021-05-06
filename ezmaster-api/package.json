@@ -28,7 +28,7 @@
     "http-proxy": "^1.17.0",
     "jsonfile": "^5.0.0",
     "kuler": "2.0.0",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
     "mkdirp": "^0.5.1",
     "mmmagic": "^0.5.3",
