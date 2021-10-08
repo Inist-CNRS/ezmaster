@@ -2,6 +2,9 @@
 
 EzMaster changelog lists what changed (features and bug fix) between all the ezmaster versions. [UPGRADE.md](UPGRADE.md) lists what specifically need to be done when upgrading ezmaster.
 
+### ezmaster 5.3.0
+* Upgrade ngnix version to 1.21.3 
+
 ### ezmaster 5.2.13
 * Upgrade nodejs version to to fix Github security alert
 
