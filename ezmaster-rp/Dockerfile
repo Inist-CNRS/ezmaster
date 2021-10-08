@@ -1,4 +1,4 @@
-FROM nginx:1.15.10
+FROM nginx:1.21.3
 
 # to help docker debugging
 ENV DEBIAN_FRONTEND noninteractive
