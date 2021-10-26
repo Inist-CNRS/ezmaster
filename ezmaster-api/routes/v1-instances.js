@@ -506,9 +506,9 @@ router.route("").post(bodyParser(), function(req, res, next) {
                 "http://" +
                 process.env.EZMASTER_PUBLIC_IP +
                 ":" +
-                appConfig.httpPort;
+                portMax;
               if (!process.env.EZMASTER_PUBLIC_IP) {
-                publicUrl = "http://127.0.0.1:" + appConfig.httpPort;
+                publicUrl = "http://127.0.0.1:" + portMax;
               }
             }
 
