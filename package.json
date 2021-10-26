@@ -1,6 +1,6 @@
 {
   "name": "ezmaster",
-  "version": "5.3.0",
+  "version": "5.3.1",
   "description": "Administration of docker applications without any IT skills",
   "private": true,
   "scripts": {
@@ -9,7 +9,7 @@
     "insertversion:index": "sed -i \"s#\\(version \\)\\([\\.a-z0-9]\\+\\)#\\1${npm_package_version}#g\" ezmaster-front/src/layout/Footer.js ezmaster-api/public/index.html ezmaster-rp/index.html",
     "insertversion:package": "sed -i \"s#^\\(  \\\"version\\\": \\)\\(\\\"[\\.a-z0-9]\\+\\\"\\)#\\1\\\"${npm_package_version}\\\"#g\" ezmaster-front/package*.json ezmaster-api/package*.json",
     "version": "npm run insertversion:readme && npm run insertversion:docker && npm run insertversion:index && npm run insertversion:package && git add *.md ezmaster-front/src/layout/Footer.js ezmaster-api/public/index.html ezmaster-rp/index.html ezmaster-api/package*.json ezmaster-front/package*.json docker-compose*.yml ezmaster-webdav/README.md",
-	"postversion": "git push && git push --tags && make publish ",
+    "postversion": "git push && git push --tags && make publish ",
     "postinstall": "cd ezmaster-api/ ; npm i --unsafe-perm ; cd ../ezmaster-front/ ; npm i --unsafe-perm"
   },
   "husky": {
