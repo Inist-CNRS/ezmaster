@@ -32,7 +32,7 @@
     "memory-cache": "^0.2.0",
     "mkdirp": "^0.5.1",
     "mmmagic": "^0.5.3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "multer": "^1.4.1",
     "num-cpus": "^1.1.0",
     "rc": "^1.2.8",
