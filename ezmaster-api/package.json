@@ -11,7 +11,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "async": "^3.0.1",
+    "async": "^3.2.2",
     "basic-auth-connect": "^1.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
